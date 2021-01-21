@@ -1,0 +1,1 @@
+Download the yuzu appimage install and rename yuzu.AppImage.  Run chmod +x yuzu.AppImage on the file (to be addressed in a future configgen update)
