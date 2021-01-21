@@ -3,6 +3,7 @@
 from configgen.generators.Generator import Generator
 import configgen.Command as Command
 import os
+import stat
 from os import path
 import configgen.batoceraFiles as batoceraFiles
 from xml.dom import minidom
@@ -14,6 +15,9 @@ from shutil import copyfile
 class YuzuGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
+        #handles chmod so you just need to download yuzu.AppImage
+        st = os.stat("/userdata/system/switch/yuzu.AppImage")
+        os.chmod("/userdata/system/switch/yuzu.AppImage", st.st_mode | stat.S_IEXEC)
         if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
             os.mkdir(batoceraFiles.SAVES + "/yuzu")
             
@@ -32,7 +36,7 @@ class YuzuGenerator(Generator):
         
         YuzuGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
 
-        commandArray = ["/userdata/system/switch/yuzu.AppImage", rom]
+        commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
         return Command.Command(
             array=commandArray,
             env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb"}
@@ -69,6 +73,7 @@ class YuzuGenerator(Generator):
 
         # ini file
         yuzuConfig = ConfigParser.RawConfigParser()
+        yuzuConfig.optionxform=str
         if os.path.exists(yuzuConfigFile):
             yuzuConfig.read(yuzuConfigFile)
 
@@ -79,14 +84,18 @@ class YuzuGenerator(Generator):
         
         yuzuConfig.set("UI", "fullscreen", "true")
         yuzuConfig.set("UI", "fullscreen\\default", "true")
-        yuzuConfig.set("UI", "confirmclose", "false")
-        yuzuConfig.set("UI", "confirmclose\\default", "false")
+        yuzuConfig.set("UI", "confirmClose", "false")
+        yuzuConfig.set("UI", "confirmClose\\default", "false")
         yuzuConfig.set("UI", "firstStart", "false")
         yuzuConfig.set("UI", "firstStart\\default", "false")
         yuzuConfig.set("UI", "displayTitleBars", "false")
         yuzuConfig.set("UI", "displayTitleBars\\default", "false")        
         yuzuConfig.set("UI", "enable_discord_presence", "false")
-        yuzuConfig.set("UI", "enable_discord_presence\\default", "false")       
+        yuzuConfig.set("UI", "enable_discord_presence\\default", "false")    
+        yuzuConfig.set("UI", "calloutFlags", "1")
+        yuzuConfig.set("UI", "calloutFlags\\default", "false")     
+        yuzuConfig.set("UI", "singleWindowMode", "true")
+        yuzuConfig.set("UI", "singleWindowMode\\default", "true")            
 
 
         # controls section
@@ -104,20 +113,30 @@ class YuzuGenerator(Generator):
 
         for index in playersControllers :
             controller = playersControllers[index]
+            controllernumber = str(int(controller.player) - 1)
             for x in yuzuButtons:
-                yuzuConfig.set("Controls", "player_" + controller.player + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,controllernumber)))
             for x in yuzuAxis:
-                yuzuConfig.set("Controls", "player_" + controller.player + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs)))
-            break
-            
-            yuzuConfig.set("Controls", "player_" + controller.player + "_connected", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs,controllernumber)))
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "0")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
+        
             
         # telemetry section
         if not yuzuConfig.has_section("WebService"):
             yuzuConfig.add_section("WebService") 
         yuzuConfig.set("WebService", "enable_telemetry", "false")
         yuzuConfig.set("WebService", "enable_telemetry\\default", "false") 
-
+        
+        
+        # controls section
+        if not yuzuConfig.has_section("Services"):
+            yuzuConfig.add_section("Services")
+        yuzuConfig.set("Services", "bcat_backend", "none")
+        yuzuConfig.set("Services", "bcat_backend\\default", "none") 
 
         ### update the configuration file
         if not os.path.exists(os.path.dirname(yuzuConfigFile)):
@@ -126,21 +145,21 @@ class YuzuGenerator(Generator):
             yuzuConfig.write(configfile)
 
     @staticmethod
-    def setButton(key, padGuid, padInputs):
+    def setButton(key, padGuid, padInputs,controllernumber):
         # it would be better to pass the joystick num instead of the guid because 2 joysticks may have the same guid
         if key in padInputs:
             input = padInputs[key]
 
             if input.type == "button":
-                return ("button:{},guid:{},engine:sdl").format(input.id, padGuid)
+                return ("button:{},guid:{},engine:sdl,port:{}").format(input.id, padGuid,controllernumber)
             elif input.type == "hat":
-                return ("engine:sdl,guid:{},hat:{},direction:{}").format(padGuid, input.id, YuzuGenerator.hatdirectionvalue(input.value))
+                return ("engine:sdl,guid:{},hat:{},direction:{},port:{}").format(padGuid, input.id, YuzuGenerator.hatdirectionvalue(input.value),controllernumber)
             elif input.type == "axis":
                 # untested, need to configure an axis as button / triggers buttons to be tested too
-                return ("engine:sdl,guid:{},axis:{},direction:{},threshold:{}").format(padGuid, input.id, "+", 0.5)
+                return ("engine:sdl,guid:{},axis:{},direction:{},threshold:{},port:{}").format(padGuid, input.id, "+", 0.5,controllernumber)
 
     @staticmethod
-    def setAxis(key, padGuid, padInputs):
+    def setAxis(key, padGuid, padInputs,controllernumber):
         inputx = -1
         inputy = -1
 
@@ -154,7 +173,7 @@ class YuzuGenerator(Generator):
         elif key == "joystick2":
             inputy = padInputs["joystick2up"]
 
-        return ("axis_x:{},guid:{},axis_y:{},engine:sdl").format(inputx.id, padGuid, inputy.id)
+        return ("axis_x:{},guid:{},axis_y:{},engine:sdl,,port:{}").format(inputx.id, padGuid, inputy.id,controllernumber)
 
     @staticmethod
     def hatdirectionvalue(value):
