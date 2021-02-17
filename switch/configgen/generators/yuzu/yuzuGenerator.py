@@ -27,7 +27,7 @@ class YuzuGenerator(Generator):
         if not path.isdir(batoceraFiles.CONF + "/yuzu/keys"):
             os.mkdir(batoceraFiles.CONF + "/yuzu/keys")
 
-        copyfile(batoceraFiles.BIOS + "/yuzu/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")
+        copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")
 
 
         yuzuConfig = batoceraFiles.CONF + '/yuzu/qt-config.ini'

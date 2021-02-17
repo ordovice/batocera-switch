@@ -8,6 +8,7 @@ from Emulator import Emulator
 from configgen.Evmapy import Evmapy
 import configgen.generators as generators
 from generators.yuzu.yuzuGenerator import YuzuGenerator
+from generators.ryujinx.ryujinxGenerator import RyujinxGenerator
 
 import configgen.controllersConfig as controllers
 import configgen.batoceraFiles as batoceraFiles
@@ -19,7 +20,7 @@ from utils.logger import eslog
 
 generators = {
     'yuzu': YuzuGenerator(),
-    #'ryujinx': RyujinxGenerator(),
+    'ryujinx': RyujinxGenerator(),
 }
 
 def main(args, maxnbplayers):
