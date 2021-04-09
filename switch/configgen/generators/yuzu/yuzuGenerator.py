@@ -9,7 +9,7 @@ import configgen.batoceraFiles as batoceraFiles
 from xml.dom import minidom
 import codecs
 import configgen.controllersConfig as controllersConfig
-import ConfigParser
+import configparser
 from shutil import copyfile
 
 class YuzuGenerator(Generator):
@@ -72,7 +72,7 @@ class YuzuGenerator(Generator):
         }
 
         # ini file
-        yuzuConfig = ConfigParser.RawConfigParser()
+        yuzuConfig = configparser.RawConfigParser()
         yuzuConfig.optionxform=str
         if os.path.exists(yuzuConfigFile):
             yuzuConfig.read(yuzuConfigFile)

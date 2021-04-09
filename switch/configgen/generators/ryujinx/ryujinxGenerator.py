@@ -9,7 +9,7 @@ import configgen.batoceraFiles as batoceraFiles
 from xml.dom import minidom
 import codecs
 import configgen.controllersConfig as controllersConfig
-import ConfigParser
+import configparser
 from shutil import copyfile
 
 class RyujinxGenerator(Generator):

@@ -122,7 +122,7 @@ def main(args, maxnbplayers):
         # run the emulator
         try:
             Evmapy.start(systemName, system.config['emulator'], effectiveCore, effectiveRom, playersControllers)
-            exitCode = runCommand(generators[system.config['emulator']].generate(system, args.rom, playersControllers, gameResolution))
+            exitCode = runCommand(generators['yuzu'].generate(system, args.rom, playersControllers, gameResolution))
         finally:
             Evmapy.stop()
 

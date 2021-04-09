@@ -1,7 +1,7 @@
 import sys
 import os
-import configgen.batoceraFiles as batoceraFiles
-from configgen.settings.unixSettings import UnixSettings
+import batoceraFiles
+from settings.unixSettings import UnixSettings
 import xml.etree.ElementTree as ET
 import shlex
 from utils.logger import eslog
@@ -18,8 +18,6 @@ class Emulator():
         if "emulator" not in self.config or self.config["emulator"] == "":
             eslog.log("no emulator defined. exiting.")
             raise Exception("No emulator found")
-            
-
 
         system_emulator = self.config["emulator"]
         system_core     = self.config["core"]
@@ -78,7 +76,7 @@ class Emulator():
         :param merge_dct: dct merged into dct
         :return: None
         """
-        for k, v in merge_dct.iteritems():
+        for k, v in merge_dct.items():
             if (k in dct and isinstance(dct[k], dict) and isinstance(merge_dct[k], collections.Mapping)):
                 Emulator.dict_merge(dct[k], merge_dct[k])
             else:
@@ -86,11 +84,13 @@ class Emulator():
 
     @staticmethod
     def get_generic_config(system, defaultyml, defaultarchyml):
-        systems_default = yaml.load(file(defaultyml, "r"), Loader=yaml.FullLoader)
+        with open(defaultyml, 'r') as f:
+            systems_default = yaml.load(f, Loader=yaml.FullLoader)
 
         systems_default_arch = {}
         if os.path.exists(defaultarchyml):
-            systems_default_arch = yaml.load(file(defaultarchyml, "r"), Loader=yaml.FullLoader)
+            with open(defaultarchyml, 'r') as f:
+                systems_default_arch = yaml.load(f, Loader=yaml.FullLoader)
         dict_all = {}
 
         if "default" in systems_default:
@@ -113,7 +113,7 @@ class Emulator():
 
         # options are in the yaml, not in the system structure
         # it is flat in the batocera.conf which is easier for the end user, but i prefer not flat in the yml files
-        dict_result = {"emulator": "yuzu", "core": "yuzu"}
+        dict_result = {"emulator": dict_all["emulator"], "core": dict_all["core"]}
         if "options" in dict_all:
             Emulator.dict_merge(dict_result, dict_all["options"])
         return dict_result
@@ -126,13 +126,19 @@ class Emulator():
 
     def getOptBoolean(self, key):
         if key in self.config:
-            if unicode(self.config[key]) == u'1':
+            if self.config[key] == '1':
                 return True
-            if unicode(self.config[key]) == u'true':
+            if self.config[key] == 'true':
                 return True
             if self.config[key] == True:
                 return True
         return False
+
+    def getOptString(self, key):
+        if key in self.config:
+            if self.config[key]:
+                return self.config[key]
+        return ""
 
     @staticmethod
     def updateConfiguration(config, settings):
