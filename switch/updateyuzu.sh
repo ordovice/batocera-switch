@@ -1,1 +1,0 @@
-wget -q --show-progress -O yuzu.AppImage $(curl -s https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases/tags/mainline-0-624 | grep "browser_download_url.*AppImage" | cut -d : -f 2,3 | tr -d \")

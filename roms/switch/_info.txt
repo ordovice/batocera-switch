@@ -1,0 +1,5 @@
+## SYSTEM NINTENDO SWITCH ##
+-------------------------------------------------------------------------------
+ROM files extensions accepted: ".xci, .XCI, .nsp, .NSP, .nsz, .NSZ"
+-------------------------------------------------------------------------------
+Extensions des fichiers ROMs permises: ".xci, .XCI, .nsp, .NSP, .nsz, .NSZ"
