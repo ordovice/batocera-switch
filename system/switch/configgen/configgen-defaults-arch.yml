@@ -1,0 +1,18 @@
+pcengine:
+  emulator: libretro
+  core:     pce
+pcenginecd:
+  emulator: libretro
+  core:     pce
+saturn:
+  emulator: libretro
+  core:     beetle-saturn
+n64:
+  options:
+    videomode: max-1920x1080
+n64dd:
+  options:
+    videomode: max-1920x1080
+switch:
+  emulator: yuzu
+  core:     yuzu

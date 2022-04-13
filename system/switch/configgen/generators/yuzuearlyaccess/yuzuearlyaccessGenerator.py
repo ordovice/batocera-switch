@@ -12,12 +12,12 @@ import configgen.controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
 
-class YuzuGenerator(Generator):
+class YuzuEarlyAccessGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download yuzu.AppImage
-        st = os.stat("/userdata/system/switch/yuzu.AppImage")
-        os.chmod("/userdata/system/switch/yuzu.AppImage", st.st_mode | stat.S_IEXEC)
+        st = os.stat("/userdata/system/switch/yuzuEA.AppImage")
+        os.chmod("/userdata/system/switch/yuzuEA.AppImage", st.st_mode | stat.S_IEXEC)
         if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
             os.mkdir(batoceraFiles.SAVES + "/yuzu")
             
@@ -34,13 +34,12 @@ class YuzuGenerator(Generator):
         yuzuHome = batoceraFiles.CONF
         yuzuSaves = batoceraFiles.CONF
         
-        YuzuGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
+        YuzuEarlyAccessGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
 
-        commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
-        
+        commandArray = ["/userdata/system/switch/yuzuEA.AppImage", "-f", "-g", rom ]
         return Command.Command(
             array=commandArray,
-            env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb","SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}
+            env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb"}
             )
 
 
@@ -140,12 +139,12 @@ class YuzuGenerator(Generator):
             yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation", "true")
         yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation\\default", "false")
 
-        # Use NVDEC Emulation
+        # NVDEC Emulation
         if system.isOptSet('nvdec_emu'):
-            yuzuConfig.set("Renderer", "use_nvdec_emulation", system.config["nvdec_emu"])
+            yuzuConfig.set("Renderer", "nvdec_emulation", system.config["nvdec_emu"])
         else:
-            yuzuConfig.set("Renderer", "use_nvdec_emulation", "true")
-        yuzuConfig.set("Renderer", "use_nvdec_emulation\\default", "false")
+            yuzuConfig.set("Renderer", "nvdec_emulation", "2")
+        yuzuConfig.set("Renderer", "nvdec_emulation\\default", "false")
 
         # Gpu Accuracy
         if system.isOptSet('gpuaccuracy'):
@@ -262,19 +261,19 @@ class YuzuGenerator(Generator):
         yuzuConfig.set("Controls", "player_1_vibration_enabled\\default", "false")
         #yuzuConfig.set("Controls", "profiles\\size", 1)
 
-        #for index in playersControllers :
-        #    controller = playersControllers[index]
-        #    controllernumber = str(int(controller.player) - 1)
-        #    for x in yuzuButtons:
-        #        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,controllernumber)))
-        #    for x in yuzuAxis:
-        #        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, controllernumber)))
-        #    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
-        #    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
-        #    yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
-        #    yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-        #    yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "false")
-        #    yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
+        # for index in playersControllers :
+           # controller = playersControllers[index]
+           # controllernumber = str(int(controller.player) - 1)
+           # for x in yuzuButtons:
+               # yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,controllernumber)))
+           # for x in yuzuAxis:
+               # yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, controllernumber)))
+           # yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
+           # yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
+           # yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+           # yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
+           # yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "false")
+           # yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
 
     # telemetry section
         if not yuzuConfig.has_section("WebService"):
@@ -352,3 +351,4 @@ class YuzuGenerator(Generator):
        # if int(value) == 8:
            # return "left"
        # return "unknown"
+    

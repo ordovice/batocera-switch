@@ -18,25 +18,25 @@ class RyujinxGenerator(Generator):
         #handles chmod so you just need to download Ryujinx.AppImage
         st = os.stat("/userdata/system/switch/Ryujinx.AppImage")
         os.chmod("/userdata/system/switch/Ryujinx.AppImage", st.st_mode | stat.S_IEXEC)
-        #if not path.isdir(batoceraFiles.SAVES + "/Ryujinx"):
-        #    os.mkdir(batoceraFiles.SAVES + "/Ryujinx")
+        if not path.isdir(batoceraFiles.SAVES + "/Ryujinx"):
+            os.mkdir(batoceraFiles.SAVES + "/Ryujinx")
             
-        #if not path.isdir(batoceraFiles.CONF + "/Ryujinx"):
-        #    os.mkdir(batoceraFiles.CONF + "/Ryujinx")
+        if not path.isdir(batoceraFiles.CONF + "/Ryujinx"):
+            os.mkdir(batoceraFiles.CONF + "/Ryujinx")
         
-        #if not path.isdir(batoceraFiles.CONF + "/Ryujinx/keys"):
-        #    os.mkdir(batoceraFiles.CONF + "/Ryujinx/keys")
+        if not path.isdir(batoceraFiles.CONF + "/Ryujinx/system"):
+            os.mkdir(batoceraFiles.CONF + "/Ryujinx/system")
 
-        #copyfile(batoceraFiles.BIOS + "/Ryujinx/prod.keys", batoceraFiles.CONF + "/Ryujinx/keys/prod.keys")
+        copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/Ryujinx/system/prod.keys")
 
 
-        #RyujinxConfig = batoceraFiles.CONF + '/Ryujinx/qt-config.ini'
+        RyujinxConfig = batoceraFiles.CONF + '/Ryujinx/qt-config.ini'
         RyujinxHome = batoceraFiles.CONF
         RyujinxSaves = batoceraFiles.CONF
         
-        #RyujinxGenerator.writeRyujinxConfig(RyujinxConfig, system, playersControllers)
+        RyujinxGenerator.writeRyujinxConfig(RyujinxConfig, system, playersControllers)
 
-        commandArray = ["/userdata/system/switch/Ryujinx.AppImage", "--fullscreen" ]
+        commandArray = ["/userdata/system/switch/Ryujinx.AppImage", rom ]
         return Command.Command(
             array=commandArray,
             env={"XDG_CONFIG_HOME":RyujinxHome, "XDG_DATA_HOME":RyujinxSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb"}
@@ -72,7 +72,7 @@ class RyujinxGenerator(Generator):
         }
 
         # ini file
-        RyujinxConfig = ConfigParser.RawConfigParser()
+        RyujinxConfig = configparser.RawConfigParser()
         RyujinxConfig.optionxform=str
         if os.path.exists(RyujinxConfigFile):
             RyujinxConfig.read(RyujinxConfigFile)
@@ -164,16 +164,31 @@ class RyujinxGenerator(Generator):
         inputy = -1
 
         if key == "joystick1":
-            inputx = padInputs["joystick1left"]
+            try:
+                 inputx = padInputs["joystick1left"]
+            except:
+                 inputx = ["0"]
         elif key == "joystick2":
-            inputx = padInputs["joystick2left"]
+            try:
+                 inputx = padInputs["joystick2left"]
+            except:
+                 inputx = ["0"]
 
         if key == "joystick1":
-            inputy = padInputs["joystick1up"]
+            try:
+                 inputy = padInputs["joystick1up"]
+            except:
+                 inputy = ["0"]
         elif key == "joystick2":
-            inputy = padInputs["joystick2up"]
+            try:
+                 inputy = padInputs["joystick2up"]
+            except:
+                 inputy = ["0"]
 
-        return ("axis_x:{},guid:{},axis_y:{},engine:sdl,,port:{}").format(inputx.id, padGuid, inputy.id,controllernumber)
+        try:
+            return ("axis_x:{},guid:{},axis_y:{},engine:sdl,,port:{}").format(inputx.id, padGuid, inputy.id,controllernumber)
+        except:
+            return ("0")
 
     @staticmethod
     def hatdirectionvalue(value):

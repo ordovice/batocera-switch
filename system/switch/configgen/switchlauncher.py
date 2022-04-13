@@ -5,22 +5,28 @@ import time
 import sys
 from sys import exit
 from Emulator import Emulator
-from configgen.Evmapy import Evmapy
-import configgen.generators as generators
+from Evmapy import Evmapy
+import generators as generators
 from generators.yuzu.yuzuGenerator import YuzuGenerator
+from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
 from generators.ryujinx.ryujinxGenerator import RyujinxGenerator
+from generators.ryujinxvulkan.ryujinxvulkanGenerator import RyujinxVulkanGenerator
 
-import configgen.controllersConfig as controllers
-import configgen.batoceraFiles as batoceraFiles
+import controllersConfig as controllers
+import batoceraFiles as batoceraFiles
 import signal
 import os
 import subprocess
 import utils.videoMode as videoMode
-from utils.logger import eslog
+from utils.logger import get_logger
+
+eslog = get_logger(__name__)
 
 generators = {
     'yuzu': YuzuGenerator(),
     'ryujinx': RyujinxGenerator(),
+    'ryujinx-vulkan': RyujinxVulkanGenerator(),
+    'yuzu-early-access': YuzuEarlyAccessGenerator(),
 }
 
 def main(args, maxnbplayers):
@@ -42,55 +48,62 @@ def main(args, maxnbplayers):
     playersControllers = controllers.loadControllerConfig(controllersInput)
     # find the system to run
     systemName = args.system
-    eslog.log("Running system: {}".format(systemName))
+    eslog.debug("Running system: {}".format(systemName))
     system = Emulator(systemName, args.rom)
-    eslog.log("Emultor system: {}".format(system))
+    eslog.debug("Emulator system: {}".format(system))
 
     if args.emulator is not None:
         system.config["emulator"] = args.emulator
-        self.config["emulator-forced"] = True
+        system.config["emulator-forced"] = True
     if args.core is not None:
         system.config["core"] = args.core
-        self.config["core-forced"] = True
-
-    eslog.debug("Settings: {}".format(system.config))
+        system.config["core-forced"] = True
+    debugDisplay = system.config.copy()
+    if "retroachievements.password" in debugDisplay:
+        debugDisplay["retroachievements.password"] = "***"
+    eslog.debug("Settings: {}".format(debugDisplay))
     if "emulator" in system.config and "core" in system.config:
-        eslog.log("emulator: {}, core: {}".format(system.config["emulator"], system.config["core"]))
+        eslog.debug("emulator: {}, core: {}".format(system.config["emulator"], system.config["core"]))
     else:
         if "emulator" in system.config:
-            eslog.log("emulator: {}".format(system.config["emulator"]))
+            eslog.debug("emulator: {}".format(system.config["emulator"]))
+
+    # enable mouse
+    subprocess.run(["unclutter-remote", "-s"])
+    # chmod +x F1 applications
+    subprocess.call(['chmod', '-R', '+x', '/userdata/system/switch/extra'])
 
     # the resolution must be changed before configuration while the configuration may depend on it (ie bezels)
-    #wantedGameMode = generators[system.config['emulator']].getResolutionMode(system.config)
+    wantedGameMode = generators[system.config['emulator']].getResolutionMode(system.config)
     systemMode = videoMode.getCurrentMode()
 
     resolutionChanged = False
     exitCode = -1
     try:
         # lower the resolution if mode is auto
-        #newsystemMode = systemMode # newsystemmode is the mode after minmax (ie in 1K if tv was in 4K), systemmode is the mode before (ie in es)
-        #if system.config["videomode"] == "" or system.config["videomode"] == "default":
-        #    eslog.log("minTomaxResolution")
-        #    eslog.log("video mode before minmax: {}".format(systemMode))
-        #    videoMode.minTomaxResolution()
-        #    newsystemMode = videoMode.getCurrentMode()
-        #    if newsystemMode != systemMode:
-        #        resolutionChanged = True
+        newsystemMode = systemMode # newsystemmode is the mode after minmax (ie in 1K if tv was in 4K), systemmode is the mode before (ie in es)
+        if system.config["videomode"] == "" or system.config["videomode"] == "default":
+            eslog.debug("minTomaxResolution")
+            eslog.debug("video mode before minmax: {}".format(systemMode))
+            videoMode.minTomaxResolution()
+            newsystemMode = videoMode.getCurrentMode()
+            if newsystemMode != systemMode:
+                resolutionChanged = True
 
-        #eslog.log("current video mode: {}".format(newsystemMode))
-        #eslog.log("wanted video mode: {}".format(wantedGameMode))
+        eslog.debug("current video mode: {}".format(newsystemMode))
+        eslog.debug("wanted video mode: {}".format(wantedGameMode))
 
-        #if wantedGameMode != 'default' and wantedGameMode != newsystemMode:
-        #    videoMode.changeMode(wantedGameMode)
-        #    resolutionChanged = True
+        if wantedGameMode != 'default' and wantedGameMode != newsystemMode:
+            videoMode.changeMode(wantedGameMode)
+            resolutionChanged = True
         gameResolution = videoMode.getCurrentResolution()
 
         # if resolution is reversed (ie ogoa boards), reverse it in the gameResolution to have it correct
-        #if system.isOptSet('resolutionIsReversed') and system.getOptBoolean('resolutionIsReversed') == True:
-        #    x = gameResolution["width"]
-        #    gameResolution["width"]  = gameResolution["height"]
-        #    gameResolution["height"] = x
-        #eslog.log("resolution: {}x{}".format(str(gameResolution["width"]), str(gameResolution["height"])))
+        if system.isOptSet('resolutionIsReversed') and system.getOptBoolean('resolutionIsReversed') == True:
+            x = gameResolution["width"]
+            gameResolution["width"]  = gameResolution["height"]
+            gameResolution["height"] = x
+        eslog.debug("resolution: {}x{}".format(str(gameResolution["width"]), str(gameResolution["height"])))
 
         # savedir: create the save directory if not already done
         dirname = os.path.join(batoceraFiles.savesDir, system.name)
@@ -105,16 +118,6 @@ def main(args, maxnbplayers):
         if args.rom is not None:
             effectiveRom = args.rom
 
-        # network options
-        if args.netplaymode is not None:
-            system.config["netplay.mode"] = args.netplaymode
-        if args.netplaypass is not None:
-            system.config["netplay.password"] = args.netplaypass
-        if args.netplayip is not None:
-            system.config["netplay.server.ip"] = args.netplayip
-        if args.netplayport is not None:
-            system.config["netplay.server.port"] = args.netplayport
-
         # run a script before emulator starts
         callExternalScripts("/usr/share/batocera/configgen/scripts", "gameStart", [systemName, system.config['emulator'], effectiveCore, effectiveRom])
         callExternalScripts("/userdata/system/scripts", "gameStart", [systemName, system.config['emulator'], effectiveCore, effectiveRom])
@@ -122,7 +125,12 @@ def main(args, maxnbplayers):
         # run the emulator
         try:
             Evmapy.start(systemName, system.config['emulator'], effectiveCore, effectiveRom, playersControllers)
-            exitCode = runCommand(generators['yuzu'].generate(system, args.rom, playersControllers, gameResolution))
+            # change directory if wanted
+            executionDirectory = generators[system.config['emulator']].executionDirectory(system.config, effectiveRom)
+            if executionDirectory is not None:
+                os.chdir(executionDirectory)
+
+            exitCode = runCommand(generators[system.config['emulator']].generate(system, args.rom, playersControllers, gameResolution))
         finally:
             Evmapy.stop()
 
@@ -149,16 +157,16 @@ def callExternalScripts(folder, event, args):
             callExternalScripts(os.path.join(folder, file), event, args)
         else:
             if os.access(os.path.join(folder, file), os.X_OK):
-                eslog.log("calling external script: " + str([os.path.join(folder, file), event] + args))
+                eslog.debug("calling external script: " + str([os.path.join(folder, file), event] + args))
                 subprocess.call([os.path.join(folder, file), event] + args)
 
 def runCommand(command):
     global proc
 
     command.env.update(os.environ)
-    eslog.log("command: {}".format(str(command)))
-    eslog.log("command: {}".format(str(command.array)))
-    eslog.log("env: {}".format(str(command.env)))
+    eslog.debug("command: {}".format(str(command)))
+    eslog.debug("command: {}".format(str(command.array)))
+    eslog.debug("env: {}".format(str(command.env)))
     proc = subprocess.Popen(command.array, env=command.env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     exitcode = -1
     try:
@@ -167,7 +175,7 @@ def runCommand(command):
         sys.stdout.write(out)
         sys.stderr.write(err)
     except:
-        eslog.log("emulator exited")
+        eslog.debug("emulator exited")
 
     return exitcode
 
@@ -198,10 +206,6 @@ if __name__ == '__main__':
     parser.add_argument("-rom", help="rom absolute path", type=str, required=True)
     parser.add_argument("-emulator", help="force emulator", type=str, required=False)
     parser.add_argument("-core", help="force emulator core", type=str, required=False)
-    parser.add_argument("-netplaymode", help="host/client", type=str, required=False)
-    parser.add_argument("-netplaypass", help="enable spectator mode", type=str, required=False)
-    parser.add_argument("-netplayip", help="remote ip", type=str, required=False)
-    parser.add_argument("-netplayport", help="remote port", type=str, required=False)
 
     args = parser.parse_args()
     try:
@@ -210,7 +214,7 @@ if __name__ == '__main__':
     except Exception as e:
         eslog.error("configgen exception: ", exc_info=True)
     time.sleep(1) # this seems to be required so that the gpu memory is restituated and available for es
-    eslog.log("Exiting configgen with status {}".format(str(exitcode)))
+    eslog.debug("Exiting configgen with status {}".format(str(exitcode)))
     exit(exitcode)
 
 # Local Variables:

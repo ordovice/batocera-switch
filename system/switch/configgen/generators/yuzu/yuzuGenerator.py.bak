@@ -37,10 +37,9 @@ class YuzuGenerator(Generator):
         YuzuGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
 
         commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
-        
         return Command.Command(
             array=commandArray,
-            env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb","SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}
+            env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb"}
             )
 
 
