@@ -39,7 +39,7 @@ class YuzuEarlyAccessGenerator(Generator):
         commandArray = ["/userdata/system/switch/yuzuEA.AppImage", "-f", "-g", rom ]
         return Command.Command(
             array=commandArray,
-            env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb"}
+            env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb", "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}
             )
 
 
@@ -107,9 +107,27 @@ class YuzuEarlyAccessGenerator(Generator):
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
         yuzuConfig.set("UI", "Paths\\gamedirs\\size", "1")
 
+    # Core section
+        if not yuzuConfig.has_section("Core"):
+            yuzuConfig.add_section("Core")
+
+        # Multicore
+        if system.isOptSet('multicore'):
+            yuzuConfig.set("Core", "use_multi_core", system.config["multicore"])
+        else:
+            yuzuConfig.set("Core", "use_multi_core", "true")
+        yuzuConfig.set("Core", "use_multi_core\\default", "false")
+
     # Renderer section
         if not yuzuConfig.has_section("Renderer"):
             yuzuConfig.add_section("Renderer")
+
+        # Aspect ratio
+        if system.isOptSet('yuzu_ratio'):
+            yuzuConfig.set("Renderer", "aspect_ratio", system.config["yuzu_ratio"])
+        else:
+            yuzuConfig.set("Renderer", "aspect_ratio", "0")
+        yuzuConfig.set("Renderer", "aspect_ratio\\default", "false")
 
         # Graphical backend
         if system.isOptSet('yuzu_backend'):
