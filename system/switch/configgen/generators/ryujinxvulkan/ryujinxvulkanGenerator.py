@@ -23,9 +23,17 @@ class RyujinxVulkanGenerator(Generator):
         if not path.isdir(batoceraFiles.CONF + "/RyujinxVulkan"):
             os.mkdir(batoceraFiles.CONF + "/RyujinxVulkan")
         
+        copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/RyujinxVulkan/Ryujinx/system/prod.keys")
+        copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/RyujinxVulkan/Ryujinx/system/title.keys")
+
         RyujinxVulkanHome = batoceraFiles.CONF + '/RyujinxVulkan'
         
-        commandArray = ["/userdata/system/switch/RyujinxVulkan.AppImage", rom ]
+        if path.exists(batoceraFiles.CONF + "/RyujinxVulkan/Ryujinx/qt-config.ini"):
+            commandArray = ["/userdata/system/switch/RyujinxVulkan.AppImage", rom ]
+        else:
+            commandArray = ["/userdata/system/switch/RyujinxVulkan.AppImage"]
+            
+
         return Command.Command(
             array=commandArray,
             env={"XDG_CONFIG_HOME":RyujinxVulkanHome, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb", "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}

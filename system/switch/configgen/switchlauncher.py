@@ -27,8 +27,8 @@ eslog = get_logger(__name__)
 generators = {
     'yuzu': YuzuGenerator(),
     'yuzu-early-access': YuzuEarlyAccessGenerator(),
-    'ryujinx': RyujinxGenerator(),
-    'ryujinx-vulkan': RyujinxVulkanGenerator(),
+    #'ryujinx': RyujinxGenerator(),
+    #'ryujinx-vulkan': RyujinxVulkanGenerator(),
 }
 
 def squashfs_begin(rom):

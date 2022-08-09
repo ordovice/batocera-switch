@@ -22,10 +22,16 @@ class RyujinxGenerator(Generator):
             
         if not path.isdir(batoceraFiles.CONF + "/Ryujinx"):
             os.mkdir(batoceraFiles.CONF + "/Ryujinx")
-        
+
+        copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/Ryujinx/system/prod.keys")
+        copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/Ryujinx/system/title.keys")
         RyujinxHome = batoceraFiles.CONF
         
-        commandArray = ["/userdata/system/switch/Ryujinx.AppImage", rom ]
+        if path.exists(batoceraFiles.CONF + "/Ryujinx/qt-config.ini"):
+            commandArray = ["/userdata/system/switch/Ryujinx.AppImage", rom ]
+        else:
+            commandArray = ["/userdata/system/switch/Ryujinx.AppImage"]
+            
         return Command.Command(
             array=commandArray,
             env={"XDG_CONFIG_HOME":RyujinxHome, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb", "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}
