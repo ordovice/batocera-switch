@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 
+import generators
 from configgen.generators.Generator import Generator
-import configgen.Command as Command
+import Command as Command
 import os
 import stat
 from os import path
-import configgen.batoceraFiles as batoceraFiles
+import batoceraFiles as batoceraFiles
 from xml.dom import minidom
 import codecs
-import configgen.controllersConfig as controllersConfig
+import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
 

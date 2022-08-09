@@ -11,7 +11,7 @@ import generators
 from generators.yuzu.yuzuGenerator import YuzuGenerator
 from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
 from generators.ryujinx.ryujinxGenerator import RyujinxGenerator
-#from generators.ryujinxvulkan.ryujinxvulkanGenerator import RyujinxVulkanGenerator
+from generators.ryujinxvulkan.ryujinxvulkanGenerator import RyujinxVulkanGenerator
 
 import controllersConfig as controllers
 import batoceraFiles
@@ -26,9 +26,9 @@ eslog = get_logger(__name__)
 
 generators = {
     'yuzu': YuzuGenerator(),
-    'ryujinx': RyujinxGenerator(),
-    #'ryujinx-vulkan': RyujinxVulkanGenerator(),
     'yuzu-early-access': YuzuEarlyAccessGenerator(),
+    'ryujinx': RyujinxGenerator(),
+    'ryujinx-vulkan': RyujinxVulkanGenerator(),
 }
 
 def squashfs_begin(rom):

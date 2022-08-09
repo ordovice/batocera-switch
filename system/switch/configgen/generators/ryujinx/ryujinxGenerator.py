@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import generators
 from configgen.generators.Generator import Generator
 import Command as Command
 import os
