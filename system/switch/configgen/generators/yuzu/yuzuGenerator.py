@@ -12,6 +12,9 @@ import codecs
 import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
+from utils.logger import get_logger
+
+eslog = get_logger(__name__)
 
 class YuzuGenerator(Generator):
 
@@ -279,14 +282,21 @@ class YuzuGenerator(Generator):
         yuzuConfig.set("Controls", "player_1_vibration_enabled", "true")
         yuzuConfig.set("Controls", "player_1_vibration_enabled\\default", "false")
         #yuzuConfig.set("Controls", "profiles\\size", 1)
+        
+        
+        #lastcontrollerguid = ""
+        #lastcontrollernumber = 0
+        cguid = [0 for x in range(10)]
 
         for index in playersControllers :
             controller = playersControllers[index]
+            portnumber = cguid.count(controller.guid)
             controllernumber = str(int(controller.player) - 1)
+            cguid[int(controllernumber)] = controller.guid
             for x in yuzuButtons:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,controllernumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,portnumber)))
             for x in yuzuAxis:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, controllernumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, portnumber)))
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
