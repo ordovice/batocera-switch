@@ -1,14 +1,15 @@
-#!/usr/bin/env python
+#!/usr/bin/env pythonYuzuEarlyAccessGenerator
 
+import generators
 from configgen.generators.Generator import Generator
-import configgen.Command as Command
+import Command as Command
 import os
 import stat
 from os import path
-import configgen.batoceraFiles as batoceraFiles
+import batoceraFiles as batoceraFiles
 from xml.dom import minidom
 import codecs
-import configgen.controllersConfig as controllersConfig
+import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
 
@@ -16,8 +17,8 @@ class YuzuEarlyAccessGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download yuzu.AppImage
-        st = os.stat("/userdata/system/switch/yuzuEA.AppImage")
-        os.chmod("/userdata/system/switch/yuzuEA.AppImage", st.st_mode | stat.S_IEXEC)
+        st = os.stat("/userdata/system/switch/yuzu.AppImage")
+        os.chmod("/userdata/system/switch/yuzu.AppImage", st.st_mode | stat.S_IEXEC)
         if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
             os.mkdir(batoceraFiles.SAVES + "/yuzu")
             
@@ -43,7 +44,7 @@ class YuzuEarlyAccessGenerator(Generator):
             )
 
 
-    @staticmethod
+    # @staticmethod
     def writeYuzuConfig(yuzuConfigFile, system, playersControllers):
         # pads
         yuzuButtons = {
@@ -157,12 +158,12 @@ class YuzuEarlyAccessGenerator(Generator):
             yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation", "true")
         yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation\\default", "false")
 
-        # NVDEC Emulation
+        # Use NVDEC Emulation
         if system.isOptSet('nvdec_emu'):
-            yuzuConfig.set("Renderer", "nvdec_emulation", system.config["nvdec_emu"])
+            yuzuConfig.set("Renderer", "use_nvdec_emulation", system.config["nvdec_emu"])
         else:
-            yuzuConfig.set("Renderer", "nvdec_emulation", "2")
-        yuzuConfig.set("Renderer", "nvdec_emulation\\default", "false")
+            yuzuConfig.set("Renderer", "use_nvdec_emulation", "true")
+        yuzuConfig.set("Renderer", "use_nvdec_emulation\\default", "false")
 
         # Gpu Accuracy
         if system.isOptSet('gpuaccuracy'):
@@ -279,19 +280,19 @@ class YuzuEarlyAccessGenerator(Generator):
         yuzuConfig.set("Controls", "player_1_vibration_enabled\\default", "false")
         #yuzuConfig.set("Controls", "profiles\\size", 1)
 
-        # for index in playersControllers :
-           # controller = playersControllers[index]
-           # controllernumber = str(int(controller.player) - 1)
-           # for x in yuzuButtons:
-               # yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,controllernumber)))
-           # for x in yuzuAxis:
-               # yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, controllernumber)))
-           # yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
-           # yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
-           # yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
-           # yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-           # yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "false")
-           # yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
+        for index in playersControllers :
+            controller = playersControllers[index]
+            controllernumber = str(int(controller.player) - 1)
+            for x in yuzuButtons:
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,controllernumber)))
+            for x in yuzuAxis:
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, controllernumber)))
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
 
     # telemetry section
         if not yuzuConfig.has_section("WebService"):
@@ -312,61 +313,60 @@ class YuzuEarlyAccessGenerator(Generator):
         with open(yuzuConfigFile, 'w') as configfile:
             yuzuConfig.write(configfile)
 
-    # @staticmethod
-    # def setButton(key, padGuid, padInputs,controllernumber):
-       # # it would be better to pass the joystick num instead of the guid because 2 joysticks may have the same guid
-       # if key in padInputs:
-           # input = padInputs[key]
+    @staticmethod
+    def setButton(key, padGuid, padInputs,controllernumber):
+        # it would be better to pass the joystick num instead of the guid because 2 joysticks may have the same guid
+        if key in padInputs:
+            input = padInputs[key]
 
-           # if input.type == "button":
-               # return ("toggle:0,button:{},guid:{},port:{},engine:sdl").format(input.id, padGuid, controllernumber)
-           # elif input.type == "hat":
-               # return ("toggle:0,hat:{},direction:{},guid:{},port:{},engine:sdl").format(input.id, YuzuEarlyAccessGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
-           # elif input.type == "axis":
-               # # untested, need to configure an axis as button / triggers buttons to be tested too
-               # return ("threshold:{},axis:{},direction:{},guid:{},port:{},engine:sdl").format(0.5, input.id, "+", padGuid, controllernumber)
+            if input.type == "button":
+                return ("button:{},guid:{},port:{},engine:sdl").format(input.id, padGuid, controllernumber)
+            elif input.type == "hat":
+                return ("hat:{},direction:{},guid:{},port:{},engine:sdl").format(input.id, YuzuEarlyAccessGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
+            elif input.type == "axis":
+                # untested, need to configure an axis as button / triggers buttons to be tested too
+                return ("threshold:{},axis:{},direction:{},guid:{},port:{},engine:sdl").format(0.5, input.id, "+", padGuid, controllernumber)
 
-    # @staticmethod
-    # def setAxis(key, padGuid, padInputs,controllernumber):
-       # inputx = -1
-       # inputy = -1
+    @staticmethod
+    def setAxis(key, padGuid, padInputs,controllernumber):
+        inputx = -1
+        inputy = -1
 
-       # if key == "joystick1":
-           # try:
-                # inputx = padInputs["joystick1left"]
-           # except:
-                # inputx = ["0"]
-       # elif key == "joystick2":
-           # try:
-                # inputx = padInputs["joystick2left"]
-           # except:
-                # inputx = ["0"]
+        if key == "joystick1":
+            try:
+                 inputx = padInputs["joystick1left"]
+            except:
+                 inputx = ["0"]
+        elif key == "joystick2":
+            try:
+                 inputx = padInputs["joystick2left"]
+            except:
+                 inputx = ["0"]
 
-       # if key == "joystick1":
-           # try:
-                # inputy = padInputs["joystick1up"]
-           # except:
-                # inputy = ["0"]
-       # elif key == "joystick2":
-           # try:
-                # inputy = padInputs["joystick2up"]
-           # except:
-                # inputy = ["0"]
+        if key == "joystick1":
+            try:
+                 inputy = padInputs["joystick1up"]
+            except:
+                 inputy = ["0"]
+        elif key == "joystick2":
+            try:
+                 inputy = padInputs["joystick2up"]
+            except:
+                 inputy = ["0"]
 
-       # try:
-           # return ("range:1.000000,deadzone:0.100000,invert_y:+,invert_x:+,offset_y:-0.000000,axis_y:{},offset_x:-0.000000,axis_x:{},guid:{},port:{},engine:sdl").format(inputy.id, inputx.id, padGuid, controllernumber)
-       # except:
-           # return ("0")
+        try:
+            return ("range:1.000000,deadzone:0.100000,invert_y:+,invert_x:+,offset_y:-0.000000,axis_y:{},offset_x:-0.000000,axis_x:{},guid:{},port:{},engine:sdl").format(inputy.id, inputx.id, padGuid, controllernumber)
+        except:
+            return ("0")
 
-    # @staticmethod
-    # def hatdirectionvalue(value):
-       # if int(value) == 1:
-           # return "up"
-       # if int(value) == 4:
-           # return "down"
-       # if int(value) == 2:
-           # return "right"
-       # if int(value) == 8:
-           # return "left"
-       # return "unknown"
-    
+    @staticmethod
+    def hatdirectionvalue(value):
+        if int(value) == 1:
+            return "up"
+        if int(value) == 4:
+            return "down"
+        if int(value) == 2:
+            return "right"
+        if int(value) == 8:
+            return "left"
+        return "unknown"

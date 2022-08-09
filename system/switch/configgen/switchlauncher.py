@@ -9,7 +9,7 @@ from Emulator import Emulator
 from Evmapy import Evmapy
 import generators
 from generators.yuzu.yuzuGenerator import YuzuGenerator
-#from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
+from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
 from generators.ryujinx.ryujinxGenerator import RyujinxGenerator
 #from generators.ryujinxvulkan.ryujinxvulkanGenerator import RyujinxVulkanGenerator
 
@@ -28,7 +28,7 @@ generators = {
     'yuzu': YuzuGenerator(),
     'ryujinx': RyujinxGenerator(),
     #'ryujinx-vulkan': RyujinxVulkanGenerator(),
-    #'yuzu-early-access': YuzuEarlyAccessGenerator(),
+    'yuzu-early-access': YuzuEarlyAccessGenerator(),
 }
 
 def squashfs_begin(rom):
