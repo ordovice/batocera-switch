@@ -315,6 +315,9 @@ class YuzuEarlyAccessGenerator(Generator):
 
     @staticmethod
     def setButton(key, padGuid, padInputs,controllernumber):
+        guidstoreplace = ["050000004c050000cc09000000810000"]
+        if padGuid in guidstoreplace:
+            padGuid = "030000004c050000cc09000000006800"
         # it would be better to pass the joystick num instead of the guid because 2 joysticks may have the same guid
         if key in padInputs:
             input = padInputs[key]

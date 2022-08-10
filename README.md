@@ -8,3 +8,5 @@ Copy the folders and files in this repo into the appropriate folders of Batocera
 You will need to provide Yuzu and Ryujinx installs.  There are update scripts that you can run via SSH to download the appropriate AppImages to the system\switch directory.  You need to chmod +x them before running.  
 
 This version integrates work from foclabroc and Batocera Nation but does not include the appimages or the bios keys that their download does.  Additionally, controllers in Yuzu are auto mapped now as of v34.  
+
+A special note about DS4 controllers: Yuzu changes the SDL GUID so I have implemented a similar replacement algorithm to allow them to autoconfigure at this time.  
