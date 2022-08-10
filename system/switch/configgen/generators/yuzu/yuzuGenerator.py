@@ -296,7 +296,7 @@ class YuzuGenerator(Generator):
             controllernumber = str(int(controller.player) - 1)
             cguid[int(controllernumber)] = controller.guid
             inputguid = controller.guid
-            guidstoreplace = ["050000004c050000cc09000000810000"]
+            guidstoreplace = ["050000004c050000cc09000000810000","050000004c050000c405000000810000"]
             if controller.guid in guidstoreplace:
                 inputguid = "030000004c050000cc09000000006800"
 
