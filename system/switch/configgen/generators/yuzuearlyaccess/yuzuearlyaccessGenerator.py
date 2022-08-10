@@ -282,12 +282,14 @@ class YuzuEarlyAccessGenerator(Generator):
 
         for index in playersControllers :
             controller = playersControllers[index]
+            portnumber = cguid.count(controller.guid)
             controllernumber = str(int(controller.player) - 1)
-
-            guidstoreplace = ["050000004c050000cc09000000810000"]
+            cguid[int(controllernumber)] = controller.guid
             inputguid = controller.guid
+            guidstoreplace = ["050000004c050000cc09000000810000"]
             if controller.guid in guidstoreplace:
                 inputguid = "030000004c050000cc09000000006800"
+
             for x in yuzuButtons:
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,controllernumber)))
             for x in yuzuAxis:

@@ -292,7 +292,7 @@ class YuzuGenerator(Generator):
             controller = playersControllers[index]
             portnumber = cguid.count(controller.guid)
             controllernumber = str(int(controller.player) - 1)
-            #cguid[int(controllernumber)] = controller.guid
+            cguid[int(controllernumber)] = controller.guid
             inputguid = controller.guid
             guidstoreplace = ["050000004c050000cc09000000810000"]
             if controller.guid in guidstoreplace:
