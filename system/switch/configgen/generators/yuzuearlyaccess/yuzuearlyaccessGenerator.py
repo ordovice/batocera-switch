@@ -60,6 +60,8 @@ class YuzuEarlyAccessGenerator(Generator):
             "button_r":      "pagedown",
             "button_plus":  "start",
             "button_minus": "select",
+            "button_sl":     "l",
+            "button_sr":     "r",
             "button_zl":     "l2",
             "button_zr":     "r2",
             "button_lstick":     "l3",
@@ -335,7 +337,7 @@ class YuzuEarlyAccessGenerator(Generator):
                 return ("hat:{},direction:{},guid:{},port:{},engine:sdl").format(input.id, YuzuEarlyAccessGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
             elif input.type == "axis":
                 # untested, need to configure an axis as button / triggers buttons to be tested too
-                return ("threshold:{},axis:{},direction:{},guid:{},port:{},engine:sdl").format(0.5, input.id, "+", padGuid, controllernumber)
+                return ("threshold:{},axis:{},guid:{},port:{},invert:{},engine:sdl").format(0.5, input.id, padGuid, controllernumber, "+")
 
     @staticmethod
     def setAxis(key, padGuid, padInputs,controllernumber):
