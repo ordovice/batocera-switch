@@ -292,17 +292,22 @@ class YuzuGenerator(Generator):
             controller = playersControllers[index]
             portnumber = cguid.count(controller.guid)
             controllernumber = str(int(controller.player) - 1)
-            cguid[int(controllernumber)] = controller.guid
+            #cguid[int(controllernumber)] = controller.guid
+            inputguid = controller.guid
+            guidstoreplace = ["050000004c050000cc09000000810000"]
+            if controller.guid in guidstoreplace:
+                inputguid = "030000004c050000cc09000000006800"
+
             for x in yuzuButtons:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,portnumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
             for x in yuzuAxis:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, portnumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "false")
-            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
 
     # telemetry section
         if not yuzuConfig.has_section("WebService"):
@@ -325,9 +330,7 @@ class YuzuGenerator(Generator):
 
     @staticmethod
     def setButton(key, padGuid, padInputs,controllernumber):
-        guidstoreplace = ["050000004c050000cc09000000810000"]
-        if padGuid in guidstoreplace:
-            padGuid = "030000004c050000cc09000000006800"
+
         # it would be better to pass the joystick num instead of the guid because 2 joysticks may have the same guid
         if key in padInputs:
             input = padInputs[key]

@@ -283,10 +283,15 @@ class YuzuEarlyAccessGenerator(Generator):
         for index in playersControllers :
             controller = playersControllers[index]
             controllernumber = str(int(controller.player) - 1)
+
+            guidstoreplace = ["050000004c050000cc09000000810000"]
+            inputguid = controller.guid
+            if controller.guid in guidstoreplace:
+                inputguid = "030000004c050000cc09000000006800"
             for x in yuzuButtons:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setButton(yuzuButtons[x], controller.guid, controller.inputs,controllernumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,controllernumber)))
             for x in yuzuAxis:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setAxis(yuzuAxis[x], controller.guid, controller.inputs, controllernumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuEarlyAccessGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, controllernumber)))
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
