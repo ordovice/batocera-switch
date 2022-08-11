@@ -29,7 +29,7 @@ class RyujinxGenerator(Generator):
         copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/Ryujinx/system/title.keys")
         RyujinxHome = batoceraFiles.CONF
         
-        if path.exists(batoceraFiles.CONF + "/Ryujinx/qt-config.ini"):
+        if path.exists(batoceraFiles.CONF + "/Ryujinx/Config.json"):
             commandArray = ["/userdata/system/switch/Ryujinx.AppImage", rom ]
         else:
             commandArray = ["/userdata/system/switch/Ryujinx.AppImage"]
