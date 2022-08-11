@@ -281,7 +281,8 @@ class YuzuEarlyAccessGenerator(Generator):
         yuzuConfig.set("Controls", "player_1_vibration_enabled", "true")
         yuzuConfig.set("Controls", "player_1_vibration_enabled\\default", "false")
         #yuzuConfig.set("Controls", "profiles\\size", 1)
-
+        cguid = [0 for x in range(10)]
+        
         for index in playersControllers :
             controller = playersControllers[index]
             portnumber = cguid.count(controller.guid)

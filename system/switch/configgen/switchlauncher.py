@@ -27,7 +27,7 @@ eslog = get_logger(__name__)
 generators = {
     'yuzu': YuzuGenerator(),
     'yuzu-early-access': YuzuEarlyAccessGenerator(),
-    #'ryujinx': RyujinxGenerator(),
+    'ryujinx': RyujinxGenerator(),
     #'ryujinx-vulkan': RyujinxVulkanGenerator(),
 }
 

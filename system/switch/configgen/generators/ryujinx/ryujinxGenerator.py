@@ -22,6 +22,8 @@ class RyujinxGenerator(Generator):
             
         if not path.isdir(batoceraFiles.CONF + "/Ryujinx"):
             os.mkdir(batoceraFiles.CONF + "/Ryujinx")
+        if not path.isdir(batoceraFiles.CONF + "/Ryujinx/system"):
+            os.mkdir(batoceraFiles.CONF + "/Ryujinx/system")
 
         copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/Ryujinx/system/prod.keys")
         copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/Ryujinx/system/title.keys")
