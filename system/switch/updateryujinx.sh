@@ -1,1 +1,2 @@
-wget -q --show-progress -O Ryujinx.AppImage $(curl -s https://api.github.com/repos/qurious-pixel/Ryujinx/releases/latest | grep "browser_download_url.*AppImage" | cut -d : -f 2,3 | tr -d \")
+wget -q --show-progress -O Ryujinx.AppImage https://github.com/qurious-pixel/Ryujinx/releases/download/avalonia-build/Ryujinx-x86_64.AppImage
+#qurious-pixel/Ryujinx/releases/tag/avalonia-build
