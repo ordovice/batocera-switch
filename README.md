@@ -9,4 +9,6 @@ You will need to provide Yuzu and Ryujinx installs.  There are update scripts th
 
 This version integrates work from foclabroc and Batocera Nation but does not include the appimages or the bios keys that their download does.  Additionally, controllers in Yuzu are auto mapped now as of v34.  
 
-A special note about DS4 controllers: They are not supported properly inside yuzu's Linux environment for autoconfiguration at this time.  I am attempting to autoconfigure, but you may need to manually reconfigure them each time until this is fixed on the yuzu side.   
+A special note about DS4 and DS5 controllers: They are not supported properly inside yuzu's Linux environment for autoconfiguration at this time.  This appears to be a concern with both Yuzu and Ryujinx.  Yuzu doesn't map certain buttons correctly and Ryujinx changes the auto order based on these controllers.  
+
+**If someone wants to send me a DS5 or a donation to purchase one, I will see what I can validate and also report to the Yuzu and Ryujinx teams.

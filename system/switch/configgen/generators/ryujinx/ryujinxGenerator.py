@@ -12,11 +12,15 @@ import codecs
 import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
+from utils.logger import get_logger
+
+eslog = get_logger(__name__)
 
 class RyujinxGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download Ryujinx.AppImage
+        eslog.debug("Ryujinx Begin: {}".format(system))
         st = os.stat("/userdata/system/switch/Ryujinx.AppImage")
         os.chmod("/userdata/system/switch/Ryujinx.AppImage", st.st_mode | stat.S_IEXEC)
             

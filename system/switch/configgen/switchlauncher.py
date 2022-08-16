@@ -11,7 +11,6 @@ import generators
 from generators.yuzu.yuzuGenerator import YuzuGenerator
 from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
 from generators.ryujinx.ryujinxGenerator import RyujinxGenerator
-from generators.ryujinxvulkan.ryujinxvulkanGenerator import RyujinxVulkanGenerator
 
 import controllersConfig as controllers
 import batoceraFiles
@@ -28,7 +27,7 @@ generators = {
     'yuzu': YuzuGenerator(),
     'yuzu-early-access': YuzuEarlyAccessGenerator(),
     'ryujinx': RyujinxGenerator(),
-    #'ryujinx-vulkan': RyujinxVulkanGenerator(),
+    'ryujinx-avalonia': RyujinxGenerator(),
 }
 
 def squashfs_begin(rom):
