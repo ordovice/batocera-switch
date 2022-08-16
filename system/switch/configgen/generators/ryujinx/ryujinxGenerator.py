@@ -224,7 +224,10 @@ class RyujinxGenerator(Generator):
             cvalue['player_index'] = "Player" +  str(int(controller.player))    
             input_config.append(cvalue)
         data['input_config'] = input_config
-        data['graphics_backend'] = 'Vulkan'
+        if system.isOptSet('ryu_backend'):
+            data['graphics_backend'] = system.config["ryu_backend"]
+        else:
+            data['graphics_backend'] = 'Vulkan'
         data['preferred_gpu'] = ""
 
         with open(batoceraFiles.CONF + '/Ryujinx/BeforeRyu.json', "w") as outfile:
