@@ -72,7 +72,6 @@ class RyujinxGenerator(Generator):
             data['version'] = 38  #Avalonia Version needs to see 38
         else:
             data['version'] = 40  #Continuous version needs at least this version
-        #Graphics Backend
         data['enable_file_log'] = bool('true')
         data['backend_threading'] = 'Auto'
         data['res_scale'] = 1
@@ -98,8 +97,19 @@ class RyujinxGenerator(Generator):
         data['check_updates_on_start'] = bool(0)
         data['show_confirm_exit'] = bool(0)
         data['hide_cursor_on_idle'] = bool('true')
-        data['enable_vsync'] = bool('true')
-        data['enable_shader_cache'] = bool('true')
+
+        #V-Sync
+        if system.isOptSet('ryu_vsync'):
+            data['enable_vsync'] = bool(int(system.config["ryu_vsync"]))
+        else:
+            data['enable_vsync'] = bool('true')    
+
+        #Shader Cache
+        if system.isOptSet('ryu_shadercache'):
+            data['enable_shader_cache'] = bool(int(system.config["ryu_shadercache"]))
+        else:
+            data['enable_shader_cache'] = bool('true')    
+
         data['enable_texture_recompression'] = bool(0)
         data['enable_ptc'] = bool('true')
         data['enable_internet_access'] = bool(0)
@@ -224,10 +234,13 @@ class RyujinxGenerator(Generator):
             cvalue['player_index'] = "Player" +  str(int(controller.player))    
             input_config.append(cvalue)
         data['input_config'] = input_config
+
+        #Vulkan or OpenGL
         if system.isOptSet('ryu_backend'):
             data['graphics_backend'] = system.config["ryu_backend"]
         else:
             data['graphics_backend'] = 'Vulkan'
+
         data['preferred_gpu'] = ""
 
         with open(batoceraFiles.CONF + '/Ryujinx/BeforeRyu.json', "w") as outfile:
