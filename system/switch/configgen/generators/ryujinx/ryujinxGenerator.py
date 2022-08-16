@@ -22,7 +22,6 @@ class RyujinxGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download Ryujinx.AppImage
-        eslog.debug("Ryujinx Begin: {}".format(system))
         st = os.stat("/userdata/system/switch/Ryujinx.AppImage")
         os.chmod("/userdata/system/switch/Ryujinx.AppImage", st.st_mode | stat.S_IEXEC)
             
@@ -46,13 +45,16 @@ class RyujinxGenerator(Generator):
         #Configuration update
         RyujinxGenerator.writeRyujinxConfig(RyujinxConfig, system, playersControllers)
 
-        if firstrun:
-            commandArray = ["/userdata/system/switch/Ryujinx.AppImage"]
-            #commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
-
+        if firstrun:  #Run Ryujinx with no rom so users can install firmware
+            if system.config['emulator'] == 'ryujinx-avalonia':
+                commandArray = ["/userdata/system/switch/Ryujinx-Avalonia.AppImage"]
+            else:
+                commandArray = ["/userdata/system/switch/Ryujinx.AppImage"]
         else:
-            commandArray = ["/userdata/system/switch/Ryujinx.AppImage", rom ]
-            #commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
+            if system.config['emulator'] == 'ryujinx-avalonia':
+                commandArray = ["/userdata/system/switch/Ryujinx-Avalonia.AppImage" , rom]
+            else:
+                commandArray = ["/userdata/system/switch/Ryujinx.AppImage" , rom]
             
         return Command.Command(
             array=commandArray,
@@ -60,42 +62,16 @@ class RyujinxGenerator(Generator):
             )
 
     def writeRyujinxConfig(RyujinxConfigFile, system, playersControllers):
-        # pads
-        RyujinxButtons = {
-            "button_a":      "a",
-            "button_b":      "b",
-            "button_x":      "x",
-            "button_y":      "y",
-            "button_dup":     "up",
-            "button_ddown":   "down",
-            "button_dleft":   "left",
-            "button_dright":  "right",
-            "button_l":      "pageup",
-            "button_r":      "pagedown",
-            "button_plus":  "start",
-            "button_minus": "select",
-            "button_sl":     "l",
-            "button_sr":     "r",
-            "button_zl":     "l2",
-            "button_zr":     "r2",
-            "button_lstick":     "l3",
-            "button_rstick":     "r3",
-            "button_home":   "hotkey"
-        }
-
-        RyujinxAxis = {
-            "lstick":    "joystick1",
-            "rstick":    "joystick2"
-        }
 
         if os.path.exists(RyujinxConfigFile):
             with open(RyujinxConfigFile, "r") as read_file:
                 data = json.load(read_file)
         else:
                 data = {}
-        eslog.debug("Config Begin: {}".format(json.dumps(data)))
-
-        data['version'] = 38  #Ryujinx will update this anyways
+        if system.config['emulator'] == 'ryujinx-avalonia':
+            data['version'] = 38  #Avalonia Version needs to see 38
+        else:
+            data['version'] = 40  #Continuous version needs at least this version
         #Graphics Backend
         data['enable_file_log'] = bool('true')
         data['backend_threading'] = 'Auto'
@@ -103,7 +79,6 @@ class RyujinxGenerator(Generator):
         data['res_scale_custom'] = 1
         data['max_anisotropy'] = -1
         data['aspect_ratio'] = 'Fixed16x9'
-
         data['logging_enable_debug'] = bool(0)
         data['logging_enable_stub'] = bool(0)
         data['logging_enable_info'] = bool(0)
@@ -125,7 +100,7 @@ class RyujinxGenerator(Generator):
         data['hide_cursor_on_idle'] = bool('true')
         data['enable_vsync'] = bool('true')
         data['enable_shader_cache'] = bool('true')
-        #data['enable_texture_recompression'] = bool(0)
+        data['enable_texture_recompression'] = bool(0)
         data['enable_ptc'] = bool('true')
         data['enable_internet_access'] = bool(0)
         data['enable_fs_integrity_checks'] = bool('true')
@@ -157,8 +132,8 @@ class RyujinxGenerator(Generator):
         hotkeys['show_ui'] = "F4" 
         hotkeys['pause'] = "F5" 
         hotkeys['toggle_mute'] = "F2"
-        #hotkeys['res_scale_up'] = "Unbound" 
-        #hotkeys['res_scale_down'] = "Unbound" 
+        hotkeys['res_scale_up'] = "Unbound" 
+        hotkeys['res_scale_down'] = "Unbound" 
         data['hotkeys'] = hotkeys  
         gui_columns = {}
         gui_columns['fav_column'] = bool('true')
@@ -249,8 +224,8 @@ class RyujinxGenerator(Generator):
             cvalue['player_index'] = "Player" +  str(int(controller.player))    
             input_config.append(cvalue)
         data['input_config'] = input_config
-        #data['graphics_backend'] = 'Vulkan'
-        #data['preferred_gpu'] = ""
+        data['graphics_backend'] = 'Vulkan'
+        data['preferred_gpu'] = ""
 
         with open(batoceraFiles.CONF + '/Ryujinx/BeforeRyu.json', "w") as outfile:
             outfile.write(json.dumps(data, indent=2))
