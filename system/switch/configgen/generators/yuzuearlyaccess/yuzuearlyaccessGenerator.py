@@ -18,6 +18,8 @@ class YuzuEarlyAccessGenerator(Generator):
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download yuzu.AppImage
         st = os.stat("/userdata/system/switch/yuzu.AppImage")
+        copyfile("/userdata/system/switch/extra/libthai.so.0.3.1", "/lib/libthai.so.0.3.1")
+        st = os.symlink("/lib/libthai.so.0.3.1","/lib/libthai.so.0")
         os.chmod("/userdata/system/switch/yuzu.AppImage", st.st_mode | stat.S_IEXEC)
         if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
             os.mkdir(batoceraFiles.SAVES + "/yuzu")
