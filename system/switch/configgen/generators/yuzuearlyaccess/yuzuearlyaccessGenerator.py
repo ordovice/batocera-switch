@@ -12,15 +12,21 @@ import codecs
 import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
+from utils.logger import get_logger
+
+eslog = get_logger(__name__)
 
 class YuzuEarlyAccessGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download yuzu.AppImage
-        st = os.stat("/userdata/system/switch/yuzu.AppImage")
-        copyfile("/userdata/system/switch/extra/libthai.so.0.3.1", "/lib/libthai.so.0.3.1")
-        st = os.symlink("/lib/libthai.so.0.3.1","/lib/libthai.so.0")
-        os.chmod("/userdata/system/switch/yuzu.AppImage", st.st_mode | stat.S_IEXEC)
+        st = os.stat("/userdata/system/switch/yuzuEA.AppImage")
+        os.chmod("/userdata/system/switch/yuzuEA.AppImage", st.st_mode | stat.S_IEXEC)
+        if not os.path.exists("/lib/libthai.so.0.3.1"):
+            copyfile("/userdata/system/switch/extra/libthai.so.0.3.1", "/lib/libthai.so.0.3.1")
+        if not os.path.exists("/lib/libthai.so.0"):
+            st = os.symlink("/lib/libthai.so.0.3.1","/lib/libthai.so.0")
+
         if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
             os.mkdir(batoceraFiles.SAVES + "/yuzu")
             
