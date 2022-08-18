@@ -16,7 +16,7 @@ from utils.logger import get_logger
 
 eslog = get_logger(__name__)
 
-class YuzuGenerator(Generator):
+class YuzuMainlineGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download yuzu.AppImage
@@ -32,13 +32,13 @@ class YuzuGenerator(Generator):
             os.mkdir(batoceraFiles.CONF + "/yuzu/keys")
 
         copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")
-
+        copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/yuzu/keys/title.keys")
 
         yuzuConfig = batoceraFiles.CONF + '/yuzu/qt-config.ini'
         yuzuHome = batoceraFiles.CONF
         yuzuSaves = batoceraFiles.CONF
         
-        YuzuGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
+        YuzuMainlineGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
 
         commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
         return Command.Command(
@@ -88,7 +88,7 @@ class YuzuGenerator(Generator):
         if not yuzuConfig.has_section("UI"):
             yuzuConfig.add_section("UI")
         
-        yuzuConfig.set("UI", "fullscreen", "true")
+        yuzuConfig.set("UI", "fullscreen", "false")
         yuzuConfig.set("UI", "fullscreen\\default", "true")
         yuzuConfig.set("UI", "confirmClose", "false")
         yuzuConfig.set("UI", "confirmClose\\default", "false")
@@ -110,7 +110,7 @@ class YuzuGenerator(Generator):
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan\\default", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "true")
-        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
+        #yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
         yuzuConfig.set("UI", "Paths\\gamedirs\\size", "1")
 
     # Core section
@@ -301,9 +301,9 @@ class YuzuGenerator(Generator):
                 inputguid = "030000004c050000cc09000000006800"
 
             for x in yuzuButtons:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
             for x in yuzuAxis:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
@@ -340,7 +340,7 @@ class YuzuGenerator(Generator):
             if input.type == "button":
                 return ("button:{},guid:{},port:{},engine:sdl").format(input.id, padGuid, controllernumber)
             elif input.type == "hat":
-                return ("hat:{},direction:{},guid:{},port:{},engine:sdl").format(input.id, YuzuGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
+                return ("hat:{},direction:{},guid:{},port:{},engine:sdl").format(input.id, YuzuMainlineGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
             elif input.type == "axis":
                 # untested, need to configure an axis as button / triggers buttons to be tested too
                 return ("threshold:{},axis:{},guid:{},port:{},invert:{},engine:sdl").format(0.5, input.id, padGuid, controllernumber, "+")

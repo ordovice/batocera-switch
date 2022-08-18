@@ -8,9 +8,9 @@ sys.path.append('/usr/lib/python3.10/site-packages/configgen/')
 from Emulator import Emulator
 from Evmapy import Evmapy
 import generators
-from generators.yuzu.yuzuGenerator import YuzuGenerator
+from generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator
 from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
-from generators.ryujinx.ryujinxGenerator import RyujinxGenerator
+from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
 
 import controllersConfig as controllers
 import batoceraFiles
@@ -24,10 +24,10 @@ from utils.logger import get_logger
 eslog = get_logger(__name__)
 
 generators = {
-    'yuzu': YuzuGenerator(),
+    'yuzu': YuzuMainlineGenerator(),
     'yuzu-early-access': YuzuEarlyAccessGenerator(),
-    'ryujinx': RyujinxGenerator(),
-    'ryujinx-avalonia': RyujinxGenerator(),
+    'ryujinx': RyujinxMainlineGenerator(),
+    'ryujinx-avalonia': RyujinxMainlineGenerator(),
 }
 
 def squashfs_begin(rom):

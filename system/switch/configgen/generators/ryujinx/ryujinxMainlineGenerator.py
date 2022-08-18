@@ -18,7 +18,7 @@ from utils.logger import get_logger
 
 eslog = get_logger(__name__)
 
-class RyujinxGenerator(Generator):
+class RyujinxMainlineGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download Ryujinx.AppImage
@@ -43,7 +43,7 @@ class RyujinxGenerator(Generator):
         #First Run - Open Ryujinx for firmware install if it's never existed before
 
         #Configuration update
-        RyujinxGenerator.writeRyujinxConfig(RyujinxConfig, system, playersControllers)
+        RyujinxMainlineGenerator.writeRyujinxConfig(RyujinxConfig, system, playersControllers)
 
         if firstrun:  #Run Ryujinx with no rom so users can install firmware
             if system.config['emulator'] == 'ryujinx-avalonia':
