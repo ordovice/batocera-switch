@@ -1,1 +1,0 @@
-wget -q --show-progress -O RyujinxVulkan.AppImage https://github.com/qurious-pixel/Ryujinx/releases/download/vulkan-build/Ryujinx_Vulkan-x86_64.AppImage

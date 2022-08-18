@@ -1,1 +1,0 @@
-wget -q --show-progress -O yuzuEA.AppImage $(curl -s https://api.github.com/repos/pineappleEA/pineapple-src/releases/latest | grep "browser_download_url.*AppImage" | cut -d : -f 2,3 | tr -d \")
