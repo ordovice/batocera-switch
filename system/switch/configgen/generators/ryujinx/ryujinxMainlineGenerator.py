@@ -22,13 +22,13 @@ class RyujinxMainlineGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download Ryujinx.AppImage
-        if os.path.exists("/userdata/system/switch/Ryujinx.AppImage")
+        if os.path.exists("/userdata/system/switch/Ryujinx.AppImage"):
             st = os.stat("/userdata/system/switch/Ryujinx.AppImage")
             os.chmod("/userdata/system/switch/Ryujinx.AppImage", st.st_mode | stat.S_IEXEC)
-        if os.path.exists("/userdata/system/switch/Ryujinx-Avalonia.AppImage")
+        if os.path.exists("/userdata/system/switch/Ryujinx-Avalonia.AppImage"):
             st = os.stat("/userdata/system/switch/Ryujinx-Avalonia.AppImage")
             os.chmod("/userdata/system/switch/Ryujinx-Avalonia.AppImage", st.st_mode | stat.S_IEXEC)  
-                      
+
         if not path.isdir(batoceraFiles.CONF + "/Ryujinx"):
             os.mkdir(batoceraFiles.CONF + "/Ryujinx")
         if not path.isdir(batoceraFiles.CONF + "/Ryujinx/system"):
