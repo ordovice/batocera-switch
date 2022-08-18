@@ -111,7 +111,7 @@ class YuzuEarlyAccessGenerator(Generator):
         yuzuConfig.set("UI", "hideInactiveMouse\\default", "false")
 
         # Roms path (need for load update/dlc)
-        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan", "false")
+        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan\\default", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "true")
