@@ -27,19 +27,19 @@ class YuzuEarlyAccessGenerator(Generator):
         if not os.path.exists("/lib/libthai.so.0"):
             st = os.symlink("/lib/libthai.so.0.3.1","/lib/libthai.so.0")
 
-        if not path.isdir(batoceraFiles.SAVES + "/yuzuea"):
-            os.mkdir(batoceraFiles.SAVES + "/yuzuea")
+        if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
+            os.mkdir(batoceraFiles.SAVES + "/yuzu")
             
-        if not path.isdir(batoceraFiles.CONF + "/yuzuea"):
-            os.mkdir(batoceraFiles.CONF + "/yuzuea")
+        if not path.isdir(batoceraFiles.CONF + "/yuzu"):
+            os.mkdir(batoceraFiles.CONF + "/yuzu")
         
-        if not path.isdir(batoceraFiles.CONF + "/yuzuea/keys"):
-            os.mkdir(batoceraFiles.CONF + "/yuzuea/keys")
+        if not path.isdir(batoceraFiles.CONF + "/yuzu/keys"):
+            os.mkdir(batoceraFiles.CONF + "/yuzu/keys")
 
-        copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzuea/keys/prod.keys")
+        copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")
 
 
-        yuzuConfig = batoceraFiles.CONF + '/yuzuea/qt-config.ini'
+        yuzuConfig = batoceraFiles.CONF + '/yuzu/qt-config.ini'
         yuzuHome = batoceraFiles.CONF
         yuzuSaves = batoceraFiles.CONF
         
@@ -117,6 +117,10 @@ class YuzuEarlyAccessGenerator(Generator):
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
         yuzuConfig.set("UI", "Paths\\gamedirs\\size", "1")
+
+        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as", "true")
+        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as\\default", "true")
+        yuzuConfig.set("UI", "Screenshots\\screenshot_path", "/userdata/screenshots")
 
     # Core section
         if not yuzuConfig.has_section("Core"):
