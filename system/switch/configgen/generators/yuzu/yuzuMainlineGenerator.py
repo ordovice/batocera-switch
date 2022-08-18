@@ -110,7 +110,7 @@ class YuzuMainlineGenerator(Generator):
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan\\default", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "true")
-        #yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
+        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
         yuzuConfig.set("UI", "Paths\\gamedirs\\size", "1")
 
     # Core section
