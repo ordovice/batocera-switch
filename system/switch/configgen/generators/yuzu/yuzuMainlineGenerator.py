@@ -106,12 +106,16 @@ class YuzuMainlineGenerator(Generator):
         yuzuConfig.set("UI", "hideInactiveMouse\\default", "false")
 
         # Roms path (need for load update/dlc)
-        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan", "false")
+        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan\\default", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
         yuzuConfig.set("UI", "Paths\\gamedirs\\size", "1")
+
+        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as", "true")
+        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as\\default", "true")
+        yuzuConfig.set("UI", "Screenshots\\screenshot_path", "/userdata/screenshots")
 
     # Core section
         if not yuzuConfig.has_section("Core"):
