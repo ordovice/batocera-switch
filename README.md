@@ -13,6 +13,8 @@ A special note about DS4 and DS5 controllers: They are not supported properly in
 
 PLEASE DELETE THE FOLLOWING FILES FROM /system/configs/emulationstation
 - es_features_os.cfg
-This is in preparation for improvements coming down the road for batocera to include natural expansion of the es_features functionality.  I have renamed the add-on file and temp file to add_feat_os and add_feat_switch.  The es_features_switch is already set for the future now.  When that happens, you will not need to copy the custom.sh file anymore.  
+This is in preparation for improvements coming down the road for batocera to include natural expansion of the es_features functionality.  I have renamed the add-on file and temp file to add_feat_os and add_feat_switch.  The es_features_switch is already set for V35.  For V35+ you will not need to copy the custom.sh file anymore or the add_feat_switch.cfg file.  
+
+Once the code/features are set for Ryujinx I will package up a V34 release and clean up the codebase.  
 
 Special thanks for foclabroc for testing and [RGS] for controller support. 
