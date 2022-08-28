@@ -74,8 +74,39 @@ class YuzuMainlineGenerator(Generator):
 
         yuzuAxis = {
             "lstick":    "joystick1",
-            "rstick":    "joystick2"
+            "rstick":    "joystick2",
+            "button_zl":     "l2",
+            "button_zr":     "r2"
         }
+
+
+        yuzuDSButtons = {
+            "button_a":      1,
+            "button_b":      0,
+            "button_x":      3,
+            "button_y":      2,
+            "button_dup":     11,
+            "button_ddown":   12,
+            "button_dleft":   13,
+            "button_dright":  14,
+            "button_l":      9,
+            "button_r":      10,
+            "button_plus":  6,
+            "button_minus": 4,
+            "button_sl":     9,
+            "button_sr":     10,
+            "button_lstick":     7,
+            "button_rstick":     8,
+            "button_home":   5
+        }
+
+        yuzuDSAxis = {
+            "lstick":    0,
+            "rstick":    2,
+            "button_zl":     4,
+            "button_zr":     5
+        }
+
 
         # ini file
         yuzuConfig = configparser.RawConfigParser()
@@ -279,14 +310,6 @@ class YuzuMainlineGenerator(Generator):
 
         yuzuConfig.set("Controls", "vibration_enabled", "true")
         yuzuConfig.set("Controls", "vibration_enabled\\default", "false")
-        yuzuConfig.set("Controls", "player_0_connected", "true")
-        yuzuConfig.set("Controls", "player_0_connected\\default", "false")
-        yuzuConfig.set("Controls", "player_0_vibration_enabled", "true")
-        yuzuConfig.set("Controls", "player_0_vibration_enabled\\default", "false")
-        yuzuConfig.set("Controls", "player_1_connected", "true")
-        yuzuConfig.set("Controls", "player_1_connected\\default", "false")
-        yuzuConfig.set("Controls", "player_1_vibration_enabled", "true")
-        yuzuConfig.set("Controls", "player_1_vibration_enabled\\default", "false")
         #yuzuConfig.set("Controls", "profiles\\size", 1)
         
         
@@ -300,14 +323,33 @@ class YuzuMainlineGenerator(Generator):
             controllernumber = str(int(controller.player) - 1)
             cguid[int(controllernumber)] = controller.guid
             inputguid = controller.guid
-            guidstoreplace = ["050000004c050000cc09000000810000","050000004c050000c405000000810000"]
-            if controller.guid in guidstoreplace:
+            guidstoreplace_ds4 = ["050000004c050000cc09000000810000","050000004c050000c405000000810000"]
+            if controller.guid in guidstoreplace_ds4:
                 inputguid = "030000004c050000cc09000000006800"
+            
+            guidstoreplace_ds5 = ["050000004c050000e60c000000810000"]
+            if controller.guid in guidstoreplace_ds5:
+                inputguid = "030000004c050000e60c000000006800"
 
-            for x in yuzuButtons:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
-            for x in yuzuAxis:
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
+            #DS5 corrections
+            if (controller.guid in guidstoreplace_ds5):
+                #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
+                for x in yuzuDSButtons:
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuDSButtons[x]))
+                for x in yuzuDSAxis:
+                    if(x == "button_zl" or x == "button_zr"):
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuDSAxis[x]))
+                    else:
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+            else:
+                for x in yuzuButtons:
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                for x in yuzuAxis:
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
+
+            
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
@@ -348,6 +390,7 @@ class YuzuMainlineGenerator(Generator):
             elif input.type == "axis":
                 # untested, need to configure an axis as button / triggers buttons to be tested too
                 return ("threshold:{},axis:{},guid:{},port:{},invert:{},engine:sdl").format(0.5, input.id, padGuid, controllernumber, "+")
+                
 
     @staticmethod
     def setAxis(key, padGuid, padInputs,controllernumber):
@@ -356,25 +399,25 @@ class YuzuMainlineGenerator(Generator):
 
         if key == "joystick1":
             try:
-                 inputx = padInputs["joystick1left"]
+                inputx = padInputs["joystick1left"]
             except:
-                 inputx = ["0"]
+                inputx = ["0"]
         elif key == "joystick2":
             try:
-                 inputx = padInputs["joystick2left"]
+                inputx = padInputs["joystick2left"]
             except:
-                 inputx = ["0"]
+                inputx = ["0"]
 
         if key == "joystick1":
             try:
-                 inputy = padInputs["joystick1up"]
+                inputy = padInputs["joystick1up"]
             except:
-                 inputy = ["0"]
+                inputy = ["0"]
         elif key == "joystick2":
             try:
-                 inputy = padInputs["joystick2up"]
+                inputy = padInputs["joystick2up"]
             except:
-                 inputy = ["0"]
+                inputy = ["0"]
 
         try:
             return ("range:1.000000,deadzone:0.100000,invert_y:+,invert_x:+,offset_y:-0.000000,axis_y:{},offset_x:-0.000000,axis_x:{},guid:{},port:{},engine:sdl").format(inputy.id, inputx.id, padGuid, controllernumber)
