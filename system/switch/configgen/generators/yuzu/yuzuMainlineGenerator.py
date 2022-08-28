@@ -20,8 +20,20 @@ class YuzuMainlineGenerator(Generator):
 
     def generate(self, system, rom, playersControllers, gameResolution):
         #handles chmod so you just need to download yuzu.AppImage
-        st = os.stat("/userdata/system/switch/yuzu.AppImage")
-        os.chmod("/userdata/system/switch/yuzu.AppImage", st.st_mode | stat.S_IEXEC)
+        if os.path.exists("/userdata/system/switch/yuzu.AppImage"):
+            st = os.stat("/userdata/system/switch/yuzu.AppImage")
+            os.chmod("/userdata/system/switch/yuzu.AppImage", st.st_mode | stat.S_IEXEC)
+
+        if os.path.exists("/userdata/system/switch/yuzuEA.AppImage"):
+            st = os.stat("/userdata/system/switch/yuzuEA.AppImage")
+            os.chmod("/userdata/system/switch/yuzuEA.AppImage", st.st_mode | stat.S_IEXEC)
+
+        if not os.path.exists("/lib/libthai.so.0.3.1"):
+            copyfile("/userdata/system/switch/extra/libthai.so.0.3.1", "/lib/libthai.so.0.3.1")
+        if not os.path.exists("/lib/libthai.so.0"):
+            st = os.symlink("/lib/libthai.so.0.3.1","/lib/libthai.so.0")
+
+
         if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
             os.mkdir(batoceraFiles.SAVES + "/yuzu")
             
@@ -39,8 +51,11 @@ class YuzuMainlineGenerator(Generator):
         yuzuSaves = batoceraFiles.CONF
         
         YuzuMainlineGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
-
-        commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
+        if system.config['emulator'] == 'yuzu-early-access':
+            commandArray = ["/userdata/system/switch/yuzuEA.AppImage", "-f", "-g", rom ]
+        else:
+            commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
+                      
         return Command.Command(
             array=commandArray,
             env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb", "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}

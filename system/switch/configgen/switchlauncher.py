@@ -9,7 +9,6 @@ from Emulator import Emulator
 from Evmapy import Evmapy
 import generators
 from generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator
-from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
 from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
 
 import controllersConfig as controllers
@@ -25,7 +24,7 @@ eslog = get_logger(__name__)
 
 generators = {
     'yuzu': YuzuMainlineGenerator(),
-    'yuzu-early-access': YuzuEarlyAccessGenerator(),
+    'yuzu-early-access': YuzuMainlineGenerator(),
     'ryujinx': RyujinxMainlineGenerator(),
     'ryujinx-avalonia': RyujinxMainlineGenerator(),
 }

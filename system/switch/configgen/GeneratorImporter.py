@@ -16,8 +16,8 @@ def getGenerator(emulator):
         return YuzuMainlineGenerator()
 
     if emulator == 'yuzu-early-access':
-        from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator
-        return YuzuEarlyAccessGenerator()
+        generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
+        return YuzuMainlineGenerator()
 
     if emulator == 'ryujinx':
         from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
