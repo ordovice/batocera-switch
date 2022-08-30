@@ -89,9 +89,7 @@ class YuzuMainlineGenerator(Generator):
 
         yuzuAxis = {
             "lstick":    "joystick1",
-            "rstick":    "joystick2",
-            "button_zl":     "l2",
-            "button_zr":     "r2"
+            "rstick":    "joystick2"
         }
 
 
