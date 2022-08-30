@@ -363,6 +363,20 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Controls", "player_1_type", system.config["p2_pad"])
         else:
             yuzuConfig.set("Controls", "player_1_type", "0")
+        
+        # Player 3 Pad Type
+        if system.isOptSet('p3_pad'):
+            yuzuConfig.set("Controls", "player_2_type", system.config["p3_pad"])
+        else:
+            yuzuConfig.set("Controls", "player_2_type", "0")
+
+        # Player 4 Pad Type
+        if system.isOptSet('p4_pad'):
+            yuzuConfig.set("Controls", "player_3_type", system.config["p4_pad"])
+        else:
+            yuzuConfig.set("Controls", "player_3_type", "0")
+
+        
         yuzuConfig.set("Controls", "player_1_type\default", "false")
 
         yuzuConfig.set("Controls", "vibration_enabled", "true")
@@ -406,6 +420,8 @@ class YuzuMainlineGenerator(Generator):
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
                 for x in yuzuAxis:
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '""')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '""')
 
             
             yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
