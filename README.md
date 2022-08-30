@@ -30,3 +30,8 @@ The 8Bitdo Ultimate Bluetooth Controller with Charging Dock, Bluetooth Controlle
 
 ## TESTING REQUESTS
 I do not have multiple DS4 or DS5 controllers to test order.  If someone has multiple DS4 and DS5 (or even a combo of them), I need to see how the Ryujinx config files look after manual configuration with multiples as well as including other controllers (like 8bitdo)
+
+## TO-DO
+- Ryujinx DS4/DS5 support
+- Features integrations for Ryujinx
+- Language Features
