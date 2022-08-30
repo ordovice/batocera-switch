@@ -33,32 +33,54 @@ class YuzuMainlineGenerator(Generator):
         if not os.path.exists("/lib/libthai.so.0"):
             st = os.symlink("/lib/libthai.so.0.3.1","/lib/libthai.so.0")
 
-
-        if not path.isdir(batoceraFiles.SAVES + "/yuzu"):
-            os.mkdir(batoceraFiles.SAVES + "/yuzu")
-            
-        if not path.isdir(batoceraFiles.CONF + "/yuzu"):
+        #Create Keys Folder
+        if not os.path.exists(batoceraFiles.CONF + "/yuzu"):
             os.mkdir(batoceraFiles.CONF + "/yuzu")
-        
-        if not path.isdir(batoceraFiles.CONF + "/yuzu/keys"):
+
+        if not os.path.exists(batoceraFiles.CONF + "/yuzu/keys"):
             os.mkdir(batoceraFiles.CONF + "/yuzu/keys")
+
+        #Link Yuzu App Directory to /system/configs/yuzu
+        if not os.path.exists("/userdata/system/.local"):
+            os.mkdir("/userdata/system/.local")
+
+        if not os.path.exists("/userdata/system/.local/share"):
+            os.mkdir("/userdata/system/.local/share")
+
+        if not os.path.exists("/userdata/system/.local/share/yuzu"):
+            st = os.symlink("/userdata/system/configs/yuzu","/userdata/system/.local/share/yuzu")
+
+        #Link Yuzu Config Directory to /system/configs/yuzu
+        if not os.path.exists("/userdata/system/.config"):
+            os.mkdir("/userdata/system/.config")
+
+        if not os.path.exists("/userdata/system/.config/yuzu"):
+            st = os.symlink("/userdata/system/configs/yuzu","/userdata/system/.config/yuzu")
+
+        #Link Yuzu Saves Directory to /userdata/saves/yuzu
+        if not os.path.exists("/userdata/system/.cache"):
+            os.mkdir("/userdata/system/.cache")
+
+        if not os.path.exists("/userdata/system/.cache/yuzu"):
+            os.mkdir("/userdata/system/.cache/yuzu")
+
+        if not os.path.exists("/userdata/system/.cache/yuzu/game_list"):
+            st = os.symlink("/userdata/saves/yuzu","/userdata/system/.cache/yuzu/game_list")
 
         copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")
         copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/yuzu/keys/title.keys")
 
         yuzuConfig = batoceraFiles.CONF + '/yuzu/qt-config.ini'
-        yuzuHome = batoceraFiles.CONF
-        yuzuSaves = batoceraFiles.CONF
         
         YuzuMainlineGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
         if system.config['emulator'] == 'yuzu-early-access':
             commandArray = ["/userdata/system/switch/yuzuEA.AppImage", "-f", "-g", rom ]
         else:
             commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
-                      
+                      # "XDG_DATA_HOME":yuzuSaves, , "XDG_CACHE_HOME":batoceraFiles.CACHE, "XDG_CONFIG_HOME":yuzuHome,
         return Command.Command(
             array=commandArray,
-            env={"XDG_CONFIG_HOME":yuzuHome, "XDG_DATA_HOME":yuzuSaves, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb", "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}
+            env={"QT_QPA_PLATFORM":"xcb","SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers) }
             )
 
 
@@ -160,6 +182,28 @@ class YuzuMainlineGenerator(Generator):
         yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as", "true")
         yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as\\default", "true")
         yuzuConfig.set("UI", "Screenshots\\screenshot_path", "/userdata/screenshots")
+        yuzuConfig.set("UI", "Screenshots\\screenshot_path\\default", "true")
+
+    # Data Storage section
+        if not yuzuConfig.has_section("Data%20Storage"):
+            yuzuConfig.add_section("Data%20Storage")
+        yuzuConfig.set("Data%20Storage", "dump_directory", "/userdata/system/configs/yuzu/dump")
+        yuzuConfig.set("Data%20Storage", "dump_directory\\default", "true")
+
+        yuzuConfig.set("Data%20Storage", "load_directory", "/userdata/system/configs/yuzu/load")
+        yuzuConfig.set("Data%20Storage", "load_directory\\default", "true")
+
+        yuzuConfig.set("Data%20Storage", "nand_directory", "/userdata/system/configs/yuzu/nand")
+        yuzuConfig.set("Data%20Storage", "nand_directory\\default", "true")
+
+        yuzuConfig.set("Data%20Storage", "sdmc_directory", "/userdata/system/configs/yuzu/sdmc")
+        yuzuConfig.set("Data%20Storage", "sdmc_directory\\default", "true")
+
+        yuzuConfig.set("Data%20Storage", "tas_directory", "/userdata/system/configs/yuzu/tas")
+        yuzuConfig.set("Data%20Storage", "tas_directory\\default", "true")
+
+        yuzuConfig.set("Data%20Storage", "use_virtual_sd", "true")
+        yuzuConfig.set("Data%20Storage", "use_virtual_sd\\default", "true")
 
     # Core section
         if not yuzuConfig.has_section("Core"):
@@ -345,7 +389,7 @@ class YuzuMainlineGenerator(Generator):
                 inputguid = "030000004c050000e60c000000006800"
 
             #DS5 corrections
-            if (controller.guid in guidstoreplace_ds5):
+            if ((controller.guid in guidstoreplace_ds5) or (controller.guid in guidstoreplace_ds4)) :
                 #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
                 for x in yuzuDSButtons:
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuDSButtons[x]))
@@ -397,12 +441,12 @@ class YuzuMainlineGenerator(Generator):
             input = padInputs[key]
 
             if input.type == "button":
-                return ("button:{},guid:{},port:{},engine:sdl").format(input.id, padGuid, controllernumber)
+                return ("engine:sdl,button:{},guid:{},port:{}").format(input.id, padGuid, controllernumber)
             elif input.type == "hat":
-                return ("hat:{},direction:{},guid:{},port:{},engine:sdl").format(input.id, YuzuMainlineGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
+                return ("engine:sdl,hat:{},direction:{},guid:{},port:{}").format(input.id, YuzuMainlineGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
             elif input.type == "axis":
                 # untested, need to configure an axis as button / triggers buttons to be tested too
-                return ("threshold:{},axis:{},guid:{},port:{},invert:{},engine:sdl").format(0.5, input.id, padGuid, controllernumber, "+")
+                return ("engine:sdl,threshold:{},axis:{},guid:{},port:{},invert:{}").format(0.5, input.id, padGuid, controllernumber, "+")
                 
 
     @staticmethod
@@ -433,7 +477,7 @@ class YuzuMainlineGenerator(Generator):
                 inputy = ["0"]
 
         try:
-            return ("range:1.000000,deadzone:0.100000,invert_y:+,invert_x:+,offset_y:-0.000000,axis_y:{},offset_x:-0.000000,axis_x:{},guid:{},port:{},engine:sdl").format(inputy.id, inputx.id, padGuid, controllernumber)
+            return ("engine:sdl,range:1.000000,deadzone:0.100000,invert_y:+,invert_x:+,offset_y:-0.000000,axis_y:{},offset_x:-0.000000,axis_x:{},guid:{},port:{}").format(inputy.id, inputx.id, padGuid, controllernumber)
         except:
             return ("0")
 
