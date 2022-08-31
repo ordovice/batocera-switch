@@ -51,19 +51,25 @@ class YuzuMainlineGenerator(Generator):
 
         if not os.path.exists("/userdata/system/.local/share"):
             os.mkdir("/userdata/system/.local/share")
-
-        if not os.path.exists("/userdata/system/.local/share/yuzu"):
+        
+        #Remove .local/share/yuzu if it exists and isnt' a link
+        if os.path.exists("/userdata/system/.local/share/yuzu"):
             if not os.path.islink("/userdata/system/.local/share/yuzu"):
                 shutil.rmtree("/userdata/system/.local/share/yuzu")
+        
+        if not os.path.exists("/userdata/system/.local/share/yuzu"):
             st = os.symlink("/userdata/system/configs/yuzu","/userdata/system/.local/share/yuzu")
 
         #Link Yuzu Config Directory to /system/configs/yuzu
         if not os.path.exists("/userdata/system/.config"):
             os.mkdir("/userdata/system/.config")
 
-        if not os.path.exists("/userdata/system/.config/yuzu"):
+        #Remove .config/yuzu if it exists and isnt' a link
+        if os.path.exists("/userdata/system/.config/yuzu"):            
             if not os.path.islink("/userdata/system/.config/yuzu"):
                 shutil.rmtree("/userdata/system/.config/yuzu")
+
+        if not os.path.exists("/userdata/system/.config/yuzu"):
             st = os.symlink("/userdata/system/configs/yuzu","/userdata/system/.config/yuzu")
 
         #Link Yuzu Saves Directory to /userdata/saves/yuzu
@@ -73,10 +79,12 @@ class YuzuMainlineGenerator(Generator):
         if not os.path.exists("/userdata/system/.cache/yuzu"):
             os.mkdir("/userdata/system/.cache/yuzu")
 
-        if not os.path.exists("/userdata/system/.cache/yuzu/game_list"):
-            #delete an existing folder if it isn't a link
+        #remove game_list if it exists and isn't a link
+        if os.path.exists("/userdata/system/.cache/yuzu/game_list"):            
             if not os.path.islink("/userdata/system/.cache/yuzu/game_list"):
                 shutil.rmtree("/userdata/system/.cache/yuzu/game_list")
+
+        if not os.path.exists("/userdata/system/.cache/yuzu/game_list"):
             st = os.symlink("/userdata/saves/yuzu","/userdata/system/.cache/yuzu/game_list")
 
         copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")
