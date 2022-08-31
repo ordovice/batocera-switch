@@ -166,8 +166,14 @@ class YuzuMainlineGenerator(Generator):
         yuzuConfig.set("UI", "enable_discord_presence\\default", "false")
         yuzuConfig.set("UI", "calloutFlags", "1")
         yuzuConfig.set("UI", "calloutFlags\\default", "false")
-        yuzuConfig.set("UI", "singleWindowMode", "true")
+
+        # Single Window Mode
+        if system.isOptSet('single_window'):
+            yuzuConfig.set("UI", "singleWindowMode", system.config["single_window"])
+        else:
+            yuzuConfig.set("UI", "singleWindowMode", "true")
         yuzuConfig.set("UI", "singleWindowMode\\default", "true")
+
         yuzuConfig.set("UI", "hideInactiveMouse", "true")
         yuzuConfig.set("UI", "hideInactiveMouse\\default", "false")
 
