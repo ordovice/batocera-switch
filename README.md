@@ -1,7 +1,9 @@
 # batocera-switch
 Extends Batocera and adds switch emulation
 
-The Batocera 30 release is needed for Batocera 30, and the master branch is currently working on Batocera 34 and the latest Batocera 35 beta
+Master branch is currently working on Batocera 34 and the latest Batocera 35 beta.
+
+This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS).  
 
 Copy the folders and files in this repo into the appropriate folders of Batocera.  This repo setup has all the folders you should need to add.  Add your own title.keys and prod.keys to the switch bios folder.  If you plan on using Ryujinx when it's supported, place the switch firmware in this folder as well (you will need to manually install it in Ryujinx on first start or when prompted)
 

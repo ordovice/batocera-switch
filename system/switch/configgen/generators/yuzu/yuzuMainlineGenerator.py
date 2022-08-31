@@ -41,6 +41,10 @@ class YuzuMainlineGenerator(Generator):
         if not os.path.exists(batoceraFiles.CONF + "/yuzu/keys"):
             os.mkdir(batoceraFiles.CONF + "/yuzu/keys")
 
+        #Create OS Saves folder
+        if not os.path.exists(batoceraFiles.SAVES + "/yuzu"):
+            os.mkdir(batoceraFiles.SAVES + "/yuzu")        
+
         #Link Yuzu App Directory to /system/configs/yuzu
         if not os.path.exists("/userdata/system/.local"):
             os.mkdir("/userdata/system/.local")
