@@ -4,6 +4,7 @@ import generators
 from configgen.generators.Generator import Generator
 import Command as Command
 import os
+import shutil
 import stat
 from os import path
 import batoceraFiles as batoceraFiles
@@ -65,6 +66,9 @@ class YuzuMainlineGenerator(Generator):
             os.mkdir("/userdata/system/.cache/yuzu")
 
         if not os.path.exists("/userdata/system/.cache/yuzu/game_list"):
+            #delete an existing folder if it isn't a link
+            if not os.path.islink("/userdata/system/.cache/yuzu/game_list"):
+                shutil.rmtree("/userdata/system/.cache/yuzu/game_list")
             st = os.symlink("/userdata/saves/yuzu","/userdata/system/.cache/yuzu/game_list")
 
         copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")

@@ -17,6 +17,9 @@ Once the code/features are set for Ryujinx I will package up a V34 release and c
 
 Special thanks for foclabroc for testing and [RGS] for controller support. 
 
+## UPDATE 2022-08-31
+Yuzu Configuration now REMOVES the game_list folder if it exists in the .cache folder for you, so back up any save states from this folder before executing this code.
+
 ## UPDATE 2022-08-30
 DS4 and DS5 controller support in Yuzu is now working.  Ryujinx still has not been updated  In order to accomplish this, some folders had to change, so if you have the following folders from running yuzu manually (for example), you will need to remove them or the symlink process will not work.  You only need to do this once.  As I find GUIDs for DS4/DS5 controllers I will update the code here:
 - /userdata/system/.local/share/yuzu (\share\system\.local\share\yuzu)
