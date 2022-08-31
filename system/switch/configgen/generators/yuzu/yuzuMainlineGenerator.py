@@ -53,6 +53,8 @@ class YuzuMainlineGenerator(Generator):
             os.mkdir("/userdata/system/.local/share")
 
         if not os.path.exists("/userdata/system/.local/share/yuzu"):
+            if not os.path.islink("/userdata/system/.local/share/yuzu"):
+                shutil.rmtree("/userdata/system/.local/share/yuzu")
             st = os.symlink("/userdata/system/configs/yuzu","/userdata/system/.local/share/yuzu")
 
         #Link Yuzu Config Directory to /system/configs/yuzu
@@ -60,6 +62,8 @@ class YuzuMainlineGenerator(Generator):
             os.mkdir("/userdata/system/.config")
 
         if not os.path.exists("/userdata/system/.config/yuzu"):
+            if not os.path.islink("/userdata/system/.config/yuzu"):
+                shutil.rmtree("/userdata/system/.config/yuzu")
             st = os.symlink("/userdata/system/configs/yuzu","/userdata/system/.config/yuzu")
 
         #Link Yuzu Saves Directory to /userdata/saves/yuzu
