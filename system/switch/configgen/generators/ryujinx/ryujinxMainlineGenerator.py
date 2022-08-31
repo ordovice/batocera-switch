@@ -8,6 +8,7 @@ import stat
 import json
 import uuid
 from os import path
+from os import environ
 import batoceraFiles as batoceraFiles
 from xml.dom import minidom
 import codecs
@@ -163,7 +164,8 @@ class RyujinxMainlineGenerator(Generator):
         else:
             data['ignore_missing_services'] = bool(0) 
 
-        data['language_code'] = 'en_US'
+        data['language_code'] = str(getLangFromEnvironment())
+
         data['enable_custom_theme'] = bool(0)
         data['custom_theme_path'] = ''
         data['base_style'] = 'Dark'
@@ -291,3 +293,12 @@ class RyujinxMainlineGenerator(Generator):
 
         with open(RyujinxConfigFile, "w") as outfile:
             outfile.write(json.dumps(data, indent=2))
+
+
+def getLangFromEnvironment():
+    lang = environ['LANG'][:5]
+    availableLanguages = [ "en_US", "pt_BR", "es_ES", "fr_FR", "de_DE","it_IT", "el_GR", "tr_TR", "zh_CN"]
+    if lang in availableLanguages:
+        return lang
+    else:
+        return "en_US"
