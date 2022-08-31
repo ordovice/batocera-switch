@@ -183,7 +183,7 @@ class RyujinxMainlineGenerator(Generator):
         hotkeys['toggle_vsync'] = "Tab"
         hotkeys['screenshot'] = "F8"
         hotkeys['show_ui'] = "F4" 
-        hotkeys['pause'] = "F5" -5
+        hotkeys['pause'] = "F5"
         hotkeys['toggle_mute'] = "F2"
         hotkeys['res_scale_up'] = "Unbound" 
         hotkeys['res_scale_down'] = "Unbound" 
