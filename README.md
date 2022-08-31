@@ -33,7 +33,8 @@ DS4 and DS5 controller support in Yuzu is now working.  Ryujinx still has not be
 Additionally, you will need to move files from /userdata/save/yuzu/game_list (\share\saves\yuzu\game_list) into /userdata/save/yuzu (\share\saves\yuzu) as this folder is now symlinked to the path yuzu is expecting
 
 ## CONTROLLER REQUESTS
-The 8Bitdo Ultimate Bluetooth Controller with Charging Dock, Bluetooth Controller for Switch and Windows is supposed to have gyro support.  I could use one for testing at some point, or a contact who has purchased one.  I would like to create a "has_motion" class with all the GUIDS of non-Sony controllers.
+- 8bitDo SN30 Pro/Pro 2
+- 8Bitdo Ultimate Bluetooth Controller with Charging Dock, Bluetooth Controller for Switch and Windows is supposed to have gyro support.  I could use one for testing at some point, or a contact who has purchased one.  I would like to create a "has_motion" class with all the GUIDS of non-Sony controllers that have Gyro's.
 
 ## TESTING REQUESTS
 I do not have multiple DS4 or DS5 controllers to test order.  If someone has multiple DS4 and DS5 (or even a combo of them), I need to see how the Ryujinx config files look after manual configuration with multiples as well as including other controllers (like 8bitdo)
