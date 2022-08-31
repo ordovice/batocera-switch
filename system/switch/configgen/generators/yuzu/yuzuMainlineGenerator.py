@@ -154,7 +154,7 @@ class YuzuMainlineGenerator(Generator):
         if not yuzuConfig.has_section("UI"):
             yuzuConfig.add_section("UI")
         
-        yuzuConfig.set("UI", "fullscreen", "false")
+        yuzuConfig.set("UI", "fullscreen", "true")
         yuzuConfig.set("UI", "fullscreen\\default", "true")
         yuzuConfig.set("UI", "confirmClose", "false")
         yuzuConfig.set("UI", "confirmClose\\default", "false")
