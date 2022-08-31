@@ -78,10 +78,24 @@ class RyujinxMainlineGenerator(Generator):
             data['version'] = 40  #Continuous version needs at least this version
         data['enable_file_log'] = bool('true')
         data['backend_threading'] = 'Auto'
-        data['res_scale'] = 1
+
+        if system.isOptSet('res_scale'):
+            data['res_scale'] = int(system.config["res_scale"])
+        else:
+            data['res_scale'] = 1
+
         data['res_scale_custom'] = 1
-        data['max_anisotropy'] = -1
-        data['aspect_ratio'] = 'Fixed16x9'
+
+        if system.isOptSet('max_anisotropy'):
+            data['max_anisotropy'] = int(system.config["max_anisotropy"])
+        else:
+            data['max_anisotropy'] = -1 
+
+        if system.isOptSet('aspect_ratio'):
+            data['aspect_ratio'] = system.config["aspect_ratio"]
+        else:
+            data['aspect_ratio'] = 'Fixed16x9'
+
         data['logging_enable_debug'] = bool(0)
         data['logging_enable_stub'] = bool(0)
         data['logging_enable_info'] = bool(0)
@@ -115,15 +129,40 @@ class RyujinxMainlineGenerator(Generator):
             data['enable_shader_cache'] = bool('true')    
 
         data['enable_texture_recompression'] = bool(0)
-        data['enable_ptc'] = bool('true')
+
+        if system.isOptSet('enable_ptc'):
+            data['enable_ptc'] = bool(int(system.config["enable_ptc"]))
+        else:
+            data['enable_ptc'] = bool('true')    
+
+
         data['enable_internet_access'] = bool(0)
-        data['enable_fs_integrity_checks'] = bool('true')
+
+        #File System Integrity Checks
+        if system.isOptSet('enable_fs_integrity_checks'):
+            data['enable_fs_integrity_checks'] = bool(int(system.config["enable_fs_integrity_checks"]))
+        else:
+            data['enable_fs_integrity_checks'] = bool('true')    
+
         data['fs_global_access_log_mode'] = 0
         data['audio_backend'] = 'SDL2'
         data['audio_volume'] = 1
-        data['memory_manager_mode'] = 'HostMappedUnsafe'
-        data['expand_ram'] = bool(0)
-        data['ignore_missing_services'] = bool(0)
+
+        if system.isOptSet('memory_manager_mode'):
+            data['memory_manager_mode'] = system.config["memory_manager_mode"]
+        else:
+            data['memory_manager_mode'] = 'HostMappedUnsafe'   
+
+        if system.isOptSet('expand_ram'):
+            data['expand_ram'] = bool(int(system.config["expand_ram"]))
+        else:
+            data['expand_ram'] = bool(0)  
+
+        if system.isOptSet('ignore_missing_services'):
+            data['ignore_missing_services'] = bool(int(system.config["ignore_missing_services"]))
+        else:
+            data['ignore_missing_services'] = bool(0) 
+
         data['language_code'] = 'en_US'
         data['enable_custom_theme'] = bool(0)
         data['custom_theme_path'] = ''
@@ -137,14 +176,14 @@ class RyujinxMainlineGenerator(Generator):
         data['show_console'] = bool('true')
         data['enable_keyboard'] = bool(0)
         data['enable_mouse'] = bool(0)
-        data['game_dirs'] = []
+        data['game_dirs'] = ["/userdata/roms/switch"]
         data['keyboard_config'] = []
         data['controller_config'] = []
         hotkeys = {}
         hotkeys['toggle_vsync'] = "Tab"
         hotkeys['screenshot'] = "F8"
         hotkeys['show_ui'] = "F4" 
-        hotkeys['pause'] = "F5" 
+        hotkeys['pause'] = "F5" -5
         hotkeys['toggle_mute'] = "F2"
         hotkeys['res_scale_up'] = "Unbound" 
         hotkeys['res_scale_down'] = "Unbound" 
