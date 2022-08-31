@@ -22,6 +22,8 @@ Special thanks for foclabroc, Rion, and Darknior for testing things out as I cha
 ## UPDATE 2022-08-31
 Yuzu Configuration now REMOVES the folders listed in the 2022-08-30 update if they existas non-links, so back up any save states/shaders/etc from this folder before executing this code (in theory, regular batocera-switch users should not be impacted).
 
+It appears yuzu EA will crash the first time you use it after downloading an update.  The second time you run it should be ok.  This is an issue with zenity in the auto update image.  
+
 ## UPDATE 2022-08-30
 DS4 and DS5 controller support in Yuzu is now working.  Ryujinx still has not been updated  In order to accomplish this, some folders had to change, so if you have the following folders from running yuzu manually (for example), you will need to remove them or the symlink process will not work.  You only need to do this once.  As I find GUIDs for DS4/DS5 controllers I will update the code here:
 - /userdata/system/.local/share/yuzu (\share\system\.local\share\yuzu)
