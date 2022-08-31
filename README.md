@@ -17,7 +17,7 @@ This is in preparation for improvements coming down the road for batocera to inc
 
 Once the code/features are set for Ryujinx I will package up a V34 release and clean up the codebase.  
 
-Special thanks for foclabroc for testing and [RGS] for controller support. 
+Special thanks for foclabroc, Rion, and Darknior for testing things out as I change things, [RGS] for a controller donation, and anyone else who contributes and helps me make this better. 
 
 ## UPDATE 2022-08-31
 Yuzu Configuration now REMOVES the game_list folder if it exists in the .cache folder for you, so back up any save states from this folder before executing this code.
