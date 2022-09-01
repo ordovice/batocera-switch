@@ -96,7 +96,7 @@ class YuzuMainlineGenerator(Generator):
         if system.config['emulator'] == 'yuzu-early-access':
             commandArray = ["/userdata/system/switch/yuzuEA.AppImage", "-f", "-g", rom ]
         else:
-            commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f", "-g", rom ]
+            commandArray = ["/userdata/system/switch/yuzu.AppImage", "-f",  "-g", rom ]
                       # "XDG_DATA_HOME":yuzuSaves, , "XDG_CACHE_HOME":batoceraFiles.CACHE, "XDG_CONFIG_HOME":yuzuHome,
         return Command.Command(
             array=commandArray,
@@ -175,7 +175,7 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.add_section("UI")
         
         yuzuConfig.set("UI", "fullscreen", "true")
-        yuzuConfig.set("UI", "fullscreen\\default", "true")
+        yuzuConfig.set("UI", "fullscreen\\default", "false")
         yuzuConfig.set("UI", "confirmClose", "false")
         yuzuConfig.set("UI", "confirmClose\\default", "false")
         yuzuConfig.set("UI", "firstStart", "false")
@@ -192,44 +192,44 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("UI", "singleWindowMode", system.config["single_window"])
         else:
             yuzuConfig.set("UI", "singleWindowMode", "true")
-        yuzuConfig.set("UI", "singleWindowMode\\default", "true")
+        yuzuConfig.set("UI", "singleWindowMode\\default", "false")
 
         yuzuConfig.set("UI", "hideInactiveMouse", "true")
         yuzuConfig.set("UI", "hideInactiveMouse\\default", "false")
 
         # Roms path (need for load update/dlc)
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan", "true")
-        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan\\default", "true")
+        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan\\default", "false")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded", "true")
-        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "true")
+        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "false")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
         yuzuConfig.set("UI", "Paths\\gamedirs\\size", "1")
 
         yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as", "true")
-        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as\\default", "true")
+        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as\\default", "false")
         yuzuConfig.set("UI", "Screenshots\\screenshot_path", "/userdata/screenshots")
-        yuzuConfig.set("UI", "Screenshots\\screenshot_path\\default", "true")
+        yuzuConfig.set("UI", "Screenshots\\screenshot_path\\default", "false")
 
     # Data Storage section
         if not yuzuConfig.has_section("Data%20Storage"):
             yuzuConfig.add_section("Data%20Storage")
         yuzuConfig.set("Data%20Storage", "dump_directory", "/userdata/system/configs/yuzu/dump")
-        yuzuConfig.set("Data%20Storage", "dump_directory\\default", "true")
+        yuzuConfig.set("Data%20Storage", "dump_directory\\default", "false")
 
         yuzuConfig.set("Data%20Storage", "load_directory", "/userdata/system/configs/yuzu/load")
-        yuzuConfig.set("Data%20Storage", "load_directory\\default", "true")
+        yuzuConfig.set("Data%20Storage", "load_directory\\default", "false")
 
         yuzuConfig.set("Data%20Storage", "nand_directory", "/userdata/system/configs/yuzu/nand")
-        yuzuConfig.set("Data%20Storage", "nand_directory\\default", "true")
+        yuzuConfig.set("Data%20Storage", "nand_directory\\default", "false")
 
         yuzuConfig.set("Data%20Storage", "sdmc_directory", "/userdata/system/configs/yuzu/sdmc")
-        yuzuConfig.set("Data%20Storage", "sdmc_directory\\default", "true")
+        yuzuConfig.set("Data%20Storage", "sdmc_directory\\default", "false")
 
         yuzuConfig.set("Data%20Storage", "tas_directory", "/userdata/system/configs/yuzu/tas")
-        yuzuConfig.set("Data%20Storage", "tas_directory\\default", "true")
+        yuzuConfig.set("Data%20Storage", "tas_directory\\default", "false")
 
         yuzuConfig.set("Data%20Storage", "use_virtual_sd", "true")
-        yuzuConfig.set("Data%20Storage", "use_virtual_sd\\default", "true")
+        yuzuConfig.set("Data%20Storage", "use_virtual_sd\\default", "false")
 
     # Core section
         if not yuzuConfig.has_section("Core"):
@@ -455,7 +455,7 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
 
     # telemetry section
         if not yuzuConfig.has_section("WebService"):
