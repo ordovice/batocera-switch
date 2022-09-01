@@ -17,6 +17,7 @@ This is in preparation for improvements coming down the road for batocera to inc
 
 Once the code/features are set for Ryujinx I will package up a V34 release and clean up the codebase.  
 
+## SPECIAL THANKS
 Special thanks for foclabroc, Rion, and Darknior for testing things out as I change things, [RGS] for a controller donation, and anyone else who contributes and helps me make this better. 
 
 ## UPDATE 2022-08-31
@@ -41,5 +42,3 @@ I do not have multiple DS4 or DS5 controllers to test order.  If someone has mul
 
 ## TO-DO
 - Ryujinx DS4/DS5 support
-- Features integrations for Ryujinx
-- Language Features
