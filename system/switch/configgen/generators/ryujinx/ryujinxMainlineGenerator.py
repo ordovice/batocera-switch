@@ -60,10 +60,11 @@ class RyujinxMainlineGenerator(Generator):
                 commandArray = ["/userdata/system/switch/Ryujinx-Avalonia.AppImage" , rom]
             else:
                 commandArray = ["/userdata/system/switch/Ryujinx.AppImage" , rom]
-            
+        eslog.debug("video mode before minmax: {}".format(controllersConfig.generateSdlGameControllerConfig(playersControllers)))
+        #, "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)
         return Command.Command(
             array=commandArray,
-            env={"XDG_CONFIG_HOME":RyujinxHome, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb", "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}
+            env={"XDG_CONFIG_HOME":RyujinxHome, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb"}
             )
 
     def writeRyujinxConfig(RyujinxConfigFile, system, playersControllers):
@@ -207,11 +208,45 @@ class RyujinxMainlineGenerator(Generator):
         column_sort['sort_ascending'] = bool(0)         
         data['column_sort'] = column_sort
 
+        guidstoreplace_ds4 = ["050000004c050000c405000000783f00","050000004c050000c4050000fffe3f00","050000004c050000c4050000ffff3f00","050000004c050000cc090000fffe3f00","050000004c050000cc090000ffff3f00","30303839663330346632363232623138","31326235383662333266633463653332","34613139376634626133336530386430","37626233336235343937333961353732","38393161636261653636653532386639","63313733393535663339656564343962","63393662363836383439353064663939","65366465656364636137653363376531","66613532303965383534396638613230","050000004c050000cc090000df070000","050000004c050000cc090000df870001","050000004c050000cc090000ff070000","030000004c050000a00b000011010000","030000004c050000a00b000011810000","030000004c050000c405000011010000","030000004c050000c405000011810000","030000004c050000cc09000000010000","030000004c050000cc09000011010000","030000004c050000cc09000011810000","03000000c01100000140000011010000","050000004c050000c405000000010000","050000004c050000c405000000810000","050000004c050000c405000001800000","050000004c050000cc09000000010000","050000004c050000cc09000000810000","050000004c050000cc09000001800000","030000004c050000a00b000000010000","030000004c050000c405000000000000","030000004c050000c405000000010000","03000000120c00000807000000000000","03000000120c0000111e000000000000","03000000120c0000121e000000000000","03000000120c0000130e000000000000","03000000120c0000150e000000000000","03000000120c0000180e000000000000","03000000120c0000181e000000000000","03000000120c0000191e000000000000","03000000120c00001e0e000000000000","03000000120c0000a957000000000000","03000000120c0000aa57000000000000","03000000120c0000f21c000000000000","03000000120c0000f31c000000000000","03000000120c0000f41c000000000000","03000000120c0000f51c000000000000","03000000120c0000f70e000000000000","03000000120e0000120c000000000000","03000000160e0000120c000000000000","030000001a1e0000120c000000000000","030000004c050000a00b000000000000","030000004c050000cc09000000000000","35643031303033326130316330353564","31373231336561636235613666323035","536f6e7920496e746572616374697665","576972656c65737320436f6e74726f6c","050000004c050000cc090000ff870001","050000004c050000cc090000ff876d01","31663838336334393132303338353963"]
+        guidstoreplace_ds5 = ["32633532643734376632656664383733","37363764353731323963323639666565","61303162353165316365336436343139","050000004c050000e60c0000df870000","030000004c050000e60c000011810000","050000004c050000e60c000000810000","030000004c050000e60c000000010000","050000004c050000e60c0000fffe3f00","030000004c050000e60c000000000000","050000004c050000e60c000000010000","030000004c050000e60c000011010000","32346465346533616263386539323932","050000004c050000e60c0000ff870000"]
+
+        num_ds4 = 0
+        num_ds5 = 0
+        ds4_count = 0
+        ds5_count = 0
+
+        for index in playersControllers :
+            controller = playersControllers[index]
+            if controller.guid in guidstoreplace_ds4:
+                ds4_count = ds4_count + 1
+            if controller.guid in guidstoreplace_ds5:
+                ds5_count = ds5_count + 1
+        ds4_index = 0
+        ds5_index = ds4_count
+        reg_index = ds4_count + ds5_count
+
+
         input_config = []
         for index in playersControllers :
             controller = playersControllers[index]
-            controllernumber = str(int(controller.player) - 1)
-            myid = uuid.UUID(controller.guid)
+            #eslog.debug("Controller: {}".format(controller))
+            #eslog.debug("ControllerDEV: {}".format(controller.dev))
+            #eslog.debug("ControllerGUI: {}".format(controller.guid))
+            #eslog.debug("ControllerRealName: {}".format(controller.realName))
+            if controller.guid in guidstoreplace_ds4:
+                controllernumber = str(int(ds4_index))
+                ds4_index = ds4_index + 1
+                inputguid = "030000004c050000cc09000000006800"
+            elif controller.guid in guidstoreplace_ds5:
+                controllernumber = str(int(ds5_index))
+                ds5_index = ds5_index + 1
+                inputguid = "030000004c050000e60c000000006800"
+            else:
+                controllernumber = str(int(reg_index))
+                reg_index = reg_index + 1
+                inputguid = controller.guid
+            myid = uuid.UUID(inputguid)
             myid.bytes_le
             convuuid = uuid.UUID(bytes=myid.bytes_le)
             cvalue = {}
