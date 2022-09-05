@@ -413,7 +413,7 @@ class YuzuMainlineGenerator(Generator):
         #lastcontrollerguid = ""
         #lastcontrollernumber = 0
         cguid = [0 for x in range(10)]
-
+        lastplayer = 0
         for index in playersControllers :
             controller = playersControllers[index]
             portnumber = cguid.count(controller.guid)
@@ -456,7 +456,20 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
             yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
-
+            lastplayer = int(controllernumber)
+        lastplayer = lastplayer + 1
+        for y in range(lastplayer, 9):
+            controllernumber = str(y)
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
+            for x in yuzuButtons:
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '""')
+            for x in yuzuDSAxis:
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '""')
     # telemetry section
         if not yuzuConfig.has_section("WebService"):
             yuzuConfig.add_section("WebService") 

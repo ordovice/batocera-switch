@@ -225,9 +225,7 @@ class RyujinxMainlineGenerator(Generator):
 
         ds4_index = 0
         reg_index = ds4_count + ds5_count
-
         #V34 w/ Ryujinx 243 - DS4/5 order is in order of connection
-
         input_config = []
         for index in playersControllers :
             controller = playersControllers[index]
@@ -318,7 +316,7 @@ class RyujinxMainlineGenerator(Generator):
             cvalue['backend'] = "GamepadSDL2"
             cvalue['id'] = controllernumber + '-' + str(convuuid)
             cvalue['controller_type'] = "ProController"
-            cvalue['player_index'] = "Player" +  str(int(controller.player))    
+            cvalue['player_index'] = "Player" +  str(int(controller.player))
             input_config.append(cvalue)
         data['input_config'] = input_config
 
