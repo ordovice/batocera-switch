@@ -215,17 +215,18 @@ class RyujinxMainlineGenerator(Generator):
         num_ds5 = 0
         ds4_count = 0
         ds5_count = 0
-
+        id0_owner = "reg"
         for index in playersControllers :
             controller = playersControllers[index]
             if controller.guid in guidstoreplace_ds4:
                 ds4_count = ds4_count + 1
             if controller.guid in guidstoreplace_ds5:
                 ds5_count = ds5_count + 1
+
         ds4_index = 0
-        ds5_index = ds4_count
         reg_index = ds4_count + ds5_count
 
+        #V34 w/ Ryujinx 243 - DS4/5 order is in order of connection
 
         input_config = []
         for index in playersControllers :
@@ -239,8 +240,8 @@ class RyujinxMainlineGenerator(Generator):
                 ds4_index = ds4_index + 1
                 inputguid = "030000004c050000cc09000000006800"
             elif controller.guid in guidstoreplace_ds5:
-                controllernumber = str(int(ds5_index))
-                ds5_index = ds5_index + 1
+                controllernumber = str(int(ds4_index))
+                ds4_index = ds4_index + 1
                 inputguid = "030000004c050000e60c000000006800"
             else:
                 controllernumber = str(int(reg_index))
@@ -301,10 +302,16 @@ class RyujinxMainlineGenerator(Generator):
             right_joycon['button_zr'] = "RightTrigger"
             right_joycon['button_sl'] = "Unbound"
             right_joycon['button_sr'] = "Unbound"
-            right_joycon['button_x'] = "Y"
-            right_joycon['button_b'] = "A"
-            right_joycon['button_y'] = "X"
-            right_joycon['button_a'] = "B"
+            if controller.guid in guidstoreplace_ds4 or controller.guid in guidstoreplace_ds:
+                right_joycon['button_x'] = "Y"
+                right_joycon['button_b'] = "A"
+                right_joycon['button_y'] = "X"
+                right_joycon['button_a'] = "B"
+            else:
+                right_joycon['button_x'] = "X"
+                right_joycon['button_b'] = "B"
+                right_joycon['button_y'] = "Y"
+                right_joycon['button_a'] = "A"               
             cvalue['right_joycon'] = right_joycon
 
             cvalue['version'] = 1
