@@ -108,8 +108,17 @@ class RyujinxMainlineGenerator(Generator):
         data['logging_enable_fs_access_log'] = bool(0)
         data['logging_filtered_classes'] = []
         data['logging_graphics_debug_level'] = 'None'
-        data['system_language'] = 'AmericanEnglish'
-        data['system_region'] = 'USA'
+
+        if system.isOptSet('system_language'):
+            data['system_language'] = system.config["system_language"]
+        else:
+            data['system_language'] = 'AmericanEnglish'
+
+        if system.isOptSet('system_region'):
+            data['system_region'] = system.config["system_region"]
+        else:
+            data['system_region'] = 'USA'
+
         data['system_time_zone'] = 'UTC'
         data['system_time_offset'] = 0
         data['docked_mode'] = bool('true')

@@ -443,8 +443,8 @@ class YuzuMainlineGenerator(Generator):
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
                     for x in yuzuAxis:
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '""')
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '""')
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
 
                 
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
