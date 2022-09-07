@@ -226,7 +226,7 @@ class RyujinxMainlineGenerator(Generator):
         ds4_index = 0
         reg_index = ds4_count + ds5_count
         #V34 w/ Ryujinx 243 - DS4/5 order is in order of connection
-        if (system.isOptSet('ryu_auto_controller_config') and not (system.config["ryu_auto_controller_config"] == "0")):
+        if ((system.isOptSet('ryu_auto_controller_config') and not (system.config["ryu_auto_controller_config"] == "0")) or not system.isOptSet('ryu_auto_controller_config')):
             input_config = []
             for index in playersControllers :
                 controller = playersControllers[index]

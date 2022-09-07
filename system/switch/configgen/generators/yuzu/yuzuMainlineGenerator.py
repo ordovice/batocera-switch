@@ -377,7 +377,7 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Controls", "use_docked_mode", "true")
         yuzuConfig.set("Controls", "use_docked_mode\\default", "false")
 
-        if (system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")):
+        if ((system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")) or not system.isOptSet('yuzu_auto_controller_config')):
             # Player 1 Pad Type
             if system.isOptSet('p1_pad'):
                 yuzuConfig.set("Controls", "player_0_type", system.config["p1_pad"])
