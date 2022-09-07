@@ -301,7 +301,7 @@ class RyujinxMainlineGenerator(Generator):
                 right_joycon['button_zr'] = "RightTrigger"
                 right_joycon['button_sl'] = "Unbound"
                 right_joycon['button_sr'] = "Unbound"
-                if controller.guid in guidstoreplace_ds4 or controller.guid in guidstoreplace_ds:
+                if controller.guid in guidstoreplace_ds4 or controller.guid in guidstoreplace_ds5:
                     right_joycon['button_x'] = "Y"
                     right_joycon['button_b'] = "A"
                     right_joycon['button_y'] = "X"
