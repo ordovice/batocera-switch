@@ -14,6 +14,9 @@ This version integrates work from foclabroc and Batocera Nation but does not inc
 ## V34 Users
 V34 users, you need to rename the renameme_custom.sh file to custom.sh to add the options for the emulators to Batocera.  This has been changed in V35 and there will be cleanup needed if you are not upgraded currently.
 
+## V35+ Users
+V35 users (beta2 and newer), please remove/rename the custom.sh file originally provided in older versions and delete the es_features.cfg file from \system\configs\emulationstation as the switch specific addons file now works properly.
+
 ## PLEASE DELETE THE FOLLOWING FILES FROM /system/configs/emulationstation
 - es_features_os.cfg
 This is in preparation for improvements coming down the road for batocera to include natural expansion of the es_features functionality.  I have renamed the add-on file and temp file to add_feat_os and add_feat_switch.  The es_features_switch is already set for V35.  For V35+ you will not need to copy the custom.sh file anymore or the add_feat_switch.cfg file.  
@@ -48,11 +51,12 @@ DS4 and DS5 controller support in Yuzu is now working.  Ryujinx still has not be
 Additionally, you will need to move files from /userdata/save/yuzu/game_list (\share\saves\yuzu\game_list) into /userdata/save/yuzu (\share\saves\yuzu) as this folder is now symlinked to the path yuzu is expecting
 
 ## CONTROLLER REQUESTS
-- 8bitDo SN30 Pro/Pro 2
+- 8bitDo SN30 Pro 2
 - 8Bitdo Ultimate Bluetooth Controller with Charging Dock, Bluetooth Controller for Switch and Windows is supposed to have gyro support.  I could use one for testing at some point, or a contact who has purchased one.  I would like to create a "has_motion" class with all the GUIDS of non-Sony controllers that have Gyro's.
 
 ## TESTING REQUESTS
-I do not have multiple DS4 or DS5 controllers to test order.  If someone has multiple DS4 and DS5 (or even a combo of them), I need to see how the Ryujinx config files look after manual configuration with multiples as well as including other controllers (like 8bitdo)
+Controllers that are not 8bitdo SN30's, DS4, or DS5 controllers
 
 ## TO-DO
-- Ryujinx DS4/DS5 support
+- hulk smash bugs
+- update guids for xbox as reported
