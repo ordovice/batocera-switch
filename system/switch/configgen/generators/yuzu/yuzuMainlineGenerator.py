@@ -430,7 +430,8 @@ class YuzuMainlineGenerator(Generator):
                     inputguid = "030000004c050000e60c000000006800"
                 if controller.guid in guidstoreplace_ds5_wired:
                     inputguid = "030000004c050000e60c000000016800"
-
+                if controller.guid in guidstoreplace_xbox:
+                    inputguid = "050000005e040000fd02000030110000"
                 #DS5 corrections
                 if ((controller.guid in guidstoreplace_ds5_wireless) or (controller.guid in guidstoreplace_ds4) or (controller.guid in guidstoreplace_ds5_wired)) :
                     #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
