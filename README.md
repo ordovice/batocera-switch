@@ -26,6 +26,11 @@ Special thanks for foclabroc, Rion, and Darknior for testing things out as I cha
 ## UPDATE 2022-09-07
 Because controller auto configuration for apps that don't pull SDL directly is a challenge and I'm not actually doing any app compilation, I've added a feature to the system that allows you to turn off auto configuration.  This is useful for people with single controllers that never change (for example) so you can configure it once and just leave it.
 
+What I've found for Ryujinx
+- XBox One Controllers (or those that pretend to be them) are prioritized first and have their GUID changed to a XB1 General GUID
+- DS4/DS are prioritized second and have their GUID changed.  Additionally wired/wireless matters
+- Generic controllers are mapped after
+
 ## UPDATE 2022-09-05
 DS4/DS5 auto configuration has been added to Ryujinx at this time.  I've also corrected a reversal of buttons that some people noticed in Ryujinx with 8bitdo controllers (because I was so focused on DS4/DS5 I had reversed them)
 
