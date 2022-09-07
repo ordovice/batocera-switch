@@ -91,8 +91,9 @@ class YuzuMainlineGenerator(Generator):
         copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/yuzu/keys/title.keys")
 
         yuzuConfig = batoceraFiles.CONF + '/yuzu/qt-config.ini'
+        beforeyuzuConfig = batoceraFiles.CONF + '/yuzu/before-qt-config.ini'
         
-        YuzuMainlineGenerator.writeYuzuConfig(yuzuConfig, system, playersControllers)
+        YuzuMainlineGenerator.writeYuzuConfig(yuzuConfig,beforeyuzuConfig, system, playersControllers)
         if system.config['emulator'] == 'yuzu-early-access':
             commandArray = ["/userdata/system/switch/yuzuEA.AppImage", "-f", "-g", rom ]
         else:
@@ -105,7 +106,7 @@ class YuzuMainlineGenerator(Generator):
 
 
     # @staticmethod
-    def writeYuzuConfig(yuzuConfigFile, system, playersControllers):
+    def writeYuzuConfig(yuzuConfigFile, beforeyuzuConfigFile, system, playersControllers):
         # pads
         yuzuButtons = {
             "button_a":      "a",
@@ -491,6 +492,9 @@ class YuzuMainlineGenerator(Generator):
         if not os.path.exists(os.path.dirname(yuzuConfigFile)):
             os.makedirs(os.path.dirname(yuzuConfigFile))
         with open(yuzuConfigFile, 'w') as configfile:
+            yuzuConfig.write(configfile)
+
+        with open(beforeyuzuConfigFile, 'w') as configfile:
             yuzuConfig.write(configfile)
 
     @staticmethod
