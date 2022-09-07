@@ -11,6 +11,9 @@ You will need to provide Yuzu and Ryujinx installs.  There are update scripts th
 
 This version integrates work from foclabroc and Batocera Nation but does not include the appimages or the bios keys that their download does.  Additionally, controllers in Yuzu and Ryujinx are auto mapped now as of v34, but any DS4/DS5 controllers will not work or will impact the others working.  
 
+## V34 Users
+V34 users, you need to rename the renameme_custom.sh file to custom.sh to add the options for the emulators to Batocera.  This has been changed in V35 and there will be cleanup needed if you are not upgraded currently.
+
 ## PLEASE DELETE THE FOLLOWING FILES FROM /system/configs/emulationstation
 - es_features_os.cfg
 This is in preparation for improvements coming down the road for batocera to include natural expansion of the es_features functionality.  I have renamed the add-on file and temp file to add_feat_os and add_feat_switch.  The es_features_switch is already set for V35.  For V35+ you will not need to copy the custom.sh file anymore or the add_feat_switch.cfg file.  
@@ -19,6 +22,12 @@ Once the code/features are set for Ryujinx I will package up a V34 release and c
 
 ## SPECIAL THANKS
 Special thanks for foclabroc, Rion, and Darknior for testing things out as I change things, [RGS] for a controller donation, and anyone else who contributes and helps me make this better. 
+
+## UPDATE 2022-09-07
+Because controller auto configuration for apps that don't pull SDL directly is a challenge and I'm not actually doing any app compilation, I've added a feature to the system that allows you to turn off auto configuration.  This is useful for people with single controllers that never change (for example) so you can configure it once and just leave it.
+
+## UPDATE 2022-09-05
+DS4/DS5 auto configuration has been added to Ryujinx at this time.  I've also corrected a reversal of buttons that some people noticed in Ryujinx with 8bitdo controllers (because I was so focused on DS4/DS5 I had reversed them)
 
 ## UPDATE 2022-08-31
 Yuzu Configuration now REMOVES the folders listed in the 2022-08-30 update if they existas non-links, so back up any save states/shaders/etc from this folder before executing this code (in theory, regular batocera-switch users should not be impacted).

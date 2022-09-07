@@ -226,99 +226,100 @@ class RyujinxMainlineGenerator(Generator):
         ds4_index = 0
         reg_index = ds4_count + ds5_count
         #V34 w/ Ryujinx 243 - DS4/5 order is in order of connection
-        input_config = []
-        for index in playersControllers :
-            controller = playersControllers[index]
-            #eslog.debug("Controller: {}".format(controller))
-            #eslog.debug("ControllerDEV: {}".format(controller.dev))
-            #eslog.debug("ControllerGUI: {}".format(controller.guid))
-            #eslog.debug("ControllerRealName: {}".format(controller.realName))
-            if controller.guid in guidstoreplace_ds4:
-                controllernumber = str(int(ds4_index))
-                ds4_index = ds4_index + 1
-                inputguid = "030000004c050000cc09000000006800"
-            elif controller.guid in guidstoreplace_ds5:
-                controllernumber = str(int(ds4_index))
-                ds4_index = ds4_index + 1
-                inputguid = "030000004c050000e60c000000006800"
-            else:
-                controllernumber = str(int(reg_index))
-                reg_index = reg_index + 1
-                inputguid = controller.guid
-            myid = uuid.UUID(inputguid)
-            myid.bytes_le
-            convuuid = uuid.UUID(bytes=myid.bytes_le)
-            cvalue = {}
-            left_joycon_stick = {}
-            left_joycon_stick['joystick'] = "Left"
-            left_joycon_stick['invert_stick_x'] = bool(0)
-            left_joycon_stick['invert_stick_y'] = bool(0)
-            left_joycon_stick['rotate90_cw'] = bool(0)
-            left_joycon_stick['stick_button'] = "LeftStick"            
-            cvalue['left_joycon_stick'] = left_joycon_stick
-            right_joycon_stick = {}
-            right_joycon_stick['joystick'] = "Right"
-            right_joycon_stick['invert_stick_x'] = bool(0)
-            right_joycon_stick['invert_stick_y'] = bool(0)
-            right_joycon_stick['rotate90_cw'] = bool(0)
-            right_joycon_stick['stick_button'] = "RightStick"            
-            cvalue['right_joycon_stick'] = right_joycon_stick
-            cvalue['deadzone_left'] = 0.1           
-            cvalue['deadzone_right'] = 0.1 
-            cvalue['range_left'] = 1          
-            cvalue['range_right'] = 1 
-            cvalue['trigger_threshold'] = 0.5  
+        if (system.isOptSet('auto_controller_config') and not (system.config["auto_controller_config"] == "0")):
+            input_config = []
+            for index in playersControllers :
+                controller = playersControllers[index]
+                #eslog.debug("Controller: {}".format(controller))
+                #eslog.debug("ControllerDEV: {}".format(controller.dev))
+                #eslog.debug("ControllerGUI: {}".format(controller.guid))
+                #eslog.debug("ControllerRealName: {}".format(controller.realName))
+                if controller.guid in guidstoreplace_ds4:
+                    controllernumber = str(int(ds4_index))
+                    ds4_index = ds4_index + 1
+                    inputguid = "030000004c050000cc09000000006800"
+                elif controller.guid in guidstoreplace_ds5:
+                    controllernumber = str(int(ds4_index))
+                    ds4_index = ds4_index + 1
+                    inputguid = "030000004c050000e60c000000006800"
+                else:
+                    controllernumber = str(int(reg_index))
+                    reg_index = reg_index + 1
+                    inputguid = controller.guid
+                myid = uuid.UUID(inputguid)
+                myid.bytes_le
+                convuuid = uuid.UUID(bytes=myid.bytes_le)
+                cvalue = {}
+                left_joycon_stick = {}
+                left_joycon_stick['joystick'] = "Left"
+                left_joycon_stick['invert_stick_x'] = bool(0)
+                left_joycon_stick['invert_stick_y'] = bool(0)
+                left_joycon_stick['rotate90_cw'] = bool(0)
+                left_joycon_stick['stick_button'] = "LeftStick"            
+                cvalue['left_joycon_stick'] = left_joycon_stick
+                right_joycon_stick = {}
+                right_joycon_stick['joystick'] = "Right"
+                right_joycon_stick['invert_stick_x'] = bool(0)
+                right_joycon_stick['invert_stick_y'] = bool(0)
+                right_joycon_stick['rotate90_cw'] = bool(0)
+                right_joycon_stick['stick_button'] = "RightStick"            
+                cvalue['right_joycon_stick'] = right_joycon_stick
+                cvalue['deadzone_left'] = 0.1           
+                cvalue['deadzone_right'] = 0.1 
+                cvalue['range_left'] = 1          
+                cvalue['range_right'] = 1 
+                cvalue['trigger_threshold'] = 0.5  
 
-            motion = {}
-            motion['motion_backend'] = "GamepadDriver"
-            motion['sensitivity'] = 100
-            motion['gyro_deadzone'] = 1
-            motion['enable_motion'] = bool('true')
-            cvalue['motion'] = motion
+                motion = {}
+                motion['motion_backend'] = "GamepadDriver"
+                motion['sensitivity'] = 100
+                motion['gyro_deadzone'] = 1
+                motion['enable_motion'] = bool('true')
+                cvalue['motion'] = motion
 
-            rumble = {}
-            rumble['strong_rumble'] = 1
-            rumble['weak_rumble'] = 1
-            rumble['enable_rumble'] = bool('true')
-            cvalue['rumble'] = rumble
+                rumble = {}
+                rumble['strong_rumble'] = 1
+                rumble['weak_rumble'] = 1
+                rumble['enable_rumble'] = bool('true')
+                cvalue['rumble'] = rumble
 
-            left_joycon = {}
-            left_joycon['button_minus'] = "Minus"
-            left_joycon['button_l'] = "LeftShoulder"
-            left_joycon['button_zl'] = "LeftTrigger"
-            left_joycon['button_sl'] = "Unbound"
-            left_joycon['button_sr'] = "Unbound"
-            left_joycon['dpad_up'] = "DpadUp"
-            left_joycon['dpad_down'] = "DpadDown"
-            left_joycon['dpad_left'] = "DpadLeft"
-            left_joycon['dpad_right'] = "DpadRight"
+                left_joycon = {}
+                left_joycon['button_minus'] = "Minus"
+                left_joycon['button_l'] = "LeftShoulder"
+                left_joycon['button_zl'] = "LeftTrigger"
+                left_joycon['button_sl'] = "Unbound"
+                left_joycon['button_sr'] = "Unbound"
+                left_joycon['dpad_up'] = "DpadUp"
+                left_joycon['dpad_down'] = "DpadDown"
+                left_joycon['dpad_left'] = "DpadLeft"
+                left_joycon['dpad_right'] = "DpadRight"
 
-            cvalue['left_joycon'] = left_joycon
-            right_joycon = {}
-            right_joycon['button_plus'] = "Plus"
-            right_joycon['button_r'] = "RightShoulder"
-            right_joycon['button_zr'] = "RightTrigger"
-            right_joycon['button_sl'] = "Unbound"
-            right_joycon['button_sr'] = "Unbound"
-            if controller.guid in guidstoreplace_ds4 or controller.guid in guidstoreplace_ds:
-                right_joycon['button_x'] = "Y"
-                right_joycon['button_b'] = "A"
-                right_joycon['button_y'] = "X"
-                right_joycon['button_a'] = "B"
-            else:
-                right_joycon['button_x'] = "X"
-                right_joycon['button_b'] = "B"
-                right_joycon['button_y'] = "Y"
-                right_joycon['button_a'] = "A"               
-            cvalue['right_joycon'] = right_joycon
+                cvalue['left_joycon'] = left_joycon
+                right_joycon = {}
+                right_joycon['button_plus'] = "Plus"
+                right_joycon['button_r'] = "RightShoulder"
+                right_joycon['button_zr'] = "RightTrigger"
+                right_joycon['button_sl'] = "Unbound"
+                right_joycon['button_sr'] = "Unbound"
+                if controller.guid in guidstoreplace_ds4 or controller.guid in guidstoreplace_ds:
+                    right_joycon['button_x'] = "Y"
+                    right_joycon['button_b'] = "A"
+                    right_joycon['button_y'] = "X"
+                    right_joycon['button_a'] = "B"
+                else:
+                    right_joycon['button_x'] = "X"
+                    right_joycon['button_b'] = "B"
+                    right_joycon['button_y'] = "Y"
+                    right_joycon['button_a'] = "A"               
+                cvalue['right_joycon'] = right_joycon
 
-            cvalue['version'] = 1
-            cvalue['backend'] = "GamepadSDL2"
-            cvalue['id'] = controllernumber + '-' + str(convuuid)
-            cvalue['controller_type'] = "ProController"
-            cvalue['player_index'] = "Player" +  str(int(controller.player))
-            input_config.append(cvalue)
-        data['input_config'] = input_config
+                cvalue['version'] = 1
+                cvalue['backend'] = "GamepadSDL2"
+                cvalue['id'] = controllernumber + '-' + str(convuuid)
+                cvalue['controller_type'] = "ProController"
+                cvalue['player_index'] = "Player" +  str(int(controller.player))
+                input_config.append(cvalue)
+            data['input_config'] = input_config
 
         #Vulkan or OpenGL
         if system.isOptSet('ryu_backend'):
