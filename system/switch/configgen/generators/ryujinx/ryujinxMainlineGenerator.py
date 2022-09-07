@@ -234,7 +234,9 @@ class RyujinxMainlineGenerator(Generator):
                 xbox_count = xbox_count + 1
             if controller.guid in guidstoreplace_ds4:
                 ds4_count = ds4_count + 1
-            if controller.guid in guidstoreplace_ds5:
+            if controller.guid in guidstoreplace_ds5_wireless:
+                ds5_count = ds5_count + 1
+            if controller.guid in guidstoreplace_ds5_wired:
                 ds5_count = ds5_count + 1
         xbox_index = 0
         ds4_index = xbox_count
