@@ -282,12 +282,12 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation", "true")
         yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation\\default", "false")
 
-        # Use NVDEC Emulation
+        # NVDEC Emulation
         if system.isOptSet('nvdec_emu'):
-            yuzuConfig.set("Renderer", "use_nvdec_emulation", system.config["nvdec_emu"])
+            yuzuConfig.set("Renderer", "nvdec_emulation", system.config["nvdec_emu"])
         else:
-            yuzuConfig.set("Renderer", "use_nvdec_emulation", "true")
-        yuzuConfig.set("Renderer", "use_nvdec_emulation\\default", "false")
+            yuzuConfig.set("Renderer", "nvdec_emulation", "2")
+        yuzuConfig.set("Renderer", "nvdec_emulation\\default", "false")
 
         # Gpu Accuracy
         if system.isOptSet('gpuaccuracy'):
