@@ -17,11 +17,8 @@ V34 users, you need to rename the renameme_custom.sh file to custom.sh to add th
 ## V35+ Users
 V35 users (beta2 and newer), please remove/rename the custom.sh file originally provided in older versions and delete the es_features.cfg file from \system\configs\emulationstation as the switch specific addons file now works properly.
 
-## PLEASE DELETE THE FOLLOWING FILES FROM /system/configs/emulationstation
-- es_features_os.cfg
-This is in preparation for improvements coming down the road for batocera to include natural expansion of the es_features functionality.  I have renamed the add-on file and temp file to add_feat_os and add_feat_switch.  The es_features_switch is already set for V35.  For V35+ you will not need to copy the custom.sh file anymore or the add_feat_switch.cfg file.  
-
-Once the code/features are set for Ryujinx I will package up a V34 release and clean up the codebase.  
+## Reporting Issues
+Please use the controller issue templates for reporting controller issues.  For other issues, provide as much information as possible, and if it's a launch issue, please be sure to include the es_launch_stdout.log and es_launch_stderr.log log files from \system\logs
 
 ## SPECIAL THANKS
 Special thanks for foclabroc, Rion, and Darknior for testing things out as I change things, [RGS] for a controller donation, and anyone else who contributes and helps me make this better. 
