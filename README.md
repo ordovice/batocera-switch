@@ -11,6 +11,9 @@ You will need to provide Yuzu and Ryujinx installs.  There are update scripts th
 
 This version integrates work from foclabroc and Batocera Nation but does not include the appimages or the bios keys that their download does.  Additionally, controllers in Yuzu and Ryujinx are auto mapped now as of v34, but any DS4/DS5 controllers will not work or will impact the others working.  
 
+## UPGRADING OLDER VERSIONS OF THIS ADD-ON
+Delete the \system\switch folder and install this repo as normal.  There are folders in the old install that will break this version.  
+
 ## V34 Users
 V34 users, you need to rename the renameme_custom.sh file to custom.sh to add the options for the emulators to Batocera.  This has been changed in V35 and there will be cleanup needed if you are not upgraded currently.
 
