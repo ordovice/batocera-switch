@@ -1,1 +1,0 @@
-wget -q --show-progress -O /userdata/system/switch/yuzu.AppImage $(curl -s https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases/latest | grep "browser_download_url.*AppImage" | cut -d : -f 2,3 | tr -d \")
