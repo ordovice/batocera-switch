@@ -1,1 +1,0 @@
-wget -q --show-progress -O /userdata/system/switch/yuzuEA.AppImage $(curl -s https://api.github.com/repos/pineappleEA/pineapple-src/releases | grep "browser_download_url.*Yuzu-EA-.*AppImage" | head -n 1 | cut -d : -f 2,3 | tr -d \")
