@@ -306,7 +306,7 @@ T=$THEME_COLOR_RYUJINXAVALONIA
 echo -e "${T}   ///////////////"
 echo -e "${T}  $C    ${F}UPDATING RYUJINX AVALONIA ..."
 echo -e "${T} ///////////////"
-wget -q --show-progress -O $path/Ryujinx-Avalonia.AppImage https://github.com/qurious-pixel/Ryujinx/releases/download/continuous/Ryujinx-x86_64.AppImage
+wget -q --show-progress -O $path/Ryujinx-Avalonia.AppImage https://github.com/qurious-pixel/Ryujinx/releases/download/avalonia-build/Ryujinx-x86_64.AppImage
 chmod a+x $path/Ryujinx-Avalonia.AppImage 2>/dev/null
 size_yuzuea=$(($(wc -c $path/Ryujinx-Avalonia.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path/Ryujinx-Avalonia.AppImage ${T}($size_yuzuea( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
