@@ -1,24 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ######################################################################
-#=====================================================================
-#                                                                    |
-#                SWITCH EMULATORS UPDATER FOR BATOCERA               |
-#               ----------------------------------------             |
-#                    > https://discord.gg/hH5AfThG                   |
-#                > github.com/ordovice/batocera-switch               |
-#                                                                    |
-#=====================================================================
-#######################################################################
-#   EMULATORS    //
-#===============//
-EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"
-# DEFAULT:
-# EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"
-# EMULATORS="RYUJINX YUZU"   ->   will only update ryujinx & then yuzu
-# EMULATORS="YUZUEA"         ->   will only update yuzu early access
+#                SWITCH EMULATORS UPDATER FOR BATOCERA               #
+#               ----------------------------------------             #
+#                    > https://discord.gg/hH5AfThG                   #
+#                > github.com/ordovice/batocera-switch               #
 ######################################################################
-#   CONFIG    //
-#============//
+#   EMULATORS    /                                                   #
+#===============/                                                    #
+EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"                      #
+# DEFAULT:                                                           #
+# EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"                    #
+# EMULATORS="RYUJINX YUZU" -> will only update ryujinx & then yuzu   #
+# EMULATORS="YUZUEA"       -> will only update yuzu early access     #
+######################################################################
+#   CONFIG    /
+#============/
 TEXT_SIZE=AUTO
 TEXT_COLOR=WHITE
 THEME_COLOR=WHITE
@@ -34,61 +30,44 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# @@@@@@@@@@@@@@@@@                @@@@@            @@@@@@@@@@@@@@@@@@
-# @@@@@@@@@@@@@@                   @@@@@                @@@@@@@@@@@@@@
-# @@@@@@@@@@@@     @@@@@@@@@@@@    @@@@@                  @@@@@@@@@@@@
-# @@@@@@@@@@     @@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@      @@@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@         @@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@@        @@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@   %@@@@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@     @@@@@@@@      @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@    @@@@@@@@@@     @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@     @@@@@@@@      @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@        @@         @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@
-# @@@@@@@@@@@     @@@@@@@@@@@@@    @@@@@                  @@@@@@@@@@@@
-# @@@@@@@@@@@@@      @@@@@@@@@@    @@@@@                @@@@@@@@@@@@@@
-# @@@@@@@@@@@@@@@@                 @@@@@             @@@@@@@@@@@@@@@@@
+# @@@@@@@@@@@@@@@@                @@@@@            @@@@@@@@@@@@@@@@@@@
+# @@@@@@@@@@@@@                   @@@@@                @@@@@@@@@@@@@@@
+# @@@@@@@@@@@     @@@@@@@@@@@@    @@@@@                  @@@@@@@@@@@@@
+# @@@@@@@@@     @@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@      @@@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@    @@@         @@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@    @@@@        @@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@   %@@@@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@       @@@@        @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@     @@@@@@@@      @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@    @@@@@@@@@@     @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@     @@@@@@@@      @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@        @@         @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@    @@@@@@@@@@@@@@@    @@@@@                   @@@@@@@@@@@@
+# @@@@@@@@@@     @@@@@@@@@@@@@    @@@@@                  @@@@@@@@@@@@@
+# @@@@@@@@@@@@      @@@@@@@@@@    @@@@@                @@@@@@@@@@@@@@@
+# @@@@@@@@@@@@@@@                 @@@@@             @@@@@@@@@@@@@@@@@@
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-#               > github.com/ordovice/batocera-switch
-#                   > https://discord.gg/hH5AfThG
+#                > github.com/ordovice/batocera-switch               #
+#                    > https://discord.gg/hH5AfThG                   #
 ######################################################################
-# * * *
-# * * *
-# * * *) RE: AUTO TEXT SIZE 
-#
-# auto text size doesn't always work well, depending on many things, 
-# including some really, really weird stuff. if it doesn't work for you 
-# try changing base font size: 
-  BASE_FONT_SIZE=14
-# settings this ^ with TEXT_SIZE=AUTO helps the updater to adjust size 
-# if you change resolutions in batocera. otherwise if you only use one
-# resolution in batocera you can just use TEXT_SIZE= in the beginning
-#
-# ---------------------------------------------------------------------
-# ps. you can also use EMULATORS=ALL
-#######################################################################
-clear
-#######################################################################
-#
+# -------------------------------------------------------------------- 
+######################################################################
 if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] \
 || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
 EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"; fi
 if [ "$(echo $EMULATORS | grep "-")" = "" ]; then 
 EMULATORS="$EMULATORS-"; fi
 EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
-#
 ######################################################################
-# prepare settings for functions
 temp=/userdata/system/switch/extra/downloads
-mkdir $temp 2>/dev/null
-# text/theme colors: 
+mkdir $temp 2>/dev/null && clear 
+######################################################################
+# TEXT & THEME COLORS: 
 ###########################
 RED='\033[1;31m'      	  # red
 BLUE='\033[1;34m'         # blue
@@ -96,19 +75,19 @@ GREEN='\033[1;32m'        # green
 YELLOW='\033[1;33m'       # yellow
 PURPLE='\033[1;35m'       # purple
 CYAN='\033[1;36m'         # cyan
-#                         |
+#-------------------------#
 DARKRED='\033[0;31m'      # darkred
 DARKBLUE='\033[0;34m'     # darkblue
 DARKGREEN='\033[0;32m'    # darkgreen
 DARKYELLOW='\033[0;33m'   # darkyellow
 DARKPURPLE='\033[0;35m'   # darkpurple
 DARKCYAN='\033[0;36m'     # darkcyan
-#                         |
+#-------------------------#
 WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
-# parse colors to code:
-#
+# PARSE COLORS FOR THEMING:
+# ---------------------------------------------------------------------------------- 
 if [ "$TEXT_COLOR" = "RED" ]; then TEXT_COLOR="$RED"; fi
 if [ "$TEXT_COLOR" = "BLUE" ]; then TEXT_COLOR="$BLUE"; fi
 if [ "$TEXT_COLOR" = "GREEN" ]; then TEXT_COLOR="$GREEN"; fi
@@ -123,7 +102,7 @@ if [ "$TEXT_COLOR" = "DARKPURPLE" ]; then TEXT_COLOR="$DARKPURPLE"; fi
 if [ "$TEXT_COLOR" = "DARKCYAN" ]; then TEXT_COLOR="$DARKCYAN"; fi
 if [ "$TEXT_COLOR" = "WHITE" ]; then TEXT_COLOR="$WHITE"; fi
 if [ "$TEXT_COLOR" = "BLACK" ]; then TEXT_COLOR="$BLACK"; fi
-#
+# ---------------------------------------------------------------------------------- 
 if [ "$THEME_COLOR" = "RED" ]; then THEME_COLOR="$RED"; fi
 if [ "$THEME_COLOR" = "BLUE" ]; then THEME_COLOR="$BLUE"; fi
 if [ "$THEME_COLOR" = "GREEN" ]; then THEME_COLOR="$GREEN"; fi
@@ -138,7 +117,7 @@ if [ "$THEME_COLOR" = "DARKPURPLE" ]; then THEME_COLOR="$DARKPURPLE"; fi
 if [ "$THEME_COLOR" = "DARKCYAN" ]; then THEME_COLOR="$DARKCYAN"; fi
 if [ "$THEME_COLOR" = "WHITE" ]; then THEME_COLOR="$WHITE"; fi
 if [ "$THEME_COLOR" = "BLACK" ]; then THEME_COLOR="$BLACK"; fi
-#
+# ---------------------------------------------------------------------------------- 
 if [ "$THEME_COLOR_OK" = "RED" ]; then THEME_COLOR_OK="$RED"; fi
 if [ "$THEME_COLOR_OK" = "BLUE" ]; then THEME_COLOR_OK="$BLUE"; fi
 if [ "$THEME_COLOR_OK" = "GREEN" ]; then THEME_COLOR_OK="$GREEN"; fi
@@ -153,7 +132,7 @@ if [ "$THEME_COLOR_OK" = "DARKPURPLE" ]; then THEME_COLOR_OK="$DARKPURPLE"; fi
 if [ "$THEME_COLOR_OK" = "DARKCYAN" ]; then THEME_COLOR_OK="$DARKCYAN"; fi
 if [ "$THEME_COLOR_OK" = "WHITE" ]; then THEME_COLOR_OK="$WHITE"; fi
 if [ "$THEME_COLOR_OK" = "BLACK" ]; then THEME_COLOR_OK="$BLACK"; fi
-#
+# ---------------------------------------------------------------------------------- 
 if [ "$THEME_COLOR_YUZU" = "RED" ]; then THEME_COLOR_YUZU="$RED"; fi
 if [ "$THEME_COLOR_YUZU" = "BLUE" ]; then THEME_COLOR_YUZU="$BLUE"; fi
 if [ "$THEME_COLOR_YUZU" = "GREEN" ]; then THEME_COLOR_YUZU="$GREEN"; fi
@@ -168,7 +147,7 @@ if [ "$THEME_COLOR_YUZU" = "DARKPURPLE" ]; then THEME_COLOR_YUZU="$DARKPURPLE"; 
 if [ "$THEME_COLOR_YUZU" = "DARKCYAN" ]; then THEME_COLOR_YUZU="$DARKCYAN"; fi
 if [ "$THEME_COLOR_YUZU" = "WHITE" ]; then THEME_COLOR_YUZU="$WHITE"; fi
 if [ "$THEME_COLOR_YUZU" = "BLACK" ]; then THEME_COLOR_YUZU="$BLACK"; fi
-#
+# ---------------------------------------------------------------------------------- 
 if [ "$THEME_COLOR_YUZUEA" = "RED" ]; then THEME_COLOR_YUZUEA="$RED"; fi
 if [ "$THEME_COLOR_YUZUEA" = "BLUE" ]; then THEME_COLOR_YUZUEA="$BLUE"; fi
 if [ "$THEME_COLOR_YUZUEA" = "GREEN" ]; then THEME_COLOR_YUZUEA="$GREEN"; fi
@@ -183,7 +162,7 @@ if [ "$THEME_COLOR_YUZUEA" = "DARKPURPLE" ]; then THEME_COLOR_YUZUEA="$DARKPURPL
 if [ "$THEME_COLOR_YUZUEA" = "DARKCYAN" ]; then THEME_COLOR_YUZUEA="$DARKCYAN"; fi
 if [ "$THEME_COLOR_YUZUEA" = "WHITE" ]; then THEME_COLOR_YUZUEA="$WHITE"; fi
 if [ "$THEME_COLOR_YUZUEA" = "BLACK" ]; then THEME_COLOR_YUZUEA="$BLACK"; fi
-#
+# ---------------------------------------------------------------------------------- 
 if [ "$THEME_COLOR_RYUJINX" = "RED" ]; then THEME_COLOR_RYUJINX="$RED"; fi
 if [ "$THEME_COLOR_RYUJINX" = "BLUE" ]; then THEME_COLOR_RYUJINX="$BLUE"; fi
 if [ "$THEME_COLOR_RYUJINX" = "GREEN" ]; then THEME_COLOR_RYUJINX="$GREEN"; fi
@@ -198,7 +177,7 @@ if [ "$THEME_COLOR_RYUJINX" = "DARKPURPLE" ]; then THEME_COLOR_RYUJINX="$DARKPUR
 if [ "$THEME_COLOR_RYUJINX" = "DARKCYAN" ]; then THEME_COLOR_RYUJINX="$DARKCYAN"; fi
 if [ "$THEME_COLOR_RYUJINX" = "WHITE" ]; then THEME_COLOR_RYUJINX="$WHITE"; fi
 if [ "$THEME_COLOR_RYUJINX" = "BLACK" ]; then THEME_COLOR_RYUJINX="$BLACK"; fi
-#
+# ---------------------------------------------------------------------------------- 
 if [ "$THEME_COLOR_RYUJINXAVALONIA" = "RED" ]; then THEME_COLOR_RYUJINXAVALONIA="$RED"; fi
 if [ "$THEME_COLOR_RYUJINXAVALONIA" = "BLUE" ]; then THEME_COLOR_RYUJINXAVALONIA="$BLUE"; fi
 if [ "$THEME_COLOR_RYUJINXAVALONIA" = "GREEN" ]; then THEME_COLOR_RYUJINXAVALONIA="$GREEN"; fi
@@ -213,8 +192,8 @@ if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKPURPLE" ]; then THEME_COLOR_RYUJINXAV
 if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKCYAN" ]; then THEME_COLOR_RYUJINXAVALONIA="$DARKCYAN"; fi
 if [ "$THEME_COLOR_RYUJINXAVALONIA" = "WHITE" ]; then THEME_COLOR_RYUJINXAVALONIA="$WHITE"; fi
 if [ "$THEME_COLOR_RYUJINXAVALONIA" = "BLACK" ]; then THEME_COLOR_RYUJINXAVALONIA="$BLACK"; fi
-#
-# prepare a temporary cookie file for functions: 
+# ---------------------------------------------------------------------------------- 
+# PREPARE COOKIE FOR FUNCTIONS: 
 rm -rf /userdata/system/switch/updater.settings
 echo "TEXT_SIZE=$TEXT_SIZE" >> /userdata/system/switch/updater.settings
 echo "TEXT_COLOR=$TEXT_COLOR" >> /userdata/system/switch/updater.settings
@@ -225,34 +204,28 @@ echo "THEME_COLOR_RYUJINX=$THEME_COLOR_RYUJINX" >> /userdata/system/switch/updat
 echo "THEME_COLOR_RYUJINXAVALONIA=$THEME_COLOR_RYUJINXAVALONIA" >> /userdata/system/switch/updater.settings
 echo "THEME_COLOR_OK=$THEME_COLOR_OK" >> /userdata/system/switch/updater.settings
 echo "EMULATORS=$EMULATORS" >> /userdata/system/switch/updater.settings
-######################################################################
-#
-# - - - - - 
-#
-######################################################################
+####################################################################################
 function update_emulator {
 E=$1 && N=$2
-############################
-# LINKS: 
-#link_yuzu=$(curl -s "https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases/latest" | grep "browser_download_url.*AppImage" | cut -d : -f 2,3 | sed 1q | tr -d \")
-#link_yuzuea=$(curl -s "https://api.github.com/repos/pineappleEA/pineapple-src/releases" | grep "browser_download_url.*Yuzu-EA-.*AppImage" | head -n 1 | cut -d : -f 2,3 | tr -d \")
-link_ryujinx=https://github.com/qurious-pixel/Ryujinx/releases/download/continuous/Ryujinx-x86_64.AppImage
-link_ryujinxavalonia=https://github.com/qurious-pixel/Ryujinx/releases/download/avalonia-build/Ryujinx-x86_64.AppImage
-#
-############################
-# updated links: 
-# -------------------------- 
+# ---------------------------------------------------------------------------------- 
+# LINKS & RESOLVERS:
+# ---------------------------------------------------------------------------------- 
+# YUZU
 release_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases | grep /releases/tag/ | head -n 1 | cut -d = -f 4 | cut -d \" -f 2 | cut -d "/" -f 6)
-#=mainline-0-1225
 date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep "relative-time datetime" | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
-#=20221105
 subrelease_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep data-hovercard-url | grep commit-link | head -n 1 | cut -d "=" -f 4 | cut -d "/" -f 7 | cut -c 1-9)
-#=05efef9ec
-link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
-#
+  link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
+# ---------------------------------------------------------------------------------- 
+# YUZU EA
 release_yuzuea=$(curl -s https://github.com/pineappleEA/pineapple-src | grep /releases/ | cut -d "=" -f 5 | cut -d / -f 6 | cut -d '"' -f 1)
-link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
-############################
+  link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
+# ---------------------------------------------------------------------------------- 
+# RYUJINX
+  link_ryujinx=https://github.com/qurious-pixel/Ryujinx/releases/download/continuous/Ryujinx-x86_64.AppImage
+# ---------------------------------------------------------------------------------- 
+# RYUJINX-AVALONIA
+  link_ryujinxavalonia=https://github.com/qurious-pixel/Ryujinx/releases/download/avalonia-build/Ryujinx-x86_64.AppImage
+# ---------------------------------------------------------------------------------- 
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
@@ -260,8 +233,8 @@ path_ryujinx=/userdata/system/switch/Ryujinx.AppImage
 path_ryujinxavalonia=/userdata/system/switch/Ryujinx-Avalonia.AppImage
 #
 temp=/userdata/system/switch/extra/downloads
-############################
-# read settings from cookie: 
+# ---------------------------------------------------------------------------------- 
+# READ SETTINGS FROM COOKIE: 
 TEXT_SIZE=$(cat /userdata/system/switch/updater.settings | grep "TEXT_SIZE=" | cut -d "=" -f 2)
 TEXT_COLOR=$(cat /userdata/system/switch/updater.settings | grep "TEXT_COLOR=" | cut -d "=" -f 2)
 THEME_COLOR=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR=" | cut -d "=" -f 2)
@@ -271,8 +244,8 @@ THEME_COLOR_RYUJINX=$(cat /userdata/system/switch/updater.settings | grep "THEME
 THEME_COLOR_RYUJINXAVALONIA=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
 THEME_COLOR_OK=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
 EMULATORS=$(cat /userdata/system/switch/updater.settings | grep "EMULATORS=" | cut -d "=" -f 2)
-############################
-# check todo:
+# ---------------------------------------------------------------------------------- 
+# RUN UPDATER FOR SELECTED EMULATOR:
 # ---------------------------------------------------------------------------------- 
 if [ "$3" = "YUZU" ]; then
 T=$THEME_COLOR_YUZU
@@ -350,19 +323,11 @@ echo -e "${T}$path_ryujinxavalonia ${T}($size_ryujinxavalonia( )MB) ${THEME_COLO
 echo
 fi
 }
-#
 export -f update_emulator
 ######################################################################
-#
-# - - - - - 
-#
-######################################################################
 function batocera_update_switch { 
-
 ######################################################################
-# EMULATOR FILES -----------------------------------------------------
-# goto > github.com/ordovice/batocera-switch -------------------------
-# --------------------------------------------------------------------
+# EMULATOR FILES & PATHS: --------------------------------------------
 path=/userdata/system/switch
 YUZUEA=/userdata/system/switch/yuzuEA.AppImage
 YUZU=/userdata/system/switch/yuzu.AppImage
@@ -370,7 +335,7 @@ RYUJINX=/userdata/system/switch/Ryujinx.AppImage
 RYUJINXAVALONIA=/userdata/system/switch/Ryujinx-Avalonia.AppImage
 # --------------------------------------------------------------------
 ######################################################################
-# read settings from cookie: -----------------------------------------
+# READ SETTINGS FROM COOKIE: -----------------------------------------
 TEXT_SIZE=$(cat /userdata/system/switch/updater.settings | grep "TEXT_SIZE=" | cut -d "=" -f 2)
 TEXT_COLOR=$(cat /userdata/system/switch/updater.settings | grep "TEXT_COLOR=" | cut -d "=" -f 2)
 THEME_COLOR=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR=" | cut -d "=" -f 2)
@@ -380,24 +345,25 @@ THEME_COLOR_RYUJINX=$(cat /userdata/system/switch/updater.settings | grep "THEME
 THEME_COLOR_RYUJINXAVALONIA=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
 THEME_COLOR_OK=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
 EMULATORS=$(cat /userdata/system/switch/updater.settings | grep "EMULATORS=" | cut -d "=" -f 2)
+# -------------------------
 F=$TEXT_COLOR
 T=$THEME_COLOR
-# redefine colors: --------
+# REREAD TEXT/THEME COLORS:
 ###########################
-RED='\033[1;31m'      	  # red
+RED='\033[1;31m'          # red
 BLUE='\033[1;34m'         # blue
 GREEN='\033[1;32m'        # green
 YELLOW='\033[1;33m'       # yellow
 PURPLE='\033[1;35m'       # purple
 CYAN='\033[1;36m'         # cyan
-#                         |
+#-------------------------#
 DARKRED='\033[0;31m'      # darkred
 DARKBLUE='\033[0;34m'     # darkblue
 DARKGREEN='\033[0;32m'    # darkgreen
 DARKYELLOW='\033[0;33m'   # darkyellow
 DARKPURPLE='\033[0;35m'   # darkpurple
 DARKCYAN='\033[0;36m'     # darkcyan
-#                         |
+#-------------------------#
 WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
@@ -406,7 +372,7 @@ echo -e "${T}-------------------------------------"
 echo -e "${F}SWITCH EMULATORS UPDATER FOR BATOCERA"
 echo
 sleep 0.5
-# update 4 emulators -------------------------------------
+# UPDATE 4 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" != "" ]]; then
 update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1)
 update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2)
@@ -416,7 +382,7 @@ sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
-# update 3 emulators -------------------------------------
+# UPDATE 3 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" != "" ]]; then
 update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1)
 update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2)
@@ -425,7 +391,7 @@ sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
-# update 2 emulators -------------------------------------
+# UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
 update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1)
 update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2)
@@ -433,42 +399,29 @@ sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
-# update 1 emulator --------------------------------------
+# UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
 update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1)
 sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
-# clear cookie: 
+# CLEAR TEMP & COOKIE:
+rm -rf /userdata/system/switch/extra/downloads
 rm /userdata/system/switch/extra/display.settings
-# keep ui output for visibility:
+# KEEP OUTPUT FOR VISIBILITY:
 sleep 3
 exit 0
 }
-# --------------------------------------------------------------------
-######################################################################
-#
 export -f batocera_update_switch
-#
 ######################################################################
-# --------------------------------------------------------------------
-# calculate auto text size: 
-# |
-#TEXT_SIZE=$(echo $TEXT_SIZE | sed 's/ //g')
-#if [[ "$TEXT_SIZE" = "AUTO" ]] || [[ "$TEXT_SIZE" = "Auto" ]] || [[ "$TEXT_SIZE" = "auto" ]]; then
-# RX=$(DISPLAY=:0.0 xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1 2>/dev/null)
-# RY=$(DISPLAY=:0.0 xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2 2>/dev/null)
-# SF=$(($BASE_FONT_SIZE*$RX/1280)) && FS=$(printf "%.0f\n" $SF) && TEXT_SIZE=$FS
-#fi
-# --------------------------------------------------------------------
-# include display output: 
+# PREPARE DISPLAY OUTPUT: 
 function get-xterm-fontsize {
 #\
   tput="/userdata/system/switch/extra/batocera-switch-tput"
   libtinfo="/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
-  url_tput="http://batoceraswit.ch/scripts/batocera-switch-tput"
-  url_libtinfo="http://batoceraswit.ch/scripts/libtinfo.so.6"
+  url_tput="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput"
+  url_libtinfo="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6"
   settings="/userdata/system/switch/extra/display.settings"
   rm $settings 2>/dev/null
   if [[ -e "$tput" ]]; then
@@ -496,7 +449,7 @@ function get-xterm-fontsize {
 }
 export -f get-xterm-fontsize 2>/dev/null
 # --------------------------------------------------------------------
-# run until proper size is found (quick fix for a very long story): 
+# FIND PROPER TEXT SIZE: 
 get-xterm-fontsize 2>/dev/null
 settings="/userdata/system/switch/extra/display.settings"
 cols=$(cat $settings | tail -1) 2>/dev/null
@@ -505,12 +458,9 @@ do
 get-xterm-fontsize 2>/dev/null
 cols=$(cat $settings | tail -1) 2>/dev/null
 done 
-# --------------------------------------------------------------------
 ######################################################################
-# --------------------------------------------------------------------
-# run the updater: 
-# | 
+# RUN THE UPDATER: 
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
- 
+######################################################################
 exit 0
 ######
