@@ -270,7 +270,7 @@ E=$1 && N=$2
 # ---------------------------------------------------------------------------------- 
 # YUZU
 release_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases | grep /releases/tag/ | head -n 1 | cut -d = -f 4 | cut -d \" -f 2 | cut -d "/" -f 6)
-date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/mainline-0-1226 | grep "datetime=" | sed 's/^.*datetime/datetime/g' | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
+date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep "datetime=" | sed 's/^.*datetime/datetime/g' | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
 subrelease_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep data-hovercard-url | grep commit-link | head -n 1 | cut -d "=" -f 4 | cut -d "/" -f 7 | cut -c 1-9)
   link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
 # ---------------------------------------------------------------------------------- 
@@ -429,14 +429,12 @@ clear
 echo -e "${T}-------------------------------------"
 echo -e "${F}SWITCH EMULATORS UPDATER FOR BATOCERA"
 echo
-sleep 0.5
 # UPDATE 4 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" != "" ]]; then
 update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1)
 update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2)
 update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3)
 update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4)
-sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
@@ -445,7 +443,6 @@ if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(
 update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1)
 update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2)
 update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3)
-sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
@@ -453,14 +450,12 @@ fi
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
 update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1)
 update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2)
-sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
 update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1)
-sleep 1
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
