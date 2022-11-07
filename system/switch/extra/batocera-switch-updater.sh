@@ -55,7 +55,66 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 #                > github.com/ordovice/batocera-switch               #
 #                    > https://discord.gg/hH5AfThG                   #
 ######################################################################
-# -------------------------------------------------------------------- 
+######################################################################
+######################################################################
+######################################################################
+# PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU
+# -------------------------------------------------------------------
+function generate-shortcut-launcher {
+# FOR GUI APPS: 
+SCALE=1.50
+Name=$1
+name=$2
+# --------
+extra=/userdata/system/switch/extra/$Name.desktop
+shortcut=/usr/share/applications/$Name.desktop
+launcher=/userdata/system/switch/extra/batocera-switch-launcher-$Name
+# --------
+rm -rf $shortcut 2>/dev/null && rm -rf $launcher 2>/dev/null
+echo "[Desktop Entry]" >> $shortcut
+echo "Version=1.0" >> $shortcut
+echo "Icon=/userdata/system/switch/extra/switch.png" >> $shortcut
+echo "Exec=$launcher" >> $shortcut
+echo "Terminal=false" >> $shortcut
+echo "Type=Application" >> $shortcut
+echo "Categories=Game;batocera.linux;" >> $shortcut
+echo "Name=$name" >> $shortcut
+echo "#!/bin/bash" >> $launcher
+echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE /userdata/system/switch/$Name.AppImage" >> $launcher
+chmod a+x $launcher
+cp $shortcut $extra 2>/dev/null
+} # -----------------------------------------------------------------
+generate-shortcut-launcher 'yuzu' 'yuzu'
+generate-shortcut-launcher 'yuzuEA' 'yuzuea'
+generate-shortcut-launcher 'Ryujinx' 'ryujinx'
+generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
+# -------------------------------------------------------------------
+# PREPARE STARTUP FILE
+# -------------------------------------------------------------------
+startup=/userdata/system/switch/extra/batocera-switch-startup
+rm -rf $startup
+echo '#!/bin/bash' >> $startup 
+echo 'extra=/userdata/system/switch/extra' >> $startup
+echo 'cp $extra/batocera-switch-lib* /lib/ 2>/dev/null' >> $startup
+echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
+echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
+chmod a+x $startup
+# -------------------------------------------------------------------
+# ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
+# -------------------------------------------------------------------
+customsh=/userdata/system/custom.sh
+startup=/userdata/system/switch/extra/batocera-switch-startup
+if [[ -e "$startup" ]] && [[ $(wc -c $startup) != "0" ]]; then 
+  if [[ "$(cat $customsh | grep $startup)" = "" ]]; then
+   echo $startup >> $customsh
+  fi
+  if [[ "$(cat $customsh | grep $startup | grep "#")" != "" ]]; then
+   echo $startup >> $customsh
+  fi
+fi
+######################################################################
+######################################################################
+######################################################################
 ######################################################################
 if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] \
 || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
@@ -63,10 +122,9 @@ EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"; fi
 if [ "$(echo $EMULATORS | grep "-")" = "" ]; then 
 EMULATORS="$EMULATORS-"; fi
 EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
-######################################################################
+# -------------------------------------------------------------------
 temp=/userdata/system/switch/extra/downloads
 mkdir $temp 2>/dev/null && clear 
-######################################################################
 # TEXT & THEME COLORS: 
 ###########################
 RED='\033[1;31m'      	  # red
