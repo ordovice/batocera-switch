@@ -58,6 +58,24 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 ######################################################################
 ######################################################################
 ######################################################################
+# LINKS & RESOLVERS:
+# -------------------------------------------------------------------
+# YUZU RESOLVER:
+release_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/ | grep "yuzu-emu/yuzu-mainline/releases/tag/" | sed 's/^.*href=/href=/g' | cut -d "/" -f 6 | cut -d \" -f 1)
+date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep "datetime=" | sed 's/^.*datetime/datetime/g' | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
+subrelease_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep data-hovercard-url | grep commit-link | head -n 1 | cut -d "=" -f 4 | cut -d "/" -f 7 | cut -c 1-9)
+link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
+# -------------------------------------------------------------------
+# YUZU EA RESOLVER: 
+release_yuzuea=$(curl -s https://github.com/pineappleEA/pineapple-src | grep /releases/ | cut -d "=" -f 5 | cut -d / -f 6 | cut -d '"' -f 1)
+link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
+# -------------------------------------------------------------------
+# RYUJINX LINK:
+link_ryujinx=https://github.com/qurious-pixel/Ryujinx/releases/download/continuous/Ryujinx-x86_64.AppImage
+# -------------------------------------------------------------------
+# RYUJINX-AVALONIA LINK:
+link_ryujinxavalonia=https://github.com/qurious-pixel/Ryujinx/releases/download/avalonia-build/Ryujinx-x86_64.AppImage
+# -------------------------------------------------------------------
 # PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU
 # -------------------------------------------------------------------
 function generate-shortcut-launcher {
@@ -73,7 +91,11 @@ launcher=/userdata/system/switch/extra/batocera-switch-launcher-$Name
 rm -rf $shortcut 2>/dev/null && rm -rf $launcher 2>/dev/null
 echo "[Desktop Entry]" >> $shortcut
 echo "Version=1.0" >> $shortcut
-echo "Icon=/userdata/system/switch/extra/switch.png" >> $shortcut
+if [[ "$(echo $name | grep yuzu)" != "" ]]; then
+echo "Icon=/userdata/system/switch/extra/icon_yuzu.png" >> $shortcut
+else
+echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> $shortcut
+fi
 echo "Exec=$launcher" >> $shortcut
 echo "Terminal=false" >> $shortcut
 echo "Type=Application" >> $shortcut
@@ -127,7 +149,7 @@ temp=/userdata/system/switch/extra/downloads
 mkdir $temp 2>/dev/null && clear 
 # TEXT & THEME COLORS: 
 ###########################
-RED='\033[1;31m'      	  # red
+RED='\033[1;31m'          # red
 BLUE='\033[1;34m'         # blue
 GREEN='\033[1;32m'        # green
 YELLOW='\033[1;33m'       # yellow
@@ -265,24 +287,10 @@ echo "EMULATORS=$EMULATORS" >> /userdata/system/switch/updater.settings
 ####################################################################################
 function update_emulator {
 E=$1 && N=$2
-# ---------------------------------------------------------------------------------- 
-# LINKS & RESOLVERS:
-# ---------------------------------------------------------------------------------- 
-# YUZU
-release_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases | grep /releases/tag/ | head -n 1 | cut -d = -f 4 | cut -d \" -f 2 | cut -d "/" -f 6)
-date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep "datetime=" | sed 's/^.*datetime/datetime/g' | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
-subrelease_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep data-hovercard-url | grep commit-link | head -n 1 | cut -d "=" -f 4 | cut -d "/" -f 7 | cut -c 1-9)
-  link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
-# ---------------------------------------------------------------------------------- 
-# YUZU EA
-release_yuzuea=$(curl -s https://github.com/pineappleEA/pineapple-src | grep /releases/ | cut -d "=" -f 5 | cut -d / -f 6 | cut -d '"' -f 1)
-  link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
-# ---------------------------------------------------------------------------------- 
-# RYUJINX
-  link_ryujinx=https://github.com/qurious-pixel/Ryujinx/releases/download/continuous/Ryujinx-x86_64.AppImage
-# ---------------------------------------------------------------------------------- 
-# RYUJINX-AVALONIA
-  link_ryujinxavalonia=https://github.com/qurious-pixel/Ryujinx/releases/download/avalonia-build/Ryujinx-x86_64.AppImage
+link_yuzu=$4
+link_yuzuea=$5
+link_ryujinx=$6
+link_ryujinxavalonia=$7
 # ---------------------------------------------------------------------------------- 
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
@@ -383,7 +391,11 @@ fi
 }
 export -f update_emulator
 ######################################################################
-function batocera_update_switch { 
+function batocera_update_switch {
+link_yuzu=$1
+link_yuzuea=$2
+link_ryujinx=$3
+link_ryujinxavalonia=$4
 ######################################################################
 # EMULATOR FILES & PATHS: --------------------------------------------
 path=/userdata/system/switch
@@ -429,33 +441,38 @@ clear
 echo -e "${T}-------------------------------------"
 echo -e "${F}SWITCH EMULATORS UPDATER FOR BATOCERA"
 echo
+echo
 # UPDATE 4 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" != "" ]]; then
-update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1)
-update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2)
-update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3)
-update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4)
+update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+echo
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
 # UPDATE 3 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" != "" ]]; then
-update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1)
-update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2)
-update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3)
+update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+echo
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
 # UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
-update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1)
-update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2)
+update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+echo
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
-update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1)
+update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
+echo
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
@@ -513,7 +530,7 @@ cols=$(cat $settings | tail -1) 2>/dev/null
 done 
 ######################################################################
 # RUN THE UPDATER: 
-  DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
+  DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia" 2>/dev/null 
 ######################################################################
 exit 0
 ######
