@@ -317,7 +317,7 @@ mkdir $temp/yuzu 2>/dev/null
 cd $temp/yuzu
 curl --progress-bar --remote-name --location $link_yuzu
 cd $temp
-mv $temp/yuzu/*.AppImage $path_yuzu 2>/dev/null
+mv $temp/yuzu/* $path_yuzu 2>/dev/null
 chmod a+x /userdata/system/switch/yuzu.AppImage 2>/dev/null
 size_yuzuea=$(($(wc -c /userdata/system/switch/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzu ${T}($size_yuzuea( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
@@ -336,7 +336,7 @@ mkdir $temp/yuzuea 2>/dev/null
 cd $temp/yuzuea
 curl --progress-bar --remote-name --location $link_yuzuea
 cd $temp
-mv $temp/yuzuea/*.AppImage $path_yuzuea 2>/dev/null
+mv $temp/yuzuea/* $path_yuzuea 2>/dev/null
 chmod a+x $path_yuzuea 2>/dev/null
 size_yuzuea=$(($(wc -c $path_yuzuea | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzuea ${T}($size_yuzuea( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
@@ -355,7 +355,7 @@ mkdir $temp/ryujinx 2>/dev/null
 cd $temp/ryujinx
 curl --progress-bar --remote-name --location $link_ryujinx
 cd $temp
-mv $temp/ryujinx/*.AppImage $path_ryujinx 2>/dev/null
+mv $temp/ryujinx/* $path_ryujinx 2>/dev/null
 chmod a+x $path_ryujinx 2>/dev/null
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_ryujinx ${T}($size_ryujinx( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
@@ -374,7 +374,7 @@ mkdir $temp/ryujinxavalonia 2>/dev/null
 cd $temp/ryujinxavalonia
 curl --progress-bar --remote-name --location $link_ryujinxavalonia
 cd $temp
-mv $temp/ryujinxavalonia/*.AppImage $path_ryujinxavalonia 2>/dev/null
+mv $temp/ryujinxavalonia/* $path_ryujinxavalonia 2>/dev/null
 chmod a+x $path_ryujinxavalonia 2>/dev/null
 size_ryujinxavalonia=$(($(wc -c $path_ryujinxavalonia | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_ryujinxavalonia ${T}($size_ryujinxavalonia( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
