@@ -58,29 +58,12 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 ######################################################################
 ######################################################################
 ######################################################################
-# LINKS & RESOLVERS:
-# -------------------------------------------------------------------
-# YUZU RESOLVER:
-release_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/ | grep "yuzu-emu/yuzu-mainline/releases/tag/" | sed 's/^.*href=/href=/g' | cut -d "/" -f 6 | cut -d \" -f 1)
-date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep "datetime=" | sed 's/^.*datetime/datetime/g' | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
-subrelease_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep data-hovercard-url | grep commit-link | head -n 1 | cut -d "=" -f 4 | cut -d "/" -f 7 | cut -c 1-9)
-link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
-# -------------------------------------------------------------------
-# YUZU EA RESOLVER: 
-release_yuzuea=$(curl -s https://github.com/pineappleEA/pineapple-src | grep /releases/ | cut -d "=" -f 5 | cut -d / -f 6 | cut -d '"' -f 1)
-link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
-# -------------------------------------------------------------------
-# RYUJINX LINK:
-link_ryujinx=https://github.com/qurious-pixel/Ryujinx/releases/download/continuous/Ryujinx-x86_64.AppImage
-# -------------------------------------------------------------------
-# RYUJINX-AVALONIA LINK:
-link_ryujinxavalonia=https://github.com/qurious-pixel/Ryujinx/releases/download/avalonia-build/Ryujinx-x86_64.AppImage
-# -------------------------------------------------------------------
+# --------------------------------------------------------------------
 # PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU
-# -------------------------------------------------------------------
+# --------------------------------------------------------------------
 function generate-shortcut-launcher {
 # FOR GUI APPS: 
-SCALE=1.50
+SCALE=1.25
 Name=$1
 name=$2
 # --------
@@ -100,16 +83,24 @@ echo "Exec=$launcher" >> $shortcut
 echo "Terminal=false" >> $shortcut
 echo "Type=Application" >> $shortcut
 echo "Categories=Game;batocera.linux;" >> $shortcut
-echo "Name=$name" >> $shortcut
+echo "Name=$name-config" >> $shortcut
+####
 echo "#!/bin/bash" >> $launcher
-echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE /userdata/system/switch/$Name.AppImage" >> $launcher
+echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
 chmod a+x $launcher
 cp $shortcut $extra 2>/dev/null
 } # -----------------------------------------------------------------
+#
 generate-shortcut-launcher 'yuzu' 'yuzu'
 generate-shortcut-launcher 'yuzuEA' 'yuzuea'
 generate-shortcut-launcher 'Ryujinx' 'ryujinx'
 generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
+#
+# remove old version dekstop shortcuts: 
+rm /userdata/system/.local/share/applications/yuzu-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/yuzuEA-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/ryujinx-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
 # -------------------------------------------------------------------
 # PREPARE STARTUP FILE
 # -------------------------------------------------------------------
@@ -120,6 +111,8 @@ echo 'extra=/userdata/system/switch/extra' >> $startup
 echo 'cp $extra/batocera-switch-lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
+echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
+echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
 chmod a+x $startup
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
@@ -274,16 +267,16 @@ if [ "$THEME_COLOR_RYUJINXAVALONIA" = "WHITE" ]; then THEME_COLOR_RYUJINXAVALONI
 if [ "$THEME_COLOR_RYUJINXAVALONIA" = "BLACK" ]; then THEME_COLOR_RYUJINXAVALONIA="$BLACK"; fi
 # ---------------------------------------------------------------------------------- 
 # PREPARE COOKIE FOR FUNCTIONS: 
-rm -rf /userdata/system/switch/updater.settings
-echo "TEXT_SIZE=$TEXT_SIZE" >> /userdata/system/switch/updater.settings
-echo "TEXT_COLOR=$TEXT_COLOR" >> /userdata/system/switch/updater.settings
-echo "THEME_COLOR=$THEME_COLOR" >> /userdata/system/switch/updater.settings
-echo "THEME_COLOR_YUZU=$THEME_COLOR_YUZU" >> /userdata/system/switch/updater.settings
-echo "THEME_COLOR_YUZUEA=$THEME_COLOR_YUZUEA" >> /userdata/system/switch/updater.settings
-echo "THEME_COLOR_RYUJINX=$THEME_COLOR_RYUJINX" >> /userdata/system/switch/updater.settings
-echo "THEME_COLOR_RYUJINXAVALONIA=$THEME_COLOR_RYUJINXAVALONIA" >> /userdata/system/switch/updater.settings
-echo "THEME_COLOR_OK=$THEME_COLOR_OK" >> /userdata/system/switch/updater.settings
-echo "EMULATORS=$EMULATORS" >> /userdata/system/switch/updater.settings
+rm -rf /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "TEXT_SIZE=$TEXT_SIZE" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "TEXT_COLOR=$TEXT_COLOR" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "THEME_COLOR=$THEME_COLOR" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "THEME_COLOR_YUZU=$THEME_COLOR_YUZU" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "THEME_COLOR_YUZUEA=$THEME_COLOR_YUZUEA" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "THEME_COLOR_RYUJINX=$THEME_COLOR_RYUJINX" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "THEME_COLOR_RYUJINXAVALONIA=$THEME_COLOR_RYUJINXAVALONIA" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "THEME_COLOR_OK=$THEME_COLOR_OK" >> /userdata/system/switch/extra/batocera-switch-updatersettings
+echo "EMULATORS=$EMULATORS" >> /userdata/system/switch/extra/batocera-switch-updatersettings
 ####################################################################################
 function update_emulator {
 E=$1 && N=$2
@@ -297,22 +290,24 @@ path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
 path_ryujinx=/userdata/system/switch/Ryujinx.AppImage
 path_ryujinxavalonia=/userdata/system/switch/Ryujinx-Avalonia.AppImage
-#
-temp=/userdata/system/switch/extra/downloads
 # ---------------------------------------------------------------------------------- 
 # READ SETTINGS FROM COOKIE: 
-TEXT_SIZE=$(cat /userdata/system/switch/updater.settings | grep "TEXT_SIZE=" | cut -d "=" -f 2)
-TEXT_COLOR=$(cat /userdata/system/switch/updater.settings | grep "TEXT_COLOR=" | cut -d "=" -f 2)
-THEME_COLOR=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR=" | cut -d "=" -f 2)
-THEME_COLOR_YUZU=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_YUZU=" | cut -d "=" -f 2)
-THEME_COLOR_YUZUEA=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_YUZUEA=" | cut -d "=" -f 2)
-THEME_COLOR_RYUJINX=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_RYUJINX=" | cut -d "=" -f 2)
-THEME_COLOR_RYUJINXAVALONIA=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
-THEME_COLOR_OK=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
-EMULATORS=$(cat /userdata/system/switch/updater.settings | grep "EMULATORS=" | cut -d "=" -f 2)
+cookie=/userdata/system/switch/extra/batocera-switch-updatersettings
+TEXT_SIZE=$(cat $cookie | grep "TEXT_SIZE=" | cut -d "=" -f 2)
+TEXT_COLOR=$(cat $cookie | grep "TEXT_COLOR=" | cut -d "=" -f 2)
+THEME_COLOR=$(cat $cookie | grep "THEME_COLOR=" | cut -d "=" -f 2)
+THEME_COLOR_YUZU=$(cat $cookie | grep "THEME_COLOR_YUZU=" | cut -d "=" -f 2)
+THEME_COLOR_YUZUEA=$(cat $cookie | grep "THEME_COLOR_YUZUEA=" | cut -d "=" -f 2)
+THEME_COLOR_RYUJINX=$(cat $cookie | grep "THEME_COLOR_RYUJINX=" | cut -d "=" -f 2)
+THEME_COLOR_RYUJINXAVALONIA=$(cat $cookie | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
+THEME_COLOR_OK=$(cat $cookie | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
+EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
 # ---------------------------------------------------------------------------------- 
 # RUN UPDATER FOR SELECTED EMULATOR:
-# ---------------------------------------------------------------------------------- 
+# ----------------------------------------------------------------------------------
+extra=/userdata/system/switch/extra
+temp=/userdata/system/switch/extra/downloads
+# 
 if [ "$3" = "YUZU" ]; then
 T=$THEME_COLOR_YUZU
  if [ "$N" = "1" ]; then C="///////////////"; else C="///// ${F}$E/$N ${T}/////"; fi
@@ -358,13 +353,41 @@ echo -e "${T}   ///////////////"
 echo -e "${T}  $C    ${F}UPDATING RYUJINX ..."
 echo -e "${T} ///////////////"
 echo -e "${T}$link_ryujinx" | sed 's,https://,> ,g'
-rm -rf $temp/ryujinx 2>/dev/null
-mkdir $temp/ryujinx 2>/dev/null
-cd $temp/ryujinx
+# --------------------------------------------------------
+# --------------------------------------------------------
+# \\ get dependencies for handling ryujinx
+link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
+ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+# //
+# /userdata/system/switch/extra/ryujinx/ will keep all ryujinx related dependencies
+emu=ryujinx
+mkdir $extra/$emu 2>/dev/null
+rm -rf $temp/$emu 2>/dev/null
+mkdir $temp/$emu 2>/dev/null
+cd $temp/$emu
 curl --progress-bar --remote-name --location $link_ryujinx
-cd $temp
-mv $temp/ryujinx/* $path_ryujinx 2>/dev/null
+$extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz
+cp $temp/$emu/publish/Ryujinx $path_ryujinx
 chmod a+x $path_ryujinx 2>/dev/null
+cp $temp/$emu/publish/lib* $extra/$emu/
+cd $extra/$emu
+rm -rf $extra/$emu/dependencies 2>/dev/null
+ls -l ./lib* | awk '{print $9}' | cut -d "/" -f2 >> $extra/$emu/dependencies
+cd ~/
+startup=$extra/$emu/startup
+rm -rf $startup 2>/dev/null
+echo '#!/bin/bash' >> $startup
+echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
+echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
+echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
+echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'mkdir ~/configs/Ryujinx 2>/dev/null && cp -rL ~/.config/Ryujinx/* ~/configs/Ryujinx/ 2>/dev/null && mv ~/.config/Ryujinx ~/.config/Ryujinx0 2>/dev/null && rm -rf ~/.config/Ryujinx0 && ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx'  >> $startup
+chmod a+x $startup
+$extra/$emu/startup
+# /
+# --------------------------------------------------------
+# --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_ryujinx ${T}($size_ryujinx( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
@@ -377,13 +400,42 @@ echo -e "${T}   ///////////////"
 echo -e "${T}  $C    ${F}UPDATING RYUJINX AVALONIA ..."
 echo -e "${T} ///////////////"
 echo -e "${T}$link_ryujinxavalonia" | sed 's,https://,> ,g'
-rm -rf $temp/ryujinxavalonia 2>/dev/null
-mkdir $temp/ryujinxavalonia 2>/dev/null
-cd $temp/ryujinxavalonia
+# --------------------------------------------------------
+# --------------------------------------------------------
+# \\ get dependencies for handling ryujinxavalonia
+link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
+ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+# //
+# /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
+emu=ryujinxavalonia
+mkdir $extra/$emu 2>/dev/null  
+rm -rf $temp/$emu 2>/dev/null
+mkdir $temp/$emu 2>/dev/null
+cd $temp/$emu
 curl --progress-bar --remote-name --location $link_ryujinxavalonia
-cd $temp
-mv $temp/ryujinxavalonia/* $path_ryujinxavalonia 2>/dev/null
+$extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
+cp $temp/$emu/publish/lib* $extra/$emu/ 2>/dev/null
+rm -rf $extra/$emu/startup 2>/dev/null
+cd $extra/$emu
+rm -rf $extra/$emu/dependencies 2>/dev/null
+ls -l ./lib* | awk '{print $9}' | cut -d "/" -f2 >> $extra/$emu/dependencies
+cd ~/
+startup=$extra/$emu/startup
+rm -rf $startup 2>/dev/null
+echo '#!/bin/bash' >> $startup
+echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
+echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
+echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
+echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'mkdir ~/configs/Ryujinx 2>/dev/null && cp -rL ~/.config/Ryujinx/* ~/configs/Ryujinx/ 2>/dev/null && mv ~/.config/Ryujinx ~/.config/Ryujinx0 2>/dev/null && rm -rf ~/.config/Ryujinx0 && ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx'  >> $startup
+chmod a+x $startup
+$extra/$emu/startup
+# /
+cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinxavalonia 2>/dev/null
 chmod a+x $path_ryujinxavalonia 2>/dev/null
+# --------------------------------------------------------
+# --------------------------------------------------------
 size_ryujinxavalonia=$(($(wc -c $path_ryujinxavalonia | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_ryujinxavalonia ${T}($size_ryujinxavalonia( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
@@ -392,29 +444,61 @@ fi
 export -f update_emulator
 ######################################################################
 function batocera_update_switch {
-link_yuzu=$1
-link_yuzuea=$2
-link_ryujinx=$3
-link_ryujinxavalonia=$4
 ######################################################################
-# EMULATOR FILES & PATHS: --------------------------------------------
-path=/userdata/system/switch
-YUZUEA=/userdata/system/switch/yuzuEA.AppImage
-YUZU=/userdata/system/switch/yuzu.AppImage
-RYUJINX=/userdata/system/switch/Ryujinx.AppImage
-RYUJINXAVALONIA=/userdata/system/switch/Ryujinx-Avalonia.AppImage
-# --------------------------------------------------------------------
+spinner()
+{
+    local pid=$1
+    local delay=0.2
+    local spinstr='|/-\'
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+        local temp=${spinstr#?} EMULATORS
+        printf "LOADING EMULATORS  %c   " "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+    done
+    printf "   \b\b\b\b"
+}
+resolvelinks()
+{
+# LINKS & RESOLVERS:
+# -------------------------------------------------------------------
+links=/userdata/system/switch/extra/links
+rm -rf $links 2>/dev/null
+# YUZU:
+release_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/ | grep "yuzu-emu/yuzu-mainline/releases/tag/" | sed 's/^.*href=/href=/g' | cut -d "/" -f 6 | cut -d \" -f 1)
+date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep "datetime=" | sed 's/^.*datetime/datetime/g' | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
+subrelease_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep data-hovercard-url | grep commit-link | head -n 1 | cut -d "=" -f 4 | cut -d "/" -f 7 | cut -c 1-9)
+link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
+# -------------------------------------------------------------------
+# YUZUEA: 
+release_yuzuea=$(curl -s https://github.com/pineappleEA/pineapple-src | grep /releases/ | cut -d "=" -f 5 | cut -d / -f 6 | cut -d '"' -f 1)
+link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
+# -------------------------------------------------------------------
+# RYUJINX:
+release_ryujinx=$(curl -s https://github.com/Ryujinx/release-channel-master | grep "/release-channel-master/releases/tag/" | sed 's,^.*/release-channel-master/releases/tag/,,g' | cut -d \" -f1)
+link_ryujinx=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/ryujinx-$release_ryujinx-linux_x64.tar.gz
+# -------------------------------------------------------------------
+# RYUJINXAVALONIA:
+link_ryujinxavalonia=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/test-ava-ryujinx-$release_ryujinx-linux_x64.tar.gz
+#
+echo "link_yuzu@$link_yuzu" >> $links
+echo "link_yuzuea@$link_yuzuea" >> $links
+echo "link_ryujinx@$link_ryujinx" >> $links
+echo "link_ryujinxavalonia@$link_ryujinxavalonia" >> $links
+}
 ######################################################################
 # READ SETTINGS FROM COOKIE: -----------------------------------------
-TEXT_SIZE=$(cat /userdata/system/switch/updater.settings | grep "TEXT_SIZE=" | cut -d "=" -f 2)
-TEXT_COLOR=$(cat /userdata/system/switch/updater.settings | grep "TEXT_COLOR=" | cut -d "=" -f 2)
-THEME_COLOR=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR=" | cut -d "=" -f 2)
-THEME_COLOR_YUZU=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_YUZU=" | cut -d "=" -f 2)
-THEME_COLOR_YUZUEA=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_YUZUEA=" | cut -d "=" -f 2)
-THEME_COLOR_RYUJINX=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_RYUJINX=" | cut -d "=" -f 2)
-THEME_COLOR_RYUJINXAVALONIA=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
-THEME_COLOR_OK=$(cat /userdata/system/switch/updater.settings | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
-EMULATORS=$(cat /userdata/system/switch/updater.settings | grep "EMULATORS=" | cut -d "=" -f 2)
+cookie=/userdata/system/switch/extra/batocera-switch-updatersettings
+TEXT_SIZE=$(cat $cookie | grep "TEXT_SIZE=" | cut -d "=" -f 2)
+TEXT_COLOR=$(cat $cookie | grep "TEXT_COLOR=" | cut -d "=" -f 2)
+THEME_COLOR=$(cat $cookie | grep "THEME_COLOR=" | cut -d "=" -f 2)
+THEME_COLOR_YUZU=$(cat $cookie | grep "THEME_COLOR_YUZU=" | cut -d "=" -f 2)
+THEME_COLOR_YUZUEA=$(cat $cookie | grep "THEME_COLOR_YUZUEA=" | cut -d "=" -f 2)
+THEME_COLOR_RYUJINX=$(cat $cookie | grep "THEME_COLOR_RYUJINX=" | cut -d "=" -f 2)
+THEME_COLOR_RYUJINXAVALONIA=$(cat $cookie | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
+THEME_COLOR_OK=$(cat $cookie | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
+EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
 # -------------------------
 F=$TEXT_COLOR
 T=$THEME_COLOR
@@ -438,10 +522,21 @@ WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
 clear
-echo -e "${T}-------------------------------------"
-echo -e "${F}SWITCH EMULATORS UPDATER FOR BATOCERA"
+echo -e "${RED}---------------------------"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
 echo
+resolvelinks & spinner $!
+clear
+echo -e "${RED}---------------------------"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
+# -------------------------
+links=/userdata/system/switch/extra/links
+link_yuzu="$(cat $links | grep "link_yuzu@" | cut -d "@" -f2 )"
+link_yuzuea="$(cat $links | grep "link_yuzuea@" | cut -d "@" -f2 )"
+link_ryujinx="$(cat $links | grep "link_ryujinx@" | cut -d "@" -f2 )"
+link_ryujinxavalonia="$(cat $links | grep "link_ryujinxavalonia@" | cut -d "@" -f2 )"
+#
 # UPDATE 4 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" != "" ]]; then
 update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia
@@ -477,10 +572,11 @@ echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
 # CLEAR TEMP & COOKIE:
-rm -rf /userdata/system/switch/extra/downloads
-rm /userdata/system/switch/extra/display.settings
+rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
+rm /userdata/system/switch/extra/display.settings 2>/dev/null
+rm /userdata/system/switch/extra/updater.settings 2>/dev/null
 # KEEP OUTPUT FOR VISIBILITY:
-sleep 3
+sleep 4
 exit 0
 }
 export -f batocera_update_switch
@@ -489,6 +585,7 @@ export -f batocera_update_switch
 function get-xterm-fontsize {
 #\
   tput="/userdata/system/switch/extra/batocera-switch-tput"
+  chmod a+x $tput
   libtinfo="/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
   url_tput="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput"
   url_libtinfo="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6"
@@ -530,7 +627,7 @@ cols=$(cat $settings | tail -1) 2>/dev/null
 done 
 ######################################################################
 # RUN THE UPDATER: 
-  DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxavalonia" 2>/dev/null 
+  DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 ######################################################################
 exit 0
 ######
