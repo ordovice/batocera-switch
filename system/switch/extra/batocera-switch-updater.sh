@@ -499,6 +499,7 @@ function get-xterm-fontsize {
       wget -q -O $tput $url_tput
       chmod +x $tput
       fi
+  chmod +x $tput
   else
   wget -q -O $tput $url_tput
   chmod +x $tput
