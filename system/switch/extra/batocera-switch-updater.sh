@@ -382,9 +382,13 @@ echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startu
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
 echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-echo 'mkdir ~/configs/Ryujinx 2>/dev/null && cp -rL ~/.config/Ryujinx/* ~/configs/Ryujinx/ 2>/dev/null && mv ~/.config/Ryujinx ~/.config/Ryujinx0 2>/dev/null && rm -rf ~/.config/Ryujinx0 && ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx'  >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
+echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
+echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
 chmod a+x $startup
-$extra/$emu/startup
+$extra/$emu/startup 2>/dev/null
 # /
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -428,9 +432,13 @@ echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startu
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
 echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-echo 'mkdir ~/configs/Ryujinx 2>/dev/null && cp -rL ~/.config/Ryujinx/* ~/configs/Ryujinx/ 2>/dev/null && mv ~/.config/Ryujinx ~/.config/Ryujinx0 2>/dev/null && rm -rf ~/.config/Ryujinx0 && ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx'  >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
+echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
+echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
 chmod a+x $startup
-$extra/$emu/startup
+$extra/$emu/startup 2>/dev/null
 # /
 cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinxavalonia 2>/dev/null
 chmod a+x $path_ryujinxavalonia 2>/dev/null
@@ -630,4 +638,3 @@ done
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 ######################################################################
 exit 0
-######
