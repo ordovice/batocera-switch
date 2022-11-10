@@ -6,7 +6,7 @@
                 "start"
             ],
             "type": "exec",
-            "target": ["killall -9 yuzu Ryujinx", "unclutter-remote -h"]
+            "target": ["killall -9 yuzu yuzuEA Ryujinx Ryujinx-Avalonia Ryujinx.AppImage Ryujinx-Avalonia.AppImage", "unclutter-remote -h"]
         }
 	]
 }
