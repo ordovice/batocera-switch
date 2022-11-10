@@ -459,7 +459,7 @@ spinner()
     local delay=0.2
     local spinstr='|/-\'
     while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        local temp=${spinstr#?} EMULATORS
+        local temp=${spinstr#?}
         printf "LOADING EMULATORS  %c   " "$spinstr"
         local spinstr=$temp${spinstr%"$temp"}
         sleep $delay
@@ -529,15 +529,60 @@ DARKCYAN='\033[0;36m'     # darkcyan
 WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
+R=$RED
 clear
-echo -e "${RED}---------------------------"
+echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
 echo
+echo
 resolvelinks & spinner $!
+# -------------------------
 clear
-echo -e "${RED}---------------------------"
+echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
+echo
+echo -e "${R}LOADING EMULATORS"
+sleep 0.2
+# -------------------------
+clear
+echo -e "${R}---------------------------"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo
+echo
+echo -e "${R} LOAD/NGEMU/A/ORS"
+sleep 0.2
+# -------------------------
+clear
+echo -e "${R}---------------------------"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo
+echo
+echo -e "${R}  LOAD//EMUL//S"
+sleep 0.2
+# -------------------------
+clear
+echo -e "${R}---------------------------"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo
+echo
+echo -e "${R}   /OADNEM/TRS"
+sleep 0.2
+# -------------------------
+clear
+echo -e "${R}---------------------------"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo
+echo
+echo -e "${R}   ///A/NEM///S"
+sleep 0.2
+# -------------------------
+clear
+echo -e "${R}---------------------------"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo
+echo
+#echo -e "${RED}   LOADNEMLTRS"
 # -------------------------
 links=/userdata/system/switch/extra/links
 link_yuzu="$(cat $links | grep "link_yuzu@" | cut -d "@" -f2 )"
@@ -593,7 +638,6 @@ export -f batocera_update_switch
 function get-xterm-fontsize {
 #\
   tput="/userdata/system/switch/extra/batocera-switch-tput"
-  chmod a+x $tput
   libtinfo="/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
   url_tput="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput"
   url_libtinfo="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6"
@@ -604,6 +648,7 @@ function get-xterm-fontsize {
       wget -q -O $tput $url_tput
       chmod +x $tput
       fi
+  chmod a+x $tput
   else
   wget -q -O $tput $url_tput
   chmod +x $tput
@@ -638,3 +683,4 @@ done
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 ######################################################################
 exit 0
+######
