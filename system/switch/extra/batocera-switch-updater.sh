@@ -113,20 +113,24 @@ echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
+dos2unix $startup
 chmod a+x $startup
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
-customsh=/userdata/system/custom.sh
+csh=/userdata/system/custom.sh
 startup=/userdata/system/switch/extra/batocera-switch-startup
-if [[ -e "$startup" ]] && [[ $(wc -c $startup) != "0" ]]; then 
-  if [[ "$(cat $customsh | grep $startup)" = "" ]]; then
-   echo $startup >> $customsh
-  fi
-  if [[ "$(cat $customsh | grep $startup | grep "#")" != "" ]]; then
-   echo $startup >> $customsh
-  fi
+if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup)" = "" ]]; then
+   echo "\n$startup" >> $customsh
 fi
+if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup | grep "#")" != "" ]]; then
+   echo "\n$startup" >> $customsh
+fi
+if [[ -e $csh ]]; then :; else
+   echo "\n$startup" >> $csh
+fi
+dos2unix $csh 2>/dev/null
+chmod a+x $csh
 ######################################################################
 ######################################################################
 ######################################################################
