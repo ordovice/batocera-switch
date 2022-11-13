@@ -658,12 +658,21 @@ rm $es/add_feat_switch.cfg 2>/dev/null
 #mv $es/es_features.cfg $backup/es_features.cfg-backup-$timestamp 2>/dev/null
 fi
 # --------------------------------------------------------------------
+# AUTOMATICALLY PULL THE LATEST EMULATORS FEATURES UPDATES: 
+url_esfeaturesswitch=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/emulationstation/es_features_switch.cfg
+url_ryujinxmaingen=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
+url_yuzumaingen=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
+wget -q -O /userdata/system/configs/emulationstation/es_features_switch.cfg $url_esfeaturesswitch
+wget -q -O /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py $url_ryujinxmaingen
+wget -q -O /userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py $url_yuzumaingen
+# --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
 rm /userdata/system/switch/extra/updater.settings 2>/dev/null
 # KEEP OUTPUT FOR VISIBILITY:
 sleep 4
+curl http://127.0.0.1:1234/reloadgames
 exit 0
 }
 export -f batocera_update_switch
