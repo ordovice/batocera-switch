@@ -113,20 +113,24 @@ echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
+dos2unix $startup
 chmod a+x $startup
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
-customsh=/userdata/system/custom.sh
+csh=/userdata/system/custom.sh
 startup=/userdata/system/switch/extra/batocera-switch-startup
-if [[ -e "$startup" ]] && [[ $(wc -c $startup) != "0" ]]; then 
-  if [[ "$(cat $customsh | grep $startup)" = "" ]]; then
-   echo $startup >> $customsh
-  fi
-  if [[ "$(cat $customsh | grep $startup | grep "#")" != "" ]]; then
-   echo $startup >> $customsh
-  fi
+if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup)" = "" ]]; then
+   echo "\n$startup" >> $customsh
 fi
+if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup | grep "#")" != "" ]]; then
+   echo "\n$startup" >> $customsh
+fi
+if [[ -e $csh ]]; then :; else
+   echo "\n$startup" >> $csh
+fi
+dos2unix $csh 2>/dev/null
+chmod a+x $csh
 ######################################################################
 ######################################################################
 ######################################################################
@@ -624,12 +628,51 @@ echo
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
+# --------------------------------------------------------------------
+# CLEAR THE OLD V34- CUSTOM.SH LINE IF FOUND AND THE SYSTEM IS NOW VERSION V35+:
+# THIS SHOULD HELP WITH UPGRADED VERSIONS AND 'OTHER INSTALLS' 
+if [[ "$(uname -a | grep "x86_64")" != "" ]] && [[ "$(uname -a | awk '{print $3}')" > "5.18.00" ]]; then
+remove="cat /userdata/system/configs/emulationstation/add_feat_os.cfg /userdata/system/configs/emulationstation/add_feat_switch.cfg"
+csh=/userdata/system/custom.sh
+  if [[ -e "$csh" ]]; then
+tmp=/userdata/system/customsh.tmp
+rm $tmp 2>/dev/null
+nl=$(cat $csh | wc -l)
+l=1; while [[ $l -le $nl ]]; do
+ln=$(cat $csh | sed ""$l"q;d")
+if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+((l++))
+done
+cp $tmp $csh 2>/dev/null
+rm $tmp 2>/dev/null
+  fi
+es=/userdata/system/configs/emulationstation
+backup=/userdata/system/switch/extra/backup
+mkdir $backup 2>/dev/null
+# REMOVE OLD ~/CONFIGS/EMULATIONSTATION/files if found & system is now upgraded: 
+rm $es/add_feat_switch.cfg 2>/dev/null
+# --- optionally remove es_features or backup to ~/switch/extra/backup
+#rm $es/es_features.cfg 2>/dev/null
+#timestamp=$(date +"%y%m%d-%H%M%S")
+#mv $es/add_feat_switch.cfg $backup/add_feat_switch.cfg-backup-$timestamp 2>/dev/null
+#mv $es/es_features.cfg $backup/es_features.cfg-backup-$timestamp 2>/dev/null
+fi
+# --------------------------------------------------------------------
+# AUTOMATICALLY PULL THE LATEST EMULATORS FEATURES UPDATES: 
+url_esfeaturesswitch=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/emulationstation/es_features_switch.cfg
+url_ryujinxmaingen=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
+url_yuzumaingen=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
+wget -q -O /userdata/system/configs/emulationstation/es_features_switch.cfg $url_esfeaturesswitch
+wget -q -O /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py $url_ryujinxmaingen
+wget -q -O /userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py $url_yuzumaingen
+# --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
 rm /userdata/system/switch/extra/updater.settings 2>/dev/null
 # KEEP OUTPUT FOR VISIBILITY:
 sleep 4
+curl http://127.0.0.1:1234/reloadgames
 exit 0
 }
 export -f batocera_update_switch
