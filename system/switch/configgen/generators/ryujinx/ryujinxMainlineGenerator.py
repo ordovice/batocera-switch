@@ -122,7 +122,11 @@ class RyujinxMainlineGenerator(Generator):
         data['system_time_zone'] = 'UTC'
         data['system_time_offset'] = 0
         data['docked_mode'] = bool('true')
-        data['enable_discord_integration'] = bool(0)
+        if system.isOptSet('ryu_enable_discord_integration'):
+            data['enable_discord_integration'] = bool(int(system.config["ryu_enable_discord_integration"]))
+        else:
+            data['enable_discord_integration'] = bool('true')    
+
         data['check_updates_on_start'] = bool(0)
         data['show_confirm_exit'] = bool(0)
         data['hide_cursor_on_idle'] = bool('true')

@@ -210,8 +210,16 @@ class YuzuMainlineGenerator(Generator):
         yuzuConfig.set("UI", "firstStart\\default", "false")
         yuzuConfig.set("UI", "displayTitleBars", "false")
         yuzuConfig.set("UI", "displayTitleBars\\default", "false")
-        yuzuConfig.set("UI", "enable_discord_presence", "false")
+
+        if system.isOptSet('multicore'):
+            yuzuConfig.set("Core", "enable_discord_presence", system.config["yuzu_enable_discord_presence"])
+        else:
+            yuzuConfig.set("UI", "enable_discord_presence", "false")
+
         yuzuConfig.set("UI", "enable_discord_presence\\default", "false")
+
+
+
         yuzuConfig.set("UI", "calloutFlags", "1")
         yuzuConfig.set("UI", "calloutFlags\\default", "false")
 
