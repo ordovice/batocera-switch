@@ -624,6 +624,36 @@ echo
 echo -e "${THEME_COLOR}-------------------------------------${W}"
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
 fi
+# --------------------------------------------------------------------
+# CLEAR THE OLD V34- CUSTOM.SH LINE IF FOUND AND THE SYSTEM IS NOW VERSION V35+:
+# THIS SHOULD HELP WITH UPGRADED VERSIONS AND 'OTHER INSTALLS' 
+if [[ "$(uname -a | grep "x86_64")" != "" ]] && [[ "$(uname -a | awk '{print $3}')" > "5.18.00" ]]; then
+remove="cat /userdata/system/configs/emulationstation/add_feat_os.cfg /userdata/system/configs/emulationstation/add_feat_switch.cfg"
+csh=/userdata/system/custom.sh
+  if [[ -e "$csh" ]]; then
+tmp=/userdata/system/customsh.tmp
+rm $tmp 2>/dev/null
+nl=$(cat $csh | wc -l)
+l=1; while [[ $l -le $nl ]]; do
+ln=$(cat $csh | sed ""$l"q;d")
+if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+((l++))
+done
+cp $tmp $csh 2>/dev/null
+rm $tmp 2>/dev/null
+  fi
+es=/userdata/system/configs/emulationstation
+backup=/userdata/system/switch/extra/backup
+mkdir $backup 2>/dev/null
+# REMOVE OLD ~/CONFIGS/EMULATIONSTATION/files if found & system is now upgraded: 
+rm $es/add_feat_switch.cfg 2>/dev/null
+# --- optionally remove es_features or backup to ~/switch/extra/backup
+#rm $es/es_features.cfg 2>/dev/null
+#timestamp=$(date +"%y%m%d-%H%M%S")
+#mv $es/add_feat_switch.cfg $backup/add_feat_switch.cfg-backup-$timestamp 2>/dev/null
+#mv $es/es_features.cfg $backup/es_features.cfg-backup-$timestamp 2>/dev/null
+fi
+# --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
