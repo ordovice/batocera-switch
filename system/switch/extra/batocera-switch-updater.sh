@@ -566,7 +566,7 @@ echo -e "${R}  LOAD//EMUL//S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${F}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
