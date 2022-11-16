@@ -534,8 +534,9 @@ WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
 R=$RED
+W=$WHITE
 clear
-echo -e "${R}---------------------------"
+echo -e "${F}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
 echo
 echo
@@ -566,7 +567,7 @@ echo -e "${R}  LOAD//EMUL//S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${F}---------------------------"
+echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -582,8 +583,8 @@ echo -e "${R}   ///A/NEM///S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${F}---------------------------"
-echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo -e "${W}---------------------------"
+echo -e "${W}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
 #echo -e "${RED}   LOADNEMLTRS"
