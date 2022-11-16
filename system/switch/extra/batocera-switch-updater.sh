@@ -684,7 +684,7 @@ libtinfo=/userdata/system/switch/extra/batocera-switch-libtinfo.so.6
 url=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra
 wget -q -O $tput $url/batocera-switch-tput
 wget -q -O $libtinfo $url/batocera-switch-libtinfo.so.6
-chmod a+x $tput; cp $libtinfo /lib/libtinfo.so.6 2>/dev/null
+chmod a+x $tput; ln -s $libtinfo /lib/libtinfo.so.6 2>/dev/null
 cfg=/userdata/system/switch/extra/display.settings; rm $cfg 2>/dev/null
 DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null
 cols=$(cat $cfg | tail -1) 2>/dev/null
@@ -698,7 +698,7 @@ until [[ "$cols" != "80" ]]
 do
 get-xterm-fontsize 2>/dev/null
 cols=$(cat $cfg | tail -1) 2>/dev/null
-done
+done; TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 ###########################################################################
 # RUN THE UPDATER: 
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
