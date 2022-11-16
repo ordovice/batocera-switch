@@ -536,14 +536,14 @@ BLACK='\033[0;30m'        # black
 R=$RED
 W=$WHITE
 clear
-echo -e "${F}---------------------------"
+echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
 echo
 echo
 resolvelinks & spinner $!
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -551,7 +551,7 @@ echo -e "${R}LOADING EMULATORS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -559,7 +559,7 @@ echo -e "${R} LOAD/NGEMU/A/ORS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -567,7 +567,7 @@ echo -e "${R}  LOAD//EMUL//S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -575,7 +575,7 @@ echo -e "${R}   /OADNEM/TRS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
