@@ -699,7 +699,6 @@ do
 get-xterm-fontsize 2>/dev/null
 cols=$(cat $cfg | tail -1) 2>/dev/null
 done
-TEXT_SIZE=$(cat /userdata/system/switch/extra/display.settings | tail -n 1)
 ###########################################################################
 # RUN THE UPDATER: 
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
