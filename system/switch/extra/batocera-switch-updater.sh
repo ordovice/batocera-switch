@@ -692,7 +692,7 @@ TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 }
 export -f get-xterm-fontsize 2>/dev/null
 get-xterm-fontsize 2>/dev/null
-cfg=/userdata/system/pro/$appname/extra/display.settings
+cfg=/userdata/system/switch/extra/display.settings
 cols=$(cat $cfg | tail -1) 2>/dev/null
 until [[ "$cols" != "80" ]] 
 do
