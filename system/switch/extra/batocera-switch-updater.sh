@@ -694,11 +694,11 @@ export -f get-xterm-fontsize 2>/dev/null
 get-xterm-fontsize 2>/dev/null
 cfg=/userdata/system/switch/extra/display.settings
 cols=$(cat $cfg | tail -1) 2>/dev/null
-until [[ "$cols" != "80" ]] 
+until [[ $cols != 80 ]] 
 do
-get-xterm-fontsize 2>/dev/null
+get-xterm-fontsize; sleep 0.042; 
 cols=$(cat $cfg | tail -1) 2>/dev/null
-done; TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
+done
 ###########################################################################
 # RUN THE UPDATER: 
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
