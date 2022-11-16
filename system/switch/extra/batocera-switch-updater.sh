@@ -699,6 +699,7 @@ do
 get-xterm-fontsize; sleep 0.042; 
 cols=$(cat $cfg | tail -1) 2>/dev/null
 done
+TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 ###########################################################################
 # RUN THE UPDATER: 
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
