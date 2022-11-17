@@ -534,6 +534,7 @@ WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
 R=$RED
+W=$WHITE
 clear
 echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
@@ -542,7 +543,7 @@ echo
 resolvelinks & spinner $!
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -550,7 +551,7 @@ echo -e "${R}LOADING EMULATORS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -558,7 +559,7 @@ echo -e "${R} LOAD/NGEMU/A/ORS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -566,7 +567,7 @@ echo -e "${R}  LOAD//EMUL//S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -574,7 +575,7 @@ echo -e "${R}   /OADNEM/TRS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -582,8 +583,8 @@ echo -e "${R}   ///A/NEM///S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
-echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo -e "${W}---------------------------"
+echo -e "${W}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
 #echo -e "${RED}   LOADNEMLTRS"
@@ -679,51 +680,30 @@ export -f batocera_update_switch
 ######################################################################
 # PREPARE DISPLAY OUTPUT: 
 function get-xterm-fontsize {
-#\
-  tput="/userdata/system/switch/extra/batocera-switch-tput"
-  libtinfo="/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
-  url_tput="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput"
-  url_libtinfo="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6"
-  settings="/userdata/system/switch/extra/display.settings"
-  rm $settings 2>/dev/null
-  if [[ -e "$tput" ]]; then
-      if [[ $(wc -c $tput | awk '{print $1}') = "0" ]]; then
-      wget -q -O $tput $url_tput
-      chmod +x $tput
-      fi
-  chmod a+x $tput
-  else
-  wget -q -O $tput $url_tput
-  chmod +x $tput
-  fi
-  if [[ -e "/lib/libtinfo.so.6" ]]; then
-      if [[ $(wc -c /lib/libtinfo.so.6 | awk '{print $1}') = "0" ]]; then
-      wget -q -O $libtinfo $url_libtinfo
-      cp $libtinfo /lib/ 2>/dev/null
-      fi
-  else
-  wget -q -O $libtinfo $url_libtinfo
-  cp $libtinfo /lib/ 2>/dev/null
-  fi
-  DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "sleep 0.042 && $tput cols >> $settings" 2>/dev/null
-  cols=$(cat $settings | tail -1) 2>/dev/null
-  TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
-#/
+tput=/userdata/system/switch/extra/batocera-switch-tput
+libtinfo=/userdata/system/switch/extra/batocera-switch-libtinfo.so.6
+url=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra
+wget -q -O $tput $url/batocera-switch-tput
+wget -q -O $libtinfo $url/batocera-switch-libtinfo.so.6
+chmod a+x $tput; ln -s $libtinfo /lib/libtinfo.so.6 2>/dev/null
+cfg=/userdata/system/switch/extra/display.settings; rm $cfg 2>/dev/null
+DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null
+cols=$(cat $cfg | tail -1) 2>/dev/null
+TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 }
 export -f get-xterm-fontsize 2>/dev/null
-# --------------------------------------------------------------------
-# FIND PROPER TEXT SIZE: 
 get-xterm-fontsize 2>/dev/null
-settings="/userdata/system/switch/extra/display.settings"
-cols=$(cat $settings | tail -1) 2>/dev/null
-until [[ "$cols" != "80" ]] 
-do 
-get-xterm-fontsize 2>/dev/null
-cols=$(cat $settings | tail -1) 2>/dev/null
-done 
-######################################################################
+cfg=/userdata/system/switch/extra/display.settings
+cols=$(cat $cfg | tail -1) 2>/dev/null
+until [[ $cols != 80 ]] 
+do
+get-xterm-fontsize; sleep 0.042; 
+cols=$(cat $cfg | tail -1) 2>/dev/null
+done
+TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
+###########################################################################
 # RUN THE UPDATER: 
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
-######################################################################
+###########################################################################
 exit 0
 ######
