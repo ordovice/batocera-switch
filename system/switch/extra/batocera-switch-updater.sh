@@ -87,20 +87,28 @@ echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
 echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
+dos2unix $launcher
 chmod a+x $launcher
+dos2unix $shortcut
+chmod a+x $shortcut
 cp $shortcut $extra 2>/dev/null
 } # -----------------------------------------------------------------
+#
+# remove old version dekstop shortcuts from ~/.local/share/applications 
+rm /userdata/system/.local/share/applications/yuzu-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/yuzuEA-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/ryujinx-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
+# remove old version dekstop shortcuts from /usr/share/applications:
+rm /usr/share/applications/yuzu-config.desktop 2>/dev/null
+rm /usr/share/applications/yuzuEA-config.desktop 2>/dev/null
+rm /usr/share/applications/ryujinx-config.desktop 2>/dev/null
+rm /usr/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
 #
 generate-shortcut-launcher 'yuzu' 'yuzu'
 generate-shortcut-launcher 'yuzuEA' 'yuzuea'
 generate-shortcut-launcher 'Ryujinx' 'ryujinx'
 generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
-#
-# remove old version dekstop shortcuts: 
-rm /userdata/system/.local/share/applications/yuzu-config.desktop 2>/dev/null
-rm /userdata/system/.local/share/applications/yuzuEA-config.desktop 2>/dev/null
-rm /userdata/system/.local/share/applications/ryujinx-config.desktop 2>/dev/null
-rm /userdata/system/.local/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
 # -------------------------------------------------------------------
 # PREPARE STARTUP FILE
 # -------------------------------------------------------------------
@@ -129,7 +137,7 @@ fi
 if [[ -e $csh ]]; then :; else
    echo "\n$startup" >> $csh
 fi
-dos2unix $csh 2>/dev/null
+dos2unix $csh
 chmod a+x $csh
 ######################################################################
 ######################################################################
@@ -391,6 +399,7 @@ echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev
 echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
+dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
 # /
@@ -441,6 +450,7 @@ echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev
 echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
+dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
 # /
