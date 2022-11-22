@@ -411,7 +411,7 @@ echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null; rm /userdata/system/configs/Ryujinx/Ryujinx' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 dos2unix $startup
 chmod a+x $startup
@@ -469,7 +469,7 @@ echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null; rm /userdata/system/configs/Ryujinx/Ryujinx' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 dos2unix $startup
 chmod a+x $startup
