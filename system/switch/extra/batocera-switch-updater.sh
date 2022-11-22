@@ -87,20 +87,28 @@ echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
 echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
+dos2unix $launcher
 chmod a+x $launcher
+dos2unix $shortcut
+chmod a+x $shortcut
 cp $shortcut $extra 2>/dev/null
 } # -----------------------------------------------------------------
 #
-generate-shortcut-launcher 'yuzu' 'yuzu'
-generate-shortcut-launcher 'yuzuEA' 'yuzuea'
-generate-shortcut-launcher 'Ryujinx' 'ryujinx'
-generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
-#
-# remove old version dekstop shortcuts: 
+# remove old version dekstop shortcuts from ~/.local/share/applications 
 rm /userdata/system/.local/share/applications/yuzu-config.desktop 2>/dev/null
 rm /userdata/system/.local/share/applications/yuzuEA-config.desktop 2>/dev/null
 rm /userdata/system/.local/share/applications/ryujinx-config.desktop 2>/dev/null
 rm /userdata/system/.local/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
+# remove old version dekstop shortcuts from /usr/share/applications:
+rm /usr/share/applications/yuzu-config.desktop 2>/dev/null
+rm /usr/share/applications/yuzuEA-config.desktop 2>/dev/null
+rm /usr/share/applications/ryujinx-config.desktop 2>/dev/null
+rm /usr/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
+# generate new desktop shortcuts: 
+generate-shortcut-launcher 'yuzu' 'yuzu'
+generate-shortcut-launcher 'yuzuEA' 'yuzuea'
+generate-shortcut-launcher 'Ryujinx' 'ryujinx'
+generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
 # -------------------------------------------------------------------
 # PREPARE STARTUP FILE
 # -------------------------------------------------------------------
@@ -408,7 +416,10 @@ echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev
 dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
-# /
+# / 
+# touch ryu config file: 
+mkdir /userdata/system/configs/Ryujinx 2>/dev/null
+touch /userdata/system/configs/Ryujinx/Config.json 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null

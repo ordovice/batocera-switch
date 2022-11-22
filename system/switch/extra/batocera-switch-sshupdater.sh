@@ -87,20 +87,28 @@ echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
 echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
+dos2unix $launcher
 chmod a+x $launcher
+dos2unix $shortcut
+chmod a+x $shortcut
 cp $shortcut $extra 2>/dev/null
 } # -----------------------------------------------------------------
 #
-generate-shortcut-launcher 'yuzu' 'yuzu'
-generate-shortcut-launcher 'yuzuEA' 'yuzuea'
-generate-shortcut-launcher 'Ryujinx' 'ryujinx'
-generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
-#
-# remove old version dekstop shortcuts: 
+# remove old version dekstop shortcuts from ~/.local/share/applications 
 rm /userdata/system/.local/share/applications/yuzu-config.desktop 2>/dev/null
 rm /userdata/system/.local/share/applications/yuzuEA-config.desktop 2>/dev/null
 rm /userdata/system/.local/share/applications/ryujinx-config.desktop 2>/dev/null
 rm /userdata/system/.local/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
+# remove old version dekstop shortcuts from /usr/share/applications:
+rm /usr/share/applications/yuzu-config.desktop 2>/dev/null
+rm /usr/share/applications/yuzuEA-config.desktop 2>/dev/null
+rm /usr/share/applications/ryujinx-config.desktop 2>/dev/null
+rm /usr/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
+# generate new desktop shortcuts: 
+generate-shortcut-launcher 'yuzu' 'yuzu'
+generate-shortcut-launcher 'yuzuEA' 'yuzuea'
+generate-shortcut-launcher 'Ryujinx' 'ryujinx'
+generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
 # -------------------------------------------------------------------
 # PREPARE STARTUP FILE
 # -------------------------------------------------------------------
@@ -120,15 +128,25 @@ chmod a+x $startup
 # -------------------------------------------------------------------
 csh=/userdata/system/custom.sh
 startup=/userdata/system/switch/extra/batocera-switch-startup
-if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup)" = "" ]]; then
-   echo "\n$startup" >> $customsh
-fi
-if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup | grep "#")" != "" ]]; then
-   echo "\n$startup" >> $customsh
-fi
-if [[ -e $csh ]]; then :; else
-   echo "\n$startup" >> $csh
-fi
+if [[ -e $csh ]];
+then
+   tmp=/userdata/system/customsh.tmp
+   remove=batocera-switch-startup
+   rm $tmp 2>/dev/null
+   nl=$(cat $csh | wc -l)
+   l=1; while [[ $l -le $nl ]]; do
+   ln=$(cat $csh | sed ""$l"q;d")
+   if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+   ((l++))
+   done
+   cp $tmp $csh 2>/dev/null
+   rm $tmp 2>/dev/null
+   echo -e "\n$startup" >> $csh   
+   dos2unix $csh 
+   chmod a+x $csh 
+else 
+   echo -e "\n$startup" >> $csh
+fi 
 dos2unix $csh 2>/dev/null
 chmod a+x $csh
 ######################################################################
@@ -385,15 +403,23 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
-echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/.config/Ryujinx0/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
-# /
+# / 
+# touch ryu config file: 
+mkdir /userdata/system/configs/Ryujinx 2>/dev/null
+touch /userdata/system/configs/Ryujinx/Config.json 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -435,12 +461,17 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
-echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/.config/Ryujinx0/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
 # /
@@ -534,6 +565,7 @@ WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
 R=$RED
+W=$WHITE
 clear
 echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
@@ -542,7 +574,7 @@ echo
 resolvelinks & spinner $!
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -550,7 +582,7 @@ echo -e "${R}LOADING EMULATORS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -558,7 +590,7 @@ echo -e "${R} LOAD/NGEMU/A/ORS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -566,7 +598,7 @@ echo -e "${R}  LOAD//EMUL//S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -574,7 +606,7 @@ echo -e "${R}   /OADNEM/TRS"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${W}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
@@ -582,8 +614,8 @@ echo -e "${R}   ///A/NEM///S"
 sleep 0.2
 # -------------------------
 clear
-echo -e "${R}---------------------------"
-echo -e "${F}SWITCH UPDATER FOR BATOCERA"
+echo -e "${W}---------------------------"
+echo -e "${W}SWITCH UPDATER FOR BATOCERA"
 echo
 echo
 #echo -e "${RED}   LOADNEMLTRS"
@@ -677,54 +709,8 @@ exit 0
 }
 export -f batocera_update_switch
 ######################################################################
-# PREPARE DISPLAY OUTPUT: 
-function get-xterm-fontsize {
-#\
-  tput="/userdata/system/switch/extra/batocera-switch-tput"
-  libtinfo="/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
-  url_tput="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput"
-  url_libtinfo="https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6"
-  settings="/userdata/system/switch/extra/display.settings"
-  rm $settings 2>/dev/null
-  if [[ -e "$tput" ]]; then
-      if [[ $(wc -c $tput | awk '{print $1}') = "0" ]]; then
-      wget -q -O $tput $url_tput
-      chmod +x $tput
-      fi
-  chmod a+x $tput
-  else
-  wget -q -O $tput $url_tput
-  chmod +x $tput
-  fi
-  if [[ -e "/lib/libtinfo.so.6" ]]; then
-      if [[ $(wc -c /lib/libtinfo.so.6 | awk '{print $1}') = "0" ]]; then
-      wget -q -O $libtinfo $url_libtinfo
-      cp $libtinfo /lib/ 2>/dev/null
-      fi
-  else
-  wget -q -O $libtinfo $url_libtinfo
-  cp $libtinfo /lib/ 2>/dev/null
-  fi
-  DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "sleep 0.042 && $tput cols >> $settings" 2>/dev/null
-  cols=$(cat $settings | tail -1) 2>/dev/null
-  TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
-#/
-}
-export -f get-xterm-fontsize 2>/dev/null
-# --------------------------------------------------------------------
-# FIND PROPER TEXT SIZE: 
-get-xterm-fontsize 2>/dev/null
-settings="/userdata/system/switch/extra/display.settings"
-cols=$(cat $settings | tail -1) 2>/dev/null
-until [[ "$cols" != "80" ]] 
-do 
-get-xterm-fontsize 2>/dev/null
-cols=$(cat $settings | tail -1) 2>/dev/null
-done 
-######################################################################
 # RUN THE UPDATER: 
-# DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
-######################################################################
 batocera_update_switch
+######################################################################
 exit 0
 ######
