@@ -1,7 +1,7 @@
 # batocera-switch
 Extends Batocera and adds switch emulation
 
-Master branch is currently working on Batocera 34 and the latest Batocera 35 beta.
+Master branch is currently working on Batocera 35.  It has not been tested on Batocera 36 beta (this includes the Steam Deck Betas.  If you have v34, please use the packaged release.
 
 This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS).  
 
