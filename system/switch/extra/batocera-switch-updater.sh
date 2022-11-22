@@ -87,28 +87,20 @@ echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
 echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
-dos2unix $launcher
 chmod a+x $launcher
-dos2unix $shortcut
-chmod a+x $shortcut
 cp $shortcut $extra 2>/dev/null
 } # -----------------------------------------------------------------
-#
-# remove old version dekstop shortcuts from ~/.local/share/applications 
-rm /userdata/system/.local/share/applications/yuzu-config.desktop 2>/dev/null
-rm /userdata/system/.local/share/applications/yuzuEA-config.desktop 2>/dev/null
-rm /userdata/system/.local/share/applications/ryujinx-config.desktop 2>/dev/null
-rm /userdata/system/.local/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
-# remove old version dekstop shortcuts from /usr/share/applications:
-rm /usr/share/applications/yuzu-config.desktop 2>/dev/null
-rm /usr/share/applications/yuzuEA-config.desktop 2>/dev/null
-rm /usr/share/applications/ryujinx-config.desktop 2>/dev/null
-rm /usr/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
 #
 generate-shortcut-launcher 'yuzu' 'yuzu'
 generate-shortcut-launcher 'yuzuEA' 'yuzuea'
 generate-shortcut-launcher 'Ryujinx' 'ryujinx'
 generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
+#
+# remove old version dekstop shortcuts: 
+rm /userdata/system/.local/share/applications/yuzu-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/yuzuEA-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/ryujinx-config.desktop 2>/dev/null
+rm /userdata/system/.local/share/applications/ryujinxavalonia-config.desktop 2>/dev/null
 # -------------------------------------------------------------------
 # PREPARE STARTUP FILE
 # -------------------------------------------------------------------
@@ -128,16 +120,26 @@ chmod a+x $startup
 # -------------------------------------------------------------------
 csh=/userdata/system/custom.sh
 startup=/userdata/system/switch/extra/batocera-switch-startup
-if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup)" = "" ]]; then
-   echo "\n$startup" >> $customsh
-fi
-if [[ -e $csh ]] && [[ "$(cat $csh | grep $startup | grep "#")" != "" ]]; then
-   echo "\n$startup" >> $customsh
-fi
-if [[ -e $csh ]]; then :; else
-   echo "\n$startup" >> $csh
-fi
-dos2unix $csh
+if [[ -e $csh ]];
+then
+   tmp=/userdata/system/customsh.tmp
+   remove=batocera-switch-startup
+   rm $tmp 2>/dev/null
+   nl=$(cat $csh | wc -l)
+   l=1; while [[ $l -le $nl ]]; do
+   ln=$(cat $csh | sed ""$l"q;d")
+   if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+   ((l++))
+   done
+   cp $tmp $csh 2>/dev/null
+   rm $tmp 2>/dev/null
+   echo -e "\n$startup" >> $csh   
+   dos2unix $csh 
+   chmod a+x $csh 
+else 
+   echo -e "\n$startup" >> $csh
+fi 
+dos2unix $csh 2>/dev/null
 chmod a+x $csh
 ######################################################################
 ######################################################################
@@ -393,12 +395,16 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
-echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/.config/Ryujinx0/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
@@ -444,12 +450,16 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
-echo 'cp -r /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/.config/Ryujinx0/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
