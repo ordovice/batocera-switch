@@ -129,6 +129,14 @@ echo 'rm -rf /userdata/system/.config/Ryujinx' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx_tmp /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
 echo 'rm /userdata/system/configs/Ryujinx/Ryujinx 2>/dev/null' >> $startup
+# link ryujinx saves folders
+echo 'mkdir /userdata/saves/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/saves/Ryujinx /userdata/saves/Ryujinx_tmp 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/bis/user/save/* /userdata/saves/Ryujinx_tmp/ 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/bis/user/save' >> $startup
+echo 'mv /userdata/saves/Ryujinx_tmp /userdata/saves/Ryujinx 2>/dev/null' >> $startup
+echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
+echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> $startup
 # link yuzu and ryujinx keys folders to bios/switch 
 echo 'cp -rL /userdata/system/configs/yuzu/keys/* /userdata/bios/switch/ 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/system/* /userdata/bios/switch/ 2>/dev/null' >> $startup
