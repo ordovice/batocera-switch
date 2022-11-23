@@ -147,6 +147,8 @@ echo 'mv /userdata/bios/switch /userdata/bios/switch_tmp 2>/dev/null' >> $startu
 echo 'rm -rf /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 echo 'mv /userdata/bios/switch_tmp /userdata/bios/switch 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 dos2unix $startup 
