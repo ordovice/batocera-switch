@@ -115,6 +115,7 @@ generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
 startup=/userdata/system/switch/extra/batocera-switch-startup
 rm -rf $startup 2>/dev/null
 echo '#!/bin/bash' >> $startup 
+echo 'sysctl -w vm.max_map_count=1048576' >> $startup
 echo 'extra=/userdata/system/switch/extra' >> $startup
 echo 'cp $extra/batocera-switch-lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
