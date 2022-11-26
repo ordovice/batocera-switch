@@ -174,11 +174,11 @@ then
    done
    cp $tmp $csh 2>/dev/null
    rm $tmp 2>/dev/null
-   echo -en "\n$startup" >> $csh   
+   echo -e "\n$startup" >> $csh   
    dos2unix $csh 
    chmod a+x $csh 
 else 
-   echo -en "\n$startup" >> $csh
+   echo -e "\n$startup" >> $csh
 fi 
 cat $csh | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> $tmp; cp $tmp $csh; rm $tmp;
 dos2unix $csh 2>/dev/null
