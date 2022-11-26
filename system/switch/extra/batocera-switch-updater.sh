@@ -164,22 +164,23 @@ startup=/userdata/system/switch/extra/batocera-switch-startup
 if [[ -e $csh ]];
 then
    tmp=/userdata/system/customsh.tmp
-   remove=batocera-switch-startup
+   remove=$startup
    rm $tmp 2>/dev/null
-   nl=$(cat $csh | wc -l)
-   l=1; while [[ $l -le $nl ]]; do
-   ln=$(cat $csh | sed ""$l"q;d")
-   if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+   nl=$(cat "$csh" | wc -l); nl1=$(($nl + 1))
+   l=1; for l in $(seq 1 $nl1); do
+   ln=$(cat $csh | sed ""$l"q;d" );
+   if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo $ln >> $tmp; fi
    ((l++))
    done
    cp $tmp $csh 2>/dev/null
    rm $tmp 2>/dev/null
-   echo -e "\n$startup" >> $csh   
+   echo -en "\n$startup" >> $csh   
    dos2unix $csh 
    chmod a+x $csh 
 else 
-   echo -e "\n$startup" >> $csh
-fi 
+   echo -en "\n$startup" >> $csh
+fi
+cat $csh | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> $tmp; cp $tmp $csh; rm $tmp;
 dos2unix $csh 2>/dev/null
 chmod a+x $csh
 ######################################################################
