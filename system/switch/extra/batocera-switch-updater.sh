@@ -160,11 +160,11 @@ chmod a+x $startup
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
 csh=/userdata/system/custom.sh
-startup=/userdata/system/switch/extra/batocera-switch-startup
+startup="/userdata/system/switch/extra/batocera-switch-startup"
 if [[ -e $csh ]];
 then
    tmp=/userdata/system/customsh.tmp
-   remove=$startup
+   remove="$startup"
    rm $tmp 2>/dev/null
    nl=$(cat "$csh" | wc -l); nl1=$(($nl + 1))
    l=1; for l in $(seq 1 $nl1); do
@@ -179,7 +179,7 @@ then
    chmod a+x $csh 
 else 
    echo -en "\n$startup" >> $csh
-fi
+fi 
 cat $csh | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> $tmp; cp $tmp $csh; rm $tmp;
 dos2unix $csh 2>/dev/null
 chmod a+x $csh
