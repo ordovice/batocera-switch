@@ -253,17 +253,17 @@ def start_rom(args, maxnbplayers, rom, romConfiguration):
             #Switch
             cmd = generator.generate(system, rom, playersControllers, gameResolution)
 
-            if system.isOptSet('hud_support') and system.getOptBoolean('hud_support') == True:
-                hud_bezel = getHudBezel(system, generator, rom, gameResolution, controllers.gunsBordersSizeName(guns, system.config))
-                if (system.isOptSet('hud') and system.config['hud'] != "" and system.config['hud'] != "none") or hud_bezel is not None:
-                    gameinfos = extractGameInfosFromXml(args.gameinfoxml)
-                    cmd.env["MANGOHUD_DLSYM"] = "1"
-                    hudconfig = getHudConfig(system, args.systemname, system.config['emulator'], effectiveCore, rom, gameinfos, hud_bezel)
-                    with open('/var/run/hud.config', 'w') as f:
-                        f.write(hudconfig)
-                    cmd.env["MANGOHUD_CONFIGFILE"] = "/var/run/hud.config"
-                    if generator.hasInternalMangoHUDCall() == False:
-                        cmd.array.insert(0, "mangohud")
+            #if system.isOptSet('hud_support') and system.getOptBoolean('hud_support') == True:
+            hud_bezel = getHudBezel(system, generator, rom, gameResolution, controllers.gunsBordersSizeName(guns, system.config))
+            if (system.isOptSet('hud') and system.config['hud'] != "" and system.config['hud'] != "none") or hud_bezel is not None:
+                gameinfos = extractGameInfosFromXml(args.gameinfoxml)
+                cmd.env["MANGOHUD_DLSYM"] = "1"
+                hudconfig = getHudConfig(system, args.systemname, system.config['emulator'], effectiveCore, rom, gameinfos, hud_bezel)
+                with open('/var/run/hud.config', 'w') as f:
+                    f.write(hudconfig)
+                cmd.env["MANGOHUD_CONFIGFILE"] = "/var/run/hud.config"
+                if generator.hasInternalMangoHUDCall() == False:
+                    cmd.array.insert(0, "mangohud")
 
             if profiler:
                 profiler.disable()

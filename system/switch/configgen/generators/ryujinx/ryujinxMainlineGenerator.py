@@ -75,7 +75,7 @@ class RyujinxMainlineGenerator(Generator):
         else:
                 data = {}
         if system.config['emulator'] == 'ryujinx-avalonia':
-            data['version'] = 38  #Avalonia Version needs to see 38
+            data['version'] = 42  #Avalonia Version needs to see 38
         else:
             data['version'] = 40  #Continuous version needs at least this version
         data['enable_file_log'] = bool('true')
