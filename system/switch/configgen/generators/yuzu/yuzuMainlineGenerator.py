@@ -392,14 +392,14 @@ class YuzuMainlineGenerator(Generator):
         if system.isOptSet('language'):
             yuzuConfig.set("System", "language_index", system.config["language"])
         else:
-            yuzuConfig.set("System", "language_index", "2")
+            yuzuConfig.set("System", "language_index", "1")
         yuzuConfig.set("System", "language_index\\default", "false")
 
         # Region
         if system.isOptSet('region'):
             yuzuConfig.set("System", "region_index", system.config["region"])
         else:
-            yuzuConfig.set("System", "region_index", "2")
+            yuzuConfig.set("System", "region_index", "1")
         yuzuConfig.set("System", "region_index\\default", "false")
 
     # controls section
