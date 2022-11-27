@@ -331,7 +331,7 @@ curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/swit
 }
 export -f batocera-pro-installer 2>/dev/null
 # --------------------------------------------------------------------
-# -- include display output: 
+# --- include display output: 
 function get-xterm-fontsize {
 extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
 wget -q -O $extra/batocera-switch-tput https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tput

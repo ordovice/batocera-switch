@@ -729,7 +729,7 @@ exit 0
 }
 export -f batocera_update_switch
 ######################################################################
-# -- include display output: 
+# --- include display output: 
 function get-xterm-fontsize {
 extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
 wget -q -O $extra/batocera-switch-tput https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tput
