@@ -1,7 +1,7 @@
 # batocera-switch
-Extends Batocera and adds switch emulation
+Extends Batocera and adds switch emulation as an UNSUPPORTED ADD-ON to BATOCERA.  
 
-Master branch is currently working on Batocera 35.  It has not been tested on Batocera 36 beta (this includes the Steam Deck Betas.  If you have v34, please use the packaged release.
+Master branch is currently working on Batocera 35.  It has not been tested on Batocera 36 beta (this includes the Steam Deck Betas).  If you have v34, please use the packaged release.
 
 This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS).  
 
@@ -13,6 +13,12 @@ This version integrates work from foclabroc and Batocera Nation but does not inc
 
 ## GET Support Here
 https://discord.gg/cuw5Xt7M7d
+
+## EASY Install
+From a terminal window, run the following:
+curl -L switch.batocera.pro | bash
+
+Thanks to uureel for simplifying the install/update of Switch components for the Batocera Add-On.  
 
 ## UPGRADING OLDER VERSIONS OF THIS ADD-ON
 Delete the \system\switch folder and install this repo as normal.  There are folders in the old install that will break this version.  
