@@ -2,6 +2,7 @@
 
 #Code is emulatorlauncher.py from Batocera 35 with minor changes to generator importer
 #Added for Switch Add-On
+import sys
 sys.path.append('/usr/lib/python3.10/site-packages/configgen/')
 
 import os
