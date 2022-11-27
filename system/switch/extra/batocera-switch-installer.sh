@@ -333,11 +333,10 @@ export -f batocera-pro-installer 2>/dev/null
 # --------------------------------------------------------------------
 # -- include display output: 
 function get-xterm-fontsize {
-mkdir -p $extra 2>/dev/null 
-extra=/userdata/system/switch/extra
-wget -q -O $extra/batocera-switch-tput https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
+extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
+wget -q -O $extra/batocera-switch-tput https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tput
 wget -q -O $extra/batocera-switch-libtinfo.so.6 https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-libtinfo.so.6
-rm /lib64/libtinfo.so.6 2>/dev/null; cp /userdata/system/libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
+rm /lib64/libtinfo.so.6 2>/dev/null; rm /lib/libtinfo.so.6 2>/dev/null; cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null; cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
 chmod a+x $extra/batocera-switch-tput 2>/dev/null
 tput=/userdata/system/switch/extra/batocera-switch-tput
 cfg=/userdata/system/switch/extra/display.cfg; rm $cfg 2>/dev/null

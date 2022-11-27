@@ -729,29 +729,30 @@ exit 0
 }
 export -f batocera_update_switch
 ######################################################################
-# PREPARE DISPLAY OUTPUT: 
+# -- include display output: 
 function get-xterm-fontsize {
+extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
+wget -q -O $extra/batocera-switch-tput https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tput
+wget -q -O $extra/batocera-switch-libtinfo.so.6 https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-libtinfo.so.6
+rm /lib64/libtinfo.so.6 2>/dev/null; rm /lib/libtinfo.so.6 2>/dev/null; cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null; cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
+chmod a+x $extra/batocera-switch-tput 2>/dev/null
 tput=/userdata/system/switch/extra/batocera-switch-tput
-libtinfo=/userdata/system/switch/extra/batocera-switch-libtinfo.so.6
-url=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra
-wget -q -O $tput $url/batocera-switch-tput
-wget -q -O $libtinfo $url/batocera-switch-libtinfo.so.6
-chmod a+x $tput; ln -s $libtinfo /lib/libtinfo.so.6 2>/dev/null
-cfg=/userdata/system/switch/extra/display.settings; rm $cfg 2>/dev/null
+cfg=/userdata/system/switch/extra/display.cfg; rm $cfg 2>/dev/null
 DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null
-cols=$(cat $cfg | tail -1) 2>/dev/null
+cols=$(cat $cfg | tail -n 1) 2>/dev/null
 TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 }
 export -f get-xterm-fontsize 2>/dev/null
 get-xterm-fontsize 2>/dev/null
-cfg=/userdata/system/switch/extra/display.settings
-cols=$(cat $cfg | tail -1) 2>/dev/null
-until [[ $cols != 80 ]] 
+cfg=/userdata/system/switch/extra/display.cfg
+cols=$(cat $cfg | tail -n 1) 2>/dev/null
+until [[ "$cols" != "80" ]] 
 do
-get-xterm-fontsize; sleep 0.042; 
-cols=$(cat $cfg | tail -1) 2>/dev/null
-done
+get-xterm-fontsize 2>/dev/null
+cols=$(cat $cfg | tail -n 1) 2>/dev/null
+done 
 TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
+rm /userdata/system/switch/extra/display.cfg 2>/dev/null
 ###########################################################################
 # RUN THE UPDATER: 
   DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
