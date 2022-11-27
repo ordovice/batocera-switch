@@ -5,18 +5,14 @@ import generators
 # not the nicest way, possibly one of the faster i think
 # some naming rules may allow to modify this function to less than 10 lines
 
-from generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
-from generators.yuzuearlyaccess.yuzuearlyaccessGenerator import YuzuEarlyAccessGenerator	
-from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator	
-
 def getGenerator(emulator):
 
     if emulator == 'yuzu':
-        generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
+        from generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
         return YuzuMainlineGenerator()
 
     if emulator == 'yuzu-early-access':
-        generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
+        from generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
         return YuzuMainlineGenerator()
 
     if emulator == 'ryujinx':

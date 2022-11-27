@@ -21,7 +21,7 @@ if os.path.exists("/var/run/emulatorlauncher.perf"):
 
 ### import always needed ###
 import argparse
-#import GeneratorImporter # Commented out and running import and definition below
+import GeneratorImporter
 import signal
 import time
 from sys import exit
@@ -36,32 +36,6 @@ eslog = get_logger(__name__)
 from Emulator import Emulator
 import controllersConfig as controllers
 import utils.bezels as bezelsUtil
-
-import generators
-
-# not the nicest way, possibly one of the faster i think
-# some naming rules may allow to modify this function to less than 10 lines
-
-def getGenerator(emulator):
-        if emulator == 'yuzu':
-            from generators.kodi.yuzuMainlineGenerator import yuzuMainlineGenerator
-            return yuzuMainlineGenerator()
-
-        if emulator == 'yuzu-early-access':
-            from generators.kodi.yuzuMainlineGenerator import yuzuMainlineGenerator
-            return yuzuMainlineGenerator()
-
-        if emulator == 'ryujinx':
-            from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
-            return RyujinxMainlineGenerator()
-
-        if emulator == 'ryujinx-avalonia':
-            from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
-            return RyujinxMainlineGenerator()
-
-        raise Exception(f"no generator found for emulator {emulator}")
-
-
 
 def squashfs_begin(rom):
     eslog.debug(f"squashfs_begin({rom})")
@@ -272,7 +246,10 @@ def start_rom(args, maxnbplayers, rom, romConfiguration):
             if executionDirectory is not None:
                 os.chdir(executionDirectory)
 
-            cmd = generator.generate(system, rom, playersControllers, guns, gameResolution)
+            #Original
+            #cmd = generator.generate(system, rom, playersControllers, guns, gameResolution)
+            #Switch
+            cmd = generator.generate(system, rom, playersControllers, gameResolution)
 
             if system.isOptSet('hud_support') and system.getOptBoolean('hud_support') == True:
                 hud_bezel = getHudBezel(system, generator, rom, gameResolution, controllers.gunsBordersSizeName(guns, system.config))
