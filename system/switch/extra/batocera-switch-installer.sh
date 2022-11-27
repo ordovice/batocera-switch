@@ -7,17 +7,6 @@ APPLINK=github.com/ordovice/batocera-switch
 ORIGIN="github.com/ordovice/batocera-switch" 
 #---------------------------------------------------------------------
 ######################################################################
-# --------------------------------------------------------------------
-# show console/ssh info: 
-clear 
-echo 
-echo 
-echo 
-echo -e "${X}PREPARING $APPNAME INSTALLER, PLEASE WAIT . . . ${X}"
-echo 
-echo 
-echo 
-# --------------------------------------------------------------------
 ORIGIN="${ORIGIN^^}"
 extra=/userdata/system/switch/extra 
 mkdir -p $extra 2>/dev/null 
@@ -91,7 +80,6 @@ echo
 echo
 sleep 0.33
 
-echo
 echo -e "${X}THIS WILL INSTALL $APPNAME FOR BATOCERA"
 echo -e "${X}USING $ORIGIN"
 echo
@@ -129,17 +117,16 @@ B=$BLUE
 G=$GREEN
 P=$PURPLE
 # --------------------------------------------------------------------
-cols=$(cat /userdata/system/switch/extra/display.cfg | tail -n 1) 2>/dev/null
-cols=$(bc <<<"scale=0;$cols/1.3") 2>/dev/null
+#cols=$(cat /userdata/system/switch/extra/display.cfg | tail -n 1) 2>/dev/null
+#cols=$(bc <<<"scale=0;$cols/1.3") 2>/dev/null
 #cols=$(cat /userdata/system/pro/$appname/extra/cols | tail -n 1)
-line(){
-  local start=1
-  local end=${1:-80}
-  local str="${2:-=}"
-  local range=$(seq $start $end)
-  for i in $range ; do echo -n "${str}"; done
-}
-
+#line(){
+#  local start=1
+#  local end=${1:-80}
+#  local str="${2:-=}"
+#  local range=$(seq $start $end)
+#  for i in $range ; do echo -n "${str}"; done
+#}
 clear
 echo
 echo
@@ -204,8 +191,9 @@ echo
 echo -e "${W}THIS WILL INSTALL $APPNAME FOR BATOCERA"
 echo -e "${W}USING $ORIGIN"
 echo 
-echo -e "${G}> > > ${W}PRESS ENTER TO CONTINUE" 
-read -p ""
+#echo -e "${G}> > > ${W}PRESS ENTER TO CONTINUE" 
+#read -p ""
+sleep 3
 echo
 # --------------------------------------------------------------------
 # -- check system before proceeding
@@ -331,25 +319,26 @@ echo
 echo
 echo
 echo -e "${W}PREPARING TO AUTOMATICALLY RUN ${G}SWITCH UPDATER${W} . . ." 
-echo -e "${W}(THIS WILL TEMPORARILY RETURN TO THE MAIN SCREEN)" 
+#echo -e "${W}(THIS WILL TEMPORARILY RETURN TO THE MAIN SCREEN)" 
 echo 
-echo -e "${G}> > > ${W}PRESS ENTER TO CONTINUE" 
-read -p ""
+#echo -e "${G}> > > ${W}PRESS ENTER TO CONTINUE" 
+#read -p ""
+sleep 6
 echo
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
+curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
 }
 export -f batocera-pro-installer 2>/dev/null
 # --------------------------------------------------------------------
 # -- include display output: 
 function get-xterm-fontsize {
-extra=/userdata/system/switch/extra
 mkdir -p $extra 2>/dev/null 
-wget -q -O $extra/batocera-switch-tput https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tput
+extra=/userdata/system/switch/extra
+wget -q -O $extra/batocera-switch-tput https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
 wget -q -O $extra/batocera-switch-libtinfo.so.6 https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-libtinfo.so.6
+rm /lib64/libtinfo.so.6 2>/dev/null; cp /userdata/system/libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
 chmod a+x $extra/batocera-switch-tput 2>/dev/null
-rm /lib/libtinfo.so.6 2>/dev/null
-cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null
 tput=/userdata/system/switch/extra/batocera-switch-tput
 cfg=/userdata/system/switch/extra/display.cfg; rm $cfg 2>/dev/null
 DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null
@@ -371,11 +360,19 @@ rm /userdata/system/switch/extra/display.cfg 2>/dev/null
 # RUN: 
 # | 
   DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
-# & automatically run switch updater after installation: 
+# &+automatically run switch updater after installation: 
 if [[ -e /userdata/system/switch/extra/installation ]]; then
-curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
 rm /userdata/system/switch/extra/installation 2>/dev/null
+clear
+echo
+echo
+echo
+echo -e "${W}$APPNAME INSTALLED AND UPDATED OK${W}" 
+echo
+echo
+echo
 else
+clear 
 echo
 echo
 echo
@@ -383,7 +380,7 @@ echo -e "${W}LOOKS LIKE THE INSTALLATION FAILED${W} . . ."
 echo
 echo
 echo
-sleep 3
+sleep 1
 exit 0
 fi
 # done. 
