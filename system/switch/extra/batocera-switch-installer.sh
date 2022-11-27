@@ -352,7 +352,7 @@ cfg=/userdata/system/switch/extra/display.cfg
 cols=$(cat $cfg | tail -n 1) 2>/dev/null
 until [[ "$cols" != "80" ]] 
 do
-get-xterm-fontsize 2>/dev/null
+sleep 0.042 && get-xterm-fontsize 2>/dev/null
 cols=$(cat $cfg | tail -n 1) 2>/dev/null
 done 
 TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
