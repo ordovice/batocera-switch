@@ -262,7 +262,7 @@ class RyujinxMainlineGenerator(Generator):
                 elif controller.guid in guidstoreplace_ds5_wireless:
                     controllernumber = str(int(ds4_index))
                     ds4_index = ds4_index + 1
-                    inputguid = "030000004c050000e60c000000006800"
+                    inputguid = "030072264c050000e60c000000006800"
                 elif controller.guid in guidstoreplace_ds5_wired:
                     controllernumber = str(int(ds4_index))
                     ds4_index = ds4_index + 1

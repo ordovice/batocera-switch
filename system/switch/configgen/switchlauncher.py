@@ -314,7 +314,7 @@ def getHudBezel(system, generator, rom, gameResolution, bordersSize):
     else:
         eslog.debug("hud enabled. trying to apply the bezel {}".format(system.config['bezel']))
 
-        bezel = system.config['bezel']
+        bezel = "none"
         bz_infos = bezelsUtil.getBezelInfos(rom, bezel, system.name, system.config['emulator'])
         if bz_infos is None:
             eslog.debug("no bezel info file found")
