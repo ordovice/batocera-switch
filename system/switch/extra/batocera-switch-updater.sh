@@ -341,6 +341,10 @@ link_yuzuea=$5
 link_ryujinx=$6
 link_ryujinxavalonia=$7
 # ---------------------------------------------------------------------------------- 
+# TEMPORARILY FREEZING UPDATES FOR RYUJINX: 
+link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
+link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
+# ---------------------------------------------------------------------------------- 
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
