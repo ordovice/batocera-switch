@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-### Switch Launcher v2 - Lined up with v35 code
+#Code is emulatorlauncher.py from Batocera 35 with minor changes to generator importer
 #Added for Switch Add-On
 sys.path.append('/usr/lib/python3.10/site-packages/configgen/')
 
@@ -18,10 +18,9 @@ if os.path.exists("/var/run/emulatorlauncher.perf"):
     profiler = cProfile.Profile()
     profiler.enable()
 
-
 ### import always needed ###
 import argparse
-import GeneratorImporter
+#import GeneratorImporter # Commented out and running import and definition below
 import signal
 import time
 from sys import exit
@@ -36,6 +35,32 @@ eslog = get_logger(__name__)
 from Emulator import Emulator
 import controllersConfig as controllers
 import utils.bezels as bezelsUtil
+
+import generators
+
+# not the nicest way, possibly one of the faster i think
+# some naming rules may allow to modify this function to less than 10 lines
+
+def getGenerator(emulator):
+        if emulator == 'yuzu':
+            from generators.kodi.yuzuMainlineGenerator import yuzuMainlineGenerator
+            return yuzuMainlineGenerator()
+
+        if emulator == 'yuzu-early-access':
+            from generators.kodi.yuzuMainlineGenerator import yuzuMainlineGenerator
+            return yuzuMainlineGenerator()
+
+        if emulator == 'ryujinx':
+            from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
+            return RyujinxMainlineGenerator()
+
+        if emulator == 'ryujinx-avalonia':
+            from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
+            return RyujinxMainlineGenerator()
+
+        raise Exception(f"no generator found for emulator {emulator}")
+
+
 
 def squashfs_begin(rom):
     eslog.debug(f"squashfs_begin({rom})")
@@ -250,7 +275,7 @@ def start_rom(args, maxnbplayers, rom, romConfiguration):
 
             if system.isOptSet('hud_support') and system.getOptBoolean('hud_support') == True:
                 hud_bezel = getHudBezel(system, generator, rom, gameResolution, controllers.gunsBordersSizeName(guns, system.config))
-                if (system.isOptSet('hud') and system.config["hud"] != "" and system.config["hud"] != "none") or hud_bezel is not None:
+                if (system.isOptSet('hud') and system.config['hud'] != "" and system.config['hud'] != "none") or hud_bezel is not None:
                     gameinfos = extractGameInfosFromXml(args.gameinfoxml)
                     cmd.env["MANGOHUD_DLSYM"] = "1"
                     hudconfig = getHudConfig(system, args.systemname, system.config['emulator'], effectiveCore, rom, gameinfos, hud_bezel)
@@ -464,7 +489,7 @@ def getHudConfig(system, systemName, emulator, core, rom, gameinfos, bezel):
     if bezel != "" and bezel != "none" and bezel is not None:
         configstr = f"background_image={hudConfig_protectStr(bezel)}\nlegacy_layout=false\n"
 
-    if not system.isOptSet('hud'):
+    if not system.isOptSet('hud') or system.config['hud'] == "none":
         return configstr + "background_alpha=0\n" # hide the background
 
     mode = system.config["hud"]
