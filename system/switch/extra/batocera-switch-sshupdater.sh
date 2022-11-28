@@ -110,33 +110,66 @@ generate-shortcut-launcher 'yuzuEA' 'yuzuea'
 generate-shortcut-launcher 'Ryujinx' 'ryujinx'
 generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
 # -------------------------------------------------------------------
-# PREPARE STARTUP FILE
+# PREPARE BATOCERA-SWITCH-STARTUP FILE
 # -------------------------------------------------------------------
 startup=/userdata/system/switch/extra/batocera-switch-startup
-rm -rf $startup
+rm -rf $startup 2>/dev/null
 echo '#!/bin/bash' >> $startup 
+echo 'sysctl -w vm.max_map_count=1048576' >> $startup
 echo 'extra=/userdata/system/switch/extra' >> $startup
 echo 'cp $extra/batocera-switch-lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
-dos2unix $startup
-chmod a+x $startup
+# link ryujinx config folders
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/system/configs/Ryujinx /userdata/system/configs/Ryujinx_tmp 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx_tmp 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/.config/Ryujinx' >> $startup
+echo 'mv /userdata/system/configs/Ryujinx_tmp /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
+echo 'rm /userdata/system/configs/Ryujinx/Ryujinx 2>/dev/null' >> $startup
+# link ryujinx saves folders
+echo 'mkdir /userdata/saves/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/saves/Ryujinx /userdata/saves/Ryujinx_tmp 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/bis/user/save/* /userdata/saves/Ryujinx_tmp/ 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
+echo 'mv /userdata/saves/Ryujinx_tmp /userdata/saves/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
+echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
+echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> $startup
+# link yuzu and ryujinx keys folders to bios/switch 
+echo 'cp -rL /userdata/system/configs/yuzu/keys/* /userdata/bios/switch/ 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/system/* /userdata/bios/switch/ 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mv /userdata/bios/switch /userdata/bios/switch_tmp 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+echo 'mv /userdata/bios/switch_tmp /userdata/bios/switch 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+dos2unix $startup 
+chmod a+x $startup 
+# & run startup immediatelly: 
+/userdata/system/switch/extra/batocera-switch-startup 
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
 csh=/userdata/system/custom.sh
-startup=/userdata/system/switch/extra/batocera-switch-startup
+startup="/userdata/system/switch/extra/batocera-switch-startup"
 if [[ -e $csh ]];
 then
    tmp=/userdata/system/customsh.tmp
-   remove=batocera-switch-startup
+   remove="$startup"
    rm $tmp 2>/dev/null
-   nl=$(cat $csh | wc -l)
-   l=1; while [[ $l -le $nl ]]; do
-   ln=$(cat $csh | sed ""$l"q;d")
-   if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+   nl=$(cat "$csh" | wc -l); nl1=$(($nl + 1))
+   l=1; for l in $(seq 1 $nl1); do
+   ln=$(cat $csh | sed ""$l"q;d" );
+   if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo $ln >> $tmp; fi
    ((l++))
    done
    cp $tmp $csh 2>/dev/null
@@ -147,6 +180,7 @@ then
 else 
    echo -e "\n$startup" >> $csh
 fi 
+cat $csh | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> $tmp; cp $tmp $csh; rm $tmp;
 dos2unix $csh 2>/dev/null
 chmod a+x $csh
 ######################################################################
@@ -307,6 +341,10 @@ link_yuzuea=$5
 link_ryujinx=$6
 link_ryujinxavalonia=$7
 # ---------------------------------------------------------------------------------- 
+# TEMPORARILY FREEZING UPDATES FOR RYUJINX: 
+#link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
+#link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
+# ---------------------------------------------------------------------------------- 
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
@@ -404,15 +442,6 @@ echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startu
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
 echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
-echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
-echo 'cp -rL /userdata/system/.config/Ryujinx0/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
-echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
-echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
-echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
-echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
@@ -462,15 +491,6 @@ echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startu
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
 echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
-echo 'mv /userdata/.config/Ryujinx /userdata/.config/Ryujinx0 2>/dev/null' >> $startup
-echo 'cp -rL /userdata/system/.config/Ryujinx0/* /userdata/configs/Ryujinx/ 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/.config/Ryujinx0' >> $startup
-echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
-echo 'mv /userdata/system/configs/Ryujinx/system /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
-echo 'cp -rL /userdata/system/configs/Ryujinx/system0/* /userdata/bios/switch/ 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/configs/Ryujinx/system0 2>/dev/null' >> $startup
-echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
@@ -691,12 +711,16 @@ rm $es/add_feat_switch.cfg 2>/dev/null
 fi
 # --------------------------------------------------------------------
 # AUTOMATICALLY PULL THE LATEST EMULATORS FEATURES UPDATES: 
-url_esfeaturesswitch=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/emulationstation/es_features_switch.cfg
-url_ryujinxmaingen=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
-url_yuzumaingen=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
-wget -q -O /userdata/system/configs/emulationstation/es_features_switch.cfg $url_esfeaturesswitch
-wget -q -O /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py $url_ryujinxmaingen
-wget -q -O /userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py $url_yuzumaingen
+url_es_features_switch=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/emulationstation/es_features_switch.cfg
+url_switchlauncher=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/switchlauncher.py
+url_GeneratorImporter=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/GeneratorImporter.py
+url_ryujinxMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
+url_yuzuMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
+wget -q -O /userdata/system/configs/emulationstation/es_features_switch.cfg $url_es_features_switch
+wget -q -O /userdata/system/switch/configgen/switchlauncher.py $url_switchlauncher
+wget -q -O /userdata/system/switch/configgen/GeneratorImporter.py $url_GeneratorImporter
+wget -q -O /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py $url_ryujinxMainlineGenerator
+wget -q -O /userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py $url_yuzuMainlineGenerator
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
@@ -709,8 +733,36 @@ exit 0
 }
 export -f batocera_update_switch
 ######################################################################
+# --- include display output: 
+function get-xterm-fontsize {
+url_tput=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
+url_libtinfo=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
+extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
+wget -q -O $extra/batocera-switch-tput $url_tput
+wget -q -O $extra/batocera-switch-libtinfo.so.6 $url_libtinfo
+cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null & cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
+chmod a+x $extra/batocera-switch-tput 2>/dev/null
+tput=/userdata/system/switch/extra/batocera-switch-tput
+cfg=/userdata/system/switch/extra/display.cfg; rm $cfg 2>/dev/null
+DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null
+cols=$(cat $cfg | tail -n 1) 2>/dev/null
+TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
+}
+export -f get-xterm-fontsize 2>/dev/null
+get-xterm-fontsize 2>/dev/null
+cfg=/userdata/system/switch/extra/display.cfg
+cols=$(cat $cfg | tail -n 1) 2>/dev/null
+until [[ "$cols" != "80" ]] 
+do
+sleep 0.042 && get-xterm-fontsize 2>/dev/null
+cols=$(cat $cfg | tail -n 1) 2>/dev/null
+done 
+TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
+rm /userdata/system/switch/extra/display.cfg 2>/dev/null
+###########################################################################
 # RUN THE UPDATER: 
+#  DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 batocera_update_switch
-######################################################################
+###########################################################################
 exit 0
 ######
