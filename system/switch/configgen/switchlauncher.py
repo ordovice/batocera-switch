@@ -242,7 +242,15 @@ def start_rom(args, maxnbplayers, rom, romConfiguration):
         # run the emulator
         try:
             from Evmapy import Evmapy
-            Evmapy.start(systemName, system.config['emulator'], effectiveCore, effectiveRomConfiguration, playersControllers)
+            #Test Batocera Version
+            #cmd = os.system( "batocera-es-swissknife --version" ) 
+            a = subprocess.Popen('batocera-es-swissknife --version', shell=True, stdout=subprocess.PIPE)
+            b = a.stdout.read().decode("utf-8")
+            if(b.startswith('35')):
+                Evmapy.start(systemName, system.config['emulator'], effectiveCore, effectiveRomConfiguration, playersControllers)
+            else:
+                Evmapy.start(systemName, system.config, effectiveCore, effectiveRomConfiguration, playersControllers)                
+            
             # change directory if wanted
             executionDirectory = generator.executionDirectory(system.config, effectiveRom)
             if executionDirectory is not None:
