@@ -63,7 +63,7 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 # --------------------------------------------------------------------
 function generate-shortcut-launcher {
 # FOR GUI APPS: 
-SCALE=1.25
+SCALE=1
 Name=$1
 name=$2
 # --------
