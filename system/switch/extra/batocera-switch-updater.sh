@@ -152,6 +152,18 @@ echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+# link yuzu and ryujinx firmware folders to bios/switch/firmware
+echo 'mkdir -p /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/Ryujinx/bis/system/Contents/* /userdata/bios/switch/firmware/ 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/yuzu/nand/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null' >> $startup
+echo 'mv /userdata/bios/switch/firmware /userdata/bios/switch/firmware_tmp 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo 'mv /userdata/bios/switch/firmware_tmp /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
 dos2unix $startup 
 chmod a+x $startup 
 # & run startup immediatelly: 
@@ -345,6 +357,10 @@ link_ryujinxavalonia=$7
 link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
 link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
 # ---------------------------------------------------------------------------------- 
+# TEMPORARILY FREEZING UPDATES FOR YUZU: 
+link_yuzu=https://github.com/uureel/batocera.pro/raw/main/switch/extra/yuzu-mainline-20221204-9af678822.AppImage
+link_yuzuea=https://github.com/uureel/batocera.pro/raw/main/switch/extra/Linux-Yuzu-EA-3185.AppImage
+# ----------------------------------------------------------------------------------
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
