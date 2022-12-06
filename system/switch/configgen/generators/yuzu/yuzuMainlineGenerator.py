@@ -499,26 +499,26 @@ class YuzuMainlineGenerator(Generator):
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
                     for x in yuzuAxis:
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '[empty]')
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '[empty]')
 
                 
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
                 lastplayer = int(controllernumber)
             lastplayer = lastplayer + 1
             for y in range(lastplayer, 9):
                 controllernumber = str(y)
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "false")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "false")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
                 for x in yuzuButtons:
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '""')
                 for x in yuzuDSAxis:
