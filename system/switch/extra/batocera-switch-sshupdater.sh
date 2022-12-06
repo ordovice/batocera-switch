@@ -152,6 +152,21 @@ echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+# link yuzu and ryujinx firmware folders to bios/switch/firmware
+echo 'mkdir -p /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo 'size_fw=$(du -h /userdata/bios/switch/firmware/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
+echo 'size_ryufw=$(du -h /userdata/system/configs/Ryujinx/bis/system/Contents/registered/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
+echo 'size_yuzufw=$(du -h /userdata/system/configs/yuzu/nand/system/Contents/registered/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
+echo 'if [[ "$size_ryufw" -gt "$size_fw" ]]; then cp -rL /userdata/system/configs/Ryujinx/bis/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
+echo 'if [[ "$size_yuzufw" -gt "$size_fw" ]]; then cp -rL /userdata/system/configs/yuzu/nand/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
+echo 'mv /userdata/bios/switch/firmware /userdata/bios/switch/firmware_tmp 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo 'mv /userdata/bios/switch/firmware_tmp /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
 dos2unix $startup 
 chmod a+x $startup 
 # & run startup immediatelly: 
