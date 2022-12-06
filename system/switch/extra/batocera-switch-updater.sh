@@ -62,8 +62,10 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 # PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU
 # --------------------------------------------------------------------
 function generate-shortcut-launcher {
-# FOR GUI APPS: 
+# SCALING FOR F1 APPS, DEFAULT 1@128:  
 SCALE=1
+DPI=128
+# --------
 Name=$1
 name=$2
 # --------
@@ -86,7 +88,7 @@ echo "Categories=Game;batocera.linux;" >> $shortcut
 echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
-echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
+echo "DISPLAY=:0.0 QT_FONT_DPI=$DPI QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
 dos2unix $launcher
 chmod a+x $launcher
 dos2unix $shortcut
@@ -156,8 +158,11 @@ echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev
 echo 'mkdir -p /userdata/bios/switch/firmware 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
-echo 'cp -rL /userdata/system/configs/Ryujinx/bis/system/Contents/* /userdata/bios/switch/firmware/ 2>/dev/null' >> $startup
-echo 'cp -rL /userdata/system/configs/yuzu/nand/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null' >> $startup
+echo 'size_fw=$(du -h /userdata/bios/switch/firmware | tail -n1 | awk "{print $1}" | cut -d "M" -f1)' >> $startup
+echo 'size_ryufw=$(du -h /userdata/system/configs/Ryujinx/bis/system/Contents/registered | tail -n1 | awk "{print $1}" | cut -d "M" -f1)' >> $startup
+echo 'size_yuzufw=$(du -h /userdata/system/configs/yuzu/nand/system/Contents/registered | tail -n1 | awk "{print $1}" | cut -d "M" -f1)' >> $startup
+echo 'if [[ "$size_ryufw" > "$size_fw" ]]; then cp -rL /userdata/system/configs/Ryujinx/bis/system/Contents/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
+echo 'if [[ "$size_yuzufw" > "$size_fw" ]]; then cp -rL /userdata/system/configs/yuzu/nand/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
 echo 'mv /userdata/bios/switch/firmware /userdata/bios/switch/firmware_tmp 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
