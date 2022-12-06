@@ -364,7 +364,7 @@ link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extr
 # ---------------------------------------------------------------------------------- 
 # TEMPORARILY FREEZING UPDATES FOR YUZU: 
 link_yuzu=https://github.com/uureel/batocera.pro/raw/main/switch/extra/yuzu-mainline-20221204-9af678822.AppImage
-link_yuzuea=https://github.com/uureel/batocera.pro/raw/main/switch/extra/Linux-Yuzu-EA-3185.AppImage
+link_yuzuea=https://github.com/uureel/batocera.pro/raw/main/switch/extra/Linux-Yuzu-EA-3180.AppImage
 # ----------------------------------------------------------------------------------
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
