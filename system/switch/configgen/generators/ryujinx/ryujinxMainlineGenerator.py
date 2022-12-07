@@ -225,6 +225,7 @@ class RyujinxMainlineGenerator(Generator):
         guidstoreplace_ds5_wireless = ["32633532643734376632656664383733","37363764353731323963323639666565","61303162353165316365336436343139","050000004c050000e60c0000df870000","050000004c050000e60c000000810000","030000004c050000e60c000000010000","050000004c050000e60c0000fffe3f00","030000004c050000e60c000000000000","050000004c050000e60c000000010000","030000004c050000e60c000011010000","32346465346533616263386539323932","050000004c050000e60c0000ff870000"]
         guidstoreplace_ds5_wired = ["030000004c050000e60c000011810000"]
         guidstoreplace_xbox = ["050000005e040000fd02000030110000"]
+        guidstochangebuttons_xbox = ["030000005e0400008e02000014010000"]
 
         xbox_count = 0
         ds4_count = 0
@@ -327,7 +328,7 @@ class RyujinxMainlineGenerator(Generator):
                 right_joycon['button_zr'] = "RightTrigger"
                 right_joycon['button_sl'] = "Unbound"
                 right_joycon['button_sr'] = "Unbound"
-                if controller.guid in guidstoreplace_ds4 or controller.guid in guidstoreplace_ds5_wireless or controller.guid in guidstoreplace_ds5_wired:
+                if controller.guid in guidstoreplace_ds4 or controller.guid in guidstoreplace_ds5_wireless or controller.guid in guidstoreplace_ds5_wired or controller.guid in guidstoreplace_ds5_wired or controller.guid in guidstochangebuttons_xbox:
                     right_joycon['button_x'] = "Y"
                     right_joycon['button_b'] = "A"
                     right_joycon['button_y'] = "X"
