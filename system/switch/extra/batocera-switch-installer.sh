@@ -225,7 +225,9 @@ rm /userdata/system/configs/emulationstation/es_features.cfg 2>/dev/null
 # -------------------------------------------------------------------- 
 # FILL PATHS
 mkdir -p /userdata/roms/ports/images 2>/dev/null
+mkdir -p /userdata/roms/switch 2>/dev/null
 mkdir -p /userdata/bios/switch 2>/dev/null
+mkdir -p /userdata/bios/switch/firmware 2>/dev/null
 mkdir -p /userdata/system/configs/emulationstation 2>/dev/null
 mkdir -p /userdata/system/configs/evmapy 2>/dev/null
 mkdir -p /userdata/system/switch/configgen/generators/yuzu 2>/dev/null

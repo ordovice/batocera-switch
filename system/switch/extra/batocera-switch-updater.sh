@@ -62,8 +62,10 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 # PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU
 # --------------------------------------------------------------------
 function generate-shortcut-launcher {
-# FOR GUI APPS: 
+# SCALING FOR F1 APPS, DEFAULT 1@128:  
 SCALE=1
+DPI=128
+# --------
 Name=$1
 name=$2
 # --------
@@ -86,7 +88,7 @@ echo "Categories=Game;batocera.linux;" >> $shortcut
 echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
-echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
+echo "DISPLAY=:0.0 QT_FONT_DPI=$DPI QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
 dos2unix $launcher
 chmod a+x $launcher
 dos2unix $shortcut
@@ -152,6 +154,21 @@ echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+# link yuzu and ryujinx firmware folders to bios/switch/firmware
+echo 'mkdir -p /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo 'size_fw=$(du -h /userdata/bios/switch/firmware/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
+echo 'size_ryufw=$(du -h /userdata/system/configs/Ryujinx/bis/system/Contents/registered/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
+echo 'size_yuzufw=$(du -h /userdata/system/configs/yuzu/nand/system/Contents/registered/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
+echo 'if [[ "$size_ryufw" -gt "$size_fw" ]]; then cp -rL /userdata/system/configs/Ryujinx/bis/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
+echo 'if [[ "$size_yuzufw" -gt "$size_fw" ]]; then cp -rL /userdata/system/configs/yuzu/nand/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
+echo 'mv /userdata/bios/switch/firmware /userdata/bios/switch/firmware_tmp 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo 'mv /userdata/bios/switch/firmware_tmp /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
 dos2unix $startup 
 chmod a+x $startup 
 # & run startup immediatelly: 
@@ -345,6 +362,10 @@ link_ryujinxavalonia=$7
 link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
 link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
 # ---------------------------------------------------------------------------------- 
+# TEMPORARILY FREEZING UPDATES FOR YUZU: 
+link_yuzu=https://github.com/uureel/batocera.pro/raw/main/switch/extra/yuzu-mainline-20221204-9af678822.AppImage
+link_yuzuea=https://github.com/uureel/batocera.pro/raw/main/switch/extra/Linux-Yuzu-EA-3180.AppImage
+# ----------------------------------------------------------------------------------
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
@@ -508,6 +529,7 @@ export -f update_emulator
 ######################################################################
 function batocera_update_switch {
 ######################################################################
+cd ~/
 spinner()
 {
     local pid=$1
