@@ -461,9 +461,9 @@ dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
 # / 
-# touch ryu config file: 
-mkdir /userdata/system/configs/Ryujinx 2>/dev/null
-touch /userdata/system/configs/Ryujinx/Config.json 2>/dev/null
+# fill config dirs: 
+mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null
+mkdir -p /userdata/system/configs/yuzu 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
