@@ -726,11 +726,13 @@ rm $es/add_feat_switch.cfg 2>/dev/null
 fi
 # --------------------------------------------------------------------
 # AUTOMATICALLY PULL THE LATEST EMULATORS FEATURES UPDATES: 
+url_switchkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/evmapy/switch.keys
 url_es_features_switch=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/emulationstation/es_features_switch.cfg
 url_switchlauncher=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/switchlauncher.py
 url_GeneratorImporter=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/GeneratorImporter.py
 url_ryujinxMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
 url_yuzuMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
+wget -q -O /userdata/system/configs/evmapy/switch.keys $url_switchkeys
 wget -q -O /userdata/system/configs/emulationstation/es_features_switch.cfg $url_es_features_switch
 wget -q -O /userdata/system/switch/configgen/switchlauncher.py $url_switchlauncher
 wget -q -O /userdata/system/switch/configgen/GeneratorImporter.py $url_GeneratorImporter
