@@ -426,6 +426,7 @@ echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> 
 echo 'ln -s /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo '/userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ' >> $ai
 chmod a+x $ai 2>/dev/null
+chmod a+x /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
 chmod a+x /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
 size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzu ${T}($size_yuzu( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
@@ -459,6 +460,7 @@ echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >
 echo 'ln -s /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo '/userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ' >> $ai
 chmod a+x $ai 2>/dev/null
+chmod a+x /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
 chmod a+x /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
 size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzuea ${T}($size_yuzuea( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
