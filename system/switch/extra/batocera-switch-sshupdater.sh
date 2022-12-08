@@ -63,7 +63,9 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 # --------------------------------------------------------------------
 function generate-shortcut-launcher {
 # FOR GUI APPS: 
-SCALE=1.25
+SCALE=1
+DPI=128
+# --------
 Name=$1
 name=$2
 # --------
@@ -86,7 +88,7 @@ echo "Categories=Game;batocera.linux;" >> $shortcut
 echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
-echo "DISPLAY=:0.0 QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
+echo "DISPLAY=:0.0 QT_FONT_DPI=$DPI QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
 dos2unix $launcher
 chmod a+x $launcher
 dos2unix $shortcut
