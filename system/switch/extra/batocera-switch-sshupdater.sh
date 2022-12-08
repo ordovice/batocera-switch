@@ -139,6 +139,17 @@ echo 'mv /userdata/saves/Ryujinx_tmp /userdata/saves/Ryujinx 2>/dev/null' >> $st
 echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> $startup
+# link yuzu config folders
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mv /userdata/system/configs/yuzu /userdata/system/configs/yuzu_tmp 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/.config/yuzu/* /userdata/configs/yuzu_tmp 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/.local/share/yuzu/* /userdata/configs/yuzu_tmp 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/.config/yuzu' >> $startup
+echo 'rm -rf /userdata/system/.local/share/yuzu' >> $startup
+echo 'mv /userdata/system/configs/yuzu_tmp /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.config/yuzu 2>/dev/null' >> $startup
+echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.local/share/yuzu 2>/dev/null' >> $startup
+echo 'rm /userdata/system/configs/yuzu/yuzu 2>/dev/null' >> $startup
 # link yuzu and ryujinx keys folders to bios/switch 
 echo 'cp -rL /userdata/system/configs/yuzu/keys/* /userdata/bios/switch/ 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/system/* /userdata/bios/switch/ 2>/dev/null' >> $startup
@@ -394,11 +405,14 @@ rm -rf $temp/yuzu 2>/dev/null
 mkdir $temp/yuzu 2>/dev/null
 cd $temp/yuzu
 curl --progress-bar --remote-name --location $link_yuzu
+mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
+chmod a+x $temp/yuzu/yuzu.AppImage 2>/dev/null
+$temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 
+cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/yuzu.AppImage 2>/dev/null
 cd $temp
-mv $temp/yuzu/* $path_yuzu 2>/dev/null
 chmod a+x /userdata/system/switch/yuzu.AppImage 2>/dev/null
-size_yuzuea=$(($(wc -c /userdata/system/switch/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
-echo -e "${T}$path_yuzu ${T}($size_yuzuea( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
+size_yuzu=$(($(wc -c /userdata/system/switch/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
+echo -e "${T}$path_yuzu ${T}($size_yuzu( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
 fi
 # ---------------------------------------------------------------------------------- 
@@ -413,9 +427,12 @@ rm -rf $temp/yuzuea 2>/dev/null
 mkdir $temp/yuzuea 2>/dev/null
 cd $temp/yuzuea
 curl --progress-bar --remote-name --location $link_yuzuea
+mv $temp/yuzuea/* $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
+chmod a+x $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
+$temp/yuzuea/yuzuEA.AppImage --appimage-extract 1>/dev/null 
+cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/yuzuEA.AppImage 2>/dev/null
 cd $temp
-mv $temp/yuzuea/* $path_yuzuea 2>/dev/null
-chmod a+x $path_yuzuea 2>/dev/null
+chmod a+x /userdata/system/switch/yuzuEA.AppImage 2>/dev/null
 size_yuzuea=$(($(wc -c $path_yuzuea | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzuea ${T}($size_yuzuea( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
