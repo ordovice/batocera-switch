@@ -7,6 +7,18 @@
             ],
             "type": "exec",
             "target": ["killall -9 yuzu yuzuEA yuzu.AppImage yuzuEA.AppImage Ryujinx Ryujinx-Avalonia Ryujinx.AppImage Ryujinx-Avalonia.AppImage", "unclutter-remote -h"]
+        },
+        {
+            "trigger": ["hotkey", "r3"],
+            "type": "key",
+            "target": ["KEY_ENTER"],
+            "description": "Press enter shortcut 1"
+        },
+        {
+            "trigger": ["hotkey", "l3"],
+            "type": "key",
+            "target": ["KEY_ENTER"],
+            "description": "Press enter shortcut 2"
         }
 	]
 }
