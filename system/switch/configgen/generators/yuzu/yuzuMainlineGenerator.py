@@ -226,23 +226,24 @@ class YuzuMainlineGenerator(Generator):
         # Single Window Mode
         if system.isOptSet('single_window'):
             yuzuConfig.set("UI", "singleWindowMode", system.config["single_window"])
+            yuzuConfig.set("UI", "singleWindowMode\\default", "false")
         else:
             yuzuConfig.set("UI", "singleWindowMode", "true")
-        yuzuConfig.set("UI", "singleWindowMode\\default", "false")
+            yuzuConfig.set("UI", "singleWindowMode\\default", "true")
 
         yuzuConfig.set("UI", "hideInactiveMouse", "true")
-        yuzuConfig.set("UI", "hideInactiveMouse\\default", "false")
+        yuzuConfig.set("UI", "hideInactiveMouse\\default", "true")
 
         # Roms path (need for load update/dlc)
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\deep_scan\\default", "false")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded", "true")
-        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "false")
+        yuzuConfig.set("UI", "Paths\\gamedirs\\1\\expanded\\default", "true")
         yuzuConfig.set("UI", "Paths\\gamedirs\\1\\path", "/userdata/roms/switch")
         yuzuConfig.set("UI", "Paths\\gamedirs\\size", "1")
 
         yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as", "true")
-        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as\\default", "false")
+        yuzuConfig.set("UI", "Screenshots\\enable_screenshot_save_as\\default", "true")
         yuzuConfig.set("UI", "Screenshots\\screenshot_path", "/userdata/screenshots")
         yuzuConfig.set("UI", "Screenshots\\screenshot_path\\default", "false")
 
@@ -274,9 +275,10 @@ class YuzuMainlineGenerator(Generator):
         # Multicore
         if system.isOptSet('multicore'):
             yuzuConfig.set("Core", "use_multi_core", system.config["multicore"])
+            yuzuConfig.set("Core", "use_multi_core\\default", "false")
         else:
             yuzuConfig.set("Core", "use_multi_core", "true")
-        yuzuConfig.set("Core", "use_multi_core\\default", "false")
+            yuzuConfig.set("Core", "use_multi_core\\default", "true")
 
     # Renderer section
         if not yuzuConfig.has_section("Renderer"):
@@ -285,9 +287,10 @@ class YuzuMainlineGenerator(Generator):
         # Aspect ratio
         if system.isOptSet('yuzu_ratio'):
             yuzuConfig.set("Renderer", "aspect_ratio", system.config["yuzu_ratio"])
+            yuzuConfig.set("Renderer", "aspect_ratio\\default", "false")
         else:
             yuzuConfig.set("Renderer", "aspect_ratio", "0")
-        yuzuConfig.set("Renderer", "aspect_ratio\\default", "false")
+            yuzuConfig.set("Renderer", "aspect_ratio\\default", "true")
 
         # Graphical backend
         if system.isOptSet('yuzu_backend'):
@@ -306,23 +309,26 @@ class YuzuMainlineGenerator(Generator):
         # Assembly shaders
         if system.isOptSet('shaderbackend'):
             yuzuConfig.set("Renderer", "shader_backend", system.config["shaderbackend"])
+            yuzuConfig.set("Renderer", "shader_backend\\default", "false")
         else:
             yuzuConfig.set("Renderer", "shader_backend", "0")
-        yuzuConfig.set("Renderer", "shader_backend\\default", "false")
+            yuzuConfig.set("Renderer", "shader_backend\\default", "true")
 
         # Async Gpu Emulation
         if system.isOptSet('async_gpu'):
             yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation", system.config["async_gpu"])
+            yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation\\default", "false")
         else:
             yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation", "true")
-        yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation\\default", "false")
+            yuzuConfig.set("Renderer", "use_asynchronous_gpu_emulation\\default", "true")
 
         # NVDEC Emulation
         if system.isOptSet('nvdec_emu'):
             yuzuConfig.set("Renderer", "nvdec_emulation", system.config["nvdec_emu"])
+            yuzuConfig.set("Renderer", "nvdec_emulation\\default", "false")
         else:
             yuzuConfig.set("Renderer", "nvdec_emulation", "2")
-        yuzuConfig.set("Renderer", "nvdec_emulation\\default", "false")
+            yuzuConfig.set("Renderer", "nvdec_emulation\\default", "true")
 
         # Gpu Accuracy
         if system.isOptSet('gpuaccuracy'):
@@ -348,30 +354,34 @@ class YuzuMainlineGenerator(Generator):
         # Max anisotropy
         if system.isOptSet('anisotropy'):
             yuzuConfig.set("Renderer", "max_anisotropy", system.config["anisotropy"])
+            yuzuConfig.set("Renderer", "max_anisotropy\\default", "false")
         else:
             yuzuConfig.set("Renderer", "max_anisotropy", "0")
-        yuzuConfig.set("Renderer", "max_anisotropy\\default", "false")
+            yuzuConfig.set("Renderer", "max_anisotropy\\default", "true")
 
         # Resolution scaler
         if system.isOptSet('resolution_scale'):
             yuzuConfig.set("Renderer", "resolution_setup", system.config["resolution_scale"])
+            yuzuConfig.set("Renderer", "resolution_setup\\default", "false")
         else:
             yuzuConfig.set("Renderer", "resolution_setup", "2")
-        yuzuConfig.set("Renderer", "resolution_setup\\default", "false")
+            yuzuConfig.set("Renderer", "resolution_setup\\default", "true")
 
         # Scaling filter
         if system.isOptSet('scale_filter'):
             yuzuConfig.set("Renderer", "scaling_filter", system.config["scale_filter"])
+            yuzuConfig.set("Renderer", "scaling_filter\\default", "false")
         else:
             yuzuConfig.set("Renderer", "scaling_filter", "1")
-        yuzuConfig.set("Renderer", "scaling_filter\\default", "false")
+            yuzuConfig.set("Renderer", "scaling_filter\\default", "true")
 
         # Anti aliasing method
         if system.isOptSet('aliasing_method'):
             yuzuConfig.set("Renderer", "anti_aliasing", system.config["aliasing_method"])
+            yuzuConfig.set("Renderer", "anti_aliasing\\default", "false")
         else:
             yuzuConfig.set("Renderer", "anti_aliasing", "0")
-        yuzuConfig.set("Renderer", "anti_aliasing\\default", "false")
+            yuzuConfig.set("Renderer", "anti_aliasing\\default", "true")
 
     # Cpu Section
         if not yuzuConfig.has_section("Cpu"):
@@ -380,9 +390,10 @@ class YuzuMainlineGenerator(Generator):
         # Cpu Accuracy
         if system.isOptSet('cpuaccuracy'):
             yuzuConfig.set("Cpu", "cpu_accuracy", system.config["cpuaccuracy"])
+            yuzuConfig.set("Cpu", "cpu_accuracy\\default", "false")
         else:
             yuzuConfig.set("Cpu", "cpu_accuracy", "0")
-        yuzuConfig.set("Cpu", "cpu_accuracy\\default", "false")
+            yuzuConfig.set("Cpu", "cpu_accuracy\\default", "true")
 
     # System section
         if not yuzuConfig.has_section("System"):
@@ -391,16 +402,18 @@ class YuzuMainlineGenerator(Generator):
         # Language
         if system.isOptSet('language'):
             yuzuConfig.set("System", "language_index", system.config["language"])
+            yuzuConfig.set("System", "language_index\\default", "false")
         else:
             yuzuConfig.set("System", "language_index", "1")
-        yuzuConfig.set("System", "language_index\\default", "false")
+            yuzuConfig.set("System", "language_index\\default", "true")
 
         # Region
         if system.isOptSet('region'):
             yuzuConfig.set("System", "region_index", system.config["region"])
+            yuzuConfig.set("System", "region_index\\default", "false")
         else:
             yuzuConfig.set("System", "region_index", "1")
-        yuzuConfig.set("System", "region_index\\default", "false")
+            yuzuConfig.set("System", "region_index\\default", "true")
 
     # controls section
         if not yuzuConfig.has_section("Controls"):
@@ -409,9 +422,11 @@ class YuzuMainlineGenerator(Generator):
         # Dock Mode
         if system.isOptSet('dock_mode'):
             yuzuConfig.set("Controls", "use_docked_mode", system.config["dock_mode"])
+            yuzuConfig.set("Controls", "use_docked_mode\\default", "false")
         else:
             yuzuConfig.set("Controls", "use_docked_mode", "true")
-        yuzuConfig.set("Controls", "use_docked_mode\\default", "false")
+            yuzuConfig.set("Controls", "use_docked_mode\\default", "true")
+
 
         if ((system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")) or not system.isOptSet('yuzu_auto_controller_config')):
             # Player 1 Pad Type
@@ -443,7 +458,7 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Controls", "player_1_type\default", "false")
 
             yuzuConfig.set("Controls", "vibration_enabled", "true")
-            yuzuConfig.set("Controls", "vibration_enabled\\default", "false")
+            yuzuConfig.set("Controls", "vibration_enabled\\default", "true")
 
             guidstoreplace_ds4 = ["050000004c050000c405000000783f00","050000004c050000c4050000fffe3f00","050000004c050000c4050000ffff3f00","050000004c050000cc090000fffe3f00","050000004c050000cc090000ffff3f00","30303839663330346632363232623138","31326235383662333266633463653332","34613139376634626133336530386430","37626233336235343937333961353732","38393161636261653636653532386639","63313733393535663339656564343962","63393662363836383439353064663939","65366465656364636137653363376531","66613532303965383534396638613230","050000004c050000cc090000df070000","050000004c050000cc090000df870001","050000004c050000cc090000ff070000","030000004c050000a00b000011010000","030000004c050000a00b000011810000","030000004c050000c405000011010000","030000004c050000c405000011810000","030000004c050000cc09000000010000","030000004c050000cc09000011010000","030000004c050000cc09000011810000","03000000c01100000140000011010000","050000004c050000c405000000010000","050000004c050000c405000000810000","050000004c050000c405000001800000","050000004c050000cc09000000010000","050000004c050000cc09000000810000","050000004c050000cc09000001800000","030000004c050000a00b000000010000","030000004c050000c405000000000000","030000004c050000c405000000010000","03000000120c00000807000000000000","03000000120c0000111e000000000000","03000000120c0000121e000000000000","03000000120c0000130e000000000000","03000000120c0000150e000000000000","03000000120c0000180e000000000000","03000000120c0000181e000000000000","03000000120c0000191e000000000000","03000000120c00001e0e000000000000","03000000120c0000a957000000000000","03000000120c0000aa57000000000000","03000000120c0000f21c000000000000","03000000120c0000f31c000000000000","03000000120c0000f41c000000000000","03000000120c0000f51c000000000000","03000000120c0000f70e000000000000","03000000120e0000120c000000000000","03000000160e0000120c000000000000","030000001a1e0000120c000000000000","030000004c050000a00b000000000000","030000004c050000cc09000000000000","35643031303033326130316330353564","31373231336561636235613666323035","536f6e7920496e746572616374697665","576972656c65737320436f6e74726f6c","050000004c050000cc090000ff870001","050000004c050000cc090000ff876d01","31663838336334393132303338353963"]
             guidstoreplace_ds5_wireless = ["32633532643734376632656664383733","37363764353731323963323639666565","61303162353165316365336436343139","050000004c050000e60c0000df870000","050000004c050000e60c000000810000","030000004c050000e60c000000010000","050000004c050000e60c0000fffe3f00","030000004c050000e60c000000000000","050000004c050000e60c000000010000","030000004c050000e60c000011010000","32346465346533616263386539323932","050000004c050000e60c0000ff870000"]
@@ -504,7 +519,10 @@ class YuzuMainlineGenerator(Generator):
 
                 
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
+                if (controllernumber == "0"):
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
+                else:
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")                    
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
@@ -514,7 +532,7 @@ class YuzuMainlineGenerator(Generator):
             for y in range(lastplayer, 9):
                 controllernumber = str(y)
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "false")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
