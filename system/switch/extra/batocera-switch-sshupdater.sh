@@ -124,6 +124,10 @@ echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
+# link yuzu's libthai
+echo 'rm /lib/libthai.so.0.3.1 2>/dev/null; rm /lib/libthai.so.0 2>/dev/null' >> $startup
+echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null' >> $startup
+echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0 2>/dev/null' >> $startup
 # link ryujinx config folders
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx /userdata/system/configs/Ryujinx_tmp 2>/dev/null' >> $startup
@@ -410,12 +414,24 @@ curl --progress-bar --remote-name --location $link_yuzu
 mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
 chmod a+x $temp/yuzu/yuzu.AppImage 2>/dev/null
 $temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 
-cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/yuzu.AppImage 2>/dev/null
+mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
+cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
+cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
 cd $temp
-chmod a+x /userdata/system/switch/yuzu.AppImage 2>/dev/null
-size_yuzu=$(($(wc -c /userdata/system/switch/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
+# make launcher linking to usrbin for enhanced compatibility with stripped yuzu versions 
+ai=/userdata/system/switch/yuzu.AppImage; rm $ai 2>/dev/null
+echo '#!/bin/bash' >> $ai
+echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
+echo 'ln -s /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo '/userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ' >> $ai
+chmod a+x $ai 2>/dev/null
+chmod a+x /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
+chmod a+x /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
+size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzu ${T}($size_yuzu( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
+cd ~/
 fi
 # ---------------------------------------------------------------------------------- 
 if [ "$3" = "YUZUEA" ]; then
@@ -432,12 +448,24 @@ curl --progress-bar --remote-name --location $link_yuzuea
 mv $temp/yuzuea/* $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
 chmod a+x $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
 $temp/yuzuea/yuzuEA.AppImage --appimage-extract 1>/dev/null 
-cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/yuzuEA.AppImage 2>/dev/null
+mkdir -p /userdata/system/switch/extra/yuzuea 2>/dev/null
+cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
+cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
 cd $temp
-chmod a+x /userdata/system/switch/yuzuEA.AppImage 2>/dev/null
-size_yuzuea=$(($(wc -c $path_yuzuea | awk '{print $1}')/1048576)) 2>/dev/null
+# make launcher linking to usrbin for enhanced compatibility with stripped yuzu versions 
+ai=/userdata/system/switch/yuzuEA.AppImage; rm $ai 2>/dev/null
+echo '#!/bin/bash' >> $ai
+echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
+echo 'ln -s /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo '/userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ' >> $ai
+chmod a+x $ai 2>/dev/null
+chmod a+x /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
+chmod a+x /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
+size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzuea ${T}($size_yuzuea( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
+cd ~/
 fi
 # ---------------------------------------------------------------------------------- 
 if [ "$3" = "RYUJINX" ]; then
@@ -488,6 +516,7 @@ mkdir -p /userdata/system/configs/yuzu 2>/dev/null
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_ryujinx ${T}($size_ryujinx( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
+cd ~/
 fi
 # ---------------------------------------------------------------------------------- 
 if [ "$3" = "RYUJINXAVALONIA" ]; then
@@ -536,6 +565,7 @@ chmod a+x $path_ryujinxavalonia 2>/dev/null
 size_ryujinxavalonia=$(($(wc -c $path_ryujinxavalonia | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_ryujinxavalonia ${T}($size_ryujinxavalonia( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
+cd ~/
 fi
 }
 export -f update_emulator
