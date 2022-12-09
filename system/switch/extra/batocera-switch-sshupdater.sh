@@ -62,7 +62,7 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 # PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU
 # --------------------------------------------------------------------
 function generate-shortcut-launcher {
-# FOR GUI APPS: 
+# SCALING FOR F1 APPS, DEFAULT 1@128:  
 SCALE=1
 DPI=128
 # --------
@@ -117,18 +117,20 @@ generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-avalonia'
 startup=/userdata/system/switch/extra/batocera-switch-startup
 rm -rf $startup 2>/dev/null
 echo '#!/bin/bash' >> $startup 
-echo 'sysctl -w vm.max_map_count=1048576' >> $startup
+#\ prepare system
+echo '#\ prepare system ' >> $startup
+echo 'sysctl -w vm.max_map_count=262144 1>/dev/null' >> $startup
 echo 'extra=/userdata/system/switch/extra' >> $startup
 echo 'cp $extra/batocera-switch-lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
-echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
-echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
-# link yuzu's libthai
 echo 'rm /lib/libthai.so.0.3.1 2>/dev/null; rm /lib/libthai.so.0 2>/dev/null' >> $startup
 echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null' >> $startup
 echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0 2>/dev/null' >> $startup
-# link ryujinx config folders
+echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
+echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
+#\ link ryujinx config folders 
+echo '#\ link ryujinx config folders ' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx /userdata/system/configs/Ryujinx_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx_tmp 2>/dev/null' >> $startup
@@ -136,8 +138,9 @@ echo 'rm -rf /userdata/system/.config/Ryujinx' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx_tmp /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> $startup
 echo 'rm /userdata/system/configs/Ryujinx/Ryujinx 2>/dev/null' >> $startup
-# link ryujinx saves folders
-echo 'mkdir /userdata/saves/Ryujinx 2>/dev/null' >> $startup
+#\ link ryujinx saves folders 
+echo '#\ link ryujinx saves folders ' >> $startup
+echo 'mkdir -p /userdata/saves/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/Ryujinx /userdata/saves/Ryujinx_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/bis/user/save/* /userdata/saves/Ryujinx_tmp/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
@@ -145,7 +148,8 @@ echo 'mv /userdata/saves/Ryujinx_tmp /userdata/saves/Ryujinx 2>/dev/null' >> $st
 echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> $startup
-# link yuzu config folders
+#\ link yuzu config folders 
+echo '#\ link yuzu config folders ' >> $startup
 echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/yuzu /userdata/system/configs/yuzu_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/.config/yuzu/* /userdata/configs/yuzu_tmp 2>/dev/null' >> $startup
@@ -156,7 +160,18 @@ echo 'mv /userdata/system/configs/yuzu_tmp /userdata/system/configs/yuzu 2>/dev/
 echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.config/yuzu 2>/dev/null' >> $startup
 echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.local/share/yuzu 2>/dev/null' >> $startup
 echo 'rm /userdata/system/configs/yuzu/yuzu 2>/dev/null' >> $startup
-# link yuzu and ryujinx keys folders to bios/switch 
+#\ link yuzu saves folders
+echo '#\ link yuzu saves folders' >> $startup
+echo 'mkdir -p /userdata/saves/yuzu 2>/dev/null' >> $startup
+echo 'mv /userdata/saves/yuzu /userdata/saves/yuzu_tmp 2>/dev/null' >> $startup
+echo 'cp -rL /userdata/system/configs/yuzu/nand/user/save/* /userdata/saves/yuzu_tmp/ 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> $startup
+echo 'mv /userdata/saves/yuzu_tmp /userdata/saves/yuzu 2>/dev/null' >> $startup
+echo 'mkdir -p /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> $startup
+echo 'ln -s /userdata/saves/yuzu /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> $startup
+echo 'rm /userdata/saves/yuzu/yuzu 2>/dev/null' >> $startup
+#\ link yuzu and ryujinx keys folders to bios/switch 
+echo '#\ link yuzu and ryujinx keys folders to bios/switch ' >> $startup
 echo 'cp -rL /userdata/system/configs/yuzu/keys/* /userdata/bios/switch/ 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/system/* /userdata/bios/switch/ 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
@@ -169,7 +184,8 @@ echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
-# link yuzu and ryujinx firmware folders to bios/switch/firmware
+#\ link yuzu and ryujinx firmware folders to bios/switch/firmware
+echo '#\ link yuzu and ryujinx firmware folders to bios/switch/firmware ' >> $startup
 echo 'mkdir -p /userdata/bios/switch/firmware 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
@@ -184,6 +200,7 @@ echo 'rm -rf /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/de
 echo 'mv /userdata/bios/switch/firmware_tmp /userdata/bios/switch/firmware 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo '#/' >> $startup
 dos2unix $startup 
 chmod a+x $startup 
 # & run startup immediatelly: 
@@ -377,6 +394,10 @@ link_ryujinxavalonia=$7
 #link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
 #link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
 # ---------------------------------------------------------------------------------- 
+# TEMPORARILY FREEZING UPDATES FOR YUZU: 
+#link_yuzu=https://github.com/uureel/batocera.pro/raw/main/switch/extra/yuzu-mainline-20221204-9af678822.AppImage
+#link_yuzuea=https://github.com/uureel/batocera.pro/raw/main/switch/extra/Linux-Yuzu-EA-3180.AppImage
+# ----------------------------------------------------------------------------------
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
@@ -418,14 +439,14 @@ mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
 cd $temp
-# make launcher linking to usrbin for enhanced compatibility with stripped yuzu versions 
+# make launcher
 ai=/userdata/system/switch/yuzu.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
-echo '/userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ' >> $ai
-chmod a+x $ai 2>/dev/null
+echo '/userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3"' >> $ai
+dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
 chmod a+x /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
 chmod a+x /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
 size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
@@ -452,14 +473,14 @@ mkdir -p /userdata/system/switch/extra/yuzuea 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
 cd $temp
-# make launcher linking to usrbin for enhanced compatibility with stripped yuzu versions 
+# make launcher
 ai=/userdata/system/switch/yuzuEA.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
-echo '/userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ' >> $ai
-chmod a+x $ai 2>/dev/null
+echo '/userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3"' >> $ai
+dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
 chmod a+x /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
 chmod a+x /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
 size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
@@ -490,8 +511,6 @@ mkdir $temp/$emu 2>/dev/null
 cd $temp/$emu
 curl --progress-bar --remote-name --location $link_ryujinx
 $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz
-cp $temp/$emu/publish/Ryujinx $path_ryujinx
-chmod a+x $path_ryujinx 2>/dev/null
 cp $temp/$emu/publish/lib* $extra/$emu/
 cd $extra/$emu
 rm -rf $extra/$emu/dependencies 2>/dev/null
@@ -508,9 +527,15 @@ dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
 # / 
-# fill config dirs: 
-mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null
-mkdir -p /userdata/system/configs/yuzu 2>/dev/null
+path_ryujinx=$extra/$emu/Ryujinx.AppImage
+cp $temp/$emu/publish/Ryujinx $path_ryujinx 2>/dev/null
+chmod a+x $path_ryujinx 2>/dev/null
+# make launcher 
+ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
+echo '#!/bin/bash' >> $ai
+echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
+echo '/userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$1"' >> $ai
+dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -558,12 +583,20 @@ dos2unix $startup
 chmod a+x $startup
 $extra/$emu/startup 2>/dev/null
 # /
-cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinxavalonia 2>/dev/null
-chmod a+x $path_ryujinxavalonia 2>/dev/null
+# --------------------------------------------------------
+path_ryujinx=$extra/$emu/Ryujinx-Avalonia.AppImage
+cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinx 2>/dev/null
+chmod a+x $path_ryujinx 2>/dev/null
+# make launcher 
+ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
+echo '#!/bin/bash' >> $ai
+echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
+echo '/userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$1"' >> $ai
+dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
-size_ryujinxavalonia=$(($(wc -c $path_ryujinxavalonia | awk '{print $1}')/1048576)) 2>/dev/null
-echo -e "${T}$path_ryujinxavalonia ${T}($size_ryujinxavalonia( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
+size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
+echo -e "${T}$path_ryujinx ${T}($size_ryujinx( )MB) ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -572,6 +605,7 @@ export -f update_emulator
 ######################################################################
 function batocera_update_switch {
 ######################################################################
+cd ~/
 spinner()
 {
     local pid=$1
@@ -829,6 +863,5 @@ rm /userdata/system/switch/extra/display.cfg 2>/dev/null
 # RUN THE UPDATER: 
 #  DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 batocera_update_switch
-###########################################################################
 exit 0
 ######
