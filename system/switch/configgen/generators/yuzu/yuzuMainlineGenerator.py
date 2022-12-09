@@ -121,8 +121,8 @@ class YuzuMainlineGenerator(Generator):
             "button_r":      "pagedown",
             "button_plus":  "start",
             "button_minus": "select",
-            "button_sl":     "l",
-            "button_sr":     "r",
+            "button_sl":     "pageup",
+            "button_sr":     "pagedown",
             "button_zl":     "l2",
             "button_zr":     "r2",
             "button_lstick":     "l3",
@@ -251,22 +251,22 @@ class YuzuMainlineGenerator(Generator):
         if not yuzuConfig.has_section("Data%20Storage"):
             yuzuConfig.add_section("Data%20Storage")
         yuzuConfig.set("Data%20Storage", "dump_directory", "/userdata/system/configs/yuzu/dump")
-        yuzuConfig.set("Data%20Storage", "dump_directory\\default", "false")
+        yuzuConfig.set("Data%20Storage", "dump_directory\\default", "true")
 
         yuzuConfig.set("Data%20Storage", "load_directory", "/userdata/system/configs/yuzu/load")
-        yuzuConfig.set("Data%20Storage", "load_directory\\default", "false")
+        yuzuConfig.set("Data%20Storage", "load_directory\\default", "true")
 
         yuzuConfig.set("Data%20Storage", "nand_directory", "/userdata/system/configs/yuzu/nand")
-        yuzuConfig.set("Data%20Storage", "nand_directory\\default", "false")
+        yuzuConfig.set("Data%20Storage", "nand_directory\\default", "true")
 
         yuzuConfig.set("Data%20Storage", "sdmc_directory", "/userdata/system/configs/yuzu/sdmc")
-        yuzuConfig.set("Data%20Storage", "sdmc_directory\\default", "false")
+        yuzuConfig.set("Data%20Storage", "sdmc_directory\\default", "true")
 
         yuzuConfig.set("Data%20Storage", "tas_directory", "/userdata/system/configs/yuzu/tas")
-        yuzuConfig.set("Data%20Storage", "tas_directory\\default", "false")
+        yuzuConfig.set("Data%20Storage", "tas_directory\\default", "true")
 
         yuzuConfig.set("Data%20Storage", "use_virtual_sd", "true")
-        yuzuConfig.set("Data%20Storage", "use_virtual_sd\\default", "false")
+        yuzuConfig.set("Data%20Storage", "use_virtual_sd\\default", "true")
 
     # Core section
         if not yuzuConfig.has_section("Core"):
@@ -529,18 +529,68 @@ class YuzuMainlineGenerator(Generator):
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
                 lastplayer = int(controllernumber)
             lastplayer = lastplayer + 1
+            eslog.debug("Last Player {}".format(lastplayer))
             for y in range(lastplayer, 9):
                 controllernumber = str(y)
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "false")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+                eslog.debug("Setting Controller: {}".format(controllernumber))
                 for x in yuzuButtons:
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '""')
                 for x in yuzuDSAxis:
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '""')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_a", '"toggle:0,code:67,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_a\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_b", '"toggle:0,code:88,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_b\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_ddown", '"toggle:0,code:16777237,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_ddown\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_dleft", '"toggle:0,code:16777234,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_dleft\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_dright", '"toggle:0,code:16777236,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_dright\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_dup", '"toggle:0,code:16777235,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_dup\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_home", '"toggle:0,code:0,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_home\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_l", '"toggle:0,code:81,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_l\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_lstick", '"toggle:0,code:70,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_lstick\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_minus", '"toggle:0,code:78,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_minus\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_plus", '"toggle:0,code:77,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_plus\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_r", '"toggle:0,code:69,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_r\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_rstick", '"toggle:0,code:71,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_rstick\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_screenshot", '"toggle:0,code:0,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_screenshot\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_sl", '"toggle:0,code:81,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_sl\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_sr", '"toggle:0,code:69,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_sr\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_x", '"toggle:0,code:86,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_x\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_y", '"toggle:0,code:90,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_y\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_zl", '"toggle:0,code:82,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_zl\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_zr", '"toggle:0,code:84,engine:keyboard"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_button_zr\\default", "true")
+
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_lstick", '"modifier_scale:0.500000,modifier:toggle$00$1code$016777248$1engine$0keyboard,right:toggle$00$1code$068$1engine$0keyboard,left:toggle$00$1code$065$1engine$0keyboard,down:toggle$00$1code$083$1engine$0keyboard,up:toggle$00$1code$087$1engine$0keyboard,engine:analog_from_button"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_lstick\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_rstick", '"modifier_scale:0.500000,modifier:toggle$00$1code$00$1engine$0keyboard,right:toggle$00$1code$076$1engine$0keyboard,left:toggle$00$1code$074$1engine$0keyboard,down:toggle$00$1code$075$1engine$0keyboard,up:toggle$00$1code$073$1engine$0keyboard,engine:analog_from_button"')
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_rstick\\default", "true")
+
+
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "false")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+
 
     # telemetry section
         if not yuzuConfig.has_section("WebService"):
