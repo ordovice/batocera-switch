@@ -6,7 +6,7 @@
                 "start"
             ],
             "type": "exec",
-            "target": ["killall -9 yuzu yuzuEA yuzu.AppImage yuzuEA.AppImage Ryujinx Ryujinx-Avalonia Ryujinx.AppImage Ryujinx-Avalonia.AppImage", "unclutter-remote -h"]
+            "target": ["killall -9 yuzu yuzu-room yuzuEA yuzu.AppImage yuzuEA.AppImage ryujinx Ryujinx Ryujinx-LDN Ryujinx-Avalonia Ryujinx.AppImage Ryujinx-LDN.AppImage Ryujinx-Avalonia.AppImage", "unclutter-remote -h"]
         },
         {
             "trigger": ["hotkey", "r3"],
