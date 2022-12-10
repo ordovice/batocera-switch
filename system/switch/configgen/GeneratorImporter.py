@@ -23,4 +23,8 @@ def getGenerator(emulator):
         from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
         return RyujinxMainlineGenerator()
 
+    if emulator == 'ryujinx-ldn':
+        from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
+        return RyujinxMainlineGenerator()
+
     raise Exception(f"no generator found for emulator {emulator}")
