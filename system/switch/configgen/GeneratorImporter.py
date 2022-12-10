@@ -7,7 +7,7 @@ import generators
 
 def getGenerator(emulator):
 
-    if emulator == 'yuzu':
+    if emulator == 'yuzu-mainline':
         from generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
         return YuzuMainlineGenerator()
 
@@ -15,7 +15,7 @@ def getGenerator(emulator):
         from generators.yuzu.yuzuMainlineGenerator import YuzuMainlineGenerator	
         return YuzuMainlineGenerator()
 
-    if emulator == 'ryujinx':
+    if emulator == 'ryujinx-continuous':
         from generators.ryujinx.ryujinxMainlineGenerator import RyujinxMainlineGenerator
         return RyujinxMainlineGenerator()
 
