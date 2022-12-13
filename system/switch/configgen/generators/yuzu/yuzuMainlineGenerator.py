@@ -164,23 +164,23 @@ class YuzuMainlineGenerator(Generator):
         }
 
         yuzuSCButtons = {
-            "button_a":      4,
+            "button_a":      6,
             "button_b":     5,
-            "button_x":      6,
+            "button_x":      8,
             "button_y":      7,
-            "button_dup":     19,
-            "button_ddown":   20,
-            "button_dleft":   21,
-            "button_dright":  22,
-            "button_l":      8,
+            "button_dup":     20,
+            "button_ddown":   21,
+            "button_dleft":   22,
+            "button_dright":  23,
+            "button_l":      9,
             "button_r":      10,
-            "button_plus":  13,
-            "button_minus": 12,
+            "button_plus":  14,
+            "button_minus": 13,
             #"button_zl":     18,
             #"button_zr":     10,
-            "button_lstick":     15,
-            "button_rstick":     16,
-            "button_home":   23
+            "button_lstick":     16,
+            "button_rstick":     17,
+            "button_home":   13
         }
 
         yuzuSCAxis = {
