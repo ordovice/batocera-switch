@@ -759,6 +759,7 @@ F=$TEXT_COLOR
 T=$THEME_COLOR
 # REREAD TEXT/THEME COLORS:
 ###########################
+X='\033[0m'               # / resetcolor
 RED='\033[1;31m'          # red
 BLUE='\033[1;34m'         # blue
 GREEN='\033[1;32m'        # green
@@ -840,7 +841,7 @@ update_emulator 4 5 $(echo "$EMULATORS" | cut -d "-" -f 4) $link_yuzu $link_yuzu
 update_emulator 5 5 $(echo "$EMULATORS" | cut -d "-" -f 5) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}5/5${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
-echo -e "${THEME_COLOR}-------------------------------------${W}"
+echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 4 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" != "" ]]; then
@@ -850,7 +851,7 @@ update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) $link_yuzu $link_yuzu
 update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
-echo -e "${THEME_COLOR}-------------------------------------${W}"
+echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 3 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" != "" ]]; then
@@ -859,7 +860,7 @@ update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzu
 update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
-echo -e "${THEME_COLOR}-------------------------------------${W}"
+echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
@@ -867,14 +868,14 @@ update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzu
 update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
-echo -e "${THEME_COLOR}-------------------------------------${W}"
+echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
 update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
 echo
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
-echo -e "${THEME_COLOR}-------------------------------------${W}"
+echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # --------------------------------------------------------------------
 # CLEAR THE OLD V34- CUSTOM.SH LINE IF FOUND AND THE SYSTEM IS NOW VERSION V35+:
@@ -905,6 +906,13 @@ rm $es/add_feat_switch.cfg 2>/dev/null
 #mv $es/add_feat_switch.cfg $backup/add_feat_switch.cfg-backup-$timestamp 2>/dev/null
 #mv $es/es_features.cfg $backup/es_features.cfg-backup-$timestamp 2>/dev/null
 fi
+# -------------------------------------------------------------------- 
+# REMOVE OLD UPDATERS 
+rm /userdata/roms/ports/updateyuzu.sh 2>/dev/null 
+rm /userdata/roms/ports/updateyuzuea.sh 2>/dev/null
+rm /userdata/roms/ports/updateyuzuEA.sh 2>/dev/null 
+rm /userdata/roms/ports/updateryujinx.sh 2>/dev/null
+rm /userdata/roms/ports/updateryujinxavalonia.sh 2>/dev/null
 # --------------------------------------------------------------------
 # AUTOMATICALLY PULL THE LATEST EMULATORS FEATURES UPDATES: 
 url_switchkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/evmapy/switch.keys

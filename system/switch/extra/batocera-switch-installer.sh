@@ -287,7 +287,7 @@ url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/confi
 wget -q -O $path/es_features_switch.cfg $url/es_features_switch.cfg
 wget -q -O $path/es_systems_switch.cfg $url/es_systems_switch.cfg
 # -------------------------------------------------------------------- 
-# FILL /USERDATA/SYSTEM/CONFIGS/EMULATIONSTATION
+# FILL /USERDATA/SYSTEM/CONFIGS/EMULATIONSTATION 
 path=/userdata/system/configs/evmapy
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/evmapy
 wget -q -O $path/switch.keys $url/switch.keys
@@ -297,7 +297,7 @@ path=/userdata/roms/ports
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports
 wget -q -O "$path/Switch Updater.sh" "$url/Switch Updater.sh"
 # -------------------------------------------------------------------- 
-# FILL /USERDATA/ROMS/PORTS/IMAGES
+# FILL /USERDATA/ROMS/PORTS/IMAGES 
 path=/userdata/roms/ports/images
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports/images
 wget -q -O "$path/Switch Updater-boxart.png" "$url/Switch Updater-boxart.png"
@@ -311,22 +311,31 @@ path=/userdata/roms/switch
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/switch
 wget -q -O "$path/_info.txt" "$url/_info.txt"
 # -------------------------------------------------------------------- 
-# FILL /USERDATA/BIOS/SWITCH
+# FILL /USERDATA/BIOS/SWITCH 
 path=/userdata/bios/switch
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/bios/switch
 wget -q -O "$path/_info.txt" "$url/_info.txt"
+# -------------------------------------------------------------------- 
+# REMOVE OLD UPDATERS 
+rm /userdata/roms/ports/updateyuzu.sh 2>/dev/null 
+rm /userdata/roms/ports/updateyuzuea.sh 2>/dev/null
+rm /userdata/roms/ports/updateyuzuEA.sh 2>/dev/null 
+rm /userdata/roms/ports/updateryujinx.sh 2>/dev/null
+rm /userdata/roms/ports/updateryujinxavalonia.sh 2>/dev/null
+# -------------------------------------------------------------------- 
 echo -e "${G}INSTALLED OK${W}" 
 sleep 2
 echo
 echo
 echo
-echo -e "${W}PREPARING TO AUTOMATICALLY RUN ${G}SWITCH UPDATER${W} . . ." 
+# restore xterm font
+X='\033[0m' # / resetcolor
+echo -e "${W}PREPARING TO AUTOMATICALLY RUN ${G}SWITCH UPDATER${X} . . ." 
 #echo -e "${W}(THIS WILL TEMPORARILY RETURN TO THE MAIN SCREEN)" 
-echo 
+echo -e "${X} "
 #echo -e "${G}> > > ${W}PRESS ENTER TO CONTINUE" 
 #read -p ""
-sleep 6
-echo
+sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
 curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
@@ -363,14 +372,16 @@ rm /userdata/system/switch/extra/display.cfg 2>/dev/null
 # RUN: 
 # | 
   DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
-# &+automatically run switch updater after installation: 
+# &+automatically run switch updater after installation
+# --------------------------------------------------------------------
+X='\033[0m' # / resetcolor
 if [[ -e /userdata/system/switch/extra/installation ]]; then
 rm /userdata/system/switch/extra/installation 2>/dev/null
 clear
 echo
 echo
 echo
-echo -e "${W}$APPNAME INSTALLED AND UPDATED OK${W}" 
+echo -e "${X}$APPNAME INSTALLED AND UPDATED OK${X}" 
 echo
 echo
 echo
@@ -379,7 +390,7 @@ clear
 echo
 echo
 echo
-echo -e "${W}LOOKS LIKE THE INSTALLATION FAILED${W} . . ." 
+echo -e "${X}LOOKS LIKE THE INSTALLATION FAILED . . .${X}" 
 echo
 echo
 echo
