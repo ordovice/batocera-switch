@@ -410,11 +410,11 @@ echo "EMULATORS=$EMULATORS" >> /userdata/system/switch/extra/batocera-switch-upd
 ####################################################################################
 function update_emulator {
 E=$1 && N=$2
-link_yuzu=$4
-link_yuzuea=$5
-link_ryujinx=$6
-link_ryujinxldn=$7
-link_ryujinxavalonia=$8
+link_yuzu="$4"
+link_yuzuea="$5"
+link_ryujinx="$6"
+link_ryujinxldn="$7"
+link_ryujinxavalonia="$8"
 # ---------------------------------------------------------------------------------- 
 # TEMPORARILY FREEZING UPDATES FOR RYUJINX: 
 #link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
@@ -569,7 +569,7 @@ dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
-echo -e "${T}$path_ryujinx  ${T}($size_ryujinx( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
+echo -e "${T}/userdata/system/switch/Ryujinx.AppImage  ${T}($size_ryujinx( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -627,7 +627,7 @@ dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
-echo -e "${T}$path_ryujinx  ${T}($size_ryujinx( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
+echo -e "${T}/userdata/system/switch/Ryujinx-LDN.AppImage  ${T}($size_ryujinx( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -685,7 +685,7 @@ dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
-echo -e "${T}$path_ryujinx  ${T}($size_ryujinx( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
+echo -e "${T}/userdata/system/switch/Ryujinx-Avalonia.AppImage  ${T}($size_ryujinx( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -827,52 +827,53 @@ echo
 #echo -e "${RED}   LOADNEMLTRS"
 # -------------------------
 links=/userdata/system/switch/extra/links
-link_yuzu="$(cat $links | grep "link_yuzu@" | cut -d "@" -f2 )"
-link_yuzuea="$(cat $links | grep "link_yuzuea@" | cut -d "@" -f2 )"
-link_ryujinx="$(cat $links | grep "link_ryujinx@" | cut -d "@" -f2 )"
-link_ryujinxavalonia="$(cat $links | grep "link_ryujinxavalonia@" | cut -d "@" -f2 )"
+link_yuzu=$(cat "$links" | grep "link_yuzu@" | cut -d "@" -f2 )
+link_yuzuea=$(cat "$links" | grep "link_yuzuea@" | cut -d "@" -f2 )
+link_ryujinx=$(cat "$links" | grep "link_ryujinx@" | cut -d "@" -f2 )
+link_ryujinxldn=$(cat "$links" | grep "link_ryujinxldn@" | cut -d "@" -f2 )
+link_ryujinxavalonia=$(cat "$links" | grep "link_ryujinxavalonia@" | cut -d "@" -f2 )
 #
 # UPDATE 5 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" != "" ]]; then
-update_emulator 1 5 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 2 5 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 3 5 $(echo "$EMULATORS" | cut -d "-" -f 3) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 4 5 $(echo "$EMULATORS" | cut -d "-" -f 4) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 5 5 $(echo "$EMULATORS" | cut -d "-" -f 5) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
+update_emulator 1 5 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 2 5 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 3 5 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 4 5 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 5 5 $(echo "$EMULATORS" | cut -d "-" -f 5) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}5/5${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 4 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" != "" ]]; then
-update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
+update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 3 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" != "" ]]; then
-update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
+update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
-update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
-update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
+update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
+update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 echo
 echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W}"
 echo -e "${THEME_COLOR}-------------------------------------${X}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
-update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1) $link_yuzu $link_yuzuea $link_ryujinx $link_ryujinxldn $link_ryujinxavalonia
+update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 echo
 echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W}"
 echo -e "${THEME_COLOR}-------------------------------------${X}"
