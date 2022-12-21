@@ -194,21 +194,27 @@ echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 #\ link yuzu and ryujinx firmware folders to bios/switch/firmware
-echo '#\ link yuzu and ryujinx firmware folders to bios/switch/firmware ' >> $startup
-echo 'mkdir -p /userdata/bios/switch/firmware 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
-echo 'size_fw=$(du -h /userdata/bios/switch/firmware/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
-echo 'size_ryufw=$(du -h /userdata/system/configs/Ryujinx/bis/system/Contents/registered/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
-echo 'size_yuzufw=$(du -h /userdata/system/configs/yuzu/nand/system/Contents/registered/ | tail -n1 | awk "{print $1}" | cut -d "M" -f1 | cut -d "K" -f1 | cut -d "." -f1)' >> $startup
-echo 'if [[ "$size_ryufw" -gt "$size_fw" ]]; then cp -rL /userdata/system/configs/Ryujinx/bis/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
-echo 'if [[ "$size_yuzufw" -gt "$size_fw" ]]; then cp -rL /userdata/system/configs/yuzu/nand/system/Contents/registered/* /userdata/bios/switch/firmware/ 2>/dev/null; fi' >> $startup
-echo 'mv /userdata/bios/switch/firmware /userdata/bios/switch/firmware_tmp 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
-echo 'mv /userdata/bios/switch/firmware_tmp /userdata/bios/switch/firmware 2>/dev/null' >> $startup
-echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
-echo 'ln -s /userdata/bios/switch/firmware/ /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo '#\ link yuzu and ryujinx firmware folders to bios/switch/firmware' >> $startup
+echo 'ff=/userdata/bios/switch/firmware' >> $startup
+echo 'ft=/userdata/bios/switch/.firmware' >> $startup
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
+echo 'mkdir -p $ff 2>/dev/null' >> $startup
+echo 'mkdir -p $fr 2>/dev/null' >> $startup
+echo 'mkdir -p $fy 2>/dev/null' >> $startup
+echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
+echo "sfr=\$(du -s \$fr | awk '{print \$1}')" >> $startup
+echo "sfy=\$(du -s \$fy | awk '{print \$1}')" >> $startup
+echo 'if [[ -d "$fy" ]] && [[ "$sfy" > "0" ]]; then rm -rf $ff/* 2>/dev/null; chmod 777 $fy/*; cp -rL $fy/* $ff/ 2>/dev/null; fi' >> $startup
+echo 'if [[ -d "$fr" ]] && [[ "$sfr" > "0" ]]; then rm -rf $ff/* 2>/dev/null; chmod 777 $fr/*; cp -rL $fr/* $ff/ 2>/dev/null; fi' >> $startup
+echo 'rm -rf $ft 2>/dev/null' >> $startup
+echo 'mv $ff $ft 2>/dev/null' >> $startup
+echo 'rm -rf $fr 2>/dev/null' >> $startup
+echo 'rm -rf $fy 2>/dev/null' >> $startup
+echo 'mv $ft $ff 2>/dev/null' >> $startup
+echo 'ln -s $ff $fr 2>/dev/null' >> $startup
+echo 'ln -s $ff $fy 2>/dev/null' >> $startup
+echo 'chmod 777 $ff/* 2>/dev/null' >> $startup
 echo '#/' >> $startup
 dos2unix $startup 
 chmod a+x $startup 
