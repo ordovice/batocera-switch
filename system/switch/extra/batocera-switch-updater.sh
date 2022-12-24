@@ -200,6 +200,7 @@ echo 'ft=/userdata/bios/switch/.firmware' >> $startup
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
 echo 'mkdir -p $ff 2>/dev/null' >> $startup
+echo 'mkdir -p $ft 2>/dev/null' >> $startup
 echo 'mkdir -p $fr 2>/dev/null' >> $startup
 echo 'mkdir -p $fy 2>/dev/null' >> $startup
 echo 'rm -rf $ft 2>/dev/null' >> $startup
