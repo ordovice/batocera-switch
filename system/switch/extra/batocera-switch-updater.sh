@@ -205,6 +205,7 @@ echo 'mkdir -p $fr 2>/dev/null' >> $startup
 echo 'mkdir -p $fy 2>/dev/null' >> $startup
 echo 'rm -rf $ft 2>/dev/null' >> $startup
 echo 'mv $ff $ft 2>/dev/null' >> $startup
+echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
 echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
 echo "sfr=\$(du -s \$fr | awk '{print \$1}')" >> $startup
 echo "sfy=\$(du -s \$fy | awk '{print \$1}')" >> $startup
