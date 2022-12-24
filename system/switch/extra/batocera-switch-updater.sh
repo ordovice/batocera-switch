@@ -207,8 +207,8 @@ echo 'mv $ff $ft 2>/dev/null' >> $startup
 echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
 echo "sfr=\$(du -s \$fr | awk '{print \$1}')" >> $startup
 echo "sfy=\$(du -s \$fy | awk '{print \$1}')" >> $startup
-echo 'if [[ -d "$fy" ]] && [[ "$sfy" > "$sff" ]]; then cp -rL $fy/* $ft/ 2>/dev/null; fi' >> $startup
-echo 'if [[ -d "$fr" ]] && [[ "$sfr" > "$sff" ]]; then cp -rL $fr/* $ft/ 2>/dev/null; fi' >> $startup
+echo 'if [[ -d "$fy" ]] && [[ "$sfy" > "$sft" ]]; then cp -rL $fy/* $ft/ 2>/dev/null; fi' >> $startup
+echo 'if [[ -d "$fr" ]] && [[ "$sfr" > "$sft" ]]; then cp -rL $fr/* $ft/ 2>/dev/null; fi' >> $startup
 echo 'rm -rf $fr 2>/dev/null' >> $startup
 echo 'rm -rf $fy 2>/dev/null' >> $startup
 echo 'mv $ft $ff 2>/dev/null' >> $startup
