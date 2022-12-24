@@ -199,22 +199,23 @@ echo 'ff=/userdata/bios/switch/firmware' >> $startup
 echo 'ft=/userdata/bios/switch/.firmware' >> $startup
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
+echo 'rm -rf $ft 2>/dev/null' >> $startup
 echo 'mkdir -p $ff 2>/dev/null' >> $startup
 echo 'mkdir -p $ft 2>/dev/null' >> $startup
 echo 'mkdir -p $fr 2>/dev/null' >> $startup
 echo 'mkdir -p $fy 2>/dev/null' >> $startup
-echo 'rm -rf $ft 2>/dev/null' >> $startup
-echo 'mv $ff $ft 2>/dev/null' >> $startup
+#echo 'mv $ff $ft 2>/dev/null' >> $startup
 echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
 echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
 echo "sfr=\$(du -s \$fr | awk '{print \$1}')" >> $startup
 echo "sfy=\$(du -s \$fy | awk '{print \$1}')" >> $startup
-echo 'if [[ -d "$fy" ]] && [[ "$sfy" > "$sft" ]]; then cp -rL $fy/* $ft/ 2>/dev/null; fi' >> $startup
-echo 'if [[ -d "$fr" ]] && [[ "$sfr" > "$sft" ]]; then cp -rL $fr/* $ft/ 2>/dev/null; fi' >> $startup
+echo 'if [[ -d "$fy" ]] && [[ "$sfy" > "$sff" ]]; then cp -rL $fy/* $ft/ 2>/dev/null; fi' >> $startup
+echo 'if [[ -d "$fr" ]] && [[ "$sfr" > "$sff" ]]; then cp -rL $fr/* $ft/ 2>/dev/null; fi' >> $startup
 echo 'rm -rf $fr 2>/dev/null' >> $startup
 echo 'rm -rf $fy 2>/dev/null' >> $startup
-echo 'rm -rf $ff 2>/dev/null' >> $startup
-echo 'mv $ft $ff 2>/dev/null' >> $startup
+echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
+echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
+echo 'if [[ "$sft" > "$sff" ]]; then rm -rf $ff 2>/dev/null; mv $ft $ff 2>/dev/null; fi' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
 echo '#/' >> $startup
