@@ -216,8 +216,8 @@ echo 'rm -rf $fy 2>/dev/null' >> $startup
 echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
 echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
 echo 'if [[ "$sft" > "$sff" ]]; then cp -rL $ft/* $ff/* 2>/dev/null; fi' >> $startup
-echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
-echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+echo 'ln -s $ff $fr 2>/dev/null' >> $startup
+echo 'ln -s $ff $fy 2>/dev/null' >> $startup
 echo '#/' >> $startup
 dos2unix $startup 
 chmod a+x $startup 
