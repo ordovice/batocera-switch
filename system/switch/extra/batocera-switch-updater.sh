@@ -199,7 +199,7 @@ echo 'ff=/userdata/bios/switch/firmware' >> $startup
 echo 'ft=/userdata/bios/switch/_firmware_' >> $startup
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
-echo 'rm -rf $ft 2>/dev/null' >> $startup
+#echo 'rm -rf $ft 2>/dev/null' >> $startup
 echo 'mkdir -p $ff 2>/dev/null' >> $startup
 echo 'mkdir -p $ft 2>/dev/null' >> $startup
 echo 'mkdir -p $fr 2>/dev/null' >> $startup
@@ -215,7 +215,7 @@ echo 'rm -rf $fr 2>/dev/null' >> $startup
 echo 'rm -rf $fy 2>/dev/null' >> $startup
 echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
 echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
-echo 'if [[ "$sft" > "$sff" ]]; then rm -rf $ff 2>/dev/null; mv $ft $ff 2>/dev/null; fi' >> $startup
+echo 'if [[ "$sft" > "$sff" ]]; then cp -rL $ft/* $ff/* 2>/dev/null; fi' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
 echo '#/' >> $startup
