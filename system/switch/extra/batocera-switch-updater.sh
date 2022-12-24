@@ -211,6 +211,7 @@ echo 'if [[ -d "$fy" ]] && [[ "$sfy" > "$sft" ]]; then cp -rL $fy/* $ft/ 2>/dev/
 echo 'if [[ -d "$fr" ]] && [[ "$sfr" > "$sft" ]]; then cp -rL $fr/* $ft/ 2>/dev/null; fi' >> $startup
 echo 'rm -rf $fr 2>/dev/null' >> $startup
 echo 'rm -rf $fy 2>/dev/null' >> $startup
+echo 'rm -rf $ff 2>/dev/null' >> $startup
 echo 'mv $ft $ff 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch/firmware /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
