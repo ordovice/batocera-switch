@@ -193,29 +193,23 @@ echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
-#\ link yuzu and ryujinx firmware folders to bios/switch/firmware
-echo '#\ link yuzu and ryujinx firmware folders to bios/switch/firmware' >> $startup
+#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware
+echo '#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware' >> $startup
 echo 'ff=/userdata/bios/switch/firmware' >> $startup
 echo 'ft=/userdata/bios/switch/_firmware_' >> $startup
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
+echo 'rm $fr 2>/dev/null' >> $startup
+echo 'rm $fy 2>/dev/null' >> $startup
 echo 'mkdir -p $ff 2>/dev/null' >> $startup
 echo 'mkdir -p $ft 2>/dev/null' >> $startup
 echo 'mkdir -p $fr 2>/dev/null' >> $startup
 echo 'mkdir -p $fy 2>/dev/null' >> $startup
-echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
-echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
-echo "sfr=\$(du -s \$fr | awk '{print \$1}')" >> $startup
-echo "sfy=\$(du -s \$fy | awk '{print \$1}')" >> $startup
-echo 'if [[ -d "$fy" ]] && [[ "$sfy" > "$sff" ]]; then cp -rL $fy/* $ft/ 2>/dev/null; fi' >> $startup
-echo 'if [[ -d "$fr" ]] && [[ "$sfr" > "$sff" ]]; then cp -rL $fr/* $ft/ 2>/dev/null; fi' >> $startup
-echo 'rm -rf $fr 2>/dev/null' >> $startup
-echo 'rm -rf $fy 2>/dev/null' >> $startup
-echo "sff=\$(du -s \$ff | awk '{print \$1}')" >> $startup
-echo "sft=\$(du -s \$ft | awk '{print \$1}')" >> $startup
-echo 'if [[ "$sft" > "$sff" ]]; then cp -rL $ft/* $ff/* 2>/dev/null; fi' >> $startup
-echo 'ln -s $ff $fr 2>/dev/null' >> $startup
-echo 'ln -s $ff $fy 2>/dev/null' >> $startup
+echo 'rsync -au $ff/ $fr/' >> $startup
+echo 'rsync -au $fr/ $ff/' >> $startup
+echo 'rsync -au $ff/ $fy/' >> $startup
+echo 'rsync -au $fy/ $ff/' >> $startup
+echo 'rm -rf $ft 2>/dev/null' >> $startup
 echo '#/' >> $startup
 dos2unix $startup 
 chmod a+x $startup 
