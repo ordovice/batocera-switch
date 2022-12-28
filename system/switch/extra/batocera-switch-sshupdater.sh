@@ -195,6 +195,7 @@ echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 #\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware
 echo '#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware' >> $startup
+echo 'rm -rf /userdata/bios/switch/.firmware 2>/dev/null' >> $startup
 echo 'ff=/userdata/bios/switch/firmware' >> $startup
 echo 'ft=/userdata/bios/switch/_firmware_' >> $startup
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
