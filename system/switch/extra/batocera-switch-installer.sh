@@ -180,7 +180,7 @@ clear
 echo
 echo
 echo 
-echo -e "${X}${G}$APPNAME${X} INSTALLER ${X}"
+echo -e "${X}${X}$APPNAME${X} INSTALLER ${X}"
 echo 
 echo 
 echo
