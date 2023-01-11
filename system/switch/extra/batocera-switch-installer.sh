@@ -9,7 +9,8 @@ ORIGIN="github.com/ordovice/batocera-switch"
 ######################################################################
 ORIGIN="${ORIGIN^^}"
 extra=/userdata/system/switch/extra 
-mkdir -p $extra 2>/dev/null 
+mkdir /userdata/system/switch 2>/dev/null 
+mkdir /userdata/system/switch/extra 2>/dev/null 
 # -- output colors:
 ###########################
 X='\033[0m'               # / resetcolor

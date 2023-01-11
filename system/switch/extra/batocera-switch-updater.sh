@@ -9,7 +9,7 @@
 #===============/                                                    #
 EMULATORS="YUZUEA YUZU RYUJINX RYUJINXLDN RYUJINXAVALONIA"           #
 # DEFAULT:                                                           #
-# EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"                    #
+# EMULATORS="YUZUEA YUZU RYUJINX RYUJINXLDN RYUJINXAVALONIA"         #
 # EMULATORS="RYUJINX YUZU" -> will only update ryujinx & then yuzu   #
 # EMULATORS="YUZUEA"       -> will only update yuzu early access     #
 ######################################################################
@@ -140,6 +140,7 @@ echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
 #\ link ryujinx config folders 
 echo '#\ link ryujinx config folders ' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx /userdata/system/configs/Ryujinx_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx_tmp 2>/dev/null' >> $startup
@@ -149,16 +150,21 @@ echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>
 echo 'rm /userdata/system/configs/Ryujinx/Ryujinx 2>/dev/null' >> $startup
 #\ link ryujinx saves folders 
 echo '#\ link ryujinx saves folders ' >> $startup
-echo 'mkdir -p /userdata/saves/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/Ryujinx /userdata/saves/Ryujinx_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/bis/user/save/* /userdata/saves/Ryujinx_tmp/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/Ryujinx_tmp /userdata/saves/Ryujinx 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> $startup
 #\ link yuzu config folders 
 echo '#\ link yuzu config folders ' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/yuzu /userdata/system/configs/yuzu_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/.config/yuzu/* /userdata/configs/yuzu_tmp 2>/dev/null' >> $startup
@@ -171,41 +177,66 @@ echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.local/share/yuzu 2>/
 echo 'rm /userdata/system/configs/yuzu/yuzu 2>/dev/null' >> $startup
 #\ link yuzu saves folders
 echo '#\ link yuzu saves folders' >> $startup
-echo 'mkdir -p /userdata/saves/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves/yuzu 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/yuzu /userdata/saves/yuzu_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/yuzu/nand/user/save/* /userdata/saves/yuzu_tmp/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/yuzu_tmp /userdata/saves/yuzu 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/yuzu /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/yuzu/yuzu 2>/dev/null' >> $startup
 #\ link yuzu and ryujinx keys folders to bios/switch 
 echo '#\ link yuzu and ryujinx keys folders to bios/switch ' >> $startup
 echo 'cp -rL /userdata/system/configs/yuzu/keys/* /userdata/bios/switch/ 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/system/* /userdata/bios/switch/ 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/bios/switch /userdata/bios/switch_tmp 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 echo 'mv /userdata/bios/switch_tmp /userdata/bios/switch 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 #\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware
 echo '#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware' >> $startup
 echo 'rm -rf /userdata/bios/switch/.firmware 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/bios/switch/_firmware_ 2>/dev/null' >> $startup
 echo 'ff=/userdata/bios/switch/firmware' >> $startup
-echo 'ft=/userdata/bios/switch/_firmware_' >> $startup
+echo 'ft=/userdata/bios/switch/firmware_backup' >> $startup
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
 echo 'rm $fr 2>/dev/null' >> $startup
 echo 'rm $fy 2>/dev/null' >> $startup
-echo 'mkdir -p $ff 2>/dev/null' >> $startup
-echo 'mkdir -p $ft 2>/dev/null' >> $startup
-echo 'mkdir -p $fr 2>/dev/null' >> $startup
-echo 'mkdir -p $fy 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios/switch 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios/switch/firmware_backup 2>/dev/null' >> $startup
+#echo 'mkdir -p $ff 2>/dev/null' >> $startup
+#echo 'mkdir -p $ft 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/system 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/system/Contents 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+#
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/system 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/system/Contents 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+#
+#echo 'mkdir -p $fr 2>/dev/null' >> $startup
+#echo 'mkdir -p $fy 2>/dev/null' >> $startup
 echo 'rsync -au $ff/ $fr/' >> $startup
 echo 'rsync -au $fr/ $ff/' >> $startup
 echo 'rsync -au $ff/ $fy/' >> $startup
@@ -255,7 +286,10 @@ EMULATORS="$EMULATORS-"; fi
 EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
 # -------------------------------------------------------------------
 temp=/userdata/system/switch/extra/downloads
-mkdir $temp 2>/dev/null && clear 
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/downloads 2>/dev/null
+clear 
 # TEXT & THEME COLORS: 
 ###########################
 RED='\033[1;31m'          # red
@@ -452,6 +486,9 @@ EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
 # ----------------------------------------------------------------------------------
 extra=/userdata/system/switch/extra
 temp=/userdata/system/switch/extra/downloads
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/downloads 2>/dev/null
 # 
 if [ "$3" = "YUZU" ]; then
 T=$THEME_COLOR_YUZU
@@ -467,7 +504,9 @@ curl --progress-bar --remote-name --location $link_yuzu
 mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
 chmod a+x $temp/yuzu/yuzu.AppImage 2>/dev/null
 $temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 
-mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
 cd $temp
@@ -501,7 +540,9 @@ curl --progress-bar --remote-name --location $link_yuzuea
 mv $temp/yuzuea/* $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
 chmod a+x $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
 $temp/yuzuea/yuzuEA.AppImage --appimage-extract 1>/dev/null 
-mkdir -p /userdata/system/switch/extra/yuzuea 2>/dev/null
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/yuzuea 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
 cd $temp
@@ -901,6 +942,8 @@ rm $tmp 2>/dev/null
   fi
 es=/userdata/system/configs/emulationstation
 backup=/userdata/system/switch/extra/backup
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
 mkdir $backup 2>/dev/null
 # REMOVE OLD ~/CONFIGS/EMULATIONSTATION/files if found & system is now upgraded: 
 rm $es/add_feat_switch.cfg 2>/dev/null
@@ -952,7 +995,9 @@ export -f batocera_update_switch
 function get-xterm-fontsize {
 url_tput=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
 url_libtinfo=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
-extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+extra=/userdata/system/switch/extra
 wget -q -O $extra/batocera-switch-tput $url_tput
 wget -q -O $extra/batocera-switch-libtinfo.so.6 $url_libtinfo
 cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null & cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
