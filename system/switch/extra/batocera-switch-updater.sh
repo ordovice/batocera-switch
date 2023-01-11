@@ -9,7 +9,7 @@
 #===============/                                                    #
 EMULATORS="YUZUEA YUZU RYUJINX RYUJINXLDN RYUJINXAVALONIA"           #
 # DEFAULT:                                                           #
-# EMULATORS="YUZU YUZUEA RYUJINX RYUJINXAVALONIA"                    #
+# EMULATORS="YUZUEA YUZU RYUJINX RYUJINXLDN RYUJINXAVALONIA"         #
 # EMULATORS="RYUJINX YUZU" -> will only update ryujinx & then yuzu   #
 # EMULATORS="YUZUEA"       -> will only update yuzu early access     #
 ######################################################################
@@ -90,11 +90,11 @@ echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
 echo "DISPLAY=:0.0 QT_FONT_DPI=$DPI QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
-dos2unix $launcher
-chmod a+x $launcher
-dos2unix $shortcut
-chmod a+x $shortcut
-cp $shortcut $extra 2>/dev/null
+dos2unix "$launcher"
+chmod a+x "$launcher"
+dos2unix "$shortcut"
+chmod a+x "$shortcut"
+cp "$shortcut" "$extra" 2>/dev/null
 } # -----------------------------------------------------------------
 #
 # remove old version dekstop shortcuts from ~/.local/share/applications 
@@ -134,12 +134,13 @@ echo 'cp $extra/batocera-switch-lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo 'rm /lib/libthai.so.0.3.1 2>/dev/null; rm /lib/libthai.so.0 2>/dev/null' >> $startup
-echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null' >> $startup
-echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0 2>/dev/null' >> $startup
+echo 'cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null' >> $startup
+echo 'cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
 #\ link ryujinx config folders 
 echo '#\ link ryujinx config folders ' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/Ryujinx /userdata/system/configs/Ryujinx_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/.config/Ryujinx/* /userdata/configs/Ryujinx_tmp 2>/dev/null' >> $startup
@@ -149,16 +150,22 @@ echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>
 echo 'rm /userdata/system/configs/Ryujinx/Ryujinx 2>/dev/null' >> $startup
 #\ link ryujinx saves folders 
 echo '#\ link ryujinx saves folders ' >> $startup
-echo 'mkdir -p /userdata/saves/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/Ryujinx /userdata/saves/Ryujinx_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/bis/user/save/* /userdata/saves/Ryujinx_tmp/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/Ryujinx_tmp /userdata/saves/Ryujinx 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> $startup
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $startup
 #\ link yuzu config folders 
 echo '#\ link yuzu config folders ' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mv /userdata/system/configs/yuzu /userdata/system/configs/yuzu_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/.config/yuzu/* /userdata/configs/yuzu_tmp 2>/dev/null' >> $startup
@@ -171,49 +178,78 @@ echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.local/share/yuzu 2>/
 echo 'rm /userdata/system/configs/yuzu/yuzu 2>/dev/null' >> $startup
 #\ link yuzu saves folders
 echo '#\ link yuzu saves folders' >> $startup
-echo 'mkdir -p /userdata/saves/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves 2>/dev/null' >> $startup
+echo 'mkdir /userdata/saves/yuzu 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/yuzu /userdata/saves/yuzu_tmp 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/yuzu/nand/user/save/* /userdata/saves/yuzu_tmp/ 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> $startup
 echo 'mv /userdata/saves/yuzu_tmp /userdata/saves/yuzu 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/yuzu /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/yuzu/yuzu 2>/dev/null' >> $startup
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $startup
+#echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
 #\ link yuzu and ryujinx keys folders to bios/switch 
 echo '#\ link yuzu and ryujinx keys folders to bios/switch ' >> $startup
 echo 'cp -rL /userdata/system/configs/yuzu/keys/* /userdata/bios/switch/ 2>/dev/null' >> $startup
 echo 'cp -rL /userdata/system/configs/Ryujinx/system/* /userdata/bios/switch/ 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'mv /userdata/bios/switch /userdata/bios/switch_tmp 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'rm -rf /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
 echo 'mv /userdata/bios/switch_tmp /userdata/bios/switch 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/yuzu 2>/dev/null' >> $startup
-echo 'mkdir -p /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $startup
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
 #\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware
 echo '#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware' >> $startup
 echo 'rm -rf /userdata/bios/switch/.firmware 2>/dev/null' >> $startup
+echo 'rm -rf /userdata/bios/switch/_firmware_ 2>/dev/null' >> $startup
 echo 'ff=/userdata/bios/switch/firmware' >> $startup
-echo 'ft=/userdata/bios/switch/_firmware_' >> $startup
+echo 'ft=/userdata/bios/switch/firmware_backup' >> $startup
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
 echo 'rm $fr 2>/dev/null' >> $startup
 echo 'rm $fy 2>/dev/null' >> $startup
-echo 'mkdir -p $ff 2>/dev/null' >> $startup
-echo 'mkdir -p $ft 2>/dev/null' >> $startup
-echo 'mkdir -p $fr 2>/dev/null' >> $startup
-echo 'mkdir -p $fy 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios/switch 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios/switch/firmware 2>/dev/null' >> $startup
+echo 'mkdir /userdata/bios/switch/firmware_backup 2>/dev/null' >> $startup
+#echo 'mkdir -p $ff 2>/dev/null' >> $startup
+#echo 'mkdir -p $ft 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/system 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/system/Contents 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
+#
+echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/system 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/system/Contents 2>/dev/null' >> $startup
+echo 'mkdir /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
+#
+#echo 'mkdir -p $fr 2>/dev/null' >> $startup
+#echo 'mkdir -p $fy 2>/dev/null' >> $startup
 echo 'rsync -au $ff/ $fr/' >> $startup
 echo 'rsync -au $fr/ $ff/' >> $startup
 echo 'rsync -au $ff/ $fy/' >> $startup
 echo 'rsync -au $fy/ $ff/' >> $startup
 echo 'rm -rf $ft 2>/dev/null' >> $startup
 echo '#/' >> $startup
-dos2unix $startup 
-chmod a+x $startup 
+dos2unix "$startup" 
+chmod a+x "$startup" 
 # & run startup immediatelly: 
 /userdata/system/switch/extra/batocera-switch-startup 
 # -------------------------------------------------------------------
@@ -221,7 +257,7 @@ chmod a+x $startup
 # -------------------------------------------------------------------
 csh=/userdata/system/custom.sh
 startup="/userdata/system/switch/extra/batocera-switch-startup"
-if [[ -e $csh ]];
+if [[ -e "$csh" ]];
 then
    tmp=/userdata/system/customsh.tmp
    remove="$startup"
@@ -232,17 +268,17 @@ then
    if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo $ln >> $tmp; fi
    ((l++))
    done
-   cp $tmp $csh 2>/dev/null
-   rm $tmp 2>/dev/null
+   cp "$tmp" "$csh" 2>/dev/null
+   rm "$tmp" 2>/dev/null
    echo -e "\n$startup" >> $csh   
-   dos2unix $csh 
-   chmod a+x $csh 
+   dos2unix "$csh" 
+   chmod a+x "$csh" 
 else 
    echo -e "\n$startup" >> $csh
 fi 
-cat $csh | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> $tmp; cp $tmp $csh; rm $tmp;
-dos2unix $csh 2>/dev/null
-chmod a+x $csh
+cat "$csh" | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> "$tmp"; cp "$tmp" "$csh"; rm "$tmp";
+dos2unix "$csh" 2>/dev/null
+chmod a+x "$csh"
 ######################################################################
 ######################################################################
 ######################################################################
@@ -255,7 +291,10 @@ EMULATORS="$EMULATORS-"; fi
 EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
 # -------------------------------------------------------------------
 temp=/userdata/system/switch/extra/downloads
-mkdir $temp 2>/dev/null && clear 
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/downloads 2>/dev/null
+clear 
 # TEXT & THEME COLORS: 
 ###########################
 RED='\033[1;31m'          # red
@@ -421,7 +460,6 @@ link_ryujinxavalonia="$8"
 # TEMPORARILY FREEZING UPDATES FOR RYUJINX: 
 link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
 link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
-#
 link_ryujinxldn=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ava-ryujinx-1.1.0-ldn3.0.1-linux_x64.tar.gz
 # ---------------------------------------------------------------------------------- 
 # TEMPORARILY FREEZING UPDATES FOR YUZU: 
@@ -448,10 +486,24 @@ THEME_COLOR_RYUJINXAVALONIA=$(cat $cookie | grep "THEME_COLOR_RYUJINXAVALONIA=" 
 THEME_COLOR_OK=$(cat $cookie | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
 EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
 # ---------------------------------------------------------------------------------- 
+# OVERRIDE COLORS FOR SSH/XTERM: 
+X='\033[0m' # / resetcolor
+#TEXT_COLOR=$X 
+#THEME_COLOR=$X
+#THEME_COLOR_YUZU=$X
+#THEME_COLOR_YUZUEA=$X
+#THEME_COLOR_RYUJINX=$X
+#THEME_COLOR_RYUJINXLDN=$X
+#THEME_COLOR_RYUJINXAVALONIA=$X
+#THEME_COLOR_OK=$X
+# ---------------------------------------------------------------------------------- 
 # RUN UPDATER FOR SELECTED EMULATOR:
 # ----------------------------------------------------------------------------------
 extra=/userdata/system/switch/extra
 temp=/userdata/system/switch/extra/downloads
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/downloads 2>/dev/null
 # 
 if [ "$3" = "YUZU" ]; then
 T=$THEME_COLOR_YUZU
@@ -465,22 +517,36 @@ mkdir $temp/yuzu 2>/dev/null
 cd $temp/yuzu
 curl --progress-bar --remote-name --location $link_yuzu
 mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
-chmod a+x $temp/yuzu/yuzu.AppImage 2>/dev/null
+chmod a+x "$temp/yuzu/yuzu.AppImage" 2>/dev/null
 $temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 
-mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/yuzu 2>/dev/null
+cp $temp/yuzu/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
+cp $temp/yuzu/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
 cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzu.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'cp /userdata/system/switch/extra/yuzu/lib* /lib64/ 2>/dev/null' >> $ai 
+echo 'export QT_PLUGIN_PATH=/usr/lib/qt/plugins/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
-echo 'ln -s /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
-echo '/userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3"' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
+echo 'cp /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo 'QT_PLUGIN_PATH=/usr/lib/qt/plugins/ XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3"' >> $ai
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzu/yuzu" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzu/yuzu-room" 2>/dev/null
 size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzu  ${T}($size_yuzu( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
@@ -499,22 +565,36 @@ mkdir $temp/yuzuea 2>/dev/null
 cd $temp/yuzuea
 curl --progress-bar --remote-name --location $link_yuzuea
 mv $temp/yuzuea/* $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
-chmod a+x $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
+chmod a+x "$temp/yuzuea/yuzuEA.AppImage" 2>/dev/null
 $temp/yuzuea/yuzuEA.AppImage --appimage-extract 1>/dev/null 
-mkdir -p /userdata/system/switch/extra/yuzuea 2>/dev/null
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/yuzuea 2>/dev/null
+cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
+cp $temp/yuzuea/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
 cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzuEA.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'cp /userdata/system/switch/extra/yuzuea/lib* /lib64/ 2>/dev/null' >> $ai 
+echo 'export QT_PLUGIN_PATH=/usr/lib/qt/plugins/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
-echo 'ln -s /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
-echo '/userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3"' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
+echo 'cp /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo 'QT_PLUGIN_PATH=/usr/lib/qt/plugins/ XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3"' >> $ai
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu-room" 2>/dev/null
 size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzuea  ${T}($size_yuzuea( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
@@ -532,8 +612,13 @@ echo -e "${T}$link_ryujinx" | sed 's,https://,> ,g'
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinx
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
-if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
-ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+if [[ -e "$extra/batocera-switch-tar" ]]; then 
+chmod a+x "$extra/batocera-switch-tar"
+else 
+wget -q -O "$extra/batocera-switch-tar" "$link_tar"
+chmod a+x "$extra/batocera-switch-tar"
+fi
+cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
 # //
 # /userdata/system/switch/extra/ryujinx/ will keep all ryujinx related dependencies
 emu=ryujinx
@@ -554,21 +639,30 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-dos2unix $startup
-chmod a+x $startup
+echo 'rm  /lib/$lib 2>/dev/null; cp /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+dos2unix "$startup"
+chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
 # / 
 path_ryujinx=$extra/$emu/Ryujinx.AppImage
 cp $temp/$emu/publish/Ryujinx $path_ryujinx 2>/dev/null
-chmod a+x $path_ryujinx 2>/dev/null
+chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'export QT_PLUGIN_PATH=/usr/lib/qt/plugins/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
-echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage' >> $ai
-echo 'else /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$1"; fi' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
+echo 'if [[ $1 = "" ]]; then XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage' >> $ai
+echo 'else XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$1"; fi' >> $ai
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -588,8 +682,13 @@ echo -e "${T}$link_ryujinxldn" | sed 's,https://,> ,g'
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
-if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
-ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+if [[ -e "$extra/batocera-switch-tar" ]]; then 
+   chmod a+x "$extra/batocera-switch-tar"
+else 
+   wget -q -O "$extra/batocera-switch-tar" "$link_tar"
+   chmod a+x "$extra/batocera-switch-tar"
+fi
+cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
 emu=ryujinxldn
@@ -611,22 +710,31 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-dos2unix $startup
-chmod a+x $startup
+echo 'rm  /lib/$lib 2>/dev/null; cp /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+dos2unix "$startup"
+chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
 # /
 # --------------------------------------------------------
 path_ryujinx=$extra/$emu/Ryujinx-LDN.AppImage
 cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinx 2>/dev/null
-chmod a+x $path_ryujinx 2>/dev/null
+chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-LDN.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'export QT_PLUGIN_PATH=/usr/lib/qt/plugins/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
-echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage' >> $ai
-echo 'else /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$1"; fi' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
+echo 'if [[ $1 = "" ]]; then XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage' >> $ai
+echo 'else XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$1"; fi' >> $ai
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -646,8 +754,13 @@ echo -e "${T}$link_ryujinxavalonia" | sed 's,https://,> ,g'
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
-if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
-ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+if [[ -e "$extra/batocera-switch-tar" ]]; then 
+   chmod a+x "$extra/batocera-switch-tar"
+else 
+   wget -q -O "$extra/batocera-switch-tar" "$link_tar"
+   chmod a+x "$extra/batocera-switch-tar"
+fi
+cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
 emu=ryujinxavalonia
@@ -669,22 +782,31 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-dos2unix $startup
-chmod a+x $startup
+echo 'rm  /lib/$lib 2>/dev/null; cp /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+dos2unix "$startup"
+chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
 # /
 # --------------------------------------------------------
 path_ryujinx=$extra/$emu/Ryujinx-Avalonia.AppImage
 cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinx 2>/dev/null
-chmod a+x $path_ryujinx 2>/dev/null
+chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'export QT_PLUGIN_PATH=/usr/lib/qt/plugins/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
-echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage' >> $ai
-echo 'else /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$1"; fi' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
+echo 'if [[ $1 = "" ]]; then XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage' >> $ai
+echo 'else XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$1"; fi' >> $ai
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -781,7 +903,13 @@ WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
 R=$RED
-W=$WHITE
+# -------------------------
+#  override colors: 
+   #RED=$X
+   #R=$X
+   #F=$X
+   #W=$X
+# -------------------------
 clear
 echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
@@ -890,20 +1018,22 @@ csh=/userdata/system/custom.sh
   if [[ -e "$csh" ]]; then
 tmp=/userdata/system/customsh.tmp
 rm $tmp 2>/dev/null
-nl=$(cat $csh | wc -l)
-l=1; while [[ $l -le $nl ]]; do
-ln=$(cat $csh | sed ""$l"q;d")
-if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+nl=$(cat "$csh" | wc -l)
+l=1; while [[ "$l" -le "$nl" ]]; do
+ln=$(cat "$csh" | sed ""$l"q;d")
+if [[ "$(echo "$ln" | grep "$remove")" != "" ]]; then :; else echo "$ln" >> "$tmp"; fi
 ((l++))
 done
-cp $tmp $csh 2>/dev/null
-rm $tmp 2>/dev/null
+cp "$tmp" "$csh" 2>/dev/null
+rm "$tmp" 2>/dev/null
   fi
 es=/userdata/system/configs/emulationstation
 backup=/userdata/system/switch/extra/backup
-mkdir $backup 2>/dev/null
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/extra/backup 2>/dev/null
 # REMOVE OLD ~/CONFIGS/EMULATIONSTATION/files if found & system is now upgraded: 
-rm $es/add_feat_switch.cfg 2>/dev/null
+rm "$es/add_feat_switch.cfg" 2>/dev/null
 # --- optionally remove es_features or backup to ~/switch/extra/backup
 #rm $es/es_features.cfg 2>/dev/null
 #timestamp=$(date +"%y%m%d-%H%M%S")
@@ -927,15 +1057,15 @@ url_GeneratorImporter=https://raw.githubusercontent.com/ordovice/batocera-switch
 url_ryujinxMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
 url_yuzuMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
 url_sshupdater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh
-wget -q -O /userdata/system/configs/evmapy/switch.keys $url_switchkeys
-wget -q -O /userdata/system/configs/emulationstation/es_features_switch.cfg $url_es_features_switch
-wget -q -O /userdata/system/configs/emulationstation/es_systems_switch.cfg $url_es_systems_switch
-wget -q -O /userdata/system/switch/configgen/switchlauncher.py $url_switchlauncher
-wget -q -O /userdata/system/switch/configgen/GeneratorImporter.py $url_GeneratorImporter
-wget -q -O /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py $url_ryujinxMainlineGenerator
-wget -q -O /userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py $url_yuzuMainlineGenerator
-wget -q -O /userdata/system/switch/extra/batocera-switch-sshupdater.sh $url_sshupdater
-chmod a+x /userdata/system/switch/extra/batocera-switch-sshupdater.sh
+wget -q -O "/userdata/system/configs/evmapy/switch.keys" "$url_switchkeys"
+wget -q -O "/userdata/system/configs/emulationstation/es_features_switch.cfg" "$url_es_features_switch"
+wget -q -O "/userdata/system/configs/emulationstation/es_systems_switch.cfg" "$url_es_systems_switch"
+wget -q -O "/userdata/system/switch/configgen/switchlauncher.py" "$url_switchlauncher"
+wget -q -O "/userdata/system/switch/configgen/GeneratorImporter.py" "$url_GeneratorImporter"
+wget -q -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
+wget -q -O "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" "$url_yuzuMainlineGenerator"
+wget -q -O "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" "$url_sshupdater"
+chmod a+x "/userdata/system/switch/extra/batocera-switch-sshupdater.sh"
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
@@ -952,11 +1082,14 @@ export -f batocera_update_switch
 function get-xterm-fontsize {
 url_tput=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
 url_libtinfo=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
-extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
-wget -q -O $extra/batocera-switch-tput $url_tput
-wget -q -O $extra/batocera-switch-libtinfo.so.6 $url_libtinfo
-cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null & cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
-chmod a+x $extra/batocera-switch-tput 2>/dev/null
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+extra=/userdata/system/switch/extra
+wget -q -O "$extra/batocera-switch-tput" "$url_tput"
+wget -q -O "$extra/batocera-switch-libtinfo.so.6" "$url_libtinfo"
+cp "$extra/batocera-switch-libtinfo.so.6" "/lib/libtinfo.so.6" 2>/dev/null
+cp "$extra/batocera-switch-libtinfo.so.6" "/lib64/libtinfo.so.6" 2>/dev/null
+chmod a+x "$extra/batocera-switch-tput" 2>/dev/null
 tput=/userdata/system/switch/extra/batocera-switch-tput
 cfg=/userdata/system/switch/extra/display.cfg; rm $cfg 2>/dev/null
 DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null
@@ -964,20 +1097,23 @@ cols=$(cat $cfg | tail -n 1) 2>/dev/null
 TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 }
 export -f get-xterm-fontsize 2>/dev/null
-get-xterm-fontsize 2>/dev/null
-cfg=/userdata/system/switch/extra/display.cfg
-cols=$(cat $cfg | tail -n 1) 2>/dev/null
-until [[ "$cols" != "80" ]] 
-do
-sleep 0.042 && get-xterm-fontsize 2>/dev/null
-cols=$(cat $cfg | tail -n 1) 2>/dev/null
-done 
-TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
-rm /userdata/system/switch/extra/display.cfg 2>/dev/null
+   get-xterm-fontsize 2>/dev/null
+   cfg=/userdata/system/switch/extra/display.cfg
+   cols=$(cat $cfg | tail -n 1) 2>/dev/null
+   until [[ "$cols" != "80" ]] 
+   do
+   sleep 0.042 && get-xterm-fontsize 2>/dev/null
+   cols=$(cat $cfg | tail -n 1) 2>/dev/null
+   done 
+   TEXT_SIZE=$(bc <<<"scale=0;$cols/16" 2>/dev/null) 2>/dev/null
+   if [ "$TEXT_SIZE" = "" ]; then TEXT_SIZE=8; fi
+   rm /userdata/system/switch/extra/display.cfg 2>/dev/null
+   ###########################################################################
+      # RUN THE UPDATER: 
+        DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 ###########################################################################
-# RUN THE UPDATER: 
-  DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
-# ssh: batocera_update_switch
+# ssh/xterm (no display)
+# batocera_update_switch
 ###########################################################################
 exit 0
 ######
