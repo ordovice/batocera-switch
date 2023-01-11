@@ -205,8 +205,8 @@ echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
-echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $startup
-echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then /userdata/system/configs/Ryujinx/system; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $startup
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
 #\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware
 echo '#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware' >> $startup
 echo 'rm -rf /userdata/bios/switch/.firmware 2>/dev/null' >> $startup
