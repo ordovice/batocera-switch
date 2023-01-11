@@ -3,7 +3,6 @@
 ######################################################################
 #--------------------------------------------------------------------- 
 APPNAME="SWITCH-EMULATION" 
-APPLINK=github.com/ordovice/batocera-switch
 ORIGIN="github.com/ordovice/batocera-switch" 
 #---------------------------------------------------------------------
 ######################################################################
@@ -11,86 +10,9 @@ ORIGIN="${ORIGIN^^}"
 extra=/userdata/system/switch/extra 
 mkdir /userdata/system/switch 2>/dev/null 
 mkdir /userdata/system/switch/extra 2>/dev/null 
-# -- output colors:
-###########################
-X='\033[0m'               # / resetcolor
-W='\033[0;37m'            # white
-#-------------------------#
-RED='\033[1;31m'          # red
-BLUE='\033[1;34m'         # blue
-GREEN='\033[1;32m'        # green
-PURPLE='\033[1;35m'       # purple
-DARKRED='\033[0;31m'      # darkred
-DARKBLUE='\033[0;34m'     # darkblue
-DARKGREEN='\033[0;32m'    # darkgreen
-DARKPURPLE='\033[0;35m'   # darkpurple
-###########################
-# --------------------------------------------------------------------
-# -- console theme
-L=$X
-R=$X
-W=$X
-# --------------------------------------------------------------------
-# -- show console/ssh info:
-clear
-echo
-echo
-echo
-echo -e "${X}LOADING $APPNAME INSTALLER${X}"
-echo
-echo
-echo
-sleep 0.33
-
-clear
-echo
-echo
-echo -e "${X}- - - -"
-echo -e "${X}LOADING $APPNAME INSTALLER${X}"
-echo -e "${X}- - - -"
-echo
-echo
-sleep 0.33
-
-clear
-echo
-echo -e "${X}- - - -"
-echo
-echo -e "${X}LOADING $APPNAME INSTALLER${X}"
-echo
-echo -e "${X}- - - -"
-echo
-sleep 0.33
-
-clear
-echo -e "${X}- - - -"
-echo
-echo
-echo -e "${X}LOADING $APPNAME INSTALLER${X}"
-echo
-echo
-echo -e "${X}- - - -"
-sleep 0.33
-
-clear
-echo
-echo
-echo
-echo -e "${X}LOADING $APPNAME INSTALLER${X}"
-echo
-echo
-echo
-sleep 0.33
-
-echo -e "${X}THIS WILL INSTALL $APPNAME FOR BATOCERA"
-echo -e "${X}USING $ORIGIN"
-echo
-echo
-echo
 #/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 # --------------------------------------------------------------------
-#\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-# -- THIS WILL BE SHOWN ON MAIN BATOCERA DISPLAY:   
+#\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\   
 function batocera-pro-installer {
 APPNAME=$1
 ORIGIN=$2
@@ -118,16 +40,6 @@ G=$GREEN
 P=$PURPLE
 W=$X
 # --------------------------------------------------------------------
-#cols=$(cat /userdata/system/switch/extra/display.cfg | tail -n 1) 2>/dev/null
-#cols=$(bc <<<"scale=0;$cols/1.3") 2>/dev/null
-#cols=$(cat /userdata/system/pro/$appname/extra/cols | tail -n 1)
-#line(){
-#  local start=1
-#  local end=${1:-80}
-#  local str="${2:-=}"
-#  local range=$(seq $start $end)
-#  for i in $range ; do echo -n "${str}"; done
-#}
 clear
 echo
 echo
@@ -200,8 +112,8 @@ if [[ "$(uname -a | grep "x86_64")" != "" ]]; then
 :
 else
 echo
-echo -e "${RED}ERROR: SYSTEM NOT SUPPORTED"
-echo -e "${RED}YOU NEED BATOCERA X86_64${X}"
+echo -e "${X}ERROR: SYSTEM NOT SUPPORTED"
+echo -e "${X}YOU NEED BATOCERA X86_64${X}"
 echo
 sleep 5
 exit 0
