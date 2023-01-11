@@ -44,31 +44,31 @@ sleep 0.33
 clear
 echo
 echo
-echo -e "${W}- - - -"
+echo -e "${X}- - - -"
 echo -e "${X}LOADING $APPNAME INSTALLER${X}"
-echo -e "${W}- - - -"
+echo -e "${X}- - - -"
 echo
 echo
 sleep 0.33
 
 clear
 echo
-echo -e "${W}- - - -"
+echo -e "${X}- - - -"
 echo
 echo -e "${X}LOADING $APPNAME INSTALLER${X}"
 echo
-echo -e "${W}- - - -"
+echo -e "${X}- - - -"
 echo
 sleep 0.33
 
 clear
-echo -e "${W}- - - -"
+echo -e "${X}- - - -"
 echo
 echo
 echo -e "${X}LOADING $APPNAME INSTALLER${X}"
 echo
 echo
-echo -e "${W}- - - -"
+echo -e "${X}- - - -"
 sleep 0.33
 
 clear
