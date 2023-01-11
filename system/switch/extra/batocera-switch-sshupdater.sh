@@ -821,7 +821,7 @@ WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
 R=$RED
-W=$WHITE
+W=$X
 clear
 echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
