@@ -525,6 +525,12 @@ cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzu.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
@@ -561,6 +567,12 @@ cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzuEA.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
@@ -623,6 +635,12 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage' >> $ai
 echo 'else /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$1"; fi' >> $ai
@@ -686,6 +704,12 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-LDN.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage' >> $ai
 echo 'else /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$1"; fi' >> $ai
@@ -749,6 +773,12 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'ff=/userdata/bios/switch/firmware' >> $ai
+echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
+echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
+echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage' >> $ai
 echo 'else /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$1"; fi' >> $ai
