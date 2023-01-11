@@ -35,7 +35,7 @@ clear
 echo
 echo
 echo
-echo -e "${X}BATOCERA.PRO/$APPNAME INSTALLER${X}"
+echo -e "${X}LOADING $APPNAME INSTALLER${X}"
 echo
 echo
 echo
@@ -44,38 +44,38 @@ sleep 0.33
 clear
 echo
 echo
-echo -e "${W}- - - - - - -"
-echo -e "${X}BATOCERA.PRO/$APPNAME INSTALLER${X}"
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - -"
+echo -e "${X}LOADING $APPNAME INSTALLER${X}"
+echo -e "${W}- - - -"
 echo
 echo
 sleep 0.33
 
 clear
 echo
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - -"
 echo
-echo -e "${X}BATOCERA.PRO/$APPNAME INSTALLER${X}"
+echo -e "${X}LOADING $APPNAME INSTALLER${X}"
 echo
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - -"
 echo
 sleep 0.33
 
 clear
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - -"
 echo
 echo
-echo -e "${X}BATOCERA.PRO/$APPNAME INSTALLER${X}"
+echo -e "${X}LOADING $APPNAME INSTALLER${X}"
 echo
 echo
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - -"
 sleep 0.33
 
 clear
 echo
 echo
 echo
-echo -e "${X}BATOCERA.PRO/$APPNAME INSTALLER${X}"
+echo -e "${X}LOADING $APPNAME INSTALLER${X}"
 echo
 echo
 echo
@@ -84,9 +84,7 @@ sleep 0.33
 echo -e "${X}THIS WILL INSTALL $APPNAME FOR BATOCERA"
 echo -e "${X}USING $ORIGIN"
 echo
-echo -e "${X}FOLLOW THE BATOCERA DISPLAY"
 echo
-echo -e "${X}. . .${X}" 
 echo
 #/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 # --------------------------------------------------------------------
@@ -132,7 +130,7 @@ clear
 echo
 echo
 echo
-echo -e "${W}BATOCERA.PRO/${G}$APPNAME${W} INSTALLER ${W}"
+echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
 echo
 echo
 echo
@@ -142,7 +140,7 @@ clear
 echo
 echo
 echo
-echo -e "${W}BATOCERA.PRO/${W}$APPNAME${W} INSTALLER ${W}"
+echo -e "${W}${W}$APPNAME${W} INSTALLER ${W}"
 echo
 echo
 echo
@@ -151,51 +149,49 @@ sleep 0.33
 clear
 echo
 echo
-echo -e "${W}- - - - - - -"
-echo -e "${W}BATOCERA.PRO/${G}$APPNAME${W} INSTALLER ${W}"
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - - - - - -"
+echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
+echo -e "${W}- - - - - - - -"
 echo
 echo
 sleep 0.33
 clear
 
 echo
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - - - - - -"
 echo
-echo -e "${W}BATOCERA.PRO/${W}$APPNAME${W} INSTALLER ${W}"
+echo -e "${W}${W}$APPNAME${W} INSTALLER ${W}"
 echo 
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - - - - - -"
 echo
 sleep 0.33
 
 clear
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - - - - - -"
 echo 
 echo 
-echo -e "${W}BATOCERA.PRO/${G}$APPNAME${W} INSTALLER ${W}"
+echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
 echo 
 echo 
-echo -e "${W}- - - - - - -"
+echo -e "${W}- - - - - - - -"
 sleep 0.33
 
 clear
 echo
 echo
 echo 
-echo -e "${W}BATOCERA.PRO/${G}$APPNAME${W} INSTALLER ${W}"
+echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
 echo 
 echo 
 echo
 sleep 0.33
 
-echo
-echo -e "${W}THIS WILL INSTALL $APPNAME FOR BATOCERA"
+echo -e "${W}INSTALLING $APPNAME FOR BATOCERA"
 echo -e "${W}USING $ORIGIN"
 echo 
-#echo -e "${G}> > > ${W}PRESS ENTER TO CONTINUE" 
-#read -p ""
-sleep 3
 echo
+echo
+sleep 3
 # --------------------------------------------------------------------
 # -- check system before proceeding
 if [[ "$(uname -a | grep "x86_64")" != "" ]]; then 
@@ -380,21 +376,22 @@ cols=$(cat $cfg | tail -n 1) 2>/dev/null
 TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 }
 export -f get-xterm-fontsize 2>/dev/null
-get-xterm-fontsize 2>/dev/null
-cfg=/userdata/system/switch/extra/display.cfg
-cols=$(cat $cfg | tail -n 1) 2>/dev/null
-until [[ "$cols" != "80" ]] 
-do
-sleep 0.042 && get-xterm-fontsize 2>/dev/null
-cols=$(cat $cfg | tail -n 1) 2>/dev/null
-done 
-TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
-rm /userdata/system/switch/extra/display.cfg 2>/dev/null
+  #get-xterm-fontsize 2>/dev/null
+  #cfg=/userdata/system/switch/extra/display.cfg
+  #cols=$(cat $cfg | tail -n 1) 2>/dev/null
+  #until [[ "$cols" != "80" ]] 
+  #do
+  #sleep 0.042 && get-xterm-fontsize 2>/dev/null
+  #cols=$(cat $cfg | tail -n 1) 2>/dev/null
+  #done 
+  #TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
+  #rm /userdata/system/switch/extra/display.cfg 2>/dev/null
+    # --------------------------------------------------------------------
+    # RUN: 
+    # | 
+    # DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
+    # &+automatically run switch updater after installation
 # --------------------------------------------------------------------
-# RUN: 
-# | 
-#  DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
-# &+automatically run switch updater after installation
 batocera-pro-installer "$APPNAME" "$ORIGIN"
 # --------------------------------------------------------------------
 X='\033[0m' # / resetcolor

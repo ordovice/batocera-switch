@@ -1008,19 +1008,20 @@ cols=$(cat $cfg | tail -n 1) 2>/dev/null
 TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
 }
 export -f get-xterm-fontsize 2>/dev/null
-get-xterm-fontsize 2>/dev/null
-cfg=/userdata/system/switch/extra/display.cfg
-cols=$(cat $cfg | tail -n 1) 2>/dev/null
-until [[ "$cols" != "80" ]] 
-do
-sleep 0.042 && get-xterm-fontsize 2>/dev/null
-cols=$(cat $cfg | tail -n 1) 2>/dev/null
-done 
-TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
-rm /userdata/system/switch/extra/display.cfg 2>/dev/null
+   #get-xterm-fontsize 2>/dev/null
+   #cfg=/userdata/system/switch/extra/display.cfg
+   #cols=$(cat $cfg | tail -n 1) 2>/dev/null
+   #until [[ "$cols" != "80" ]] 
+   #do
+   #sleep 0.042 && get-xterm-fontsize 2>/dev/null
+   #cols=$(cat $cfg | tail -n 1) 2>/dev/null
+   #done 
+   #TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
+   #rm /userdata/system/switch/extra/display.cfg 2>/dev/null
+   ###########################################################################
+      # RUN THE UPDATER: 
+      # DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 ###########################################################################
-# RUN THE UPDATER: 
-# DISPLAY=:0.0 xterm -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera_update_switch" 2>/dev/null 
 batocera_update_switch
 ###########################################################################
 exit 0
