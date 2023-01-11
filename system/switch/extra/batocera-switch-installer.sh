@@ -29,6 +29,7 @@ DARKPURPLE='\033[0;35m'   # darkpurple
 # -- console theme
 L=$X
 R=$X
+W=$X
 # --------------------------------------------------------------------
 # -- show console/ssh info:
 clear
@@ -115,6 +116,7 @@ R=$RED
 B=$BLUE
 G=$GREEN
 P=$PURPLE
+W=$X
 # --------------------------------------------------------------------
 #cols=$(cat /userdata/system/switch/extra/display.cfg | tail -n 1) 2>/dev/null
 #cols=$(bc <<<"scale=0;$cols/1.3") 2>/dev/null
