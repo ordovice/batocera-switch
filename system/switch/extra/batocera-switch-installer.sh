@@ -149,31 +149,31 @@ sleep 0.33
 clear
 echo
 echo
-echo -e "${W}- - - - - - - -"
+echo -e "${W}- - - - - - - - -"
 echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
-echo -e "${W}- - - - - - - -"
+echo -e "${W}- - - - - - - - -"
 echo
 echo
 sleep 0.33
 clear
 
 echo
-echo -e "${W}- - - - - - - -"
+echo -e "${W}- - - - - - - - -"
 echo
 echo -e "${W}${W}$APPNAME${W} INSTALLER ${W}"
 echo 
-echo -e "${W}- - - - - - - -"
+echo -e "${W}- - - - - - - - -"
 echo
 sleep 0.33
 
 clear
-echo -e "${W}- - - - - - - -"
+echo -e "${W}- - - - - - - - -"
 echo 
 echo 
 echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
 echo 
 echo 
-echo -e "${W}- - - - - - - -"
+echo -e "${W}- - - - - - - - -"
 sleep 0.33
 
 clear
