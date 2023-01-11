@@ -162,6 +162,7 @@ echo 'mkdir /userdata/system/configs/Ryujinx/bis 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> $startup
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $startup
 #\ link yuzu config folders 
 echo '#\ link yuzu config folders ' >> $startup
 echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
@@ -189,6 +190,8 @@ echo 'mkdir /userdata/system/configs/yuzu/nand 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> $startup
 echo 'ln -s /userdata/saves/yuzu /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> $startup
 echo 'rm /userdata/saves/yuzu/yuzu 2>/dev/null' >> $startup
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $startup
+#echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
 #\ link yuzu and ryujinx keys folders to bios/switch 
 echo '#\ link yuzu and ryujinx keys folders to bios/switch ' >> $startup
 echo 'cp -rL /userdata/system/configs/yuzu/keys/* /userdata/bios/switch/ 2>/dev/null' >> $startup
@@ -525,6 +528,8 @@ cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzu.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
 echo 'ff=/userdata/bios/switch/firmware' >> $ai
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
@@ -567,6 +572,8 @@ cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzuEA.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
 echo 'ff=/userdata/bios/switch/firmware' >> $ai
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
@@ -635,6 +642,8 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
 echo 'ff=/userdata/bios/switch/firmware' >> $ai
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
@@ -704,6 +713,8 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-LDN.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
 echo 'ff=/userdata/bios/switch/firmware' >> $ai
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
@@ -773,6 +784,8 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
+echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
 echo 'ff=/userdata/bios/switch/firmware' >> $ai
 echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
 echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
