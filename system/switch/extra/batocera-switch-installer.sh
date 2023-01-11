@@ -224,15 +224,33 @@ rm /userdata/system/configs/emulationstation/add_feat_switch.cfg 2>/dev/null
 rm /userdata/system/configs/emulationstation/es_features.cfg 2>/dev/null
 # -------------------------------------------------------------------- 
 # FILL PATHS
-mkdir -p /userdata/roms/ports/images 2>/dev/null
-mkdir -p /userdata/roms/switch 2>/dev/null
-mkdir -p /userdata/bios/switch 2>/dev/null
-mkdir -p /userdata/bios/switch/firmware 2>/dev/null
-mkdir -p /userdata/system/configs/emulationstation 2>/dev/null
-mkdir -p /userdata/system/configs/evmapy 2>/dev/null
-mkdir -p /userdata/system/switch/configgen/generators/yuzu 2>/dev/null
-mkdir -p /userdata/system/switch/configgen/generators/ryujinx 2>/dev/null
-mkdir -p /userdata/system/switch/extra 2>/dev/null
+#mkdir -p /userdata/roms/ports/images 2>/dev/null
+#mkdir -p /userdata/roms/switch 2>/dev/null
+#mkdir -p /userdata/bios/switch 2>/dev/null
+#mkdir -p /userdata/bios/switch/firmware 2>/dev/null
+#mkdir -p /userdata/system/configs/emulationstation 2>/dev/null
+#mkdir -p /userdata/system/configs/evmapy 2>/dev/null
+#mkdir -p /userdata/system/switch/configgen/generators/yuzu 2>/dev/null
+#mkdir -p /userdata/system/switch/configgen/generators/ryujinx 2>/dev/null
+#mkdir -p /userdata/system/switch/extra 2>/dev/null
+
+mkdir /userdata/roms/switch 2>/dev/null
+mkdir /userdata/roms/ports/images 2>/dev/null
+
+mkdir /userdata/bios/switch 2>/dev/null
+mkdir /userdata/bios/switch/firmware 2>/dev/null
+
+mkdir /userdata/system/switch 2>/dev/null
+mkdir /userdata/system/switch/extra 2>/dev/null
+mkdir /userdata/system/switch/configgen 2>/dev/null
+mkdir /userdata/system/switch/configgen/generators 2>/dev/null
+mkdir /userdata/system/switch/configgen/generators/yuzu 2>/dev/null
+mkdir /userdata/system/switch/configgen/generators/ryujinx 2>/dev/null
+
+mkdir /userdata/system/configs 2>/dev/null
+mkdir /userdata/system/configs/evmapy 2>/dev/null
+mkdir /userdata/system/configs/emulationstation 2>/dev/null
+
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/EXTRA
 path=/userdata/system/switch/extra
@@ -346,7 +364,9 @@ export -f batocera-pro-installer 2>/dev/null
 function get-xterm-fontsize {
 url_tput=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
 url_libtinfo=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
-extra=/userdata/system/switch/extra; mkdir -p $extra 2>/dev/null 
+mkdir /userdata/system/switch 2>/dev/null 
+mkdir /userdata/system/switch/extra 2>/dev/null 
+extra=/userdata/system/switch/extra 
 wget -q -O $extra/batocera-switch-tput $url_tput
 wget -q -O $extra/batocera-switch-libtinfo.so.6 $url_libtinfo
 cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null & cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
