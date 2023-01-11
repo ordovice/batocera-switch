@@ -254,7 +254,7 @@ chmod a+x "$startup"
 # -------------------------------------------------------------------
 csh=/userdata/system/custom.sh
 startup="/userdata/system/switch/extra/batocera-switch-startup"
-if [[ -e $csh ]];
+if [[ -e "$csh" ]];
 then
    tmp=/userdata/system/customsh.tmp
    remove="$startup"
@@ -265,15 +265,15 @@ then
    if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo $ln >> $tmp; fi
    ((l++))
    done
-   cp $tmp $csh 2>/dev/null
-   rm $tmp 2>/dev/null
+   cp "$tmp" "$csh" 2>/dev/null
+   rm "$tmp" 2>/dev/null
    echo -e "\n$startup" >> $csh   
    dos2unix "$csh" 
    chmod a+x "$csh" 
 else 
    echo -e "\n$startup" >> $csh
 fi 
-cat $csh | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> $tmp; cp $tmp $csh; rm $tmp;
+cat "$csh" | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> "$tmp"; cp "$tmp" "$csh"; rm "$tmp";
 dos2unix "$csh" 2>/dev/null
 chmod a+x "$csh"
 ######################################################################
@@ -994,22 +994,22 @@ csh=/userdata/system/custom.sh
   if [[ -e "$csh" ]]; then
 tmp=/userdata/system/customsh.tmp
 rm $tmp 2>/dev/null
-nl=$(cat $csh | wc -l)
-l=1; while [[ $l -le $nl ]]; do
-ln=$(cat $csh | sed ""$l"q;d")
-if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo "$ln" >> $tmp; fi
+nl=$(cat "$csh" | wc -l)
+l=1; while [[ "$l" -le "$nl" ]]; do
+ln=$(cat "$csh" | sed ""$l"q;d")
+if [[ "$(echo "$ln" | grep "$remove")" != "" ]]; then :; else echo "$ln" >> "$tmp"; fi
 ((l++))
 done
-cp $tmp $csh 2>/dev/null
-rm $tmp 2>/dev/null
+cp "$tmp" "$csh" 2>/dev/null
+rm "$tmp" 2>/dev/null
   fi
 es=/userdata/system/configs/emulationstation
 backup=/userdata/system/switch/extra/backup
 mkdir /userdata/system/switch 2>/dev/null
 mkdir /userdata/system/switch/extra 2>/dev/null
-mkdir $backup 2>/dev/null
+mkdir /userdata/system/switch/extra/backup 2>/dev/null
 # REMOVE OLD ~/CONFIGS/EMULATIONSTATION/files if found & system is now upgraded: 
-rm $es/add_feat_switch.cfg 2>/dev/null
+rm "$es/add_feat_switch.cfg" 2>/dev/null
 # --- optionally remove es_features or backup to ~/switch/extra/backup
 #rm $es/es_features.cfg 2>/dev/null
 #timestamp=$(date +"%y%m%d-%H%M%S")
