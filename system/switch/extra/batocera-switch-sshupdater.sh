@@ -481,6 +481,17 @@ THEME_COLOR_RYUJINXAVALONIA=$(cat $cookie | grep "THEME_COLOR_RYUJINXAVALONIA=" 
 THEME_COLOR_OK=$(cat $cookie | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
 EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
 # ---------------------------------------------------------------------------------- 
+# OVERRIDE COLORS FOR SSH/XTERM: 
+X='\033[0m' # / resetcolor
+TEXT_COLOR=$X 
+THEME_COLOR=$X
+THEME_COLOR_YUZU=$X
+THEME_COLOR_YUZUEA=$X
+THEME_COLOR_RYUJINX=$X
+THEME_COLOR_RYUJINXLDN=$X
+THEME_COLOR_RYUJINXAVALONIA=$X
+THEME_COLOR_OK=$X
+# ---------------------------------------------------------------------------------- 
 # RUN UPDATER FOR SELECTED EMULATOR:
 # ----------------------------------------------------------------------------------
 extra=/userdata/system/switch/extra
