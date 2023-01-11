@@ -832,7 +832,13 @@ WHITE='\033[0;37m'        # white
 BLACK='\033[0;30m'        # black
 ###########################
 R=$RED
+# -------------------------
+# override colors: 
+RED=$X
+R=$X
+F=$X
 W=$X
+# -------------------------
 clear
 echo -e "${R}---------------------------"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${RED}"
