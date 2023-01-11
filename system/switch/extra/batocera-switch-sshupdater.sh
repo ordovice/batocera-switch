@@ -453,9 +453,9 @@ link_ryujinxldn="$7"
 link_ryujinxavalonia="$8"
 # ---------------------------------------------------------------------------------- 
 # TEMPORARILY FREEZING UPDATES FOR RYUJINX: 
-#link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
-#link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
-#link_ryujinxldn=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ava-ryujinx-1.1.0-ldn3.0.1-linux_x64.tar.gz
+link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
+link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
+link_ryujinxldn=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ava-ryujinx-1.1.0-ldn3.0.1-linux_x64.tar.gz
 # ---------------------------------------------------------------------------------- 
 # TEMPORARILY FREEZING UPDATES FOR YUZU: 
 #link_yuzu=https://github.com/uureel/batocera.pro/raw/main/switch/extra/yuzu-mainline-20221204-9af678822.AppImage

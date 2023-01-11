@@ -357,7 +357,8 @@ echo -e "${X} "
 sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
-curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
+#curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
+curl https://raw.githubusercontent.com/uureel/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh | bash
 }
 export -f batocera-pro-installer 2>/dev/null
 # --------------------------------------------------------------------
@@ -392,8 +393,9 @@ rm /userdata/system/switch/extra/display.cfg 2>/dev/null
 # --------------------------------------------------------------------
 # RUN: 
 # | 
-  DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
+#  DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
 # &+automatically run switch updater after installation
+batocera-pro-installer "$APPNAME" "$ORIGIN"
 # --------------------------------------------------------------------
 X='\033[0m' # / resetcolor
 if [[ -e /userdata/system/switch/extra/installation ]]; then
