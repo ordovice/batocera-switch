@@ -172,7 +172,7 @@ clear
 echo -e "${X}- - - - - - - - -"
 echo 
 echo 
-echo -e "${X}${G}$APPNAME${X} INSTALLER ${X}"
+echo -e "${X}${X}$APPNAME${X} INSTALLER ${X}"
 echo 
 echo 
 echo -e "${X}- - - - - - - - -"
@@ -346,7 +346,7 @@ echo
 echo
 # restore xterm font
 X='\033[0m' # / resetcolor
-echo -e "${X}   PREPARING TO AUTOMATICALLY RUN ${X}SWITCH UPDATER${X} . . ." 
+echo -e "${X}LOADING ${X}SWITCH UPDATER${X} . . ." 
 echo -e "${X} "
 sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
