@@ -90,11 +90,11 @@ echo "Name=$name-config" >> $shortcut
 ####
 echo "#!/bin/bash" >> $launcher
 echo "DISPLAY=:0.0 QT_FONT_DPI=$DPI QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
-dos2unix $launcher
-chmod a+x $launcher
-dos2unix $shortcut
-chmod a+x $shortcut
-cp $shortcut $extra 2>/dev/null
+dos2unix "$launcher"
+chmod a+x "$launcher"
+dos2unix "$shortcut"
+chmod a+x "$shortcut"
+cp "$shortcut" "$extra" 2>/dev/null
 } # -----------------------------------------------------------------
 #
 # remove old version dekstop shortcuts from ~/.local/share/applications 
@@ -243,8 +243,8 @@ echo 'rsync -au $ff/ $fy/' >> $startup
 echo 'rsync -au $fy/ $ff/' >> $startup
 echo 'rm -rf $ft 2>/dev/null' >> $startup
 echo '#/' >> $startup
-dos2unix $startup 
-chmod a+x $startup 
+dos2unix "$startup" 
+chmod a+x "$startup" 
 # & run startup immediatelly: 
 /userdata/system/switch/extra/batocera-switch-startup 
 # -------------------------------------------------------------------
@@ -266,14 +266,14 @@ then
    cp $tmp $csh 2>/dev/null
    rm $tmp 2>/dev/null
    echo -e "\n$startup" >> $csh   
-   dos2unix $csh 
-   chmod a+x $csh 
+   dos2unix "$csh" 
+   chmod a+x "$csh" 
 else 
    echo -e "\n$startup" >> $csh
 fi 
 cat $csh | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> $tmp; cp $tmp $csh; rm $tmp;
-dos2unix $csh 2>/dev/null
-chmod a+x $csh
+dos2unix "$csh" 2>/dev/null
+chmod a+x "$csh"
 ######################################################################
 ######################################################################
 ######################################################################
@@ -512,7 +512,7 @@ mkdir $temp/yuzu 2>/dev/null
 cd $temp/yuzu
 curl --progress-bar --remote-name --location $link_yuzu
 mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
-chmod a+x $temp/yuzu/yuzu.AppImage 2>/dev/null
+chmod a+x "$temp/yuzu/yuzu.AppImage" 2>/dev/null
 $temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 
 mkdir /userdata/system/switch 2>/dev/null
 mkdir /userdata/system/switch/extra 2>/dev/null
@@ -527,9 +527,9 @@ echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo '/userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3"' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzu/yuzu" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzu/yuzu-room" 2>/dev/null
 size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzu  ${T}($size_yuzu( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
@@ -548,7 +548,7 @@ mkdir $temp/yuzuea 2>/dev/null
 cd $temp/yuzuea
 curl --progress-bar --remote-name --location $link_yuzuea
 mv $temp/yuzuea/* $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
-chmod a+x $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
+chmod a+x "$temp/yuzuea/yuzuEA.AppImage" 2>/dev/null
 $temp/yuzuea/yuzuEA.AppImage --appimage-extract 1>/dev/null 
 mkdir /userdata/system/switch 2>/dev/null
 mkdir /userdata/system/switch/extra 2>/dev/null
@@ -563,9 +563,9 @@ echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo '/userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3"' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
-chmod a+x /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu" 2>/dev/null
+chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu-room" 2>/dev/null
 size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
 echo -e "${T}$path_yuzuea  ${T}($size_yuzuea( )MB)  ${THEME_COLOR_OK}OK" | sed 's/( )//g'
 echo
@@ -583,8 +583,13 @@ echo -e "${T}$link_ryujinx" | sed 's,https://,> ,g'
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinx
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
-if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
-ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+if [[ -e "$extra/batocera-switch-tar" ]]; then 
+chmod a+x "$extra/batocera-switch-tar"
+else 
+wget -q -O "$extra/batocera-switch-tar" "$link_tar"
+chmod a+x "$extra/batocera-switch-tar"
+fi
+cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
 # //
 # /userdata/system/switch/extra/ryujinx/ will keep all ryujinx related dependencies
 emu=ryujinx
@@ -606,20 +611,20 @@ echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startu
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
 echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-dos2unix $startup
-chmod a+x $startup
+dos2unix "$startup"
+chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
 # / 
 path_ryujinx=$extra/$emu/Ryujinx.AppImage
 cp $temp/$emu/publish/Ryujinx $path_ryujinx 2>/dev/null
-chmod a+x $path_ryujinx 2>/dev/null
+chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage' >> $ai
 echo 'else /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$1"; fi' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -639,8 +644,13 @@ echo -e "${T}$link_ryujinxldn" | sed 's,https://,> ,g'
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
-if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
-ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+if [[ -e "$extra/batocera-switch-tar" ]]; then 
+   chmod a+x "$extra/batocera-switch-tar"
+else 
+   wget -q -O "$extra/batocera-switch-tar" "$link_tar"
+   chmod a+x "$extra/batocera-switch-tar"
+fi
+cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
 emu=ryujinxldn
@@ -663,21 +673,21 @@ echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startu
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
 echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-dos2unix $startup
-chmod a+x $startup
+dos2unix "$startup"
+chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
 # /
 # --------------------------------------------------------
 path_ryujinx=$extra/$emu/Ryujinx-LDN.AppImage
 cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinx 2>/dev/null
-chmod a+x $path_ryujinx 2>/dev/null
+chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-LDN.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage' >> $ai
 echo 'else /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$1"; fi' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -697,8 +707,13 @@ echo -e "${T}$link_ryujinxavalonia" | sed 's,https://,> ,g'
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
-if [[ -e "$extra/batocera-switch-tar" ]]; then chmod a+x $extra/batocera-switch-tar; else wget -q -O $extra/batocera-switch-tar $link_tar && chmod a+x $extra/batocera-switch-tar; fi
-ln -s $extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null
+if [[ -e "$extra/batocera-switch-tar" ]]; then 
+   chmod a+x "$extra/batocera-switch-tar"
+else 
+   wget -q -O "$extra/batocera-switch-tar" "$link_tar"
+   chmod a+x "$extra/batocera-switch-tar"
+fi
+cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
 emu=ryujinxavalonia
@@ -721,21 +736,21 @@ echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startu
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
 echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
-dos2unix $startup
-chmod a+x $startup
+dos2unix "$startup"
+chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
 # /
 # --------------------------------------------------------
 path_ryujinx=$extra/$emu/Ryujinx-Avalonia.AppImage
 cp $temp/$emu/publish/Ryujinx.Ava $path_ryujinx 2>/dev/null
-chmod a+x $path_ryujinx 2>/dev/null
+chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 echo 'if [[ $1 = "" ]]; then /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage' >> $ai
 echo 'else /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$1"; fi' >> $ai
-dos2unix $ai 2>/dev/null; chmod a+x $ai 2>/dev/null
+dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
@@ -986,15 +1001,15 @@ url_GeneratorImporter=https://raw.githubusercontent.com/ordovice/batocera-switch
 url_ryujinxMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
 url_yuzuMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
 url_sshupdater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh
-wget -q -O /userdata/system/configs/evmapy/switch.keys $url_switchkeys
-wget -q -O /userdata/system/configs/emulationstation/es_features_switch.cfg $url_es_features_switch
-wget -q -O /userdata/system/configs/emulationstation/es_systems_switch.cfg $url_es_systems_switch
-wget -q -O /userdata/system/switch/configgen/switchlauncher.py $url_switchlauncher
-wget -q -O /userdata/system/switch/configgen/GeneratorImporter.py $url_GeneratorImporter
-wget -q -O /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py $url_ryujinxMainlineGenerator
-wget -q -O /userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py $url_yuzuMainlineGenerator
-wget -q -O /userdata/system/switch/extra/batocera-switch-sshupdater.sh $url_sshupdater
-chmod a+x /userdata/system/switch/extra/batocera-switch-sshupdater.sh
+wget -q -O "/userdata/system/configs/evmapy/switch.keys" "$url_switchkeys"
+wget -q -O "/userdata/system/configs/emulationstation/es_features_switch.cfg" "$url_es_features_switch"
+wget -q -O "/userdata/system/configs/emulationstation/es_systems_switch.cfg" "$url_es_systems_switch"
+wget -q -O "/userdata/system/switch/configgen/switchlauncher.py" "$url_switchlauncher"
+wget -q -O "/userdata/system/switch/configgen/GeneratorImporter.py" "$url_GeneratorImporter"
+wget -q -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
+wget -q -O "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" "$url_yuzuMainlineGenerator"
+wget -q -O "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" "$url_sshupdater"
+chmod a+x "/userdata/system/switch/extra/batocera-switch-sshupdater.sh"
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
@@ -1014,10 +1029,11 @@ url_libtinfo=https://github.com/uureel/batocera-switch/raw/main/system/switch/ex
 mkdir /userdata/system/switch 2>/dev/null
 mkdir /userdata/system/switch/extra 2>/dev/null
 extra=/userdata/system/switch/extra
-wget -q -O $extra/batocera-switch-tput $url_tput
-wget -q -O $extra/batocera-switch-libtinfo.so.6 $url_libtinfo
-cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null & cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
-chmod a+x $extra/batocera-switch-tput 2>/dev/null
+wget -q -O "$extra/batocera-switch-tput" "$url_tput"
+wget -q -O "$extra/batocera-switch-libtinfo.so.6" "$url_libtinfo"
+cp "$extra/batocera-switch-libtinfo.so.6" "/lib/libtinfo.so.6" 2>/dev/null
+cp "$extra/batocera-switch-libtinfo.so.6" "/lib64/libtinfo.so.6" 2>/dev/null
+chmod a+x "$extra/batocera-switch-tput" 2>/dev/null
 tput=/userdata/system/switch/extra/batocera-switch-tput
 cfg=/userdata/system/switch/extra/display.cfg; rm $cfg 2>/dev/null
 DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null

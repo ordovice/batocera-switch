@@ -165,60 +165,60 @@ mkdir /userdata/system/configs/emulationstation 2>/dev/null
 # FILL /USERDATA/SYSTEM/SWITCH/EXTRA
 path=/userdata/system/switch/extra
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra
-wget -q -O $path/batocera-config-ryujinx $url/batocera-config-ryujinx
-wget -q -O $path/batocera-config-ryujinx-avalonia $url/batocera-config-ryujinx-avalonia
-wget -q -O $path/batocera-config-yuzu $url/batocera-config-yuzu
-wget -q -O $path/batocera-config-yuzuEA $url/batocera-config-yuzuEA
-wget -q -O $path/batocera-switch-libselinux.so.1 $url/batocera-switch-libselinux.so.1
-wget -q -O $path/batocera-switch-libthai.so.0.3 $url/batocera-switch-libthai.so.0.3
-wget -q -O $path/batocera-switch-libtinfo.so.6 $url/batocera-switch-libtinfo.so.6
-wget -q -O $path/batocera-switch-sshupdater.sh $url/batocera-switch-sshupdater.sh
-wget -q -O $path/batocera-switch-tar $url/batocera-switch-tar
-wget -q -O $path/batocera-switch-tput $url/batocera-switch-tput
-wget -q -O $path/batocera-switch-updater.sh $url/batocera-switch-updater.sh
-wget -q -O $path/icon_ryujinx.png $url/icon_ryujinx.png
-wget -q -O $path/icon_yuzu.png $url/icon_yuzu.png
-wget -q -O $path/libthai.so.0.3.1 $url/libthai.so.0.3.1
-wget -q -O $path/ryujinx-avalonia.png $url/ryujinx-avalonia.png
-wget -q -O $path/ryujinx.png $url/ryujinx.png
-wget -q -O $path/yuzu.png $url/yuzu.png
-wget -q -O $path/yuzuEA.png $url/yuzuEA.png
+wget -q -O "$path/batocera-config-ryujinx" "$url/batocera-config-ryujinx"
+wget -q -O "$path/batocera-config-ryujinx-avalonia" "$url/batocera-config-ryujinx-avalonia"
+wget -q -O "$path/batocera-config-yuzu" "$url/batocera-config-yuzu"
+wget -q -O "$path/batocera-config-yuzuEA" "$url/batocera-config-yuzuEA"
+wget -q -O "$path/batocera-switch-libselinux.so.1" "$url/batocera-switch-libselinux.so.1"
+wget -q -O "$path/batocera-switch-libthai.so.0.3" "$url/batocera-switch-libthai.so.0.3"
+wget -q -O "$path/batocera-switch-libtinfo.so.6" "$url/batocera-switch-libtinfo.so.6"
+wget -q -O "$path/batocera-switch-sshupdater.sh" "$url/batocera-switch-sshupdater.sh"
+wget -q -O "$path/batocera-switch-tar" "$url/batocera-switch-tar"
+wget -q -O "$path/batocera-switch-tput" "$url/batocera-switch-tput"
+wget -q -O "$path/batocera-switch-updater.sh" "$url/batocera-switch-updater.sh"
+wget -q -O "$path/icon_ryujinx.png" "$url/icon_ryujinx.png"
+wget -q -O "$path/icon_yuzu.png" "$url/icon_yuzu.png"
+wget -q -O "$path/libthai.so.0.3.1" "$url/libthai.so.0.3.1"
+wget -q -O "$path/ryujinx-avalonia.png" "$url/ryujinx-avalonia.png"
+wget -q -O "$path/ryujinx.png" "$url/ryujinx.png"
+wget -q -O "$path/yuzu.png" "$url/yuzu.png"
+wget -q -O "$path/yuzuEA.png" "$url/yuzuEA.png"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX
 path=/userdata/system/switch/configgen/generators/ryujinx
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx
-wget -q -O $path/__init__.py $url/__init__.py
-wget -q -O $path/ryujinxMainlineGenerator.py $url/ryujinxMainlineGenerator.py
+wget -q -O "$path/__init__.py" "$url/__init__.py"
+wget -q -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/YUZU
 path=/userdata/system/switch/configgen/generators/yuzu
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu
-wget -q -O $path/__init__.py $url/__init__.py
-wget -q -O $path/yuzuMainlineGenerator.py $url/yuzuMainlineGenerator.py
+wget -q -O "$path/__init__.py" "$url/__init__.py"
+wget -q -O "$path/yuzuMainlineGenerator.py" "$url/yuzuMainlineGenerator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS
 path=/userdata/system/switch/configgen/generators
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators
-wget -q -O $path/__init__.py $url/__init__.py
-wget -q -O $path/Generator.py $url/Generator.py
+wget -q -O "$path/__init__.py" "$url/__init__.py"
+wget -q -O "$path/Generator.py" "$url/Generator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN
 path=/userdata/system/switch/configgen
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen
-wget -q -O $path/GeneratorImporter.py $url/GeneratorImporter.py
-wget -q -O $path/switchlauncher.py $url/switchlauncher.py
-wget -q -O $path/switchlauncher2.py $url/switchlauncher2.py
+wget -q -O "$path/GeneratorImporter.py" "$url/GeneratorImporter.py"
+wget -q -O "$path/switchlauncher.py" "$url/switchlauncher.py"
+wget -q -O "$path/switchlauncher2.py" "$url/switchlauncher2.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/CONFIGS/EMULATIONSTATION
 path=/userdata/system/configs/emulationstation
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/emulationstation
-wget -q -O $path/es_features_switch.cfg $url/es_features_switch.cfg
-wget -q -O $path/es_systems_switch.cfg $url/es_systems_switch.cfg
+wget -q -O "$path/es_features_switch.cfg" "$url/es_features_switch.cfg"
+wget -q -O "$path/es_systems_switch.cfg" "$url/es_systems_switch.cfg"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/CONFIGS/EMULATIONSTATION 
 path=/userdata/system/configs/evmapy
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/configs/evmapy
-wget -q -O $path/switch.keys $url/switch.keys
+wget -q -O "$path/switch.keys" "$url/switch.keys"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/ROMS/PORTS 
 path=/userdata/roms/ports 
