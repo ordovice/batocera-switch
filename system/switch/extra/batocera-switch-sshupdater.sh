@@ -134,8 +134,8 @@ echo 'cp $extra/batocera-switch-lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo 'rm /lib/libthai.so.0.3.1 2>/dev/null; rm /lib/libthai.so.0 2>/dev/null' >> $startup
-echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null' >> $startup
-echo 'ln -s /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0 2>/dev/null' >> $startup
+echo 'cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null' >> $startup
+echo 'cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinx/startup 2>/dev/null' >> $startup
 echo '/userdata/system/switch/extra/ryujinxavalonia/startup 2>/dev/null' >> $startup
 #\ link ryujinx config folders 
@@ -205,6 +205,8 @@ echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
 echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/yuzu/keys 2>/dev/null' >> $startup
 echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev/null' >> $startup
+echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $startup
+echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then /userdata/system/configs/Ryujinx/system; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
 #\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware
 echo '#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware' >> $startup
 echo 'rm -rf /userdata/bios/switch/.firmware 2>/dev/null' >> $startup
@@ -525,7 +527,7 @@ ai=/userdata/system/switch/yuzu.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
-echo 'ln -s /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo 'cp /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo '/userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3"' >> $ai
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzu/yuzu" 2>/dev/null
@@ -561,7 +563,7 @@ ai=/userdata/system/switch/yuzuEA.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
-echo 'ln -s /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
+echo 'cp /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo '/userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3"' >> $ai
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu" 2>/dev/null
@@ -610,7 +612,7 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'rm  /lib/$lib 2>/dev/null; cp /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
 dos2unix "$startup"
 chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
@@ -672,7 +674,7 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'rm  /lib/$lib 2>/dev/null; cp /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
 dos2unix "$startup"
 chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
@@ -735,7 +737,7 @@ echo '#!/bin/bash' >> $startup
 echo 'dependencies=/userdata/system/switch/extra/'$emu'/dependencies' >> $startup
 echo 'L=1; while [[ "$L" -le "$(cat $dependencies | wc -l)" ]]; do' >> $startup
 echo 'lib=$(cat $dependencies | sed ""$L"q;d")' >> $startup
-echo 'rm  /lib/$lib 2>/dev/null; ln -s /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
+echo 'rm  /lib/$lib 2>/dev/null; cp /userdata/system/switch/extra/'$emu'/$lib /lib/$lib 2>/dev/null; ((L++)); done' >> $startup
 dos2unix "$startup"
 chmod a+x "$startup"
 $extra/$emu/startup 2>/dev/null
