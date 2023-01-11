@@ -130,7 +130,7 @@ clear
 echo
 echo
 echo
-echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
+echo -e "${X}${X}$APPNAME${X} INSTALLER ${X}"
 echo
 echo
 echo
@@ -140,7 +140,7 @@ clear
 echo
 echo
 echo
-echo -e "${W}${W}$APPNAME${W} INSTALLER ${W}"
+echo -e "${X}${W}$APPNAME${X} INSTALLER ${X}"
 echo
 echo
 echo
@@ -149,45 +149,45 @@ sleep 0.33
 clear
 echo
 echo
-echo -e "${W}- - - - - - - - -"
-echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
-echo -e "${W}- - - - - - - - -"
+echo -e "${X}- - - - - - - - -"
+echo -e "${X}${X}$APPNAME${X} INSTALLER ${X}"
+echo -e "${X}- - - - - - - - -"
 echo
 echo
 sleep 0.33
 clear
 
 echo
-echo -e "${W}- - - - - - - - -"
+echo -e "${X}- - - - - - - - -"
 echo
-echo -e "${W}${W}$APPNAME${W} INSTALLER ${W}"
+echo -e "${X}${X}$APPNAME${X} INSTALLER ${X}"
 echo 
-echo -e "${W}- - - - - - - - -"
+echo -e "${X}- - - - - - - - -"
 echo
 sleep 0.33
 
 clear
-echo -e "${W}- - - - - - - - -"
+echo -e "${X}- - - - - - - - -"
 echo 
 echo 
-echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
+echo -e "${X}${G}$APPNAME${X} INSTALLER ${X}"
 echo 
 echo 
-echo -e "${W}- - - - - - - - -"
+echo -e "${X}- - - - - - - - -"
 sleep 0.33
 
 clear
 echo
 echo
 echo 
-echo -e "${W}${G}$APPNAME${W} INSTALLER ${W}"
+echo -e "${X}${G}$APPNAME${X} INSTALLER ${X}"
 echo 
 echo 
 echo
 sleep 0.33
 
-echo -e "${W}INSTALLING $APPNAME FOR BATOCERA"
-echo -e "${W}USING $ORIGIN"
+echo -e "${X}INSTALLING $APPNAME FOR BATOCERA"
+echo -e "${X}USING $ORIGIN"
 echo 
 echo
 echo
@@ -209,8 +209,8 @@ fi
 # --------------------------------------------------------------------
 # -------------------------------------------------------------------- 
 # -------------------------------------------------------------------- 
-echo -e "${G}INSTALLING${W} . . ." 
-echo -e "${W}PLEASE WAIT${W}" 
+echo -e "${X}INSTALLING${X} . . ." 
+echo -e "${X}PLEASE WAIT${X}" 
 # -------------------------------------------------------------------- 
 # -------------------------------------------------------------------- 
 # -------------------------------------------------------------------- 
@@ -337,14 +337,14 @@ rm /userdata/roms/ports/updateyuzuEA.sh 2>/dev/null
 rm /userdata/roms/ports/updateryujinx.sh 2>/dev/null
 rm /userdata/roms/ports/updateryujinxavalonia.sh 2>/dev/null
 # -------------------------------------------------------------------- 
-echo -e "${G}INSTALLED OK${W}" 
+echo -e "${X} > INSTALLED OK${X}" 
 sleep 2
 echo
 echo
 echo
 # restore xterm font
 X='\033[0m' # / resetcolor
-echo -e "${W}PREPARING TO AUTOMATICALLY RUN ${G}SWITCH UPDATER${X} . . ." 
+echo -e "${X}   PREPARING TO AUTOMATICALLY RUN ${X}SWITCH UPDATER${X} . . ." 
 #echo -e "${W}(THIS WILL TEMPORARILY RETURN TO THE MAIN SCREEN)" 
 echo -e "${X} "
 #echo -e "${G}> > > ${W}PRESS ENTER TO CONTINUE" 
@@ -400,7 +400,7 @@ clear
 echo
 echo
 echo
-echo -e "${X}$APPNAME INSTALLED AND UPDATED OK${X}" 
+echo -e "   ${X}$APPNAME INSTALLED AND UPDATED OK${X}" 
 echo
 echo
 echo
@@ -409,7 +409,7 @@ clear
 echo
 echo
 echo
-echo -e "${X}LOOKS LIKE THE INSTALLATION FAILED . . .${X}" 
+echo -e "   ${X}LOOKS LIKE THE INSTALLATION FAILED . . .${X}" 
 echo
 echo
 echo
