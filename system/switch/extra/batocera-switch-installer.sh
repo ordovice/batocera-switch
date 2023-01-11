@@ -263,8 +263,8 @@ echo -e "${X} "
 sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
-#curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
-curl https://raw.githubusercontent.com/uureel/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh | bash
+#curl -H 'Pragma: no-cache' https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
+curl -H 'Pragma: no-cache' https://raw.githubusercontent.com/uureel/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh | bash
 }
 export -f batocera-pro-installer 2>/dev/null
 # --------------------------------------------------------------------
