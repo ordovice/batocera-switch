@@ -145,6 +145,7 @@ rm /userdata/system/configs/emulationstation/es_features.cfg 2>/dev/null
 #mkdir -p /userdata/system/switch/extra 2>/dev/null
 
 mkdir /userdata/roms/switch 2>/dev/null
+mkdir /userdata/roms/ports 2>/dev/null
 mkdir /userdata/roms/ports/images 2>/dev/null
 
 mkdir /userdata/bios/switch 2>/dev/null
