@@ -5,5 +5,7 @@
 #                  > https://discord.gg/hH5AfThG                    #
 #              > github.com/ordovice/batocera-switch                #
 #####################################################################
-# this will now automatically use the latest ordovice/main updater  # 
-curl https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash
+updater=/userdata/system/switch/extra/batocera-switch-updater.sh; rm "$updater" 2>/dev/null; 
+wget -q -O "$updater" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh"
+dos2unix "$updater"; chmod a+x "$updater"
+/userdata/system/switch/extra/batocera-switch-updater.sh
