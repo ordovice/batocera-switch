@@ -1054,6 +1054,8 @@ url_GeneratorImporter=https://raw.githubusercontent.com/ordovice/batocera-switch
 url_ryujinxMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
 url_yuzuMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py
 url_sshupdater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh
+url_updater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh
+url_portsupdater="https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports/Switch%20Updater.sh"
 url_patcher=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-patcher.sh
 wget -q -O "/userdata/system/configs/evmapy/switch.keys" "$url_switchkeys"
 wget -q -O "/userdata/system/configs/emulationstation/es_features_switch.cfg" "$url_es_features_switch"
@@ -1062,9 +1064,18 @@ wget -q -O "/userdata/system/switch/configgen/switchlauncher.py" "$url_switchlau
 wget -q -O "/userdata/system/switch/configgen/GeneratorImporter.py" "$url_GeneratorImporter"
 wget -q -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
 wget -q -O "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" "$url_yuzuMainlineGenerator"
+# update batocera-switch-sshupdater.sh
 wget -q -O "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" "$url_sshupdater"
 dos2unix "/userdata/system/switch/extra/batocera-switch-sshupdater.sh"
 chmod a+x "/userdata/system/switch/extra/batocera-switch-sshupdater.sh"
+# update batocera-switch-updater.sh
+wget -q -O "/userdata/system/switch/extra/batocera-switch-updater.sh" "$url_updater"
+dos2unix "/userdata/system/switch/extra/batocera-switch-updater.sh"
+chmod a+x "/userdata/system/switch/extra/batocera-switch-updater.sh"
+# update ports Switch Updater.sh
+wget -q -O "/userdata/system/roms/ports/Switch Updater.sh" "$url_portsupdater"
+dos2unix "/userdata/system/roms/ports/Switch Updater.sh"
+chmod a+x "/userdata/system/roms/ports/Switch Updater.sh"
 # get batocera-switch-patcher.sh 
 wget -q -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
 dos2unix "/userdata/system/switch/extra/batocera-switch-patcher.sh"
