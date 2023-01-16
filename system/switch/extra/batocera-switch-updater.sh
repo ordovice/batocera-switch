@@ -248,7 +248,7 @@ echo 'rm -rf $ft 2>/dev/null' >> $startup
 #
 # run batocera-switch-patcher.sh 
 echo '#\ run batocera-switch-patcher.sh ' >> $startup
-echo '/userdata/system/switch/extra/batocera-switch-patcher.sh &'
+echo '/userdata/system/switch/extra/batocera-switch-patcher.sh &' >> $startup
 echo '#/' >> $startup
 dos2unix "$startup" 
 chmod a+x "$startup" 
