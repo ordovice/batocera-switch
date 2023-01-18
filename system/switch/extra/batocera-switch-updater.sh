@@ -1094,11 +1094,16 @@ function post-install() {
 # -------------------------------------------------------------------
 # PREPARE BATOCERA-SWITCH-STARTUP FILE
 # -------------------------------------------------------------------
+# prepare patcher 
+url_patcher="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-patcher.sh"
+wget -q -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
+dos2unix ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
+chmod a+x ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
+# -------------------------------------------------------------------
 startup=/userdata/system/switch/extra/batocera-switch-startup
-rm -rf $startup 2>/dev/null
+rm "$startup" 2>/dev/null
 #
 echo '#!/bin/bash' >> $startup 
-#
 #\ prepare system
 echo '#\ prepare system ' >> $startup
 echo 'sysctl -w vm.max_map_count=262144 1>/dev/null' >> $startup
@@ -1106,8 +1111,9 @@ echo 'extra=/userdata/system/switch/extra' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo 'cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null' >> $startup
-echo 'cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0 2>/dev/null' >> $startup
-#
+echo 'cp /userdata/system/switch/extra/batocera-switch-libthai.so.0.3 /lib/libthai.so.0.3 2>/dev/null' >> $startup
+echo 'cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null' >> $startup
+echo 'cp /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null' >> $startup
 #\ link ryujinx config folders 
 echo '#\ link ryujinx config folders ' >> $startup
 echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
@@ -1219,41 +1225,50 @@ echo 'rsync -au $fy/ $ff/' >> $startup
 echo 'rm -rf $ft 2>/dev/null' >> $startup
 #
 # run batocera-switch-patcher.sh 
-echo '#\ run batocera-switch-patcher.sh ' >> $startup
-echo '/userdata/system/switch/extra/batocera-switch-patcher.sh &' >> $startup
-echo '#/' >> $startup
-dos2unix "$startup" 
-chmod a+x "$startup" 
+echo '/userdata/system/switch/extra/batocera-switch-patcher.sh 2>/dev/null' >> $startup
+echo ' ' >> $startup
+dos2unix ~/switch/extra/batocera-switch-startup 
+chmod a+x ~/switch/extra/batocera-switch-startup 
 # & run startup immediatelly: 
 /userdata/system/switch/extra/batocera-switch-startup 
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
-csh=/userdata/system/custom.sh
+csh=/userdata/system/custom.sh; dos2unix $csh
 startup="/userdata/system/switch/extra/batocera-switch-startup"
-if [[ -e "$csh" ]];
+if [[ -f $csh ]];
    then
-      tmp=/userdata/system/customsh.tmp
+      tmp1=/tmp/tcsh1
+      tmp2=/tmp/tcsh2
       remove="$startup"
-      rm $tmp 2>/dev/null
+      rm $tmp1 2>/dev/null; rm $tmp2 2>/dev/null
       nl=$(cat "$csh" | wc -l); nl1=$(($nl + 1))
          l=1; 
          for l in $(seq 1 $nl1); do
-            ln=$(cat $csh | sed ""$l"q;d" );
-               if [[ "$(echo $ln | grep "$remove")" != "" ]]; then :; else echo $ln >> $tmp; fi
+            ln=$(cat "$csh" | sed ""$l"q;d" );
+               if [[ "$(echo "$ln" | grep "$remove")" != "" ]]; then :; 
+                else 
+                  if [[ "$l" = "1" ]]; then
+                        if [[ "$(echo "$ln" | grep "#" | grep "/bin/" | grep "bash" )" != "" ]]; then :; else echo "$ln" >> "$tmp1"; fi
+                     else 
+                        echo "$ln" >> $tmp1;
+                  fi
+               fi            
             ((l++))
          done
-      cp "$tmp" "$csh" 2>/dev/null
-      rm "$tmp" 2>/dev/null
-      echo -e "\n$startup" >> $csh   
-      dos2unix "$csh" 
-      chmod a+x "$csh" 
-   else 
-      echo -e "\n$startup" >> $csh
+         # 
+         rm $tmp2
+       echo -e '#!/bin/bash' >> $tmp2
+       echo -e "\n$startup \n" >> $tmp2          
+       cat "$tmp1" | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> "$tmp2"
+       cp $tmp2 $csh; dos2unix $csh; chmod a+x $csh  
+   else  #(!f csh)   
+       echo -e '#!/bin/bash' >> $csh
+       echo -e "\n$startup\n" >> $csh  
+       dos2unix $csh; chmod a+x $csh  
 fi 
-cat "$csh" | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> "$tmp"; cp "$tmp" "$csh"; rm "$tmp";
-dos2unix "$csh" 2>/dev/null
-chmod a+x "$csh"
+dos2unix ~/custom.sh
+chmod a+x ~/custom.sh 
 # --------------------------------------------------------------------
 # CLEAR THE OLD V34- CUSTOM.SH LINE IF FOUND AND THE SYSTEM IS NOW VERSION V35+:
 # THIS SHOULD HELP WITH UPGRADED VERSIONS AND 'OTHER INSTALLS' 
@@ -1300,8 +1315,7 @@ url_yuzuMainlineGenerator=https://raw.githubusercontent.com/ordovice/batocera-sw
 url_sshupdater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh
 url_updater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh
 url_portsupdater="https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports/Switch%20Updater.sh"
-url_portsupdaterkeys="https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports/Switch%20Updater.sh.keys"
-url_patcher=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-patcher.sh
+url_portsupdaterkeys="https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports/Switch%20Updater.sh.keys"   
    wget -q -O "/userdata/system/configs/evmapy/switch.keys" "$url_switchkeys"
    wget -q -O "/userdata/system/configs/emulationstation/es_features_switch.cfg" "$url_es_features_switch"
    wget -q -O "/userdata/system/configs/emulationstation/es_systems_switch.cfg" "$url_es_systems_switch"
@@ -1470,8 +1484,8 @@ fallback=10
          # 
          ## RUN THE UPDATER: ------------------------------------------------- 
             if [[ "$MODE" = "DISPLAY" ]]; then 
-            sleep 0.369 
-            DISPLAY=:0.0 unclutter-remote -h & cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat "/userdata/system/switch/extra/loader.mp4" 2>/dev/null & sleep 3.69 && killall -9 vlc && 
+            sleep 0.1111 
+            DISPLAY=:0.0 unclutter-remote -h & cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat "/userdata/system/switch/extra/loader.mp4" 2>/dev/null & sleep 3.333 && killall -9 vlc && 
             DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "batocera_update_switch" 2>/dev/null 
             fi
             if [[ "$MODE" = "CONSOLE" ]]; then 
@@ -1484,4 +1498,3 @@ su -c "post-install 2>/dev/null &" &
 # exit: 
 killall -9 vlc 2>/dev/null & killall -9 xterm 2>/dev/null & curl http://127.0.0.1:1234/reloadgames && exit 0
 ############################################################################################################
-
