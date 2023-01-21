@@ -478,7 +478,7 @@ $temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 2>/dev/null
 mkdir /userdata/system/switch 2>/dev/null
 mkdir /userdata/system/switch/extra 2>/dev/null
 mkdir /userdata/system/switch/extra/yuzu 2>/dev/null
-cp $temp/yuzu/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
+#cp $temp/yuzu/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
 cp $temp/yuzu/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
@@ -528,7 +528,7 @@ $temp/yuzuea/yuzuEA.AppImage --appimage-extract 1>/dev/null 2>/dev/null
 mkdir /userdata/system/switch 2>/dev/null
 mkdir /userdata/system/switch/extra 2>/dev/null
 mkdir /userdata/system/switch/extra/yuzuea 2>/dev/null
-cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
+#cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
 cp $temp/yuzuea/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
@@ -1225,7 +1225,7 @@ echo 'rsync -au $fy/ $ff/' >> $startup
 echo 'rm -rf $ft 2>/dev/null' >> $startup
 #
 # run batocera-switch-patcher.sh 
-echo '/userdata/system/switch/extra/batocera-switch-patcher.sh 2>/dev/null' >> $startup
+#echo '/userdata/system/switch/extra/batocera-switch-patcher.sh 2>/dev/null' >> $startup
 echo ' ' >> $startup
 dos2unix ~/switch/extra/batocera-switch-startup 
 chmod a+x ~/switch/extra/batocera-switch-startup 
@@ -1484,8 +1484,8 @@ fallback=10
          # 
          ## RUN THE UPDATER: ------------------------------------------------- 
             if [[ "$MODE" = "DISPLAY" ]]; then 
-            sleep 0.1111 
-            DISPLAY=:0.0 unclutter-remote -h & cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat "/userdata/system/switch/extra/loader.mp4" 2>/dev/null & sleep 3.333 && killall -9 vlc && 
+            if [[ "$ANIMATION" = "YES" ]]; then sleep 0.1111; 
+            DISPLAY=:0.0 unclutter-remote -h & cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat "/userdata/system/switch/extra/loader.mp4" 2>/dev/null & sleep 3.333 && killall -9 vlc; fi 
             DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "batocera_update_switch" 2>/dev/null 
             fi
             if [[ "$MODE" = "CONSOLE" ]]; then 
