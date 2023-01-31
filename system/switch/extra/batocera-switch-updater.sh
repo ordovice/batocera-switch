@@ -3,7 +3,7 @@
 # v3.0                SWITCH EMULATORS UPDATER FOR BATOCERA                    #
 #                   ----------------------------------------                   #
 #                     > github.com/ordovice/batocera-switch                    #
-#                         > https://discord.gg/hH5AfThG                        #     
+#                        > https://discord.gg/SWBvBkmn9P                       #     
 ################################################################################
 #
 #   SETTINGS: 
@@ -27,7 +27,7 @@ MODE=DISPLAY
 #   MODE=DISPLAY  -->  for ports; uses fullscreen xterm process to show updater  
 #   MODE=CONSOLE  -->  for ssh/console/xterm; no colors, no additional display  
 #                
-    ANIMATION=YES
+    ANIMATION=NO
 #   plays loading animation when starting the udpater    
 #
 #
