@@ -499,7 +499,8 @@ echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
-echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata QT_FONT_DPI=128 QT_SCALE_FACTOR=1 /userdata/system/switch/extra/yuzu/yuzu "$1" "$2" "$3"' >> $ai
+echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$3" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$3"; fi' >> $ai
+echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata QT_FONT_DPI=128 QT_SCALE_FACTOR=1 /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM"' >> $ai
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzu/yuzu" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzu/yuzu-room" 2>/dev/null
@@ -550,7 +551,8 @@ echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
 echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
-echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzuea QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu "$1" "$2" "$3"' >> $ai
+echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$3" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$3"; fi' >> $ai
+echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzuea QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM"' >> $ai
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu-room" 2>/dev/null
