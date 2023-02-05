@@ -1511,7 +1511,10 @@ fallback=10
                fi 
             fi
             if [[ "$MODE" = "CONSOLE" ]]; then 
-            batocera_update_switch console
+               if [[ "$net" = "on" ]]; then
+                  batocera_update_switch console
+                  su -c "post-install 2>/dev/null &" &
+               fi
             fi
 ############################################################################################################
 # exit: 
