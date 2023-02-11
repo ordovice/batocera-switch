@@ -53,7 +53,6 @@ cp /userdata/system/pro/ps3plus/extras/batocera-switch-rev /usr/bin/rev 2>/dev/n
 	# f/convert-------------
 	#-----------------------
 		function convert() {
-		
 			# get rom 	
 			rom="$(cat /tmp/switchromname)"
 
@@ -67,17 +66,12 @@ cp /userdata/system/pro/ps3plus/extras/batocera-switch-rev /usr/bin/rev 2>/dev/n
 				romname="$(echo "$rom" | cut -d "/" -f$(echo $romfield))"
 				romnamensp="$(echo "$romname" | sed 's,.nsz,.nsp,g')"
 			
-					# replace nsz with nsp in gamelist.xml 
-					if [[ "$(cat /userdata/roms/switch/gamelist.xml | grep "$romname")" != "" ]]; then 
-						sed -i 's,$romname,$romnamensp,g' /userdata/roms/switch/gamelist.xml
-						curl http://127.0.0.1:1234/reloadgames 
-					fi 
-						
-						# remove nsz file 
-						rm -rf "$rom" 2>/dev/null 
+					# remove nsz file 
+					rm -rf "$rom" 2>/dev/null 
+					# reload games 
+					curl http://127.0.0.1:1234/reloadgames 
 		} 
 		export -f convert
-
 
 	# run in xterm -------------------------------------
 	#---------------------------------------------------
