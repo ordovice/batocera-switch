@@ -2,7 +2,7 @@
 #####################################################################
 #                      PORTS: SWITCH UPDATER                        #
 #                  -----------------------------                    #
-#                  > https://discord.gg/hH5AfThG                    #
+#                 > https://discord.gg/SWBvBkmn9P                   #
 #              > github.com/ordovice/batocera-switch                #
 #####################################################################
 ping -q -w 1 -c 1 github.com > /dev/null && net=on || net=off
