@@ -6,7 +6,7 @@
 rom="$(cat /tmp/switchromname)"
 #
 # set rev 
-cp /userdata/system/pro/ps3plus/extras/batocera-switch-rev /usr/bin/rev 2>/dev/null && chmod a+x /usr/bin/rev 2>/dev/null
+cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null && chmod a+x /usr/bin/rev 2>/dev/null
 #
 ##### (b 1)
 	# 
@@ -15,70 +15,57 @@ cp /userdata/system/pro/ps3plus/extras/batocera-switch-rev /usr/bin/rev 2>/dev/n
 	# check nsz converter --------------
 	#-----------------------------------
 	###### (b 2) 
-		if [[ $(which nsz) = "" ]]; then 
 
-			function installinfo() { 
+		if [[ "$(which nsz | head -n 1 | grep "not found")" != "" ]] || [[ "$(which nsz | head -n 1)" = "" ]]; then 
+
+			function nsz-install() {
 				echo -e "\033[0;37mPREPARING NSZ CONVERTER ... \033[0;30m \n"
-			} 
-			export -f installinfo
-
-			function install() {
-				cp /userdata/bios/switch/prod.keys /usr/bin/keys.txt 2>/dev/null
-				cp -r /userdata/system/switch/extra/nsz/curses /usr/lib/python3.10/site-packages/ 2>/dev/null
-				cp -r /userdata/system/switch/extra/nsz/lib-dynload /usr/lib/python3.10/ 2>/dev/null
-				python -m ensurepip --default-pip 1>/dev/null 2>/dev/null
-				#python -m pip install --upgrade pip 1>/dev/null 2>/dev/null
-				python -m pip install pycryptodome 1>/dev/null 2>/dev/null
-				python -m pip install zstandard 1>/dev/null 2>/dev/null
-				python -m pip install enlighten 1>/dev/null 2>/dev/null
-				python -m pip install nsz 1>/dev/null 2>/dev/null
+				python -m ensurepip --default-pip 1>/dev/null 2>/dev/null 
+				python -m pip install --upgrade pip 1>/dev/null 2>/dev/null 
+				python -m pip install --upgrade --force-reinstall pycryptodome 1>/dev/null 2>/dev/null 
+				python -m pip install --upgrade --force-reinstall nsz 1>/dev/null 2>/dev/null 
+				wait
+				sleep 0.1
 			}
-			export -f install  
+			export -f nsz-install
 
 			cp /usr/bin/xterm /usr/bin/nszinstall 2>/dev/null
-			DISPLAY=:0.0 /usr/bin/nszinstall -fs 8 -fullscreen -fg white -bg black -fa Monospace -en UTF-8 -e bash -c "clear && installinfo & install && sleep 0.5 && clear && clear" 2>/dev/null 
-			killall -9 nszinstall 
-			rm -rf /usr/bin/nszinstall 2>/dev/null
+			DISPLAY=:0.0 /usr/bin/nszinstall -fs 8 -fullscreen -fg white -bg black -fa Monospace -en UTF-8 -e bash -c "nsz-install" 2>/dev/null 
+			wait
+			killall -9 nszinstall && rm /usr/bin/nszinstall 2>/dev/null
+			 
 
 		fi # (e 2)
 	######## 
-	#
-	# f/info-------------
-	#--------------------
-		function info() { 
-			echo -e "\033[0;37mCONVERTING ROM FROM NSZ TO NSP ... \033[0;30m \n"
-		} 
-		export -f info
-
 	# f/convert-------------
 	#-----------------------
-		function convert() {
+		function convert-nsz() {
+			echo -e "\033[0;37mCONVERTING ROM FROM NSZ TO NSP ... \033[0;30m \n"
 			# get rom 	
 			rom="$(cat /tmp/switchromname)"
 
-			# convert 
-			nsz -D -w -t 4 -P "$rom" 
-			sleep 0.1 
+			# fill dependencies 
+			cp -r /userdata/system/switch/extra/nsz/curses /usr/lib/python3.10/site-packages/ 2>/dev/null
+			chmod a+x /userdata/system/switch/extra/nsz/lib-dynload/*.so 2>/dev/null
+			cp -r /userdata/system/switch/extra/nsz/lib-dynload/_curses* /usr/lib/python3.10/lib-dynload/ 2>/dev/null
+			cp /userdata/bios/switch/prod.keys /usr/bin/keys.txt 2>/dev/null
 
-				# get filenames 
-				pathdepth=$(tr -dc '/' <<<"$rom" | wc -c)
-				romfield=$(($pathdepth+1))
-				romname="$(echo "$rom" | cut -d "/" -f$(echo $romfield))"
-				romnamensp="$(echo "$romname" | sed 's,.nsz,.nsp,g')"
+			# convert 
+			sleep 0.5 && nsz -D -w -t 4 -P "$rom" 
+			wait
+			echo -e "\n\n\033[0;37mROM CONVERTED TO NSP \033[0;30m \n\n"
+			sleep 0.5 
 			
 					# remove nsz file 
 					rm -rf "$rom" 2>/dev/null 
 					# reload games 
 					curl http://127.0.0.1:1234/reloadgames 
 		} 
-		export -f convert
+		export -f convert-nsz
 
 	# run in xterm -------------------------------------
 	#---------------------------------------------------
-			cp /usr/bin/xterm /usr/bin/nszconvert 2>/dev/null
-			DISPLAY=:0.0 xterm -fs 8 -fullscreen -fg white -bg black -fa Monospace -en UTF-8 -e bash -c "clear && info && convert && sleep 1 && clear && clear" 2>/dev/null 
-			killall -9 nszconvert 2>/dev/null 
-			rm -rf /usr/bin/nszconvert 2>/dev/null
+			DISPLAY=:0.0 xterm -fs 8 -fullscreen -fg white -bg black -fa Monospace -en UTF-8 -e bash -c "clear && convert-nsz && sleep 1 && clear" 2>/dev/null 
 
 			# pass cookie ------------------------------
 			#-------------------------------------------
