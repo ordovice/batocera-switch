@@ -1156,8 +1156,11 @@ extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system
 if [[ ! -f "/userdata/system/switch/extra/nsz.zip" ]] || [[ "$(wc -c "/userdata/system/switch/extra/nsz.zip" | awk '{print $1}')" < "1000000" ]]; then 
 wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/nsz.zip" "$extraurl/nsz.zip"
 fi 
+wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-rev" "$extraurl/batocera-switch-rev"
+dos2unix /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null 
+chmod a+x /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null 
 wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-nsz-converter.sh" "$extraurl/batocera-switch-nsz-converter.sh"
-dos2unix ~/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
+dos2unix /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
 chmod a+x /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
 cd /userdata/system/switch/extra/ 
 yes "A" | unzip -qq /userdata/system/switch/extra/nsz.zip 
