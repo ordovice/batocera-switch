@@ -1152,7 +1152,7 @@ function post-install() {
 # PREPARE BATOCERA-SWITCH-STARTUP FILE
 # -------------------------------------------------------------------
 # prepare nsz converter 
-extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/"
+extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
 if [[ ! -f "/userdata/system/switch/extra/nsz.zip" ]] || [[ "$(wc -c "/userdata/system/switch/extra/nsz.zip" | awk '{print $1}')" < "1000000" ]]; then 
 wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/nsz.zip" "$extraurl/nsz.zip"
 fi 
