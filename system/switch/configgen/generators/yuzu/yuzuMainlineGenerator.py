@@ -258,6 +258,14 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("UI", "singleWindowMode", "true")
             yuzuConfig.set("UI", "singleWindowMode\\default", "true")
 
+        # User Profile select on boot
+        if system.isOptSet('user_profile'):
+            yuzuConfig.set("UI", "select_user_on_boot", system.config["user_profile"])
+            yuzuConfig.set("UI", "select_user_on_boot\\default", "false")
+        else:
+            yuzuConfig.set("UI", "select_user_on_boot", "true")
+            yuzuConfig.set("UI", "select_user_on_boot\\default", "true")
+
         yuzuConfig.set("UI", "hideInactiveMouse", "true")
         yuzuConfig.set("UI", "hideInactiveMouse\\default", "true")
 
@@ -433,6 +441,14 @@ class YuzuMainlineGenerator(Generator):
         else:
             yuzuConfig.set("System", "language_index", "1")
             yuzuConfig.set("System", "language_index\\default", "true")
+
+        # Audio Mode
+        if system.isOptSet('audio_mode'):
+            yuzuConfig.set("System", "sound_index", system.config["audio_mode"])
+            yuzuConfig.set("System", "sound_index\\default", "false")
+        else:
+            yuzuConfig.set("System", "sound_index", "1")
+            yuzuConfig.set("System", "sound_index\\default", "true")
 
         # Region
         if system.isOptSet('region'):
