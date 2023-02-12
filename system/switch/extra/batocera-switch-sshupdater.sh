@@ -147,7 +147,46 @@ rm -rf $launcher 2>/dev/null
    echo "Name=$name-config" >> $shortcut
    ####
    echo "#!/bin/bash" >> $launcher
-   echo "DISPLAY=:0.0 QT_FONT_DPI=$DPI QT_SCALE_FACTOR=$SCALE GDK_SCALE=$SCALE QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME="/userdata/system/configs" XDG_DATA_HOME="/userdata/system/configs" XDG_CACHE_HOME="/userdata/system/cache" QT_QPA_PLATFORM="xcb" /userdata/system/switch/$Name.AppImage" >> $launcher
+   if [[ "$Name" = "yuzu" ]]; then 
+      echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
+      echo 'log1=/userdata/system/switch/extra/logs/yuzu-out.txt 2>/dev/null ' >> $launcher
+      echo 'log2=/userdata/system/switch/extra/logs/yuzu-err.txt 2>/dev/null ' >> $launcher
+      echo 'rm $log1 2>/dev/null ' >> $launcher
+      echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata QT_FONT_DPI=128 QT_SCALE_FACTOR=1 /userdata/system/switch/extra/yuzu/yuzu 1>$log1 2>$log2 ' >> $launcher
+      fi
+   if [[ "$Name" = "yuzuEA" ]]; then 
+      echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
+      echo 'log1=/userdata/system/switch/extra/logs/yuzuEA-out.txt 2>/dev/null ' >> $launcher
+      echo 'log2=/userdata/system/switch/extra/logs/yuzuEA-err.txt 2>/dev/null ' >> $launcher
+      echo 'rm $log1 2>/dev/null ' >> $launcher
+      echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata QT_FONT_DPI=128 QT_SCALE_FACTOR=1 /userdata/system/switch/extra/yuzuea/yuzu 1>$log1 2>$log2 ' >> $launcher
+      fi
+   if [[ "$Name" = "Ryujinx" ]]; then 
+      echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
+      echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-out.txt 2>/dev/null ' >> $launcher
+      echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-err.txt 2>/dev/null ' >> $launcher
+      echo 'rm $log1 2>/dev/null ' >> $launcher
+      echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinx QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $launcher
+      fi
+   if [[ "$Name" = "Ryujinx-LDN" ]]; then 
+      echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
+      echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-LDN-out.txt 2>/dev/null ' >> $launcher
+      echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-LDN-err.txt 2>/dev/null ' >> $launcher
+      echo 'rm $log1 2>/dev/null ' >> $launcher
+      echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxldn QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> $launcher
+      fi
+   if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
+      echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
+      echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-out.txt 2>/dev/null ' >> $launcher
+      echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-err.txt 2>/dev/null ' >> $launcher
+      echo 'rm $log1 2>/dev/null ' >> $launcher
+      echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxavalonia QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $launcher
+      fi
       dos2unix "$launcher"
       chmod a+x "$launcher"
          dos2unix "$shortcut"
@@ -507,8 +546,8 @@ echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> 
 echo 'cp /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 
 echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $ai
-echo 'log1=/userdata/system/switch/extra/logs/yuzu-stdout.txt 2>/dev/null ' >> $ai
-echo 'log2=/userdata/system/switch/extra/logs/yuzu-stderr.txt 2>/dev/null ' >> $ai
+echo 'log1=/userdata/system/switch/extra/logs/yuzu-out.txt 2>/dev/null ' >> $ai
+echo 'log2=/userdata/system/switch/extra/logs/yuzu-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
 echo 'rom="$3" ' >> $ai
@@ -572,8 +611,8 @@ echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >
 echo 'cp /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> $ai
 
 echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $ai
-echo 'log1=/userdata/system/switch/extra/logs/yuzuEA-stdout.txt 2>/dev/null ' >> $ai
-echo 'log2=/userdata/system/switch/extra/logs/yuzuEA-stderr.txt 2>/dev/null ' >> $ai
+echo 'log1=/userdata/system/switch/extra/logs/yuzuEA-out.txt 2>/dev/null ' >> $ai
+echo 'log2=/userdata/system/switch/extra/logs/yuzuEA-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
 echo 'rom="$3" ' >> $ai
@@ -665,8 +704,8 @@ echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 
 echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $ai
-echo 'log1=/userdata/system/switch/extra/logs/ryujinx-stdout.txt 2>/dev/null ' >> $ai
-echo 'log2=/userdata/system/switch/extra/logs/ryujinx-stderr.txt 2>/dev/null ' >> $ai
+echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-out.txt 2>/dev/null ' >> $ai
+echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
 echo 'rom="$1" ' >> $ai
@@ -755,8 +794,8 @@ echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 
 echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $ai
-echo 'log1=/userdata/system/switch/extra/logs/ryujinxLDN-stdout.txt 2>/dev/null ' >> $ai
-echo 'log2=/userdata/system/switch/extra/logs/ryujinxLDN-stderr.txt 2>/dev/null ' >> $ai
+echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-LDN-out.txt 2>/dev/null ' >> $ai
+echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-LDN-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
 echo 'rom="$1" ' >> $ai
@@ -849,8 +888,8 @@ echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
 
 echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $ai
-echo 'log1=/userdata/system/switch/extra/logs/ryujinxAVA-stdout.txt 2>/dev/null ' >> $ai
-echo 'log2=/userdata/system/switch/extra/logs/ryujinxAVA-stderr.txt 2>/dev/null ' >> $ai
+echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-out.txt 2>/dev/null ' >> $ai
+echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
 echo 'rom="$1" ' >> $ai
@@ -1190,9 +1229,11 @@ startup=/userdata/system/switch/extra/batocera-switch-startup
 rm "$startup" 2>/dev/null 
 # 
 echo '#!/bin/bash' >> $startup 
-#\ prepare system
-echo '#\ prepare system ' >> $startup
-echo 'cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null ' >> $startup
+#\ prepare system 
+echo '#\ prepare system ' >> $startup 
+echo 'cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null ' >> $startup 
+echo 'rm /userdata/system/switch/extra/logs/* 2>/dev/null ' >> $startup 
+echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $startup
 echo 'sysctl -w vm.max_map_count=262144 1>/dev/null' >> $startup
 echo 'extra=/userdata/system/switch/extra' >> $startup
 echo 'cp $extra/lib* /lib/ 2>/dev/null' >> $startup
