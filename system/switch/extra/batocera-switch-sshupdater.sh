@@ -111,14 +111,22 @@ UPDATES=LOCKED
 ######################################################################
 ######################################################################
 # --------------------------------------------------------------------
-# CHECK CONNECTION 
+# CHECK CONNECTION
+net="on" ; net1="on" ; net2="on" ; net3="on"
 case "$(curl -s --max-time 2 -I http://github.com | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in
-  [23]) net="on" && comm="HTTP connectivity is up";;
-  5) net="off" && comm="The web proxy won't let us through";;
-  *) net="off" && comm="The network is down or very slow";;
+  [23]) net1="on";;
+  5) net1="off";;
+  *) net1="off";;
 esac 
+ping -q -w 1 -c 1 github.com > /dev/null && net2="on" || net2="off"
+wget -q --spider http://github.com
+if [ $? -eq 0 ]; then net3="on"; else net3="off"; fi
+##
+if [[ "$net1" = "off" ]] && [[ "$net2" = "off" ]] && [[ "$net3" = "off" ]]; then net="off"; fi 
+if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then net="on"; fi 
+##
 if [[ "$net" = "off" ]]; then 
-DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \n  $comm \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
+DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
 fi 
 # --------------------------------------------------------------------
 # PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU 
@@ -1619,13 +1627,13 @@ fallback=10
                   if [[ "$net" = "on" ]]; then
                         DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && batocera_update_switch" 2>/dev/null 
                   else 
-                        DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \n  $comm \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
+                        DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
                   fi
                else 
                   if [[ "$net" = "on" ]]; then
                         DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "batocera_update_switch" 2>/dev/null 
                   else 
-                        DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \n  $comm \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
+                        DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
                   fi
                fi 
             fi

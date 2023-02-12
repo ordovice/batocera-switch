@@ -308,13 +308,21 @@ export -f get-xterm-fontsize 2>/dev/null
     # &+automatically run switch updater after installation
 # --------------------------------------------------------------------
 # CHECK CONNECTION 
-case "$(curl -s --max-time 2 -I http://github.com | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in 
-  [23]) net="on" && comm="HTTP connectivity is up";; 
-  5) net="off" && comm="The web proxy won't let us through";; 
-  *) net="off" && comm="The network is down or very slow";; 
+net="on" ; net1="on" ; net2="on" ; net3="on"
+case "$(curl -s --max-time 2 -I http://github.com | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in
+  [23]) net1="on";;
+  5) net1="off";;
+  *) net1="off";;
 esac 
+ping -q -w 1 -c 1 github.com > /dev/null && net2="on" || net2="off"
+wget -q --spider http://github.com
+if [ $? -eq 0 ]; then net3="on" ; else net3="off" ; fi
+##
+if [[ "$net1" = "off" ]] && [[ "$net2" = "off" ]] && [[ "$net3" = "off" ]]; then net="off"; fi 
+if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then net="on"; fi 
+##
 if [[ "$net" = "off" ]]; then 
-echo -e "\n   ${X}NO INTERNET CONNECTION :( \n   ${X}$comm ${X}" && exit 0 & exit 1 & exit 2 
+echo -e "\n   ${X}NO INTERNET CONNECTION :( ${X}" && exit 0 & exit 1 & exit 2 
 fi 
 batocera-pro-installer "$APPNAME" "$ORIGIN" 
 # --------------------------------------------------------------------
