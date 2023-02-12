@@ -264,10 +264,14 @@ echo -e "${X} "
 sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
-#curl -H 'Pragma: no-cache' https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
-curl -H 'Pragma: no-cache' https://raw.githubusercontent.com/uureel/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh | bash
-}
-export -f batocera-pro-installer 2>/dev/null
+rm /tmp/batocera-switch-updater.sh 2>/dev/null 
+wget -q -O /tmp/batocera-switch-updater.sh https://raw.githubusercontent.com/uureel/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh 
+dos2unix /tmp/batocera-switch-updater.sh 2>/dev/null 
+chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null 
+/tmp/batocera-switch-updater.sh 
+sleep 0.5 
+} 
+export -f batocera-pro-installer 2>/dev/null 
 # --------------------------------------------------------------------
 # --- include display output: 
 function get-xterm-fontsize {
@@ -303,7 +307,16 @@ export -f get-xterm-fontsize 2>/dev/null
     # DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
     # &+automatically run switch updater after installation
 # --------------------------------------------------------------------
-batocera-pro-installer "$APPNAME" "$ORIGIN"
+# CHECK CONNECTION 
+case "$(curl -s --max-time 2 -I http://github.com | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in 
+  [23]) net="on" && comm="HTTP connectivity is up";; 
+  5) net="off" && comm="The web proxy won't let us through";; 
+  *) net="off" && comm="The network is down or very slow";; 
+esac 
+if [[ "$net" = "off" ]]; then 
+echo -e "\n   ${X}NO INTERNET CONNECTION :( \n   ${X}$comm ${X}" && exit 0 & exit 1 & exit 2 
+fi 
+batocera-pro-installer "$APPNAME" "$ORIGIN" 
 # --------------------------------------------------------------------
 X='\033[0m' # / resetcolor
 if [[ -e /userdata/system/switch/extra/installation ]]; then
