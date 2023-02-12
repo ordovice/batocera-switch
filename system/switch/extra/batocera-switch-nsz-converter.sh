@@ -6,9 +6,10 @@
 rom="$(cat /tmp/switchromname)"
 #
 # set rev 
-cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null && chmod a+x /usr/bin/rev 2>/dev/null
-#
-##### (b 1)
+cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null 
+chmod a+x /usr/bin/rev 2>/dev/null 
+# 
+##### (b 1) 
 	# 
 	if [[ "$(echo "$rom" | rev | cut -c 1-4 | rev)" = ".nsz" ]]; then 
 	#
