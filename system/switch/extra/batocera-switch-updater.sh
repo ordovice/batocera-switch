@@ -511,8 +511,11 @@ echo 'yuzulog1=/userdata/system/switch/extra/logs/yuzu-stdout.txt 2>/dev/null ' 
 echo 'yuzulog2=/userdata/system/switch/extra/logs/yuzu-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $yuzulog1 2>/dev/null && rm $yuzulog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" && rm /tmp/switchromname 2>/dev/null && echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
-echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh && rom="$(cat /tmp/switchromname)" ' >> $ai
+echo 'rom="$3" ' >> $ai
+echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
+echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
+echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
 echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$rom" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$rom"; fi' >> $ai
 echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata QT_FONT_DPI=128 QT_SCALE_FACTOR=1 /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>$yuzulog1 2>$yuzulog2 ' >> $ai
@@ -573,8 +576,11 @@ echo 'yuzuealog1=/userdata/system/switch/extra/logs/yuzuEA-stdout.txt 2>/dev/nul
 echo 'yuzuealog2=/userdata/system/switch/extra/logs/yuzuEA-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $yuzuealog1 2>/dev/null && rm $yuzuealog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" && rm /tmp/switchromname 2>/dev/null && echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
-echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh && rom="$(cat /tmp/switchromname)" ' >> $ai
+echo 'rom="$3" ' >> $ai
+echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
+echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
+echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
 echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$rom" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$rom"; fi' >> $ai
 echo 'LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzuea QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>$yuzuealog1 2>$yuzuealog2 ' >> $ai
@@ -663,8 +669,11 @@ echo 'ryulog1=/userdata/system/switch/extra/logs/ryujinx-stdout.txt 2>/dev/null 
 echo 'ryulog2=/userdata/system/switch/extra/logs/ryujinx-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $ryulog1 2>/dev/null && rm $ryulog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" && rm /tmp/switchromname 2>/dev/null && echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
-echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh && rom="$(cat /tmp/switchromname)" ' >> $ai
+echo 'rom="$3" ' >> $ai
+echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
+echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
+echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
 echo 'if [[ "$1" = "" ]]; then QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$ryulog1 2>$ryulog2 ' >> $ai
 echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" 1>$ryulog1 2>$ryulog2; fi' >> $ai
@@ -750,8 +759,11 @@ echo 'ryyldnlog1=/userdata/system/switch/extra/logs/ryujinxLDN-stdout.txt 2>/dev
 echo 'ryuldnlog2=/userdata/system/switch/extra/logs/ryujinxLDN-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $ryuldnlog1 2>/dev/null && rm $ryuldnlog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" && rm /tmp/switchromname 2>/dev/null && echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
-echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh && rom="$(cat /tmp/switchromname)" ' >> $ai
+echo 'rom="$3" ' >> $ai
+echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
+echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
+echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
 echo 'if [[ "$1" = "" ]]; then QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$ryuldnlog1 2>$ryuldnlog2' >> $ai
 echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" 1>$ryuldnlog1 2>$ryuldnlog2; fi' >> $ai
@@ -841,8 +853,11 @@ echo 'ryyavalog1=/userdata/system/switch/extra/logs/ryujinxAVA-stdout.txt 2>/dev
 echo 'ryuavalog2=/userdata/system/switch/extra/logs/ryujinxAVA-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $ryuavalog1 2>/dev/null && rm $ryuavalog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" && rm /tmp/switchromname 2>/dev/null && echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
-echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh && rom="$(cat /tmp/switchromname)" ' >> $ai
+echo 'rom="$3" ' >> $ai
+echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
+echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
+echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
 echo 'if [[ "$1" = "" ]]; then QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$ryuavalog1 2>$ryuavalog2 ' >> $ai
 echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" 1>$ryuavalog1 2>$ryuavalog2; fi' >> $ai
