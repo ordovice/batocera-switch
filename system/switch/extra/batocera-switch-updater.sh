@@ -669,7 +669,7 @@ echo 'ryulog1=/userdata/system/switch/extra/logs/ryujinx-stdout.txt 2>/dev/null 
 echo 'ryulog2=/userdata/system/switch/extra/logs/ryujinx-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $ryulog1 2>/dev/null && rm $ryulog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" ' >> $ai
+echo 'rom="$1" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
@@ -759,7 +759,7 @@ echo 'ryyldnlog1=/userdata/system/switch/extra/logs/ryujinxLDN-stdout.txt 2>/dev
 echo 'ryuldnlog2=/userdata/system/switch/extra/logs/ryujinxLDN-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $ryuldnlog1 2>/dev/null && rm $ryuldnlog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" ' >> $ai
+echo 'rom="$1" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
@@ -853,7 +853,7 @@ echo 'ryyavalog1=/userdata/system/switch/extra/logs/ryujinxAVA-stdout.txt 2>/dev
 echo 'ryuavalog2=/userdata/system/switch/extra/logs/ryujinxAVA-stderr.txt 2>/dev/null ' >> $ai
 echo 'rm $ryuavalog1 2>/dev/null && rm $ryuavalog2 2>/dev/null ' >> $ai
 
-echo 'rom="$3" ' >> $ai
+echo 'rom="$1" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
