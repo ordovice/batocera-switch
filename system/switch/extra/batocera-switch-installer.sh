@@ -264,11 +264,7 @@ echo -e "${X} "
 sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
-rm /tmp/batocera-switch-updater.sh 2>/dev/null 
-wget --no-cache -q -O "/tmp/batocera-switch-updater.sh" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh" 
-dos2unix /tmp/batocera-switch-updater.sh 2>/dev/null 
-chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null 
-bash /tmp/batocera-switch-updater.sh 
+curl -H "Cache-Control: no-cache" -H "Pragma: no-cache" https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh | bash 
 sleep 0.5 
 } 
 export -f batocera-pro-installer 2>/dev/null 
