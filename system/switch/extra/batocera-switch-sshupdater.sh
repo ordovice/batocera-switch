@@ -160,6 +160,7 @@ rm -rf $launcher 2>/dev/null
    ####
    echo "#!/bin/bash" >> $launcher
    if [[ "$Name" = "yuzu" ]]; then 
+      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/yuzu-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/yuzu-err.txt 2>/dev/null ' >> $launcher
@@ -168,6 +169,7 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "yuzuEA" ]]; then 
+      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/yuzuEA-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/yuzuEA-err.txt 2>/dev/null ' >> $launcher
@@ -176,6 +178,7 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx" ]]; then 
+      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-err.txt 2>/dev/null ' >> $launcher
@@ -184,6 +187,7 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinx SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-LDN" ]]; then 
+      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-LDN-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-LDN-err.txt 2>/dev/null ' >> $launcher
@@ -192,6 +196,7 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxldn SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
+      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-err.txt 2>/dev/null ' >> $launcher
@@ -544,6 +549,7 @@ cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzu.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 echo '#cp /userdata/system/switch/extra/yuzu/lib* /lib64/ 2>/dev/null' >> $ai 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
@@ -609,6 +615,7 @@ cd $temp
 # make launcher
 ai=/userdata/system/switch/yuzuEA.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 echo '#cp /userdata/system/switch/extra/yuzuea/lib* /lib64/ 2>/dev/null' >> $ai 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
@@ -703,6 +710,7 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
@@ -793,6 +801,7 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-LDN.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
@@ -887,6 +896,7 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
@@ -1217,28 +1227,35 @@ function post-install() {
 # -------------------------------------------------------------------
 # PREPARE BATOCERA-SWITCH-STARTUP FILE
 # -------------------------------------------------------------------
-# prepare nsz converter 
+#
 extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
-if [[ ! -f "/userdata/system/switch/extra/nsz.zip" ]] || [[ "$(wc -c "/userdata/system/switch/extra/nsz.zip" | awk '{print $1}')" < "1000000" ]]; then 
-wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/nsz.zip" "$extraurl/nsz.zip"
-fi 
-wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-rev" "$extraurl/batocera-switch-rev"
-chmod a+x /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null 
-wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-nsz-converter.sh" "$extraurl/batocera-switch-nsz-converter.sh"
-dos2unix /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
-chmod a+x /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
-cd /userdata/system/switch/extra/ 
-yes "A" | unzip -qq /userdata/system/switch/extra/nsz.zip 
-cd /userdata/system/ 
+#
+# get batocera-switch-sync-firmware.sh
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh" "$extraurl/batocera-switch-sync-firmware.sh"
+   dos2unix /userdata/system/switch/extra/batocera-switch-sync-firmware.sh 2>/dev/null 
+   chmod a+x /userdata/system/switch/extra/batocera-switch-sync-firmware.sh 2>/dev/null 
+# ------------------------------------------------------------------- 
+# prepare nsz converter 
+   if [[ ! -f "/userdata/system/switch/extra/nsz.zip" ]] || [[ "$(wc -c "/userdata/system/switch/extra/nsz.zip" | awk '{print $1}')" < "1000000" ]]; then 
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/nsz.zip" "$extraurl/nsz.zip"
+   fi 
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-rev" "$extraurl/batocera-switch-rev"
+      chmod a+x /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null 
+         wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-nsz-converter.sh" "$extraurl/batocera-switch-nsz-converter.sh"
+         dos2unix /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
+         chmod a+x /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
+   cd /userdata/system/switch/extra/ 
+   yes "A" | unzip -qq /userdata/system/switch/extra/nsz.zip 
+   cd /userdata/system/ 
 # -------------------------------------------------------------------
 # prepare patcher 
 url_patcher="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-patcher.sh"
-wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
-dos2unix ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
-chmod a+x ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
+   dos2unix ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
+   chmod a+x ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
 # -------------------------------------------------------------------
 startup=/userdata/system/switch/extra/batocera-switch-startup
-rm "$startup" 2>/dev/null 
+   rm "$startup" 2>/dev/null 
 # 
 echo '#!/bin/bash' >> $startup 
 #\ prepare system 
@@ -1330,46 +1347,12 @@ echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $startup
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
 #
-#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware
-echo '#\ rsync ryujinx+yuzu firmware folders with bios/switch/firmware' >> $startup
-echo 'rm -rf /userdata/bios/switch/.firmware 2>/dev/null' >> $startup
-echo 'rm -rf /userdata/bios/switch/_firmware_ 2>/dev/null' >> $startup
-echo 'ff=/userdata/bios/switch/firmware' >> $startup
-echo 'ft=/userdata/bios/switch/firmware_backup' >> $startup
-echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $startup
-echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $startup
-echo 'rm $fr 2>/dev/null' >> $startup
-echo 'rm $fy 2>/dev/null' >> $startup
-echo 'mkdir /userdata/bios 2>/dev/null' >> $startup
-echo 'mkdir /userdata/bios/switch 2>/dev/null' >> $startup
-echo 'mkdir /userdata/bios/switch/firmware 2>/dev/null' >> $startup
-echo 'mkdir /userdata/bios/switch/firmware_backup 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/Ryujinx 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/Ryujinx/bis 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/Ryujinx/bis/system 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/Ryujinx/bis/system/Contents 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/Ryujinx/bis/system/Contents/registered 2>/dev/null' >> $startup
-#
-echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/yuzu 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/yuzu/nand 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/yuzu/nand/system 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/yuzu/nand/system/Contents 2>/dev/null' >> $startup
-echo 'mkdir /userdata/system/configs/yuzu/nand/system/Contents/registered 2>/dev/null' >> $startup
-#
-echo 'rsync -au $ff/ $fr/' >> $startup
-echo 'rsync -au $fr/ $ff/' >> $startup
-echo 'rsync -au $ff/ $fy/' >> $startup
-echo 'rsync -au $fy/ $ff/' >> $startup
-echo 'rm -rf $ft 2>/dev/null' >> $startup
-#
 echo '#' >> $startup
-dos2unix ~/switch/extra/batocera-switch-startup 
-chmod a+x ~/switch/extra/batocera-switch-startup 
+   dos2unix ~/switch/extra/batocera-switch-startup 
+   chmod a+x ~/switch/extra/batocera-switch-startup 
 # & run startup: 
-/userdata/system/switch/extra/batocera-switch-startup 2>/dev/null & 
-echo 1>/dev/null 2>/dev/null 
+      /userdata/system/switch/extra/batocera-switch-startup 2>/dev/null & 
+      echo 1>/dev/null 2>/dev/null 
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
