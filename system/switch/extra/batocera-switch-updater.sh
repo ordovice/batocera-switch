@@ -178,37 +178,70 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx" ]]; then 
-         echo 'if [[ -e "/usr/lib/x86_64-linux-gnu" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; ' >> $launcher 
-         echo 'else mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null ; cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; fi ' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
+         echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+         echo 'cp /userdata/system/switch/extra/ryujinx/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
-      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinx SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $launcher
+      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-LDN" ]]; then 
-         echo 'if [[ -e "/usr/lib/x86_64-linux-gnu" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; ' >> $launcher 
-         echo 'else mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null ; cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; fi ' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
+         echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+         echo 'cp /userdata/system/switch/extra/ryujinxldn/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-LDN-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-LDN-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
-      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxldn SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> $launcher
+      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
-         echo 'if [[ -e "/usr/lib/x86_64-linux-gnu" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; ' >> $launcher 
-         echo 'else mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null ; cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; fi ' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
+         echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+         echo 'cp /userdata/system/switch/extra/ryujinxavalonia/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
       echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-out.txt 2>/dev/null ' >> $launcher
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
-      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxavalonia SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $launcher
+      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
       dos2unix "$launcher"
       chmod a+x "$launcher"
@@ -718,8 +751,18 @@ ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 
-echo 'if [[ -e "/usr/lib/x86_64-linux-gnu" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; ' >> $ai 
-echo 'else mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null ; cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; fi ' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
+echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
@@ -744,8 +787,8 @@ echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
-echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinx QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $ai
-echo 'else LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinx QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
+echo 'if [[ "$1" = "" ]]; then QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $ai
+echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -813,8 +856,18 @@ ai=/userdata/system/switch/Ryujinx-LDN.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 
-echo 'if [[ -e "/usr/lib/x86_64-linux-gnu" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; ' >> $ai 
-echo 'else mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null ; cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; fi ' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
+echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
@@ -839,8 +892,8 @@ echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
-echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxldn QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2' >> $ai
-echo 'else  LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxldn QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
+echo 'if [[ "$1" = "" ]]; then QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2' >> $ai
+echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -912,8 +965,18 @@ ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 
-echo 'if [[ -e "/usr/lib/x86_64-linux-gnu" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; ' >> $ai 
-echo 'else mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null ; cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null; fi ' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
+echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $ai
+echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
@@ -938,8 +1001,8 @@ echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
-echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxavalonia QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $ai
-echo 'else LD_LIBRARY_PATH=/userdata/system/switch/extra/ryujinxavalonia QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
+echo 'if [[ "$1" = "" ]]; then QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $ai
+echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -1270,9 +1333,9 @@ extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.zip" "$extraurl/lib.zip"
    cd /userdata/system/switch/extra/ 
    yes "A" | unzip -qq /userdata/system/switch/extra/lib.zip 
-   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinx/ 2>/dev/null
-   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxldn/ 2>/dev/null
-   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxavalonia/ 2>/dev/null
+#   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinx/ 2>/dev/null
+#   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxldn/ 2>/dev/null
+#   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxavalonia/ 2>/dev/null
    cd /userdata/system/ 
 # -------------------------------------------------------------------
 # prepare patcher 
