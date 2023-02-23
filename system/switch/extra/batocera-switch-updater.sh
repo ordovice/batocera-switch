@@ -178,6 +178,7 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx" ]]; then 
+      echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null'" >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
@@ -189,7 +190,7 @@ rm -rf $launcher 2>/dev/null
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
          echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
-         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
          echo 'cp /userdata/system/switch/extra/ryujinx/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
@@ -200,6 +201,7 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-LDN" ]]; then 
+      echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null'" >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
@@ -211,7 +213,7 @@ rm -rf $launcher 2>/dev/null
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
          echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
-         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
          echo 'cp /userdata/system/switch/extra/ryujinxldn/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
@@ -222,6 +224,7 @@ rm -rf $launcher 2>/dev/null
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
+      echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null'" >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
@@ -233,7 +236,7 @@ rm -rf $launcher 2>/dev/null
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
          echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
-         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
          echo 'cp /userdata/system/switch/extra/ryujinxavalonia/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
@@ -749,6 +752,7 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null'" >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
@@ -854,6 +858,7 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-LDN.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null'" >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
@@ -963,6 +968,7 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 # make launcher 
 ai=/userdata/system/switch/Ryujinx-Avalonia.AppImage; rm $ai 2>/dev/null
 echo '#!/bin/bash' >> $ai
+echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null'" >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai 
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
