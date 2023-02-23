@@ -1332,6 +1332,7 @@ extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system
 # prepare gdk/svg libs for ryujinx / needed for gui controller config 
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.zip" "$extraurl/lib.zip"
    cd /userdata/system/switch/extra/ 
+   rm -rf /userdata/system/switch/extra/lib 2>/dev/null
    yes "A" | unzip -qq /userdata/system/switch/extra/lib.zip 
 #   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinx/ 2>/dev/null
 #   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxldn/ 2>/dev/null
