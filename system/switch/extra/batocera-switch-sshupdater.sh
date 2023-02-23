@@ -1345,6 +1345,11 @@ extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system
 #   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxavalonia/ 2>/dev/null
    cd /userdata/system/ 
 # -------------------------------------------------------------------
+# get ryujinx-controller-patcher.sh 
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/ryujinx-controller-patcher.sh" "$extraurl/ryujinx-controller-patcher.sh"
+   dos2unix /userdata/system/switch/extra/ryujinx-controller-patcher.sh 2>/dev/null 
+   chmod a+x /userdata/system/switch/extra/ryujinx-controller-patcher.sh 2>/dev/null  
+# -------------------------------------------------------------------
 # prepare patcher 
 url_patcher="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-patcher.sh"
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
