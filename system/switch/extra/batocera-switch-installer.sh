@@ -251,7 +251,14 @@ rm /userdata/roms/ports/updateyuzuea.sh 2>/dev/null
 rm /userdata/roms/ports/updateyuzuEA.sh 2>/dev/null 
 rm /userdata/roms/ports/updateryujinx.sh 2>/dev/null
 rm /userdata/roms/ports/updateryujinxavalonia.sh 2>/dev/null
-# -------------------------------------------------------------------- 
+# --------------------------------------------------------------------
+dos2unix /userdata/system/switch/extra/*.sh 2>/dev/null
+dos2unix /userdata/system/switch/extra/batocera-config* 2>/dev/null
+chmod a+x /userdata/system/switch/extra/*.sh 2>/dev/null
+chmod a+x /userdata/system/switch/extra/batocera-config* 2>/dev/null
+chmod a+x /userdata/system/switch/extra/batocera-switch-lib* 2>/dev/null
+chmod a+x /userdata/system/switch/extra/*.desktop 2>/dev/null
+# --------------------------------------------------------------------
 echo -e "${X} > INSTALLED OK${X}" 
 sleep 2
 echo
@@ -264,66 +271,16 @@ echo -e "${X} "
 sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
-rm /tmp/batocera-switch-updater.sh 2>/dev/null 
-wget --no-cache -q -O "/tmp/batocera-switch-updater.sh" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh" 
-dos2unix /tmp/batocera-switch-updater.sh 2>/dev/null 
-chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null 
-bash /tmp/batocera-switch-updater.sh 
+rm /tmp/batocera-switch-sshupdater.sh 2>/dev/null 
+mkdir -p /tmp 2>/dev/null
+wget -q -O "/tmp/batocera-switch-sshupdater.sh" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh" 
+dos2unix /tmp/batocera-switch-sshupdater.sh 2>/dev/null 
+chmod a+x /tmp/batocera-switch-sshupdater.sh 2>/dev/null 
+bash /tmp/batocera-switch-sshupdater.sh 
 sleep 0.5 
 } 
 export -f batocera-pro-installer 2>/dev/null 
 # --------------------------------------------------------------------
-# --- include display output: 
-function get-xterm-fontsize {
-url_tput=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
-url_libtinfo=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
-mkdir /userdata/system/switch 2>/dev/null 
-mkdir /userdata/system/switch/extra 2>/dev/null 
-extra=/userdata/system/switch/extra 
-wget -q -O $extra/batocera-switch-tput $url_tput
-wget -q -O $extra/batocera-switch-libtinfo.so.6 $url_libtinfo
-cp $extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null & cp $extra/batocera-switch-libtinfo.so.6 /lib64/libtinfo.so.6 2>/dev/null
-chmod a+x $extra/batocera-switch-tput 2>/dev/null
-tput=/userdata/system/switch/extra/batocera-switch-tput
-cfg=/userdata/system/switch/extra/display.cfg; rm $cfg 2>/dev/null
-DISPLAY=:0.0 xterm -fullscreen -bg "black" -fa "Monospace" -e bash -c "$tput cols >> $cfg" 2>/dev/null
-cols=$(cat $cfg | tail -n 1) 2>/dev/null
-TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
-}
-export -f get-xterm-fontsize 2>/dev/null
-  #get-xterm-fontsize 2>/dev/null
-  #cfg=/userdata/system/switch/extra/display.cfg
-  #cols=$(cat $cfg | tail -n 1) 2>/dev/null
-  #until [[ "$cols" != "80" ]] 
-  #do
-  #sleep 0.042 && get-xterm-fontsize 2>/dev/null
-  #cols=$(cat $cfg | tail -n 1) 2>/dev/null
-  #done 
-  #TEXT_SIZE=$(bc <<<"scale=0;$cols/16") 2>/dev/null
-  #rm /userdata/system/switch/extra/display.cfg 2>/dev/null
-    # --------------------------------------------------------------------
-    # RUN: 
-    # | 
-    # DISPLAY=:0.0 xterm -fullscreen -bg black -fa 'Monospace' -fs $TEXT_SIZE -e bash -c "batocera-pro-installer $APPNAME '$ORIGIN'" 2>/dev/null
-    # &+automatically run switch updater after installation
-# --------------------------------------------------------------------
-# CHECK CONNECTION 
-net="on" ; net1="on" ; net2="on" ; net3="on"
-case "$(curl -s --max-time 2 -I http://github.com | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in
-  [23]) net1="on";;
-  5) net1="off";;
-  *) net1="off";;
-esac 
-ping -q -w 1 -c 1 github.com > /dev/null && net2="on" || net2="off"
-wget -q --spider http://github.com
-if [ $? -eq 0 ]; then net3="on" ; else net3="off" ; fi
-##
-if [[ "$net1" = "off" ]] && [[ "$net2" = "off" ]] && [[ "$net3" = "off" ]]; then net="off"; fi 
-if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then net="on"; fi 
-##
-if [[ "$net" = "off" ]]; then 
-echo -e "\n   ${X}NO INTERNET CONNECTION :( ${X}" && exit 0 & exit 1 & exit 2 
-fi 
 batocera-pro-installer "$APPNAME" "$ORIGIN" 
 # --------------------------------------------------------------------
 X='\033[0m' # / resetcolor
@@ -331,19 +288,20 @@ if [[ -e /userdata/system/switch/extra/installation ]]; then
 rm /userdata/system/switch/extra/installation 2>/dev/null
 clear
 echo
+echo 
+echo -e "   ${X}$APPNAME INSTALLED${X}" 
 echo
+echo -e "   ${X}Place your keys in /userdata/bios/switch/${X}" 
+echo -e "   ${X}Firmware files in /userdata/bios/switch/firmware/${X}" 
 echo
-echo -e "   ${X}$APPNAME INSTALLED AND UPDATED OK${X}" 
-echo
-echo
+echo -e "   ${X}Use Switch Updater in Ports to update emulators${X}" 
 echo
 else
 clear 
 echo
 echo
-echo
-echo -e "   ${X}LOOKS LIKE THE INSTALLATION FAILED . . .${X}" 
-echo
+echo -e "   ${X}Looks like the installation failed${X}" 
+echo -e "   ${X}Maybe try again?${X}" 
 echo
 echo
 sleep 1

@@ -1617,119 +1617,30 @@ origen=$(cat /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlin
 # / 
 #/
 # --------------------------------------------------------------------
+dos2unix /userdata/system/switch/extra/*.sh 2>/dev/null
+dos2unix /userdata/system/switch/extra/batocera-config* 2>/dev/null
+chmod a+x /userdata/system/switch/extra/*.sh 2>/dev/null
+chmod a+x /userdata/system/switch/extra/batocera-config* 2>/dev/null
+chmod a+x /userdata/system/switch/extra/batocera-switch-lib* 2>/dev/null
+chmod a+x /userdata/system/switch/extra/*.desktop 2>/dev/null
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
 rm /userdata/system/switch/extra/updater.settings 2>/dev/null
-killall -9 vlc 2>/dev/null & killall -9 xterm 2>/dev/null & curl http://127.0.0.1:1234/reloadgames && exit 0
+curl http://127.0.0.1:1234/reloadgames
 }
 export -f post-install
 #
-######################################################################
-#
-# include display output: 
-   tput=/userdata/system/switch/extra/batocera-switch-tput
-   libtinfo=/userdata/system/switch/extra/batocera-switch-libtinfo.so.6
-   mkdir /userdata/system/switch 2>/dev/null; mkdir /userdata/system/switch/extra 2>/dev/null
-      if [[ ( -e "$tput" && "$(wc -c "$tput" | awk '{print $1}')" < "444" ) || ( ! -e "$tput" ) ]]; then
-         rm "$tput" 2>/dev/null
-         wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-tput https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
-      fi
-      if [[ ( -e "$libtinfo" && "$(wc -c "$libtinfo" | awk '{print $1}')" < "444" ) || ( ! -e "$libtinfo" ) ]]; then
-         rm "$libtinfo" 2>/dev/null
-         wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
-      fi
-   chmod a+x "$tput" 2>/dev/null
-   cp "$libtinfo" "/lib/libtinfo.so.6" 2>/dev/null
-#
-      function get-xterm-fontsize {
-         cfg=/userdata/system/switch/extra/display.cfg
-            rm /tmp/cols 2>/dev/null
-            killall -9 xterm 2>/dev/null
-            DISPLAY=:0.0 xterm -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols" 2>/dev/null
-            killall -9 xterm 2>/dev/null
-         res=$(xrandr | grep " connected " | awk '{print $3}' | cut -d x -f1)
-         columns=$(cat /tmp/cols); echo "$res=$columns" >> "$cfg"
-         cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
-         TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null
-      }
-      export -f get-xterm-fontsize
-##################################
-get-xterm-fontsize 2>/dev/null
-#
-# ensure fontsize: 
-cfg=/userdata/system/switch/extra/display.cfg
-cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
-colres=$(cat "$cfg" | tail -n 1 | cut -d "=" -f1 2>/dev/null) 2>/dev/null
-res=$(xrandr | grep " connected " | awk '{print $3}' | cut -d x -f1)
-fallback=10 
-#
-#####
-   if [[ -e "$cfg" ]] && [[ "$cols" != "80" ]]; then 
-      if [[ "$colres" = "$res" ]]; then
-         TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null
-      fi
-      #|
-      if [[ "$colres" != "$res" ]]; then
-         rm "$cfg" 2>/dev/null
-            try=1
-            until [[ "$cols" != "80" ]] 
-            do
-            get-xterm-fontsize 2>/dev/null
-            cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
-            try=$(($try+1)); if [[ "$try" -ge "10" ]]; then TEXT_SIZE=$fallback; cols=1; fi
-            done 
-            if [[ "$cols" != "1" ]]; then TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null; fi
-      fi
-   # 
-   else
-   # 
-      get-xterm-fontsize 2>/dev/null
-      cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
-         try=1
-         until [[ "$cols" != "80" ]] 
-         do
-            get-xterm-fontsize 2>/dev/null
-            cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
-            try=$(($try+1)); if [[ "$try" -ge "10" ]]; then TEXT_SIZE=$fallback; cols=1; fi
-         done 
-         if [[ "$cols" != "1" ]]; then TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null; fi
-         if [ "$TEXT_SIZE" = "" ]; then TEXT_SIZE=$fallback; fi
-   fi    #
-   ##### #
-         if [[ ( -e "/tmp/updater-textsize" && "$(cat "/tmp/updater-textsize" | grep "AUTO")" != "") || ( -e "/tmp/updater-textsize" && "$(cat "/tmp/updater-textsize" | grep "auto")" != "" ) ]]; then 
-            TEXT_SIZE=$TEXT_SIZE
-         else 
-            TEXT_SIZE=$(cat "/tmp/updater-textsize")
-         fi
-         TEXT_SIZE=$(bc <<<"scale=0;$TEXT_SIZE/1")
-         # ###################################################################
-         # 
-         ## RUN THE UPDATER: ------------------------------------------------- 
-            if [[ "$MODE" = "DISPLAY" ]]; then 
-               if [[ "$ANIMATION" = "YES" ]]; then  
-                  if [[ "$net" = "on" ]]; then
-                        DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && batocera_update_switch" 2>/dev/null 
-                  else 
-                        DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
-                  fi
-               else 
-                  if [[ "$net" = "on" ]]; then
-                        DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "batocera_update_switch" 2>/dev/null 
-                  else 
-                        DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
-                  fi
-               fi 
-            fi
+############################################################################################################
             if [[ "$MODE" = "CONSOLE" ]]; then 
                if [[ "$net" = "on" ]]; then 
-                  batocera_update_switch console 
+                  batocera_update_switch "console"
+                  wait
+                  post-install 2>/dev/null
                fi 
             fi
 ############################################################################################################
-if [[ "$net" = "on" ]]; then su -c "post-install 2>/dev/null &" ; fi
-############################################################################################################
 # exit: 
-killall -9 vlc 2>/dev/null & killall -9 xterm 2>/dev/null & curl http://127.0.0.1:1234/reloadgames & exit 0
+curl http://127.0.0.1:1234/reloadgames
 ############################################################################################################
