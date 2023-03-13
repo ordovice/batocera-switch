@@ -1,7 +1,7 @@
 # batocera-switch
 Extends Batocera and adds switch emulation as an UNSUPPORTED ADD-ON to BATOCERA.  
 
-Master branch is currently working on Batocera 35.  It has not been tested on Batocera 36 beta (this includes the Steam Deck Betas).  If you have v34, please use the packaged release.
+Master branch is currently working on Batocera 35 and 36. If you have v34, please upgrade Batocera as we are no longer supporting v34.
 
 This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS).  
 
@@ -14,26 +14,26 @@ This version integrates work from foclabroc and Batocera Nation but does not inc
 ## GET Support Here
 https://discord.gg/cuw5Xt7M7d
 
-## EASY Install
+## EASY INSTALL
 From a terminal window, run the following:
 curl -L switch.batocera.pro | bash
 
 Thanks to uureel for simplifying the install/update of Switch components for the Batocera Add-On.  
 
-## UPGRADING OLDER VERSIONS OF THIS ADD-ON
+## UPGRADING OLDER VERSIONS OF THIS ADD-ON NOT INSTALLED WITH THE EASY INSTALL METHOD
 Delete the \system\switch folder and install this repo as normal.  There are folders in the old install that will break this version.  
 
 ## V34 Users
-V34 users, you need to rename the renameme_custom.sh file to custom.sh to add the options for the emulators to Batocera.  This has been changed in V35 and there will be cleanup needed if you are not upgraded currently.
-
-## V35+ Users
-V35 users (beta2 and newer), please remove/rename the custom.sh file originally provided in older versions and delete the es_features.cfg file from \system\configs\emulationstation as the switch specific addons file now works properly.
+The Switch Add-On is no longer being supported or maintained for v34 of Batocera
 
 ## Reporting Issues
 Please use the controller issue templates for reporting controller issues.  For other issues, provide as much information as possible, and if it's a launch issue, please be sure to include the es_launch_stdout.log and es_launch_stderr.log log files from \system\logs
 
 ## SPECIAL THANKS
 Special thanks for foclabroc, Rion, and Darknior for testing things out as I change things, [RGS] for a controller donation, and anyone else who contributes and helps me make this better. 
+
+## UPDATE 2023-03-13
+The Controller autoconfiguration is in process of being updated as more of a controller table.  Additionally, Ryujinx is still locked due to incompatibilities with the SDL within Batocera and Ryujinx  
 
 ## UPDATE 2022-09-07
 Because controller auto configuration for apps that don't pull SDL directly is a challenge and I'm not actually doing any app compilation, I've added a feature to the system that allows you to turn off auto configuration.  This is useful for people with single controllers that never change (for example) so you can configure it once and just leave it.
