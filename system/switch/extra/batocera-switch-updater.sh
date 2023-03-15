@@ -166,6 +166,7 @@ rm -rf $launcher 2>/dev/null
       echo 'log2=/userdata/system/switch/extra/logs/yuzu-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $launcher
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "yuzuEA" ]]; then 
@@ -175,6 +176,7 @@ rm -rf $launcher 2>/dev/null
       echo 'log2=/userdata/system/switch/extra/logs/yuzuEA-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $launcher
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH=/userdata/system/switch/extra/yuzu QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx" ]]; then 
@@ -198,6 +200,7 @@ rm -rf $launcher 2>/dev/null
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx.AppImage; ' >> $launcher
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-LDN" ]]; then 
@@ -221,6 +224,7 @@ rm -rf $launcher 2>/dev/null
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-LDN-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-LDN.AppImage; ' >> $launcher
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
@@ -244,6 +248,7 @@ rm -rf $launcher 2>/dev/null
       echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-err.txt 2>/dev/null ' >> $launcher
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
+      echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-Avalonia.AppImage; ' >> $launcher
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
       dos2unix "$launcher"
