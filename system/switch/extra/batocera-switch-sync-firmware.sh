@@ -7,22 +7,33 @@
 fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered
 fy=/userdata/system/configs/yuzu/nand/system/Contents/registered
 fs=/userdata/bios/switch/firmware
-mkdir -p $fwr 2>/dev/null
-mkdir -p $fwy 2>/dev/null
-mkdir -p $fws 2>/dev/null
+mkdir -p $fr 2>/dev/null
+mkdir -p $fy 2>/dev/null
+mkdir -p $fs 2>/dev/null
+diag=0
 #
 #\------------\ 
 # \------------\ 
 #  prepare checks 
 cr=1; cy=1; cs=1
 #
+#  prepare stat
+if [[ ! -e /userdata/system/switch/extra/batocera-switch-stat ]]; then 
+url_stat=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-stat
+wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-stat $url_stat
+elif [[ "$(wc -c /userdata/system/switch/extra/batocera-switch-stat | awk '{print $1}')" < "90000" ]]; then 
+url_stat=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-stat
+wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-stat $url_stat
+fi 
+chmod a+x /userdata/system/switch/extra/batocera-switch-stat 2>/dev/null
+#
 #  check = latest modified files 
 rf=$(ls $fr -Art | grep ".nca" | tail -n 1)
 yf=$(ls $fy -Art | grep ".nca" | tail -n 1)
 sf=$(ls $fs -Art | grep ".nca" | tail -n 1)
-if [[ "$rf" = "" ]]; then cr=0; else dr=$(stat -c "%Y" $fr/$rf 2>/dev/null); fi
-if [[ "$yf" = "" ]]; then cy=0; else dy=$(stat -c "%Y" $fy/$yf 2>/dev/null); fi
-if [[ "$sf" = "" ]]; then cs=0; else ds=$(stat -c "%Y" $fs/$sf 2>/dev/null); fi
+if [[ "$rf" = "" ]]; then cr=0; else dr=$(/userdata/system/switch/extra/batocera-switch-stat -c "%Y" $fr/$rf 2>/dev/null); fi
+if [[ "$yf" = "" ]]; then cy=0; else dy=$(/userdata/system/switch/extra/batocera-switch-stat -c "%Y" $fy/$yf 2>/dev/null); fi
+if [[ "$sf" = "" ]]; then cs=0; else ds=$(/userdata/system/switch/extra/batocera-switch-stat -c "%Y" $fs/$sf 2>/dev/null); fi
 #
 #  check = directory size
 sr=$(du -Hs $fr | awk '{print $1}')
@@ -55,53 +66,107 @@ if [[ "$ds" != "" ]] && [[ "$ds" -ge "$dr" ]] && [[ "$ds" -ge "$dy" ]]; then f=s
 # >> populate using /userdata/bios/switch/firmware  
 if [[ "$f" = "s" ]]; then
 	if [[ "$ds" > "$dr" ]]; then  
-	rm -rf $fr/* 2>/dev/null
+	rm -rf "$fr/"* 2>/dev/null
 		#cp -rL $fs/* $fr/ 2>/dev/null & 
-		rsync -au $fs/ $fr/ 2>/dev/null & 
+		rsync -au --delete $fs/ $fr/ 2>/dev/null & 
 			wait 
 	fi
 	if [[ "$ds" > "$dy" ]]; then  
-	rm -rf $fy/* 2>/dev/null
+	rm -rf "$fy/"* 2>/dev/null
 		#cp -rL $fs/* $fy/ 2>/dev/null & 
-		rsync -au $fs/ $fy/ 2>/dev/null & 
+		rsync -au --delete $fs/ $fy/ 2>/dev/null & 
 			wait 
 	fi
+	# additional filenumber check
+		if [[ "$nr" > "$ns" ]]; then  
+		rm -rf "$fr/"* 2>/dev/null
+			#cp -rL $fs/* $fr/ 2>/dev/null & 
+			rsync -au --delete $fs/ $fr/ 2>/dev/null & 
+				wait 
+		fi
+		if [[ "$ny" > "$ns" ]]; then  
+		rm -rf "$fy/"* 2>/dev/null
+			#cp -rL $fs/* $fy/ 2>/dev/null & 
+			rsync -au --delete $fs/ $fy/ 2>/dev/null & 
+				wait 
+		fi
 fi
 #
 # or 
 # >> populate using fryujinx 
 if [[ "$f" = "r" ]]; then
 	if [[ "$dr" > "$dy" ]]; then  
-	rm -rf $fy/* 2>/dev/null
+	rm -rf "$fy/"* 2>/dev/null
 		#cp -rL $fr/* $fy/ 2>/dev/null & 
-		rsync -au $fr/ $fy/ 2>/dev/null & 
+		rsync -au --delete $fr/ $fy/ 2>/dev/null & 
 			wait 
 	fi
 	if [[ "$dr" > "$ds" ]]; then  
-	rm -rf $fs/* 2>/dev/null
+	rm -rf "$fs/"* 2>/dev/null
 		#cp -rL $fr/* $fs/ 2>/dev/null & 
-		rsync -au $fr/ $fs/ 2>/dev/null & 
+		rsync -au --delete $fr/ $fs/ 2>/dev/null & 
 			wait 
 	fi
+	# additional filenumber check
+		if [[ "$ny" > "$nr" ]]; then  
+		rm -rf "$fy/"* 2>/dev/null
+			#cp -rL $fs/* $fr/ 2>/dev/null & 
+			rsync -au --delete $fr/ $fy/ 2>/dev/null & 
+				wait 
+		fi
+		if [[ "$ns" > "$nr" ]]; then  
+		rm -rf "$fs/"* 2>/dev/null
+			#cp -rL $fs/* $fy/ 2>/dev/null & 
+			rsync -au --delete $fr/ $fs/ 2>/dev/null & 
+				wait 
+		fi
 fi
 #
 # or 
 # >> populate using yuzu  
 if [[ "$f" = "y" ]]; then
 	if [[ "$dy" > "$dr" ]]; then  
-	rm -rf $fr/* 2>/dev/null
+	rm -rf "$fr/"* 2>/dev/null
 		#cp -rL $fy/* $fr/ 2>/dev/null & 
-		rsync -au $fy/ $fr/ 2>/dev/null & 
+		rsync -au --delete $fy/ $fr/ 2>/dev/null & 
 			wait 
 	fi
 	if [[ "$dy" > "$ds" ]]; then  
-	rm -rf $fs/* 2>/dev/null
+	rm -rf "$fs/"* 2>/dev/null
 		#cp -rL $fy/* $fs/ 2>/dev/null & 
-		rsync -au $fy/ $fs/ 2>/dev/null & 
+		rsync -au --delete $fy/ $fs/ 2>/dev/null & 
 			wait 
 	fi
+	# additional filenumber check
+		if [[ "$nr" > "$ny" ]]; then  
+		rm -rf "$fr/"* 2>/dev/null
+			#cp -rL $fs/* $fr/ 2>/dev/null & 
+			rsync -au --delete $fy/ $fr/ 2>/dev/null & 
+				wait 
+		fi 
+		if [[ "$ns" > "$ny" ]]; then  
+		rm -rf "$fs/"* 2>/dev/null
+			#cp -rL $fs/* $fy/ 2>/dev/null & 
+			rsync -au --delete $fy/ $fs/ 2>/dev/null & 
+				wait 
+		fi
 fi
 #
 # ---
 # end 
-#######
+#############################
+if [[ "$diag" != "0" ]]; then 
+echo "rf=$rf"
+echo "yf=$yf"
+echo "sf=$sf"
+echo "dr=$dr"
+echo "dy=$dy"
+echo "ds=$ds"
+echo "sr=$sr"
+echo "sy=$sy"
+echo "ss=$ss"
+echo "nr=$nr"
+echo "ny=$ny"
+echo "ns=$ns"
+echo "fw=$f"
+fi

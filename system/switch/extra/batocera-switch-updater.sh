@@ -600,10 +600,6 @@ echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai
 echo '#cp /userdata/system/switch/extra/yuzu/lib* /lib64/ 2>/dev/null' >> $ai 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
-echo 'ff=/userdata/bios/switch/firmware' >> $ai
-echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
-echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
-echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
@@ -668,10 +664,6 @@ echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $ai
 echo '#cp /userdata/system/switch/extra/yuzuea/lib* /lib64/ 2>/dev/null' >> $ai 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
-echo 'ff=/userdata/bios/switch/firmware' >> $ai
-echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
-echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
-echo 'rsync -au $ff/ $fr/ ; rsync -au $ff/ $fy/' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> $ai
@@ -781,10 +773,6 @@ echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
-echo 'ff=/userdata/bios/switch/firmware' >> $ai
-echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
-echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
-echo 'rsync -au $ff/ $fr/; rsync -au $ff/ $fy/' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
@@ -889,10 +877,6 @@ echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
-echo 'ff=/userdata/bios/switch/firmware' >> $ai
-echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
-echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
-echo 'rsync -au $ff/ $fr/; rsync -au $ff/ $fy/' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
@@ -1001,10 +985,6 @@ echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> $ai
-echo 'ff=/userdata/bios/switch/firmware' >> $ai
-echo 'fr=/userdata/system/configs/Ryujinx/bis/system/Contents/registered' >> $ai
-echo 'fy=/userdata/system/configs/yuzu/nand/system/Contents/registered' >> $ai
-echo 'rsync -au $ff/ $fr/; rsync -au $ff/ $fy/' >> $ai
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> $ai
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $ai
 echo 'rm /usr/bin/ryujinx 2>/dev/null; ln -s /userdata/system/switch/Ryujinx-Avalonia.AppImage /usr/bin/ryujinx 2>/dev/null' >> $ai
@@ -1337,6 +1317,10 @@ extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh" "$extraurl/batocera-switch-sync-firmware.sh"
    dos2unix /userdata/system/switch/extra/batocera-switch-sync-firmware.sh 2>/dev/null 
    chmod a+x /userdata/system/switch/extra/batocera-switch-sync-firmware.sh 2>/dev/null 
+# ------------------------------------------------------------------- 
+# get batocera-switch-stat
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-stat" "$extraurl/batocera-switch-stat"
+   chmod a+x /userdata/system/switch/extra/batocera-switch-stat 2>/dev/null 
 # ------------------------------------------------------------------- 
 # prepare nsz converter 
    if [[ ! -f "/userdata/system/switch/extra/nsz.zip" ]] || [[ "$(wc -c "/userdata/system/switch/extra/nsz.zip" | awk '{print $1}')" < "1000000" ]]; then 
