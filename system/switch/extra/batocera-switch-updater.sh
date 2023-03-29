@@ -251,10 +251,10 @@ rm -rf $launcher 2>/dev/null
       echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-Avalonia.AppImage; ' >> $launcher
       echo 'LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
-      dos2unix "$launcher"
-      chmod a+x "$launcher"
-         dos2unix "$shortcut"
-         chmod a+x "$shortcut"
+      dos2unix "$launcher" 2>/dev/null
+      chmod a+x "$launcher" 2>/dev/null
+         dos2unix "$shortcut" 2>/dev/null
+         chmod a+x "$shortcut" 2>/dev/null
 cp "$shortcut" "$extra" 2>/dev/null
 } # -----------------------------------------------------------------
 #
@@ -846,8 +846,8 @@ startup=$extra/$emu/startup
 rm -rf $startup 2>/dev/null
 echo '#!/bin/bash' >> $startup
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $startup
-dos2unix "$startup"
-chmod a+x "$startup"
+dos2unix "$startup" 2>/dev/null
+chmod a+x "$startup" 2>/dev/null
 $extra/$emu/startup 2>/dev/null
 # /
 # --------------------------------------------------------
@@ -954,8 +954,8 @@ startup=$extra/$emu/startup
 rm -rf $startup 2>/dev/null
 echo '#!/bin/bash' >> $startup
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $startup
-dos2unix "$startup"
-chmod a+x "$startup"
+dos2unix "$startup" 2>/dev/null
+chmod a+x "$startup" 2>/dev/null
 $extra/$emu/startup 2>/dev/null
 # /
 # --------------------------------------------------------
@@ -1372,7 +1372,7 @@ echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> $startup
 echo 'if [[ -e "/lib/libthai.so.0.3.1" ]] || [[ -e "/usr/lib/libthai.so.0.3.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null; fi' >> $startup
 echo 'if [[ -e "/lib/libthai.so.0.3" ]] || [[ -e "/usr/lib/libthai.so.0.3" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libthai.so.0.3 /lib/libthai.so.0.3 2>/dev/null; fi' >> $startup
 echo 'if [[ -e "/lib/libselinux.so.1" ]] || [[ -e "/usr/lib/libselinux.so.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null; fi' >> $startup
-echo 'if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 /lib/libtinfo.so.6 2>/dev/null; fi' >> $startup
+echo 'if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 /usr/lib/libtinfo.so.6 2>/dev/null; fi' >> $startup
 #\ link ryujinx config folders 
 echo '#\ link ryujinx config folders ' >> $startup
 echo 'mkdir /userdata/system/configs 2>/dev/null' >> $startup
@@ -1450,15 +1450,15 @@ echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/syste
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> $startup
 #
 echo '#' >> $startup
-   dos2unix ~/switch/extra/batocera-switch-startup 
-   chmod a+x ~/switch/extra/batocera-switch-startup 
+   dos2unix ~/switch/extra/batocera-switch-startup 2>/dev/null
+   chmod a+x ~/switch/extra/batocera-switch-startup 2>/dev/null
 # & run startup: 
       /userdata/system/switch/extra/batocera-switch-startup 2>/dev/null & 
       echo 1>/dev/null 2>/dev/null 
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
-csh=/userdata/system/custom.sh; dos2unix $csh
+csh=/userdata/system/custom.sh; dos2unix $csh 2>/dev/null
 startup="/userdata/system/switch/extra/batocera-switch-startup"
 if [[ -f $csh ]];
    then
@@ -1485,14 +1485,14 @@ if [[ -f $csh ]];
        echo -e '#!/bin/bash' >> $tmp2
        echo -e "\n$startup \n" >> $tmp2          
        cat "$tmp1" | sed -e '/./b' -e :n -e 'N;s/\n$//;tn' >> "$tmp2"
-       cp $tmp2 $csh; dos2unix $csh; chmod a+x $csh  
+       cp $tmp2 $csh; dos2unix $csh 2>/dev/null; chmod a+x $csh 2>/dev/null  
    else  #(!f csh)   
        echo -e '#!/bin/bash' >> $csh
        echo -e "\n$startup\n" >> $csh  
-       dos2unix $csh; chmod a+x $csh  
+       dos2unix $csh 2>/dev/null; chmod a+x $csh 2>/dev/null  
 fi 
-dos2unix ~/custom.sh
-chmod a+x ~/custom.sh 
+dos2unix ~/custom.sh 2>/dev/null
+chmod a+x ~/custom.sh 2>/dev/null
 # --------------------------------------------------------------------
 # CLEAR THE OLD V34- CUSTOM.SH LINE IF FOUND AND THE SYSTEM IS NOW VERSION V35+:
 # THIS SHOULD HELP WITH UPGRADED VERSIONS AND 'OTHER INSTALLS' 
@@ -1547,33 +1547,33 @@ url_portsupdaterkeys="https://raw.githubusercontent.com/ordovice/batocera-switch
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/GeneratorImporter.py" "$url_GeneratorImporter"
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" "$url_yuzuMainlineGenerator"
-      dos2unix "/userdata/system/configs/evmapy/switch.keys" 
-      dos2unix "/userdata/system/configs/emulationstation/es_features_switch.cfg" 
-      dos2unix "/userdata/system/configs/emulationstation/es_systems_switch.cfg" 
-      dos2unix "/userdata/system/switch/configgen/switchlauncher.py" 
-      dos2unix "/userdata/system/switch/configgen/GeneratorImporter.py" 
-      dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 
-      dos2unix "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" 
-      dos2unix "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py"
+      dos2unix "/userdata/system/configs/evmapy/switch.keys" 2>/dev/null
+      dos2unix "/userdata/system/configs/emulationstation/es_features_switch.cfg" 2>/dev/null 
+      dos2unix "/userdata/system/configs/emulationstation/es_systems_switch.cfg" 2>/dev/null
+      dos2unix "/userdata/system/switch/configgen/switchlauncher.py" 2>/dev/null
+      dos2unix "/userdata/system/switch/configgen/GeneratorImporter.py" 2>/dev/null
+      dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 2>/dev/null 
+      dos2unix "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" 2>/dev/null
+      dos2unix "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" 2>/dev/null
    # update batocera-switch-sshupdater.sh
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" "$url_sshupdater"
-   dos2unix "/userdata/system/switch/extra/batocera-switch-sshupdater.sh"
-   chmod a+x "/userdata/system/switch/extra/batocera-switch-sshupdater.sh"
+   dos2unix "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" 2>/dev/null
+   chmod a+x "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" 2>/dev/null
    # update batocera-switch-updater.sh
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-updater.sh" "$url_updater"
-   dos2unix "/userdata/system/switch/extra/batocera-switch-updater.sh"
-   chmod a+x "/userdata/system/switch/extra/batocera-switch-updater.sh"
+   dos2unix "/userdata/system/switch/extra/batocera-switch-updater.sh" 2>/dev/null
+   chmod a+x "/userdata/system/switch/extra/batocera-switch-updater.sh" 2>/dev/null
    # update ports Switch Updater.sh
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/roms/ports/Switch Updater.sh" "$url_portsupdater"
-   dos2unix "/userdata/system/roms/ports/Switch Updater.sh"
-   chmod a+x "/userdata/system/roms/ports/Switch Updater.sh"
+   dos2unix "/userdata/system/roms/ports/Switch Updater.sh" 2>/dev/null
+   chmod a+x "/userdata/system/roms/ports/Switch Updater.sh" 2>/dev/null
    # update ports Switch Updater.sh.keys
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/roms/ports/Switch Updater.sh.keys" "$url_portsupdaterkeys"
-   dos2unix "/userdata/system/roms/ports/Switch Updater.sh.keys"
+   dos2unix "/userdata/system/roms/ports/Switch Updater.sh.keys" 2>/dev/null
    # get batocera-switch-patcher.sh 
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
-   dos2unix "/userdata/system/switch/extra/batocera-switch-patcher.sh"
-   chmod a+x "/userdata/system/switch/extra/batocera-switch-patcher.sh"
+   dos2unix "/userdata/system/switch/extra/batocera-switch-patcher.sh" 2>/dev/null
+   chmod a+x "/userdata/system/switch/extra/batocera-switch-patcher.sh" 2>/dev/null
 # --------------------------------------------------------------------
 # --------------------------------------------------------------------
 #\
@@ -1594,13 +1594,13 @@ origen=$(cat /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlin
          #frozen and ori gen
          if [[ "$origen" != "" ]]; then
             wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
-            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py"
+            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 2>/dev/null
          fi
          #frozen and patch gen found, backup
          if [[ "$origen" = "" ]]; then
             cp "$ryugen" "$ryugenpatch" 2>/dev/null
             wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
-            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py"
+            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 2>/dev/null
          fi
       fi 
       
@@ -1611,7 +1611,7 @@ origen=$(cat /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlin
             cp "$ryugenpatch" "$ryugen"
          else 
             wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
-            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py"
+            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 2>/dev/null
          fi
       fi 
 # / 
@@ -1641,8 +1641,10 @@ export -f post-install
          wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
       fi
    chmod a+x "$tput" 2>/dev/null
-   if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then echo; else
-   cp "$libtinfo" "/lib/libtinfo.so.6" 2>/dev/null
+   if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then 
+   :
+   else
+   cp "$libtinfo" "/usr/lib/libtinfo.so.6" 2>/dev/null
    fi
 # 
       function get-xterm-fontsize {
