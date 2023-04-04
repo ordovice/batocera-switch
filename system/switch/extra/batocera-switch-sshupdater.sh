@@ -185,14 +185,14 @@ rm -rf $launcher 2>/dev/null
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/gdk-pixbuf-2.0" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null; fi' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/librsvg-2.so.2" ]]; then cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null; fi' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/libcairo.so.2" ]]; then cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null; fi' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
          echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
-         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
          #echo 'cp /userdata/system/switch/extra/ryujinx/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
@@ -209,14 +209,14 @@ rm -rf $launcher 2>/dev/null
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/gdk-pixbuf-2.0" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null; fi' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/librsvg-2.so.2" ]]; then cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null; fi' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/libcairo.so.2" ]]; then cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null; fi' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
          echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
-         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
          #echo 'cp /userdata/system/switch/extra/ryujinxldn/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
@@ -233,14 +233,14 @@ rm -rf $launcher 2>/dev/null
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/gdk-pixbuf-2.0" ]]; then cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null; fi' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/librsvg-2.so.2" ]]; then cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null; fi' >> $launcher
-         echo 'if [[ ! -e "/usr/lib64/libcairo.so.2" ]]; then cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null; fi' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $launcher
          echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $launcher
          echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
          echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $launcher
-         echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
+         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $launcher
          #echo 'cp /userdata/system/switch/extra/ryujinxavalonia/lib* /lib/ 2>/dev/null' >> $launcher
       echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> $launcher 
       echo 'mkdir -p /userdata/system/switch/extra/logs 2>/dev/null ' >> $launcher
@@ -760,14 +760,14 @@ echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $ai
 echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $ai
 echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
 echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
@@ -864,14 +864,14 @@ echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $ai
 echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $ai
 echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
 echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
@@ -972,14 +972,14 @@ echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> $ai
 echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> $ai
 echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> $ai
 echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> $ai
 echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> $ai
-echo 'cp -rL /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> $ai
 
 echo 'cp /userdata/system/switch/extra/'$emu'/lib* /lib/ 2>/dev/null' >> $ai
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> $ai
