@@ -1058,11 +1058,19 @@ rm -rf $links 2>/dev/null
 #date_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep "datetime=" | sed 's/^.*datetime/datetime/g' | cut -d \" -f 2 | cut -c 1-10 | sed 's/-//g')
 #subrelease_yuzu=$(curl -s https://github.com/yuzu-emu/yuzu-mainline/releases/tag/$release_yuzu | grep data-hovercard-url | grep commit-link | head -n 1 | cut -d "=" -f 4 | cut -d "/" -f 7 | cut -c 1-9)
 #link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/$release_yuzu/yuzu-mainline-$date_yuzu-$subrelease_yuzu.AppImage
-link_yuzu="$(curl -s https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases/latest | grep browser_download_url | grep .AppImage | cut -d '"' -f 4 | head -n1)"
+if [[ "$(uname -a | awk '{print $3}')" < "6" ]]; then 
+   link_yuzu=https://github.com/yuzu-emu/yuzu-mainline/releases/download/mainline-0-1321/yuzu-mainline-20230126-ed6df52a5.AppImage
+else 
+   link_yuzu="$(curl -s https://api.github.com/repos/yuzu-emu/yuzu-mainline/releases/latest | grep browser_download_url | grep .AppImage | cut -d '"' -f 4 | head -n1)"
+fi
 # -------------------------------------------------------------------
 # YUZUEA: 
-release_yuzuea=$(curl -s https://github.com/pineappleEA/pineapple-src | grep /releases/ | cut -d "=" -f 5 | cut -d / -f 6 | cut -d '"' -f 1)
-link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
+if [[ "$(uname -a | awk '{print $3}')" < "6" ]]; then 
+   link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/EA-3333/Linux-Yuzu-EA-3333.AppImage
+else 
+   release_yuzuea=$(curl -s https://github.com/pineappleEA/pineapple-src | grep /releases/ | cut -d "=" -f 5 | cut -d / -f 6 | cut -d '"' -f 1)
+   link_yuzuea=https://github.com/pineappleEA/pineapple-src/releases/download/$release_yuzuea/Linux-Yuzu-$release_yuzuea.AppImage
+fi 
 # -------------------------------------------------------------------
 # RYUJINX:
 release_ryujinx=$(curl -s https://github.com/Ryujinx/release-channel-master | grep "/release-channel-master/releases/tag/" | sed 's,^.*/release-channel-master/releases/tag/,,g' | cut -d \" -f1)
