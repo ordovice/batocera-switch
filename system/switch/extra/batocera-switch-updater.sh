@@ -130,9 +130,9 @@ DPI=128
 SCALE=1 
 Name=$1
 name=$2
-extra=/userdata/system/switch/extra/$Name.desktop
+extra=/userdata/system/switch/extra
 # --------------------------------------------------------------------
-f=/usr/share/applications/$Name.desktop
+f=$extra/$Name.desktop
 # --------------------------------------------------------------------
 rm -rf "$s" 2>/dev/null
 rm -rf "$f" 2>/dev/null
