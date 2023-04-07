@@ -77,19 +77,17 @@ if [[ "$f" = "s" ]]; then
 		rsync -au --delete $fs/ $fy/ 2>/dev/null & 
 			wait 
 	fi
-	# additional filenumber check
-		if [[ "$nr" > "$ns" ]]; then  
-		rm -rf "$fr/"* 2>/dev/null
-			#cp -rL $fs/* $fr/ 2>/dev/null & 
-			rsync -au --delete $fs/ $fr/ 2>/dev/null & 
-				wait 
-		fi
-		if [[ "$ny" > "$ns" ]]; then  
-		rm -rf "$fy/"* 2>/dev/null
-			#cp -rL $fs/* $fy/ 2>/dev/null & 
-			rsync -au --delete $fs/ $fy/ 2>/dev/null & 
-				wait 
-		fi
+			# additional filenumber check
+				if [[ "$nr" > "$ns" ]]; then  
+				rm -rf $fr/* 2>/dev/null
+					#cp -rL $fs/* $fr/ 2>/dev/null & 
+					cp -r $fs/* $fr/ 2>/dev/null
+				fi
+				if [[ "$ny" > "$ns" ]]; then  
+				rm -rf $fy/* 2>/dev/null
+					#cp -rL $fs/* $fy/ 2>/dev/null & 
+					cp -r $fs/* $fy/ 2>/dev/null
+				fi
 fi
 #
 # or 
@@ -107,19 +105,17 @@ if [[ "$f" = "r" ]]; then
 		rsync -au --delete $fr/ $fs/ 2>/dev/null & 
 			wait 
 	fi
-	# additional filenumber check
-		if [[ "$ny" > "$nr" ]]; then  
-		rm -rf "$fy/"* 2>/dev/null
-			#cp -rL $fs/* $fr/ 2>/dev/null & 
-			rsync -au --delete $fr/ $fy/ 2>/dev/null & 
-				wait 
-		fi
-		if [[ "$ns" > "$nr" ]]; then  
-		rm -rf "$fs/"* 2>/dev/null
-			#cp -rL $fs/* $fy/ 2>/dev/null & 
-			rsync -au --delete $fr/ $fs/ 2>/dev/null & 
-				wait 
-		fi
+			# additional filenumber check
+				if [[ "$ny" > "$nr" ]]; then  
+				rm -rf $fy/* 2>/dev/null
+					#cp -rL $fs/* $fr/ 2>/dev/null & 
+					cp -r $fr/* $fy/ 2>/dev/null
+				fi
+				if [[ "$ns" > "$nr" ]]; then  
+				rm -rf $fs/* 2>/dev/null
+					#cp -rL $fs/* $fy/ 2>/dev/null & 
+					cp -r $fr/* $fs/ 2>/dev/null
+				fi
 fi
 #
 # or 
@@ -137,19 +133,17 @@ if [[ "$f" = "y" ]]; then
 		rsync -au --delete $fy/ $fs/ 2>/dev/null & 
 			wait 
 	fi
-	# additional filenumber check
-		if [[ "$nr" > "$ny" ]]; then  
-		rm -rf "$fr/"* 2>/dev/null
-			#cp -rL $fs/* $fr/ 2>/dev/null & 
-			rsync -au --delete $fy/ $fr/ 2>/dev/null & 
-				wait 
-		fi 
-		if [[ "$ns" > "$ny" ]]; then  
-		rm -rf "$fs/"* 2>/dev/null
-			#cp -rL $fs/* $fy/ 2>/dev/null & 
-			rsync -au --delete $fy/ $fs/ 2>/dev/null & 
-				wait 
-		fi
+			# additional filenumber check
+				if [[ "$nr" > "$ny" ]]; then  
+				rm -rf $fr/* 2>/dev/null
+					#cp -rL $fs/* $fr/ 2>/dev/null & 
+					cp -r $fy/* $fr/ 2>/dev/null
+				fi 
+				if [[ "$ns" > "$ny" ]]; then  
+				rm -rf $fs/* 2>/dev/null
+					#cp -rL $fs/* $fy/ 2>/dev/null & 
+					cp -r $fy/* $fs/ 2>/dev/null
+				fi
 fi
 #
 # ---
@@ -170,3 +164,4 @@ echo "ny=$ny"
 echo "ns=$ns"
 echo "fw=$f"
 fi
+exit 0; exit 1

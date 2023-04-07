@@ -271,12 +271,12 @@ echo -e "${X} "
 sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
 echo "OK" >> /userdata/system/switch/extra/installation
-rm /tmp/batocera-switch-sshupdater.sh 2>/dev/null 
+rm /tmp/batocera-switch-updater.sh 2>/dev/null 
 mkdir -p /tmp 2>/dev/null
-wget -q -O "/tmp/batocera-switch-sshupdater.sh" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-sshupdater.sh" 
-dos2unix /tmp/batocera-switch-sshupdater.sh 2>/dev/null 
-chmod a+x /tmp/batocera-switch-sshupdater.sh 2>/dev/null 
-bash /tmp/batocera-switch-sshupdater.sh 
+wget -q -O "/tmp/batocera-switch-updater.sh" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh" 
+dos2unix /tmp/batocera-switch-updater.sh 2>/dev/null 
+chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null 
+bash /tmp/batocera-switch-updater.sh CONSOLE 
 sleep 0.5 
 } 
 export -f batocera-pro-installer 2>/dev/null 
@@ -287,23 +287,43 @@ X='\033[0m' # / resetcolor
 if [[ -e /userdata/system/switch/extra/installation ]]; then
 rm /userdata/system/switch/extra/installation 2>/dev/null
 clear
-echo
+echo 
 echo 
 echo -e "   ${X}$APPNAME INSTALLED${X}" 
+echo 
+echo 
 echo
-echo -e "   ${X}Place your keys in /userdata/bios/switch/${X}" 
-echo -e "   ${X}Firmware files in /userdata/bios/switch/firmware/${X}" 
-echo
+echo -e "   ${X}-----------------------------------------------------${X}"
+echo -e "   ${X}Place your keys into /userdata/bios/switch/${X}" 
+echo -e "   ${X}Firmware *.nca into /userdata/bios/switch/firmware/${X}" 
+echo 
 echo -e "   ${X}Use Switch Updater in Ports to update emulators${X}" 
+echo -e "   ${X}-----------------------------------------------------${X}"
 echo
+echo 
+echo
+echo -e "   ${X}-----------------------------------------------------${X}"
+echo -e "   ${X}IN CASE OF ISSUES: ${X}"
+echo 
+echo -e "   ${X}1) try using opengl instead of vulkan ${X}"
+echo 
+echo -e "   ${X}2) use [autocontroller = off] in advanced settings & ${X}"
+echo -e "   ${X}   configure controller manually in f1-applications ${X}"
+echo
+echo -e "   ${X}CHECK LOGS: ${X}"
+echo -e "   ${X}> emulators logs are in /userdata/system/switch/logs/${X}" 
+echo -e "   ${X}> emulationstation logs are in /userdata/system/logs/${X}" 
+echo -e "   ${X}-----------------------------------------------------${X}"
+echo 
+echo 
 else
 clear 
-echo
-echo
+echo 
+echo 
 echo -e "   ${X}Looks like the installation failed${X}" 
 echo -e "   ${X}Maybe try again?${X}" 
-echo
-echo
+echo 
+echo 
 sleep 1
 exit 0
 fi
