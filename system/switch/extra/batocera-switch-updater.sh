@@ -167,6 +167,9 @@ rm -rf $launcher 2>/dev/null
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
       echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $launcher
+      echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $launcher
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "yuzuEA" ]]; then 
@@ -177,6 +180,9 @@ rm -rf $launcher 2>/dev/null
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
       echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $launcher
+      echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $launcher
       echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx" ]]; then 
@@ -201,6 +207,9 @@ rm -rf $launcher 2>/dev/null
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
       echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx.AppImage; ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $launcher
+      echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $launcher
       echo 'LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-LDN" ]]; then 
@@ -225,6 +234,9 @@ rm -rf $launcher 2>/dev/null
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
       echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-LDN.AppImage; ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $launcher
+      echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $launcher
       echo 'LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
    if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
@@ -249,6 +261,9 @@ rm -rf $launcher 2>/dev/null
       echo 'rm $log1 2>/dev/null ' >> $launcher
       echo 'rm $log2 2>/dev/null ' >> $launcher
       echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-Avalonia.AppImage; ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $launcher
+      echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $launcher
+      echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $launcher
       echo 'LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $launcher
       fi
       dos2unix "$launcher" 2>/dev/null
@@ -611,16 +626,23 @@ echo 'log1=/userdata/system/switch/extra/logs/yuzu-out.txt 2>/dev/null ' >> $ai
 echo 'log2=/userdata/system/switch/extra/logs/yuzu-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
+echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $ai
+echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $ai
+
+echo 'if [[ "$3" = "" ]]; then ' >> $ai
+echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu -f -g 1>$log1 2>$log2 ' >> $ai 
+echo 'else ' >> $ai
 echo 'rom="$3" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
-
-echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $ai
-
-echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$rom" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$rom"; fi' >> $ai
-echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>$log1 2>$log2 ' >> $ai
+echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$rom" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$rom"; fi ' >> $ai
+echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>$log1 2>$log2 ' >> $ai
+echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzu/yuzu -f -g "$3" 1>$log1 2>$log2 ' >> $ai
+echo 'fi ' >> $ai
 
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzu/yuzu" 2>/dev/null
@@ -675,16 +697,23 @@ echo 'log1=/userdata/system/switch/extra/logs/yuzuEA-out.txt 2>/dev/null ' >> $a
 echo 'log2=/userdata/system/switch/extra/logs/yuzuEA-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
+echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $ai
+echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $ai
+
+echo 'if [[ "$3" = "" ]]; then ' >> $ai
+echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu -f -g 1>$log1 2>$log2 ' >> $ai 
+echo 'else ' >> $ai
 echo 'rom="$3" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
-
-echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu; ' >> $ai
-
-echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$rom" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$rom"; fi' >> $ai
+echo 'if [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "ext4" ]] || [[ "$(blkid | grep "=\"SHARE\"" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'')" = "btrfs" ]]; then rm /tmp/yuzurom 2>/dev/null; ln -s "$rom" "/tmp/yuzurom"; ROM=/tmp/yuzurom; else ROM="$rom"; fi ' >> $ai
 echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>$log1 2>$log2 ' >> $ai
+echo 'else QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/yuzuea/yuzu -f -g "$3" 1>$log1 2>$log2 ' >> $ai
+echo 'fi ' >> $ai
 
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu" 2>/dev/null
@@ -782,13 +811,16 @@ echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-out.txt 2>/dev/null ' >> $
 echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
+echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx.AppImage; ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $ai
+echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $ai
+
 echo 'rom="$1" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
-
-echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx.AppImage; ' >> $ai
 
 echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> $ai
 echo 'else LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
@@ -886,13 +918,16 @@ echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-LDN-out.txt 2>/dev/null ' 
 echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-LDN-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
+echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-LDN.AppImage; ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $ai
+echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $ai
+
 echo 'rom="$1" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
-
-echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-LDN.AppImage; ' >> $ai
 
 echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2' >> $ai
 echo 'else LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
@@ -994,16 +1029,20 @@ echo 'log1=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-out.txt 2>/dev/nu
 echo 'log2=/userdata/system/switch/extra/logs/Ryujinx-Avalonia-err.txt 2>/dev/null ' >> $ai
 echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> $ai
 
+echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-Avalonia.AppImage; ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null ' >> $ai
+echo 'sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null ' >> $ai
+echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo & ' >> $ai
+
 echo 'rom="$1" ' >> $ai
 echo 'rm /tmp/switchromname 2>/dev/null ' >> $ai
 echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> $ai
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> $ai
 echo 'rom="$(cat /tmp/switchromname)" ' >> $ai
 
-echo 'sysctl -w vm.max_map_count=262144; ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-Avalonia.AppImage; ' >> $ai
-
 echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> $ai
 echo 'else LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/saves QT_QPA_PLATFORM=xcb XDG_RUNTIME_DIR=/userdata /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" 1>$log1 2>$log2; fi' >> $ai
+
 dos2unix "$ai" 2>/dev/null; chmod a+x "$ai" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -1640,7 +1679,8 @@ killall -9 vlc 2>/dev/null & killall -9 xterm 2>/dev/null & curl http://127.0.0.
 export -f post-install
 #
 ######################################################################
-#
+#\
+if [[ "$MODE" != "CONSOLE" ]]; then 
 # include display output: 
    tput=/userdata/system/switch/extra/batocera-switch-tput
    libtinfo=/userdata/system/switch/extra/batocera-switch-libtinfo.so.6
@@ -1739,6 +1779,8 @@ fallback=10
                   fi
                fi 
             fi
+fi 
+#/ 
             if [[ "$MODE" = "CONSOLE" ]]; then 
                if [[ "$net" = "on" ]]; then 
                   batocera_update_switch console 
