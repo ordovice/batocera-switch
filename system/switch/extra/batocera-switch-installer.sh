@@ -274,9 +274,10 @@ echo "OK" >> /userdata/system/switch/extra/installation
 rm /tmp/batocera-switch-updater.sh 2>/dev/null 
 mkdir -p /tmp 2>/dev/null
 wget -q -O "/tmp/batocera-switch-updater.sh" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh" 
+sed -i 's,MODE=DISPLAY,MODE=CONSOLE,g' /tmp/batocera-switch-updater.sh 2>/dev/null
 dos2unix /tmp/batocera-switch-updater.sh 2>/dev/null 
 chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null 
-bash /tmp/batocera-switch-updater.sh CONSOLE 
+/tmp/batocera-switch-updater.sh CONSOLE 
 sleep 0.5 
 } 
 export -f batocera-pro-installer 2>/dev/null 
