@@ -500,12 +500,13 @@ updates=$(cat /tmp/updater-settings | grep "updates=locked" | cut -d "=" -f2)
       locked=1
       link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
       link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
-   fi
+   fi 
    # unlock for v37 
    if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
       locked=0
-      link_ryujinx=$link_ryujinx
-      link_ryujinxavalonia=$link_ryujinxavalonia
+      release_ryujinx=$(curl -s https://github.com/Ryujinx/release-channel-master | grep "/release-channel-master/releases/tag/" | sed 's,^.*/release-channel-master/releases/tag/,,g' | cut -d \" -f1)
+      link_ryujinx=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/ryujinx-$release_ryujinx-linux_x64.tar.gz
+      link_ryujinxavalonia=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/test-ava-ryujinx-$release_ryujinx-linux_x64.tar.gz
    fi
 # ----------------------------------------------------------------------------------
 # PATHS: 
