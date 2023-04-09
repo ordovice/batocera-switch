@@ -134,7 +134,6 @@ extra=/userdata/system/switch/extra
 # --------------------------------------------------------------------
 f=$extra/$Name.desktop
 # --------------------------------------------------------------------
-rm -rf "$s" 2>/dev/null
 rm -rf "$f" 2>/dev/null
    echo "[Desktop Entry]" >> "$f"
    echo "Version=1.0" >> "$f"
@@ -151,6 +150,7 @@ rm -rf "$f" 2>/dev/null
    ####
 # --------------------------------------------------------------------
 f=/userdata/system/switch/extra/batocera-switch-launcher-$Name
+rm -rf "$f" 2>/dev/null 
 # --------------------------------------------------------------------
    echo "#!/bin/bash" >> "$f"
    if [[ "$Name" = "yuzu" ]]; then 
@@ -1460,16 +1460,6 @@ chmod a+x "$f" 2>/dev/null
 # & run now: 
       /userdata/system/switch/extra/batocera-switch-startup 2>/dev/null & 
       echo 1>/dev/null 2>/dev/null 
-# -------------------------------------------------------------------
-# & add dbus portion to run only on boot
-#\ fix for batocera/buildroot dbus/flatpak permissions issues 
-echo "sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/session.conf 2>/dev/null" >> "$f"
-echo "sed -i 's,<deny ,<allow ,g' /usr/share/dbus-1/system.conf 2>/dev/null" >> "$f"
-echo 'rm /run/messagebus.pid 2>/dev/null && dbus-daemon --system --nofork & echo' >> "$f"
-#/
-echo '#' >> "$f"
-dos2unix "$f" 2>/dev/null
-chmod a+x "$f" 2>/dev/null
 # -------------------------------------------------------------------
 # ADD TO BATOCERA AUTOSTART > /USERDATA/SYSTEM/CUSTOM.SH 
 # -------------------------------------------------------------------
