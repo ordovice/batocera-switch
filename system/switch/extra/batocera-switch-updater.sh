@@ -134,7 +134,6 @@ extra=/userdata/system/switch/extra
 # --------------------------------------------------------------------
 f=$extra/$Name.desktop
 # --------------------------------------------------------------------
-rm -rf "$s" 2>/dev/null
 rm -rf "$f" 2>/dev/null
    echo "[Desktop Entry]" >> "$f"
    echo "Version=1.0" >> "$f"
@@ -151,6 +150,7 @@ rm -rf "$f" 2>/dev/null
    ####
 # --------------------------------------------------------------------
 f=/userdata/system/switch/extra/batocera-switch-launcher-$Name
+rm -rf "$f" 2>/dev/null 
 # --------------------------------------------------------------------
    echo "#!/bin/bash" >> "$f"
    if [[ "$Name" = "yuzu" ]]; then 
