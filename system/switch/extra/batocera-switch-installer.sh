@@ -260,7 +260,7 @@ chmod a+x /userdata/system/switch/extra/batocera-switch-lib* 2>/dev/null
 chmod a+x /userdata/system/switch/extra/*.desktop 2>/dev/null
 # --------------------------------------------------------------------
 echo -e "${X} > INSTALLED OK${X}" 
-sleep 2
+sleep 1
 echo
 echo
 echo
@@ -268,9 +268,7 @@ echo
 X='\033[0m' # / resetcolor
 echo -e "${X}LOADING ${X}SWITCH UPDATER${X} . . ." 
 echo -e "${X} "
-sleep 5
 rm -rf /userdata/system/switch/extra/installation 2>/dev/null
-echo "OK" >> /userdata/system/switch/extra/installation
 rm /tmp/batocera-switch-updater.sh 2>/dev/null 
 mkdir -p /tmp 2>/dev/null
 wget -q -O "/tmp/batocera-switch-updater.sh" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh" 
@@ -278,7 +276,9 @@ sed -i 's,MODE=DISPLAY,MODE=CONSOLE,g' /tmp/batocera-switch-updater.sh 2>/dev/nu
 dos2unix /tmp/batocera-switch-updater.sh 2>/dev/null 
 chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null 
 /tmp/batocera-switch-updater.sh CONSOLE 
-sleep 0.5 
+sleep 0.1 
+echo "OK" >> /userdata/system/switch/extra/installation
+sleep 0.1 
 } 
 export -f batocera-pro-installer 2>/dev/null 
 # --------------------------------------------------------------------
@@ -321,8 +321,11 @@ else
 clear 
 echo 
 echo 
-echo -e "   ${X}Looks like the installation failed${X}" 
-echo -e "   ${X}Maybe try again?${X}" 
+echo -e "   ${X}Looks like the installation failed :(${X}" 
+echo
+echo -e "   ${X}Try running the script again,${X}" 
+echo
+echo -e "   ${X}If it still fails, try installing manually${X}" 
 echo 
 echo 
 sleep 1
