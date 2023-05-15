@@ -582,6 +582,13 @@ cp $temp/yuzu/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzu/ 
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
 cd $temp
+# fix broken libstdc++.so.6 for v37 
+   if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
+      link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzu/libstdc++.so.6" "$link_libstdc"
+   else 
+      rm /userdata/system/switch/extra/yuzu/libstdc++.so.6 2>/dev/null
+   fi
 # make launcher
 f=/userdata/system/switch/yuzu.AppImage
 rm "$f" 2>/dev/null
@@ -656,6 +663,13 @@ cp $temp/yuzuea/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzu
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
 cd $temp
+# fix broken libstdc++.so.6 for v37 
+   if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
+      link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzu/libstdc++.so.6" "$link_libstdc"
+   else 
+      rm /userdata/system/switch/extra/yuzu/libstdc++.so.6 2>/dev/null
+   fi
 # make launcher
 f=/userdata/system/switch/yuzuEA.AppImage
 rm "$f" 2>/dev/null
