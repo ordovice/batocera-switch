@@ -98,6 +98,9 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 ######################################################################
 ######################################################################
 # --------------------------------------------------------------------
+export DISPLAY=:0.0
+export LC_ALL=en_US.UTF-8
+# --------------------------------------------------------------------
 if [[ "$1" = "CONSOLE" ]] || [[ "$1" = "console" ]]; then 
 MODE=CONSOLE
 fi
@@ -116,7 +119,7 @@ if [[ "$net1" = "off" ]] && [[ "$net2" = "off" ]] && [[ "$net3" = "off" ]]; then
 if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then net="on"; fi 
 ##
 if [[ "$net" = "off" ]]; then 
-DISPLAY=:0.0 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
+DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
 fi 
 # --------------------------------------------------------------------
 # clear old logs: 
@@ -1378,6 +1381,7 @@ f=/userdata/system/switch/extra/batocera-switch-startup
 rm "$f" 2>/dev/null 
 # 
 echo '#!/bin/bash' >> "$f" 
+echo '#' >> "$f"
 #\ prepare system 
 echo '#\ prepare system ' >> "$f" 
 echo 'cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null ' >> "$f" 
@@ -1386,11 +1390,13 @@ echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
 echo 'sysctl -w vm.max_map_count=262144 1>/dev/null' >> "$f"
 echo 'extra=/userdata/system/switch/extra' >> "$f"
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> "$f"
+echo '#' >> "$f"
 #echo 'cp $extra/lib* /lib/ 2>/dev/null' >> "$f"
 echo 'if [[ -e "/lib/libthai.so.0.3.1" ]] || [[ -e "/usr/lib/libthai.so.0.3.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null; fi' >> "$f"
 echo 'if [[ -e "/lib/libthai.so.0.3" ]] || [[ -e "/usr/lib/libthai.so.0.3" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libthai.so.0.3 /lib/libthai.so.0.3 2>/dev/null; fi' >> "$f"
 echo 'if [[ -e "/lib/libselinux.so.1" ]] || [[ -e "/usr/lib/libselinux.so.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null; fi' >> "$f"
 echo 'if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 /usr/lib/libtinfo.so.6 2>/dev/null; fi' >> "$f"
+echo '#' >> "$f"
 #\ link ryujinx config folders 
 echo '#\ link ryujinx config folders ' >> "$f"
 echo 'mkdir /userdata/system/configs 2>/dev/null' >> "$f"
@@ -1401,6 +1407,7 @@ echo 'rm -rf /userdata/system/.config/Ryujinx' >> "$f"
 echo 'mv /userdata/system/configs/Ryujinx_tmp /userdata/system/configs/Ryujinx 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> "$f"
 echo 'rm /userdata/system/configs/Ryujinx/Ryujinx 2>/dev/null' >> "$f"
+echo '#' >> "$f"
 #
 #\ link ryujinx saves folders 
 echo '#\ link ryujinx saves folders ' >> "$f"
@@ -1417,6 +1424,7 @@ echo 'mkdir /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> "$f"
 echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> "$f"
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
+echo '#' >> "$f"
 #
 #\ link yuzu config folders 
 echo '#\ link yuzu config folders ' >> "$f"
@@ -1431,6 +1439,7 @@ echo 'mv /userdata/system/configs/yuzu_tmp /userdata/system/configs/yuzu 2>/dev/
 echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.config/yuzu 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.local/share/yuzu 2>/dev/null' >> "$f"
 echo 'rm /userdata/system/configs/yuzu/yuzu 2>/dev/null' >> "$f"
+echo '#' >> "$f"
 #
 #\ link yuzu saves folders
 echo '#\ link yuzu saves folders' >> "$f"
@@ -1447,6 +1456,7 @@ echo 'mkdir /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/saves/yuzu /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> "$f"
 echo 'rm /userdata/saves/yuzu/yuzu 2>/dev/null' >> "$f"
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> "$f"
+echo '#' >> "$f"
 #
 #\ link yuzu and ryujinx keys folders to bios/switch 
 echo '#\ link yuzu and ryujinx keys folders to bios/switch ' >> "$f"
@@ -1467,6 +1477,10 @@ echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> "$f"
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> "$f"
 echo '#' >> "$f"
+#
+#\ fix batocera.linux folder issue for f1/apps menu tx to drizzt
+echo "sed -i '/inline_limit/s/.*/inline_limit="111"/' /etc/xdg/menus/batocera-applications.menu" >> "$f"
+echo '#' >> "$f" 
 #
 dos2unix "$f" 2>/dev/null
 chmod a+x "$f" 2>/dev/null
@@ -1672,7 +1686,7 @@ if [[ "$MODE" != "CONSOLE" ]]; then
          cfg=/userdata/system/switch/extra/display.cfg
             rm /tmp/cols 2>/dev/null
             killall -9 xterm 2>/dev/null
-            DISPLAY=:0.0 xterm -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols" 2>/dev/null
+            DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols" 2>/dev/null
             killall -9 xterm 2>/dev/null
          res=$(xrandr | grep " connected " | awk '{print $3}' | cut -d x -f1)
          columns=$(cat /tmp/cols); echo "$res=$columns" >> "$cfg"
@@ -1734,18 +1748,18 @@ fallback=10
          ## RUN THE UPDATER: ------------------------------------------------- 
             if [[ "$MODE" = "DISPLAY" ]]; then 
                if [[ "$ANIMATION" = "YES" ]]; then  
-                  DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && batocera_update_switch && post-install"
+                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install"
                else 
-                  DISPLAY=:0.0 unclutter-remote -h & xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "batocera_update_switch && post-install"
+                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && post-install"
                fi 
             fi
 fi 
 #/ 
-######################################################################################################################
+#################################################################################################################################
             if [[ "$MODE" = "CONSOLE" ]]; then 
-                  batocera_update_switch console && post-install
+                  DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch console && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install
             fi
-######################################################################################################################
+#################################################################################################################################
 wait
 killall -9 vlc 2>/dev/null && killall -9 xterm 2>/dev/null && curl http://127.0.0.1:1234/reloadgames && exit 0; exit 1
-######################################################################################################################
+#################################################################################################################################
