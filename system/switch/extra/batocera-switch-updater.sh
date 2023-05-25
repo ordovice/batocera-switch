@@ -1381,6 +1381,7 @@ f=/userdata/system/switch/extra/batocera-switch-startup
 rm "$f" 2>/dev/null 
 # 
 echo '#!/bin/bash' >> "$f" 
+echo '#' >> "$f"
 #\ prepare system 
 echo '#\ prepare system ' >> "$f" 
 echo 'cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null ' >> "$f" 
@@ -1389,11 +1390,13 @@ echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
 echo 'sysctl -w vm.max_map_count=262144 1>/dev/null' >> "$f"
 echo 'extra=/userdata/system/switch/extra' >> "$f"
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> "$f"
+echo '#' >> "$f"
 #echo 'cp $extra/lib* /lib/ 2>/dev/null' >> "$f"
 echo 'if [[ -e "/lib/libthai.so.0.3.1" ]] || [[ -e "/usr/lib/libthai.so.0.3.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null; fi' >> "$f"
 echo 'if [[ -e "/lib/libthai.so.0.3" ]] || [[ -e "/usr/lib/libthai.so.0.3" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libthai.so.0.3 /lib/libthai.so.0.3 2>/dev/null; fi' >> "$f"
 echo 'if [[ -e "/lib/libselinux.so.1" ]] || [[ -e "/usr/lib/libselinux.so.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null; fi' >> "$f"
 echo 'if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 /usr/lib/libtinfo.so.6 2>/dev/null; fi' >> "$f"
+echo '#' >> "$f"
 #\ link ryujinx config folders 
 echo '#\ link ryujinx config folders ' >> "$f"
 echo 'mkdir /userdata/system/configs 2>/dev/null' >> "$f"
@@ -1404,6 +1407,7 @@ echo 'rm -rf /userdata/system/.config/Ryujinx' >> "$f"
 echo 'mv /userdata/system/configs/Ryujinx_tmp /userdata/system/configs/Ryujinx 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/system/configs/Ryujinx /userdata/system/.config/Ryujinx 2>/dev/null' >> "$f"
 echo 'rm /userdata/system/configs/Ryujinx/Ryujinx 2>/dev/null' >> "$f"
+echo '#' >> "$f"
 #
 #\ link ryujinx saves folders 
 echo '#\ link ryujinx saves folders ' >> "$f"
@@ -1420,6 +1424,7 @@ echo 'mkdir /userdata/system/configs/Ryujinx/bis/user 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/saves/Ryujinx /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null' >> "$f"
 echo 'rm /userdata/saves/Ryujinx/Ryujinx 2>/dev/null' >> "$f"
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
+echo '#' >> "$f"
 #
 #\ link yuzu config folders 
 echo '#\ link yuzu config folders ' >> "$f"
@@ -1434,6 +1439,7 @@ echo 'mv /userdata/system/configs/yuzu_tmp /userdata/system/configs/yuzu 2>/dev/
 echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.config/yuzu 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/system/configs/yuzu /userdata/system/.local/share/yuzu 2>/dev/null' >> "$f"
 echo 'rm /userdata/system/configs/yuzu/yuzu 2>/dev/null' >> "$f"
+echo '#' >> "$f"
 #
 #\ link yuzu saves folders
 echo '#\ link yuzu saves folders' >> "$f"
@@ -1450,6 +1456,7 @@ echo 'mkdir /userdata/system/configs/yuzu/nand/user 2>/dev/null' >> "$f"
 echo 'ln -s /userdata/saves/yuzu /userdata/system/configs/yuzu/nand/user/save 2>/dev/null' >> "$f"
 echo 'rm /userdata/saves/yuzu/yuzu 2>/dev/null' >> "$f"
 echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> "$f"
+echo '#' >> "$f"
 #
 #\ link yuzu and ryujinx keys folders to bios/switch 
 echo '#\ link yuzu and ryujinx keys folders to bios/switch ' >> "$f"
@@ -1470,6 +1477,10 @@ echo 'ln -s /userdata/bios/switch /userdata/system/configs/Ryujinx/system 2>/dev
 echo 'if [ ! -L /userdata/system/configs/yuzu/keys ]; then mkdir /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null; fi' >> "$f"
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null; fi' >> "$f"
 echo '#' >> "$f"
+#
+#\ fix batocera.linux folder issue for f1/apps menu tx to drizzt
+echo "sed -i '/inline_limit/s/.*/inline_limit="111"/' /etc/xdg/menus/batocera-applications.menu" >> "$f"
+echo '#' >> "$f" 
 #
 dos2unix "$f" 2>/dev/null
 chmod a+x "$f" 2>/dev/null
