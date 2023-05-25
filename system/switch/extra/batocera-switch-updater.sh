@@ -1479,7 +1479,7 @@ echo 'if [ ! -L /userdata/system/configs/Ryujinx/system ]; then mkdir /userdata/
 echo '#' >> "$f"
 #
 #\ fix batocera.linux folder issue for f1/apps menu tx to drizzt
-echo "sed -i '/inline_limit/s/.*/inline_limit="111"/' /etc/xdg/menus/batocera-applications.menu" >> "$f"
+echo "sed -i 's/inline_limit="20"/inline_limit="111"/' /etc/xdg/menus/batocera-applications.menu" >> "$f"
 echo '#' >> "$f" 
 #
 dos2unix "$f" 2>/dev/null
