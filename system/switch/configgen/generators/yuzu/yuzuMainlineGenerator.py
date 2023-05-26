@@ -375,9 +375,12 @@ class YuzuMainlineGenerator(Generator):
         # Vsync
         if system.isOptSet('vsync'):
             yuzuConfig.set("Renderer", "use_vsync", system.config["vsync"])
+            yuzuConfig.set("Renderer", "use_vsync\\default", "false")
+            if system.config["vsync"] == "2":
+                yuzuConfig.set("Renderer", "use_vsync\\default", "true")
         else:
-            yuzuConfig.set("Renderer", "use_vsync", "false")
-        yuzuConfig.set("Renderer", "use_vsync\\default", "false")
+            yuzuConfig.set("Renderer", "use_vsync", "1")
+            yuzuConfig.set("Renderer", "use_vsync\\default", "false")
 
         # Gpu cache garbage collection
         if system.isOptSet('gpu_cache_gc'):
