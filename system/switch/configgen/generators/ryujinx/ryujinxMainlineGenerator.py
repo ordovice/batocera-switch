@@ -363,7 +363,7 @@ class RyujinxMainlineGenerator(Generator):
                 input_config.append(cvalue)
             data['input_config'] = input_config
 
-        #Vulkan or OpenGL
+        #Vulkan or OpenGl
         if system.isOptSet('ryu_backend'):
             data['graphics_backend'] = system.config["ryu_backend"]
         else:
