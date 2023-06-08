@@ -633,7 +633,7 @@ class YuzuMainlineGenerator(Generator):
                     for x in yuzuXBButtons:
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuXBButtons[x]))
                     for x in yuzuXBHat:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"hat:0,direction:button:{},guid:{},port:{},engine:sdl"'.format(yuzuXBButtons[x],inputguid,portnumber))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"hat:0,direction:button:{},guid:{},port:{},engine:sdl"'.format(yuzuXBHat[x],inputguid,portnumber))
                     for x in yuzuXBAxis:
                         if(x == "button_zl" or x == "button_zr"):
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuXBAxis[x]))
