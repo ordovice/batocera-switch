@@ -244,6 +244,36 @@ class YuzuMainlineGenerator(Generator):
             "button_zr":     5
         }
 
+        yuzuXBButtons = {
+            "button_a":      1,
+            "button_b":      0,
+            "button_x":      3,
+            "button_y":      2,
+            "button_l":      4,
+            "button_r":      5,
+            "button_plus":  7,
+            "button_minus": 6,
+            "button_sl":     4,
+            "button_sr":     5,
+            "button_lstick":     9,
+            "button_rstick":     10,
+            "button_home":   8
+        }
+
+        yuzuXBAxis = {
+            "lstick":    0,
+            "rstick":    3,
+            "button_zl":     2,
+            "button_zr":     5
+        }
+
+        yuzuXBHat = {
+            "button_dup":     'up',
+            "button_ddown":   'down',
+            "button_dleft":   'left',
+            "button_dright":  'right',
+        }
+
 
         # ini file
         yuzuConfig = configparser.RawConfigParser()
@@ -561,7 +591,7 @@ class YuzuMainlineGenerator(Generator):
                 if controller.guid in guidstoreplace_ds5_wired:
                     inputguid = "030000004c050000e60c000000016800"
                 if controller.guid in guidstoreplace_xbox:
-                    inputguid = "050000005e040000fd02000030110000"
+                    inputguid = "050000005e0400008e02000030110000"
                 if controller.guid in guidstoreplace_switch:
                     inputguid = "030000007e0500000920000000026803"
                 #DS5 corrections
@@ -598,8 +628,19 @@ class YuzuMainlineGenerator(Generator):
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis[x],yuzuSCAxis[x]+1))
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
-                    #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                    #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                elif (controller.guid in guidstoreplace_xbox) :
+                    #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
+                    for x in yuzuXBButtons:
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuXBButtons[x]))
+                    for x in yuzuXBHat:
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"hat:0,direction:button:{},guid:{},port:{},engine:sdl"'.format(yuzuXBButtons[x],inputguid,portnumber))
+                    for x in yuzuXBAxis:
+                        if(x == "button_zl" or x == "button_zr"):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuXBAxis[x]))
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis[x],yuzuSCAxis[x]+1))
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
                 elif (controller.guid in guidstoreplace_steam2) :
                     #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
                     for x in yuzuSCButtons2:
