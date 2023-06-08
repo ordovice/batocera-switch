@@ -573,7 +573,7 @@ class YuzuMainlineGenerator(Generator):
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                if ((controller.guid in guidstoreplace_switch)) :
+                elif ((controller.guid in guidstoreplace_switch)) :
                     #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
                     for x in yuzuSwitchButtons:
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSwitchButtons[x]))
