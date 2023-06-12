@@ -675,7 +675,7 @@ class YuzuMainlineGenerator(Generator):
                 else:
                     #Follow new logic
                     eslog.debug("Controller Mapping {}".format(controller_mapping))
-                    new_guid = controller_mapping['yuzu_guid']
+                    inputguid = controller_mapping['yuzu_guid']
                     yuzuButtons = {
                         "button_a":      controller_mapping['button_a'],
                         "button_b":      controller_mapping['button_b'],
@@ -731,8 +731,8 @@ class YuzuMainlineGenerator(Generator):
 
                     #Do we support motion?
                     if(controller_mapping['has_motion'] == 'TRUE'):
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,new_guid))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,new_guid))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
                     else:
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '[empty]')
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '[empty]')
