@@ -14,6 +14,7 @@ import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
 from utils.logger import get_logger
+import csv
 
 eslog = get_logger(__name__)
 
@@ -108,6 +109,10 @@ class YuzuMainlineGenerator(Generator):
     # @staticmethod
     def writeYuzuConfig(yuzuConfigFile, beforeyuzuConfigFile, system, playersControllers):
         # pads
+        with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
+            reader = csv.DictReader(csv_file)
+            controller_data = list(reader)
+
         yuzuButtons = {
             "button_a":      "a",
             "button_b":      "b",
@@ -580,88 +585,158 @@ class YuzuMainlineGenerator(Generator):
                 controllernumber = str(int(controller.player) - 1)
                 cguid[int(controllernumber)] = controller.guid
                 inputguid = controller.guid
-                #DS4 GUIDs from https://github.com/gabomdq/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
-                if controller.guid in guidstoreplace_ds4:
-                    inputguid = "030000004c050000cc09000000006800"
-                if controller.guid in guidstoreplace_ds4g1:
-                    inputguid = "030000004c050000c405000000006800"
-                #DS5 GUIDs from https://github.com/gabomdq/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
-                if controller.guid in guidstoreplace_ds5_wireless:
-                    inputguid = "030000004c050000e60c000000006800"
-                if controller.guid in guidstoreplace_ds5_wired:
-                    inputguid = "030000004c050000e60c000000016800"
-                if controller.guid in guidstoreplace_xbox:
-                    inputguid = "050000005e0400008e02000030110000"
-                if controller.guid in guidstoreplace_switch:
-                    inputguid = "030000007e0500000920000000026803"
-                #DS5 corrections
-                if ((controller.guid in guidstoreplace_ds5_wireless) or (controller.guid in guidstoreplace_ds4) or (controller.guid in guidstoreplace_ds4g1) or (controller.guid in guidstoreplace_ds5_wired)) :
-                    #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
-                    for x in yuzuDSButtons:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuDSButtons[x]))
-                    for x in yuzuDSAxis:
-                        if(x == "button_zl" or x == "button_zr"):
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuDSAxis[x]))
-                        else:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                elif ((controller.guid in guidstoreplace_switch)) :
-                    #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
-                    for x in yuzuSwitchButtons:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSwitchButtons[x]))
-                    for x in yuzuSwitchAxis:
-                        if(x == "button_zl" or x == "button_zr"):
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSwitchAxis[x]))
-                        else:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                elif (controller.guid in guidstoreplace_steam) :
-                    #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
-                    for x in yuzuSCButtons:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSCButtons[x]))
-                    for x in yuzuSCAxis:
-                        if(x == "button_zl" or x == "button_zr"):
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSCAxis[x]))
-                        else:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis[x],yuzuSCAxis[x]+1))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
-                elif (controller.guid in guidstoreplace_xbox) :
-                    #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
-                    for x in yuzuXBButtons:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuXBButtons[x]))
-                    for x in yuzuXBHat:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"hat:0,direction:{},guid:{},port:{},engine:sdl"'.format(yuzuXBHat[x],inputguid,portnumber))
-                    for x in yuzuXBAxis:
-                        if(x == "button_zl" or x == "button_zr"):
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuXBAxis[x]))
-                        else:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis[x],yuzuSCAxis[x]+1))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
-                elif (controller.guid in guidstoreplace_steam2) :
-                    #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
-                    for x in yuzuSCButtons2:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSCButtons2[x]))
-                    for x in yuzuSCAxis2:
-                        if(x == "button_zl" or x == "button_zr"):
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSCAxis2[x]))
-                        else:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis2[x],yuzuSCAxis2[x]+1))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
-                    #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                    #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                eslog.debug("Controller GUID {}".format(inputguid))
+                controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
+                
+                if controller_mapping == None:
+                    #Follow old mapping logic until all pre-exisiting mappings are updated
+                    eslog.debug("Controller Mapping Does Not Exist, following old logic")
+                    #DS4 GUIDs from https://github.com/gabomdq/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
+                    if controller.guid in guidstoreplace_ds4:
+                        inputguid = "030000004c050000cc09000000006800"
+                    if controller.guid in guidstoreplace_ds4g1:
+                        inputguid = "030000004c050000c405000000006800"
+                    #DS5 GUIDs from https://github.com/gabomdq/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
+                    if controller.guid in guidstoreplace_ds5_wireless:
+                        inputguid = "030000004c050000e60c000000006800"
+                    if controller.guid in guidstoreplace_ds5_wired:
+                        inputguid = "030000004c050000e60c000000016800"
+                    if controller.guid in guidstoreplace_xbox:
+                        inputguid = "050000005e0400008e02000030110000"
+                    if controller.guid in guidstoreplace_switch:
+                        inputguid = "030000007e0500000920000000026803"
+                    #DS5 corrections
+                    if ((controller.guid in guidstoreplace_ds5_wireless) or (controller.guid in guidstoreplace_ds4) or (controller.guid in guidstoreplace_ds4g1) or (controller.guid in guidstoreplace_ds5_wired)) :
+                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
+                        for x in yuzuDSButtons:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuDSButtons[x]))
+                        for x in yuzuDSAxis:
+                            if(x == "button_zl" or x == "button_zr"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuDSAxis[x]))
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                    elif ((controller.guid in guidstoreplace_switch)) :
+                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
+                        for x in yuzuSwitchButtons:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSwitchButtons[x]))
+                        for x in yuzuSwitchAxis:
+                            if(x == "button_zl" or x == "button_zr"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSwitchAxis[x]))
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                    elif (controller.guid in guidstoreplace_steam) :
+                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
+                        for x in yuzuSCButtons:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSCButtons[x]))
+                        for x in yuzuSCAxis:
+                            if(x == "button_zl" or x == "button_zr"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSCAxis[x]))
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis[x],yuzuSCAxis[x]+1))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
+                    elif (controller.guid in guidstoreplace_xbox) :
+                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
+                        for x in yuzuXBButtons:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuXBButtons[x]))
+                        for x in yuzuXBHat:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"hat:0,direction:{},guid:{},port:{},engine:sdl"'.format(yuzuXBHat[x],inputguid,portnumber))
+                        for x in yuzuXBAxis:
+                            if(x == "button_zl" or x == "button_zr"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuXBAxis[x]))
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis[x],yuzuSCAxis[x]+1))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
+                    elif (controller.guid in guidstoreplace_steam2) :
+                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
+                        for x in yuzuSCButtons2:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSCButtons2[x]))
+                        for x in yuzuSCAxis2:
+                            if(x == "button_zl" or x == "button_zr"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSCAxis2[x]))
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis2[x],yuzuSCAxis2[x]+1))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
+                        #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                        #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                    else:
+                        for x in yuzuButtons:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                        for x in yuzuAxis:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '[empty]')
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '[empty]')
                 else:
-                    for x in yuzuButtons:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
-                    for x in yuzuAxis:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '[empty]')
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '[empty]')
+                    #Follow new logic
+                    eslog.debug("Controller Mapping {}".format(controller_mapping))
+                    new_guid = controller_mapping['yuzu_guid']
+                    yuzuButtons = {
+                        "button_a":      controller_mapping['button_a'],
+                        "button_b":      controller_mapping['button_b'],
+                        "button_x":      controller_mapping['button_x'],
+                        "button_y":      controller_mapping['button_y'],
+                        "button_l":      controller_mapping['button_l'],
+                        "button_r":      controller_mapping['button_r'],
+                        "button_plus":   controller_mapping['button_plus'],
+                        "button_minus":  controller_mapping['button_minus'],
+                        "button_sl":     controller_mapping['button_sl'],
+                        "button_sr":     controller_mapping['button_sr'],
+                        "button_lstick": controller_mapping['button_lstick'],
+                        "button_rstick": controller_mapping['button_rstick'],
+                        "button_home":   controller_mapping['button_home'],
+                        "button_dup":    controller_mapping['button_dup'],
+                        "button_ddown":  controller_mapping['button_ddown'],
+                        "button_dleft":  controller_mapping['button_dleft'],
+                        "button_dright": controller_mapping['button_dright'],
+                    }
 
+                    yuzuAxis = {
+                        "lstick":    int(controller_mapping['axis_lstick']),
+                        "rstick":    int(controller_mapping['axis_rstick'])
+                    }
+
+                    yuzuAxisButtons = {
+                        "button_zl": controller_mapping['axis_button_zl'],
+                        "button_zr": controller_mapping['axis_button_zr']
+                    }
+
+                    yuzuHat = {
+                        "button_dup":     'up',
+                        "button_ddown":   'down',
+                        "button_dleft":   'left',
+                        "button_dright":  'right',
+                    }
+
+                    #Configure buttons
+                    for x in yuzuButtons:
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuButtons[x]))
+                    #Replace Buttons that are actually hats (d-pad)
+                    if(controller_mapping['button_dup'] == 'hat'):
+                        for x in yuzuHat:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"hat:0,direction:{},guid:{},port:{},engine:sdl"'.format(yuzuHat[x],inputguid,portnumber))
+
+                    #set joysticks
+                    for x in yuzuAxis:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuAxis[x],yuzuAxis[x]+1))
+                    #Replace Buttons that are actually axes (generally l2/r2)
+                    if(controller_mapping['button_zl'] == 'axis'):
+                        for x in yuzuAxisButtons:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+
+                    #Do we support motion?
+                    if(controller_mapping['has_motion'] == 'TRUE'):
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,new_guid))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,new_guid))
+                    else:
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '[empty]')
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '[empty]')
+                
                 
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
                 if (controllernumber == "0"):
