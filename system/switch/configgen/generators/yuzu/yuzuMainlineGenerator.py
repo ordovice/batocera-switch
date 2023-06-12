@@ -195,33 +195,6 @@ class YuzuMainlineGenerator(Generator):
             "button_zr":     5
         }
 
-        yuzuSCButtons2 = {
-            "button_a":      4,
-            "button_b":     5,
-            "button_x":      6,
-            "button_y":      7,
-            "button_dup":     19,
-            "button_ddown":   20,
-            "button_dleft":   21,
-            "button_dright":  22,
-            "button_l":      8,
-            "button_r":      10,
-            "button_plus":  13,
-            "button_minus": 12,
-            #"button_zl":     18,
-            #"button_zr":     10,
-            "button_lstick":     15,
-            "button_rstick":     16,
-            "button_home":   23
-        }
-
-        yuzuSCAxis2 = {
-            "lstick":    1,
-            "rstick":    4,
-            "button_zl":     2,
-            "button_zr":     5
-        }
-
         yuzuSwitchButtons = {
             "button_a":      0,
             "button_b":      1,
@@ -542,7 +515,6 @@ class YuzuMainlineGenerator(Generator):
             guidstoreplace_ds5_wireless = ["32633532643734376632656664383733","37363764353731323963323639666565","61303162353165316365336436343139","050000004c050000e60c0000df870000","050000004c050000e60c000000810000","030000004c050000e60c000000010000","050000004c050000e60c0000fffe3f00","030000004c050000e60c000000000000","050000004c050000e60c000000010000","030000004c050000e60c000011010000","32346465346533616263386539323932","050000004c050000e60c0000ff870000"]
             guidstoreplace_ds5_wired = ["030000004c050000e60c000011810000"]
             guidstoreplace_steam = ["03000000de2800000512000010010000"]
-            guidstoreplace_steam2 = ["03000000de2800000512000011010000"]
             guidstoreplace_switch = ["030000007e0500000920000011810000"]
 
             cguid = [0 for x in range(10)]
@@ -605,19 +577,6 @@ class YuzuMainlineGenerator(Generator):
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis[x],yuzuSCAxis[x]+1))
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
-                    elif (controller.guid in guidstoreplace_steam2) :
-                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
-                        for x in yuzuSCButtons2:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSCButtons2[x]))
-                        for x in yuzuSCAxis2:
-                            if(x == "button_zl" or x == "button_zr"):
-                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSCAxis2[x]))
-                            else:
-                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuSCAxis2[x],yuzuSCAxis2[x]+1))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"[empty]"')
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"[empty]"')
-                        #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                        #yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
                     else:
                         for x in yuzuButtons:
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
