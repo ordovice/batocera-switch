@@ -512,6 +512,16 @@ updates=$(cat /tmp/updater-settings | grep "updates=locked" | cut -d "=" -f2)
       link_ryujinxavalonia=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/test-ava-ryujinx-$release_ryujinx-linux_x64.tar.gz
    fi
 # ----------------------------------------------------------------------------------
+# pass info cookie: 
+cookie=/userdata/system/switch/extra/updates.txt
+   rm $cookie 2>/dev/null 
+   if [[ "$updates" = "locked" ]] || [[ "$locked" = 1 ]]; then 
+      echo "locked" >> $cookie 2>/dev/null
+   fi 
+   if [[ "$updates" = "unlocked" ]] || [[ "$locked" = 0 ]]; then 
+      echo "unlocked" >> $cookie 2>/dev/null
+   fi
+# ----------------------------------------------------------------------------------
 # PATHS: 
 path_yuzu=/userdata/system/switch/yuzu.AppImage
 path_yuzuea=/userdata/system/switch/yuzuEA.AppImage
