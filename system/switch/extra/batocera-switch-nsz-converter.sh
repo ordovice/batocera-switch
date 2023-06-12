@@ -47,8 +47,10 @@ chmod a+x /usr/bin/rev 2>/dev/null
 
 			# fill dependencies 
 			cp -r /userdata/system/switch/extra/nsz/curses /usr/lib/python3.10/site-packages/ 2>/dev/null
+			cp -r /userdata/system/switch/extra/nsz/curses /usr/lib/python3.11/site-packages/ 2>/dev/null
 			chmod a+x /userdata/system/switch/extra/nsz/lib-dynload/*.so 2>/dev/null
 			cp -r /userdata/system/switch/extra/nsz/lib-dynload/_curses* /usr/lib/python3.10/lib-dynload/ 2>/dev/null
+			cp -r /userdata/system/switch/extra/nsz/lib-dynload/_curses* /usr/lib/python3.11/lib-dynload/ 2>/dev/null
 			cp /userdata/bios/switch/prod.keys /usr/bin/keys.txt 2>/dev/null
 
 			# convert 
