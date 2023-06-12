@@ -1322,12 +1322,17 @@ export -f batocera_update_switch
 ######################################################################
 # 
 function post-install() { 
-# -------------------------------------------------------------------
-# PREPARE BATOCERA-SWITCH-STARTUP FILE
-# -------------------------------------------------------------------
+#
+# ------------------------------------------------------------------- 
+# get additional files 
+# ------------------------------------------------------------------- 
 #
 extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
-#
+# ------------------------------------------------------------------- 
+# get mapping.csv file 
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/mapping.csv" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/mapping.csv"
+   dos2unix /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
+# ------------------------------------------------------------------- 
 # get batocera-switch-sync-firmware.sh
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh" "$extraurl/batocera-switch-sync-firmware.sh"
    dos2unix /userdata/system/switch/extra/batocera-switch-sync-firmware.sh 2>/dev/null 
@@ -1376,7 +1381,11 @@ url_patcher="https://raw.githubusercontent.com/ordovice/batocera-switch/main/sys
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
    dos2unix ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
    chmod a+x ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
+#
 # -------------------------------------------------------------------
+# PREPARE BATOCERA-SWITCH-STARTUP FILE
+# -------------------------------------------------------------------
+#
 f=/userdata/system/switch/extra/batocera-switch-startup
 rm "$f" 2>/dev/null 
 # 
