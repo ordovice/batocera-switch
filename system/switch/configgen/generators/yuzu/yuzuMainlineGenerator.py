@@ -195,33 +195,6 @@ class YuzuMainlineGenerator(Generator):
             "button_zr":     5
         }
 
-        yuzuSwitchButtons = {
-            "button_a":      0,
-            "button_b":      1,
-            "button_x":      2,
-            "button_y":      3,
-            "button_dup":     11,
-            "button_ddown":   12,
-            "button_dleft":   13,
-            "button_dright":  14,
-            "button_l":      9,
-            "button_r":      10,
-            "button_plus":  6,
-            "button_minus": 4,
-            "button_sl":     9,
-            "button_sr":     10,
-            "button_lstick":     7,
-            "button_rstick":     8,
-            "button_home":   5
-        }
-
-        yuzuSwitchAxis = {
-            "lstick":    0,
-            "rstick":    2,
-            "button_zl":     4,
-            "button_zr":     5
-        }
-
         # ini file
         yuzuConfig = configparser.RawConfigParser()
         yuzuConfig.optionxform=str
@@ -514,7 +487,6 @@ class YuzuMainlineGenerator(Generator):
             guidstoreplace_ds4g1 = ["050000004c050000c405000000810000"]
             guidstoreplace_ds5_wireless = ["32633532643734376632656664383733","37363764353731323963323639666565","61303162353165316365336436343139","050000004c050000e60c0000df870000","050000004c050000e60c000000810000","030000004c050000e60c000000010000","050000004c050000e60c0000fffe3f00","030000004c050000e60c000000000000","050000004c050000e60c000000010000","030000004c050000e60c000011010000","32346465346533616263386539323932","050000004c050000e60c0000ff870000"]
             guidstoreplace_steam = ["03000000de2800000512000010010000"]
-            guidstoreplace_switch = ["030000007e0500000920000011810000"]
 
             cguid = [0 for x in range(10)]
             lastplayer = 0
@@ -538,8 +510,6 @@ class YuzuMainlineGenerator(Generator):
                     #DS5 GUIDs from https://github.com/gabomdq/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
                     if controller.guid in guidstoreplace_ds5_wireless:
                         inputguid = "030000004c050000e60c000000006800"
-                    if controller.guid in guidstoreplace_switch:
-                        inputguid = "030000007e0500000920000000026803"
                     #DS5 corrections
                     if ((controller.guid in guidstoreplace_ds5_wireless) or (controller.guid in guidstoreplace_ds4) or (controller.guid in guidstoreplace_ds4g1)) :
                         #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
@@ -548,17 +518,6 @@ class YuzuMainlineGenerator(Generator):
                         for x in yuzuDSAxis:
                             if(x == "button_zl" or x == "button_zr"):
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuDSAxis[x]))
-                            else:
-                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                    elif ((controller.guid in guidstoreplace_switch)) :
-                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
-                        for x in yuzuSwitchButtons:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuSwitchButtons[x]))
-                        for x in yuzuSwitchAxis:
-                            if(x == "button_zl" or x == "button_zr"):
-                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuSwitchAxis[x]))
                             else:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
