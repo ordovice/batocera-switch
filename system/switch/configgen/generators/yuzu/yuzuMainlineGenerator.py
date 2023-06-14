@@ -232,6 +232,9 @@ class YuzuMainlineGenerator(Generator):
         yuzuConfig.set("UI", "Screenshots\\screenshot_path", "/userdata/screenshots")
         yuzuConfig.set("UI", "Screenshots\\screenshot_path\\default", "false")
 
+        yuzuConfig.set("UI", "Shortcuts\Main%20Window\Exit%20yuzu\Controller_KeySeq", "Home+Plus")
+        yuzuConfig.set("UI", "Shortcuts\Main%20Window\Exit%20yuzu\Controller_KeySeq\\default", "false")
+
     # Data Storage section
         if not yuzuConfig.has_section("Data%20Storage"):
             yuzuConfig.add_section("Data%20Storage")
