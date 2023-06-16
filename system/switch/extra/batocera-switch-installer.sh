@@ -131,7 +131,18 @@ echo -e "${X}PLEASE WAIT${X} . . ."
 # PRESERVE CONFIG FILE 
 cfg=/userdata/system/switch/CONFIG.txt 
 if [[ -f "$cfg" ]]; then 
-  cp $cfg /tmp/.userconfigfile 2>/dev/null
+      # check config file version & update ---------------------------
+      link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/tmp/.CONFIG.txt" "$link_defaultconfig"
+         currentver=$(cat "$cfg" | grep "(ver " | head -n1 | sed 's,^.*(ver ,,g' | cut -d ")" -f1)
+            if [[ "$currentver" = "" ]]; then currentver=1.0.0; fi
+         latestver=$(cat "/tmp/.CONFIG.txt" | grep "(ver " | head -n1 | sed 's,^.*(ver ,,g' | cut -d ")" -f1)
+            if [[ "$latestver" > "$currentver" ]]; then 
+               cp /tmp/.CONFIG.txt $cfg 2>/dev/null
+               echo -e "\n~/switch/CONFIG.txt FILE HAS BEEN UPDATED!\n"
+            fi
+      # check config file version & update ---------------------------
+   cp $cfg /tmp/.userconfigfile 2>/dev/null
 fi
 # -------------------------------------------------------------------- 
 # PURGE OLD INSTALLS 
@@ -316,12 +327,17 @@ echo -e "   ${X}Use Switch Updater in Ports to update emulators${X}"
 echo -e "   ${X}-----------------------------------------------------${X}"
 echo
 echo 
+echo -e "   ${X}-----------------------------------------------------${X}"
+echo -e "   ${X}For compatibility reasons Ryujinx&Avalonia are locked "
+echo -e "   ${X}to version 1.1.382, to unlock the updates: " 
+echo -e "   ${X}CHECK /userdata/system/switch/CONFIG.txt${X}" 
+echo -e "   ${X}-----------------------------------------------------${X}"
+echo
 echo
 echo -e "   ${X}-----------------------------------------------------${X}"
 echo -e "   ${X}IN CASE OF ISSUES: ${X}"
 echo 
 echo -e "   ${X}1) try using opengl instead of vulkan ${X}"
-echo 
 echo -e "   ${X}2) use [autocontroller = off] in advanced settings & ${X}"
 echo -e "   ${X}   configure controller manually in f1-applications ${X}"
 echo
