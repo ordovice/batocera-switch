@@ -128,6 +128,12 @@ echo -e "${X}PLEASE WAIT${X} . . ."
 # -------------------------------------------------------------------- 
 # -------------------------------------------------------------------- 
 # -------------------------------------------------------------------- 
+# PRESERVE CONFIG FILE 
+cfg=/userdata/system/switch/CONFIG.txt 
+if [[ -f "$cfg" ]]; then 
+  cp $cfg /tmp/.userconfigfile 2>/dev/null
+fi
+# -------------------------------------------------------------------- 
 # PURGE OLD INSTALLS 
 rm -rf /userdata/system/switch 2>/dev/null
 rm /userdata/system/configs/emulationstation/add_feat_switch.cfg 2>/dev/null
@@ -184,6 +190,9 @@ wget -q -O "$path/ryujinx-avalonia.png" "$url/ryujinx-avalonia.png"
 wget -q -O "$path/ryujinx.png" "$url/ryujinx.png"
 wget -q -O "$path/yuzu.png" "$url/yuzu.png"
 wget -q -O "$path/yuzuEA.png" "$url/yuzuEA.png"
+# -------------------------------------------------------------------- 
+# + get default config file: 
+wget -q -O "/userdata/system/switch/CONFIG.txt" "$url/batocera-switch-config.txt"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX
 path=/userdata/system/switch/configgen/generators/ryujinx
@@ -278,7 +287,12 @@ chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null
 /tmp/batocera-switch-updater.sh CONSOLE 
 sleep 0.1 
 echo "OK" >> /userdata/system/switch/extra/installation
-sleep 0.1 
+sleep 0.1
+   # --- \ restore user config file for the updater if running clean install/update from the switch installer 
+   if [[ -e /tmp/.userconfigfile ]]; then 
+      cp /tmp/.userconfigfile /userdata/system/switch/CONFIG.txt 2>/dev/null
+   fi 
+   # --- /
 } 
 export -f batocera-pro-installer 2>/dev/null 
 # --------------------------------------------------------------------
