@@ -1,4 +1,4 @@
-// CONFIG // SETTINGS FOR BATOCERA SWITCH UPDATER (ver 1.0.1)
+// CONFIG // SETTINGS FOR BATOCERA SWITCH UPDATER (ver 1.0.2)
 ################################################################
 
 
@@ -39,12 +39,13 @@ USE_RYUJINXAVALONIA_VERSION=1.1.382
 	#---------------------------------------------------------------
 	#
 	#    *  for latest available versions:
-	#           use =AUTO, Auto, A, a, or empty 
+	#           use =AUTO, Auto, A, a, or empty
 	#
 	#    *  for best ryujinx&avalonia autocontroller compatibility:
-	#           use version =1.1.382 
+	#           use ryujinx&avalonia version =1.1.382
 	#
-	#    >  default: AUTO 
+	#    >  default for yuzu:      AUTO
+	#    >  default for ryujinx:   1.1.382
 	#
 	#---------------------------------------------------------------
 
