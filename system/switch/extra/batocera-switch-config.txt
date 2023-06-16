@@ -39,7 +39,11 @@ USE_RYUJINXAVALONIA_VERSION=AUTO
 	#---------------------------------------------------------------
 	#
 	#    * for latest available versions:
-	#      use =AUTO, Auto, A, a, or empty 
+	#         use =AUTO, Auto, A, a, or empty 
+	#
+	#    * for best ryujinx&avalonia autocontroller compatibility:
+	#         use =AUTO, Auto, A, a, or empty 
+	#         or use version =1.1.382 
 	#
 	#    > default: AUTO 
 	#
