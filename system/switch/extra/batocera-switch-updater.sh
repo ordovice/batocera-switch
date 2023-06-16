@@ -283,6 +283,10 @@ EMULATORS="$EMULATORS-"; fi
 EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
    # GET EMULATORS FROM CONFIG FILE -------------------------------------
    cfg=/userdata/system/switch/CONFIG.txt
+   if [[ ! -e "$cfg" ]]; then 
+   link_defaultconfig=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-config.txt
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
+   fi 
    dos2unix $cfg 1>/dev/null 2>/dev/null
    if [[ -e "$cfg" ]]; then 
    EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
@@ -588,7 +592,7 @@ cfg=/userdata/system/switch/CONFIG.txt
 dos2unix $cfg 1>/dev/null 2>/dev/null
 if [[ ! -e "$cfg" ]]; then 
 link_defaultconfig=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-config.txt
-wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_libstdc"
+wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
 fi 
 if [[ -e "$cfg" ]]; then 
    # get 
