@@ -281,6 +281,22 @@ EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"; fi
 if [ "$(echo $EMULATORS | grep "-")" = "" ]; then 
 EMULATORS="$EMULATORS-"; fi
 EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
+   # GET EMULATORS FROM CONFIG FILE -------------------------------------
+   cfg=/userdata/system/switch/CONFIG.txt
+   dos2unix $cfg 1>/dev/null 2>/dev/null
+   if [[ -e "$cfg" ]]; then 
+   EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
+   EMULATORS=$(echo "$EMULATORS ")
+         if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
+            EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
+         fi
+         if [ "$(echo $EMULATORS | grep "-")" = "" ]; then 
+            EMULATORS="$EMULATORS-"
+            EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
+         fi
+   echo "2EMULATORS=$EMULATORS"
+   fi 
+   # /GET EMULATORS FROM CONFIG FILE -------------------------------------
 # -------------------------------------------------------------------
 rm /tmp/updater-settings 2>/dev/null
 if [[ "$UPDATES" = "LOCKED" ]] || [[ "$UPDATES" = "locked" ]]; then 
@@ -299,10 +315,10 @@ if [[ "$MODE" = "DISPLAY" ]] || [[ "$MODE" = "display" ]]; then
    url_loader=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/loader.mp4
    loader=/userdata/system/switch/extra/loader.mp4 
       if [[ ! -e "$loader" ]]; then 
-         wget -q --no-check-certificate --no-cache --no-cookies -O $loader $url_loader
+         wget -q --no-check-certificate --no-cache --no-cookies -O $loader $url_loader 2>/dev/null
       fi 
       if [[ -e "$loader" ]] && [[ "$(wc -c $loader | awk '{print $1}')" < "6918849" ]]; then 
-         wget -q --no-check-certificate --no-cache --no-cookies -O $loader $url_loader   
+         wget -q --no-check-certificate --no-cache --no-cookies -O $loader $url_loader 2>/dev/null
       fi
    fi
 fi
@@ -485,6 +501,22 @@ echo "THEME_COLOR_RYUJINX=$THEME_COLOR_RYUJINX" >> "$f"
 echo "THEME_COLOR_RYUJINXAVALONIA=$THEME_COLOR_RYUJINXAVALONIA" >> "$f"
 echo "THEME_COLOR_RYUJINXLDN=$THEME_COLOR_RYUJINXLDN" >> "$f"
 echo "THEME_COLOR_OK=$THEME_COLOR_OK" >> "$f"
+   # GET EMULATORS FROM CONFIG FILE -------------------------------------
+   cfg=/userdata/system/switch/CONFIG.txt
+   dos2unix $cfg 1>/dev/null 2>/dev/null
+   if [[ -e "$cfg" ]]; then 
+   EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
+   EMULATORS=$(echo "$EMULATORS ")
+         if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
+            EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
+         fi 
+         if [ "$(echo $EMULATORS | grep "-")" = "" ]; then 
+            EMULATORS="$EMULATORS-"
+            EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
+         fi
+   echo "2EMULATORS=$EMULATORS"
+   fi 
+   # /GET EMULATORS FROM CONFIG FILE -------------------------------------
 echo "EMULATORS=$EMULATORS" >> "$f"
 ####################################################################################
 function update_emulator {
@@ -541,7 +573,224 @@ THEME_COLOR_RYUJINXLDN=$(cat $cookie | grep "THEME_COLOR_RYUJINXLDN=" | cut -d "
 THEME_COLOR_RYUJINXAVALONIA=$(cat $cookie | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
 THEME_COLOR_OK=$(cat $cookie | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
 EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
+#
+# --------------
+# --------------
+# --------------
+# \\ config file
 # ---------------------------------------------------------------------------------- 
+# ---------------------------------------------------------------------------------- 
+# USE CUSTOM UPDATER SETTINGS FROM CONFIG FILE:
+# /USERDATA/SYSTEM/SWITCH/CONFIG.TXT
+# ---------------------------------------------------------------------------------- 
+# ---------------------------------------------------------------------------------- 
+cfg=/userdata/system/switch/CONFIG.txt
+dos2unix $cfg 1>/dev/null 2>/dev/null
+if [[ ! -e "$cfg" ]]; then 
+link_defaultconfig=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-config.txt
+wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_libstdc"
+fi 
+if [[ -e "$cfg" ]]; then 
+   # get 
+   # \\\
+   ### emulators  
+   EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
+   EMULATORS=$(echo "$EMULATORS ")
+      if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
+         EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
+      fi
+      if [ "$(echo $EMULATORS | grep "-")" = "" ]; then 
+         EMULATORS="$EMULATORS-"
+         EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
+      fi
+   ### text/colors
+   TEXT_SIZE=$(cat $cfg | grep "TEXT_SIZE=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   TEXT_COLOR=$(cat $cfg | grep "TEXT_COLOR=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   THEME_COLOR=$(cat $cfg | grep "THEME_COLOR=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   THEME_COLOR_YUZU=$(cat $cfg | grep "THEME_COLOR_YUZU=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   THEME_COLOR_YUZUEA=$(cat $cfg | grep "THEME_COLOR_YUZUEA=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   THEME_COLOR_RYUJINX=$(cat $cfg | grep "THEME_COLOR_RYUJINX=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   THEME_COLOR_RYUJINXLDN=$(cat $cfg | grep "THEME_COLOR_RYUJINXLDN=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   THEME_COLOR_RYUJINXAVALONIA=$(cat $cfg | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+   THEME_COLOR_OK=$(cat $cfg | grep "THEME_COLOR_OK=" | cut -d "=" -f 2 | sed 's, ,,g' | head -n1 | tr -d '\0')
+      # TEXT & THEME COLORS: 
+      ###########################
+      X='\033[0m'               # / resetcolor
+      RED='\033[1;31m'          # red
+      BLUE='\033[1;34m'         # blue
+      GREEN='\033[1;32m'        # green
+      YELLOW='\033[1;33m'       # yellow
+      PURPLE='\033[1;35m'       # purple
+      CYAN='\033[1;36m'         # cyan
+      #-------------------------#
+      DARKRED='\033[0;31m'      # darkred
+      DARKBLUE='\033[0;34m'     # darkblue
+      DARKGREEN='\033[0;32m'    # darkgreen
+      DARKYELLOW='\033[0;33m'   # darkyellow
+      DARKPURPLE='\033[0;35m'   # darkpurple
+      DARKCYAN='\033[0;36m'     # darkcyan
+      #-------------------------#
+      WHITE='\033[0;37m'        # white
+      BLACK='\033[0;30m'        # black
+      ###########################
+      # PARSE COLORS FOR THEMING:
+      # ---------------------------------------------------------------------------------- 
+      if [ "$TEXT_COLOR" = "RED" ]; then TEXT_COLOR="$RED"; fi
+      if [ "$TEXT_COLOR" = "BLUE" ]; then TEXT_COLOR="$BLUE"; fi
+      if [ "$TEXT_COLOR" = "GREEN" ]; then TEXT_COLOR="$GREEN"; fi
+      if [ "$TEXT_COLOR" = "YELLOW" ]; then TEXT_COLOR="$YELLOW"; fi
+      if [ "$TEXT_COLOR" = "PURPLE" ]; then TEXT_COLOR="$PURPLE"; fi
+      if [ "$TEXT_COLOR" = "CYAN" ]; then TEXT_COLOR="$CYAN"; fi
+      if [ "$TEXT_COLOR" = "DARKRED" ]; then TEXT_COLOR="$DARKRED"; fi
+      if [ "$TEXT_COLOR" = "DARKBLUE" ]; then TEXT_COLOR="$DARKBLUE"; fi
+      if [ "$TEXT_COLOR" = "DARKGREEN" ]; then TEXT_COLOR="$DARKGREEN"; fi
+      if [ "$TEXT_COLOR" = "DARKYELLOW" ]; then TEXT_COLOR="$DARKYELLOW"; fi
+      if [ "$TEXT_COLOR" = "DARKPURPLE" ]; then TEXT_COLOR="$DARKPURPLE"; fi
+      if [ "$TEXT_COLOR" = "DARKCYAN" ]; then TEXT_COLOR="$DARKCYAN"; fi
+      if [ "$TEXT_COLOR" = "WHITE" ]; then TEXT_COLOR="$WHITE"; fi
+      if [ "$TEXT_COLOR" = "BLACK" ]; then TEXT_COLOR="$BLACK"; fi
+      # ---------------------------------------------------------------------------------- 
+      if [ "$THEME_COLOR" = "RED" ]; then THEME_COLOR="$RED"; fi
+      if [ "$THEME_COLOR" = "BLUE" ]; then THEME_COLOR="$BLUE"; fi
+      if [ "$THEME_COLOR" = "GREEN" ]; then THEME_COLOR="$GREEN"; fi
+      if [ "$THEME_COLOR" = "YELLOW" ]; then THEME_COLOR="$YELLOW"; fi
+      if [ "$THEME_COLOR" = "PURPLE" ]; then THEME_COLOR="$PURPLE"; fi
+      if [ "$THEME_COLOR" = "CYAN" ]; then THEME_COLOR="$CYAN"; fi
+      if [ "$THEME_COLOR" = "DARKRED" ]; then THEME_COLOR="$DARKRED"; fi
+      if [ "$THEME_COLOR" = "DARKBLUE" ]; then THEME_COLOR="$DARKBLUE"; fi
+      if [ "$THEME_COLOR" = "DARKGREEN" ]; then THEME_COLOR="$DARKGREEN"; fi
+      if [ "$THEME_COLOR" = "DARKYELLOW" ]; then THEME_COLOR="$DARKYELLOW"; fi
+      if [ "$THEME_COLOR" = "DARKPURPLE" ]; then THEME_COLOR="$DARKPURPLE"; fi
+      if [ "$THEME_COLOR" = "DARKCYAN" ]; then THEME_COLOR="$DARKCYAN"; fi
+      if [ "$THEME_COLOR" = "WHITE" ]; then THEME_COLOR="$WHITE"; fi
+      if [ "$THEME_COLOR" = "BLACK" ]; then THEME_COLOR="$BLACK"; fi
+      # ---------------------------------------------------------------------------------- 
+      if [ "$THEME_COLOR_OK" = "RED" ]; then THEME_COLOR_OK="$RED"; fi
+      if [ "$THEME_COLOR_OK" = "BLUE" ]; then THEME_COLOR_OK="$BLUE"; fi
+      if [ "$THEME_COLOR_OK" = "GREEN" ]; then THEME_COLOR_OK="$GREEN"; fi
+      if [ "$THEME_COLOR_OK" = "YELLOW" ]; then THEME_COLOR_OK="$YELLOW"; fi
+      if [ "$THEME_COLOR_OK" = "PURPLE" ]; then THEME_COLOR_OK="$PURPLE"; fi
+      if [ "$THEME_COLOR_OK" = "CYAN" ]; then THEME_COLOR_OK="$CYAN"; fi
+      if [ "$THEME_COLOR_OK" = "DARKRED" ]; then THEME_COLOR_OK="$DARKRED"; fi
+      if [ "$THEME_COLOR_OK" = "DARKBLUE" ]; then THEME_COLOR_OK="$DARKBLUE"; fi
+      if [ "$THEME_COLOR_OK" = "DARKGREEN" ]; then THEME_COLOR_OK="$DARKGREEN"; fi
+      if [ "$THEME_COLOR_OK" = "DARKYELLOW" ]; then THEME_COLOR_OK="$DARKYELLOW"; fi
+      if [ "$THEME_COLOR_OK" = "DARKPURPLE" ]; then THEME_COLOR_OK="$DARKPURPLE"; fi
+      if [ "$THEME_COLOR_OK" = "DARKCYAN" ]; then THEME_COLOR_OK="$DARKCYAN"; fi
+      if [ "$THEME_COLOR_OK" = "WHITE" ]; then THEME_COLOR_OK="$WHITE"; fi
+      if [ "$THEME_COLOR_OK" = "BLACK" ]; then THEME_COLOR_OK="$BLACK"; fi
+      # ---------------------------------------------------------------------------------- 
+      if [ "$THEME_COLOR_YUZU" = "RED" ]; then THEME_COLOR_YUZU="$RED"; fi
+      if [ "$THEME_COLOR_YUZU" = "BLUE" ]; then THEME_COLOR_YUZU="$BLUE"; fi
+      if [ "$THEME_COLOR_YUZU" = "GREEN" ]; then THEME_COLOR_YUZU="$GREEN"; fi
+      if [ "$THEME_COLOR_YUZU" = "YELLOW" ]; then THEME_COLOR_YUZU="$YELLOW"; fi
+      if [ "$THEME_COLOR_YUZU" = "PURPLE" ]; then THEME_COLOR_YUZU="$PURPLE"; fi
+      if [ "$THEME_COLOR_YUZU" = "CYAN" ]; then THEME_COLOR_YUZU="$CYAN"; fi
+      if [ "$THEME_COLOR_YUZU" = "DARKRED" ]; then THEME_COLOR_YUZU="$DARKRED"; fi
+      if [ "$THEME_COLOR_YUZU" = "DARKBLUE" ]; then THEME_COLOR_YUZU="$DARKBLUE"; fi
+      if [ "$THEME_COLOR_YUZU" = "DARKGREEN" ]; then THEME_COLOR_YUZU="$DARKGREEN"; fi
+      if [ "$THEME_COLOR_YUZU" = "DARKYELLOW" ]; then THEME_COLOR_YUZU="$DARKYELLOW"; fi
+      if [ "$THEME_COLOR_YUZU" = "DARKPURPLE" ]; then THEME_COLOR_YUZU="$DARKPURPLE"; fi
+      if [ "$THEME_COLOR_YUZU" = "DARKCYAN" ]; then THEME_COLOR_YUZU="$DARKCYAN"; fi
+      if [ "$THEME_COLOR_YUZU" = "WHITE" ]; then THEME_COLOR_YUZU="$WHITE"; fi
+      if [ "$THEME_COLOR_YUZU" = "BLACK" ]; then THEME_COLOR_YUZU="$BLACK"; fi
+      # ---------------------------------------------------------------------------------- 
+      if [ "$THEME_COLOR_YUZUEA" = "RED" ]; then THEME_COLOR_YUZUEA="$RED"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "BLUE" ]; then THEME_COLOR_YUZUEA="$BLUE"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "GREEN" ]; then THEME_COLOR_YUZUEA="$GREEN"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "YELLOW" ]; then THEME_COLOR_YUZUEA="$YELLOW"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "PURPLE" ]; then THEME_COLOR_YUZUEA="$PURPLE"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "CYAN" ]; then THEME_COLOR_YUZUEA="$CYAN"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "DARKRED" ]; then THEME_COLOR_YUZUEA="$DARKRED"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "DARKBLUE" ]; then THEME_COLOR_YUZUEA="$DARKBLUE"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "DARKGREEN" ]; then THEME_COLOR_YUZUEA="$DARKGREEN"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "DARKYELLOW" ]; then THEME_COLOR_YUZUEA="$DARKYELLOW"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "DARKPURPLE" ]; then THEME_COLOR_YUZUEA="$DARKPURPLE"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "DARKCYAN" ]; then THEME_COLOR_YUZUEA="$DARKCYAN"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "WHITE" ]; then THEME_COLOR_YUZUEA="$WHITE"; fi
+      if [ "$THEME_COLOR_YUZUEA" = "BLACK" ]; then THEME_COLOR_YUZUEA="$BLACK"; fi
+      # ---------------------------------------------------------------------------------- 
+      if [ "$THEME_COLOR_RYUJINX" = "RED" ]; then THEME_COLOR_RYUJINX="$RED"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "BLUE" ]; then THEME_COLOR_RYUJINX="$BLUE"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "GREEN" ]; then THEME_COLOR_RYUJINX="$GREEN"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "YELLOW" ]; then THEME_COLOR_RYUJINX="$YELLOW"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "PURPLE" ]; then THEME_COLOR_RYUJINX="$PURPLE"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "CYAN" ]; then THEME_COLOR_RYUJINX="$CYAN"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "DARKRED" ]; then THEME_COLOR_RYUJINX="$DARKRED"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "DARKBLUE" ]; then THEME_COLOR_RYUJINX="$DARKBLUE"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "DARKGREEN" ]; then THEME_COLOR_RYUJINX="$DARKGREEN"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "DARKYELLOW" ]; then THEME_COLOR_RYUJINX="$DARKYELLOW"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "DARKPURPLE" ]; then THEME_COLOR_RYUJINX="$DARKPURPLE"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "DARKCYAN" ]; then THEME_COLOR_RYUJINX="$DARKCYAN"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "WHITE" ]; then THEME_COLOR_RYUJINX="$WHITE"; fi
+      if [ "$THEME_COLOR_RYUJINX" = "BLACK" ]; then THEME_COLOR_RYUJINX="$BLACK"; fi
+      # ---------------------------------------------------------------------------------- 
+      if [ "$THEME_COLOR_RYUJINXLDN" = "RED" ]; then THEME_COLOR_RYUJINXLDN="$RED"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "BLUE" ]; then THEME_COLOR_RYUJINXLDN="$BLUE"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "GREEN" ]; then THEME_COLOR_RYUJINXLDN="$GREEN"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "YELLOW" ]; then THEME_COLOR_RYUJINXLDN="$YELLOW"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "PURPLE" ]; then THEME_COLOR_RYUJINXLDN="$PURPLE"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "CYAN" ]; then THEME_COLOR_RYUJINXLDN="$CYAN"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "DARKRED" ]; then THEME_COLOR_RYUJINXLDN="$DARKRED"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "DARKBLUE" ]; then THEME_COLOR_RYUJINXLDN="$DARKBLUE"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "DARKGREEN" ]; then THEME_COLOR_RYUJINXLDN="$DARKGREEN"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "DARKYELLOW" ]; then THEME_COLOR_RYUJINXLDN="$DARKYELLOW"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "DARKPURPLE" ]; then THEME_COLOR_RYUJINXLDN="$DARKPURPLE"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "DARKCYAN" ]; then THEME_COLOR_RYUJINXLDN="$DARKCYAN"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "WHITE" ]; then THEME_COLOR_RYUJINXLDN="$WHITE"; fi
+      if [ "$THEME_COLOR_RYUJINXLDN" = "BLACK" ]; then THEME_COLOR_RYUJINXLDN="$BLACK"; fi
+      # ---------------------------------------------------------------------------------- 
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "RED" ]; then THEME_COLOR_RYUJINXAVALONIA="$RED"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "BLUE" ]; then THEME_COLOR_RYUJINXAVALONIA="$BLUE"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "GREEN" ]; then THEME_COLOR_RYUJINXAVALONIA="$GREEN"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "YELLOW" ]; then THEME_COLOR_RYUJINXAVALONIA="$YELLOW"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "PURPLE" ]; then THEME_COLOR_RYUJINXAVALONIA="$PURPLE"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "CYAN" ]; then THEME_COLOR_RYUJINXAVALONIA="$CYAN"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKRED" ]; then THEME_COLOR_RYUJINXAVALONIA="$DARKRED"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKBLUE" ]; then THEME_COLOR_RYUJINXAVALONIA="$DARKBLUE"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKGREEN" ]; then THEME_COLOR_RYUJINXAVALONIA="$DARKGREEN"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKYELLOW" ]; then THEME_COLOR_RYUJINXAVALONIA="$DARKYELLOW"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKPURPLE" ]; then THEME_COLOR_RYUJINXAVALONIA="$DARKPURPLE"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "DARKCYAN" ]; then THEME_COLOR_RYUJINXAVALONIA="$DARKCYAN"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "WHITE" ]; then THEME_COLOR_RYUJINXAVALONIA="$WHITE"; fi
+      if [ "$THEME_COLOR_RYUJINXAVALONIA" = "BLACK" ]; then THEME_COLOR_RYUJINXAVALONIA="$BLACK"; fi
+   ### yuzu
+   yuzu_custom_version=$(cat /userdata/system/switch/CONFIG.txt | grep "USE_YUZU_VERSION" | head -n1 | sed 's, ,,g' | cut -d "=" -f2 | sed 's, ,,g' | tr -d '\0')
+      if [[ "$yuzu_custom_version" != "auto" ]] && [[ "$yuzu_custom_version" != "Auto" ]] && [[ "$yuzu_custom_version" != "AUTO" ]] && [[ "$yuzu_custom_version" != "A" ]] && [[ "$yuzu_custom_version" != "a" ]] && [[ "$yuzu_custom_version" != "" ]]; then 
+           yuzu_custom_version_hash=$(curl -Ls "https://github.com/yuzu-emu/yuzu-mainline/releases/tag/mainline-0-$yuzu_custom_version" | grep "github.com/yuzu-emu/yuzu-mainline/commit/" | head -n1 | sed 's,^.*/commit/,,g' | cut -c 1-9)
+           yuzu_custom_version_date=$(curl -Ls "https://github.com/yuzu-emu/yuzu-mainline/releases/tag/mainline-0-$yuzu_custom_version" | grep "datetime=" | sed 's,^.*datetime=",,g' | cut -d "T" -f1 | sed 's,-,,g')        
+           if [[ "$yuzu_custom_version_date" != "" ]] && [[ "$yuzu_custom_version_hash" != "" ]]; then 
+              link_yuzu=$(echo "https://github.com/yuzu-emu/yuzu-mainline/releases/download/mainline-0-$yuzu_custom_version/yuzu-mainline-$yuzu_custom_version_date-$yuzu_custom_version_hash.AppImage")
+         fi
+      fi
+   ### yuzuEA
+   yuzuEA_custom_version=$(cat /userdata/system/switch/CONFIG.txt | grep "USE_YUZUEA_VERSION" | head -n1 | sed 's, ,,g' | cut -d "=" -f2 | sed 's, ,,g' | tr -d '\0')
+      if [[ "$yuzuEA_custom_version" != "auto" ]] && [[ "$yuzuEA_custom_version" != "Auto" ]] && [[ "$yuzuEA_custom_version" != "AUTO" ]] && [[ "$yuzuEA_custom_version" != "A" ]] && [[ "$yuzuEA_custom_version" != "a" ]] && [[ "$yuzuEA_custom_version" != "" ]]; then 
+           link_yuzuea=$(echo "https://github.com/pineappleEA/pineapple-src/releases/download/EA-$yuzuEA_custom_version/Linux-Yuzu-EA-$yuzuEA_custom_version.AppImage")
+      fi
+   ### ryujinx 
+   ryujinx_custom_version=$(cat /userdata/system/switch/CONFIG.txt | grep "USE_RYUJINX_VERSION" | head -n1 | sed 's, ,,g' | cut -d "=" -f2 | sed 's, ,,g' | tr -d '\0')
+      if [[ "$ryujinx_custom_version" != "auto" ]] && [[ "$ryujinx_custom_version" != "Auto" ]] && [[ "$ryujinx_custom_version" != "AUTO" ]] && [[ "$ryujinx_custom_version" != "A" ]] && [[ "$ryujinx_custom_version" != "a" ]] && [[ "$ryujinx_custom_version" != "" ]]; then 
+         if [[ "$(echo "$ryujinx_custom_version" | grep "1.1")" = "" ]]; then    
+            ryujinx_custom_version=$(echo "1.1.$ryujinx_custom_version")
+         fi
+              link_ryujinx=$(echo "https://github.com/Ryujinx/release-channel-master/releases/download/$ryujinx_custom_version/ryujinx-$ryujinx_custom_version-linux_x64.tar.gz")
+      fi
+   ### ryujinxavalonia
+   ryujinxavalonia_custom_version=$(cat /userdata/system/switch/CONFIG.txt | grep "USE_RYUJINXAVALONIA_VERSION" | head -n1 | sed 's, ,,g' | cut -d "=" -f2 | sed 's, ,,g' | tr -d '\0')
+      if [[ "$ryujinxavalonia_custom_version" != "auto" ]] && [[ "$ryujinxavalonia_custom_version" != "Auto" ]] && [[ "$ryujinxavalonia_custom_version" != "AUTO" ]] && [[ "$ryujinxavalonia_custom_version" != "A" ]] && [[ "$ryujinxavalonia_custom_version" != "a" ]] && [[ "$ryujinxavalonia_custom_version" != "" ]]; then 
+         if [[ "$(echo "$ryujinxavalonia_custom_version" | grep "1.1")" = "" ]]; then  
+            ryujinxavalonia_custom_version=$(echo "1.1.$ryujinxavalonia_custom_version")
+         fi
+            link_ryujinxavalonia=$(echo "https://github.com/Ryujinx/release-channel-master/releases/download/$ryujinxavalonia_custom_version/test-ava-ryujinx-$ryujinx_custom_version-linux_x64.tar.gz")
+       fi
+   # ///
+fi
+# // config file
+# --------------
+# --------------
+# --------------
+#
 # OVERRIDE COLORS FOR SSH/XTERM: 
 X='\033[0m' # / resetcolor
    if [[ -e "/tmp/updater-mode" ]]; then 
@@ -645,7 +894,7 @@ dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzu/yuzu" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzu/yuzu-room" 2>/dev/null
 size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
-#echo -e "${T}■ ~/switch/yuzu.AppImage · ${T}$size_yuzu( )MB   ${T}" | sed 's/( )//g'
+#echo -e "${T}» ~/switch/yuzu.AppImage · ${T}$size_yuzu( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/ 
 fi
@@ -726,7 +975,7 @@ dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu" 2>/dev/null
 chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu-room" 2>/dev/null
 size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
-#echo -e "${T}■ ~/switch/yuzuEA.AppImage · ${T}$size_yuzuea( )MB   ${T}" | sed 's/( )//g'
+#echo -e "${T}» ~/switch/yuzuEA.AppImage · ${T}$size_yuzuea( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -832,7 +1081,7 @@ dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
-#echo -e "${T}■ ~/switch/Ryujinx.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
+#echo -e "${T}» ~/switch/Ryujinx.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -936,7 +1185,7 @@ dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
-#echo -e "${T}■ ~/switch/Ryujinx-LDN.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
+#echo -e "${T}» ~/switch/Ryujinx-LDN.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -1045,7 +1294,7 @@ dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
 size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
-#echo -e "${T}■ ~/switch/Ryujinx-Avalonia.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
+#echo -e "${T}» ~/switch/Ryujinx-Avalonia.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
 fi
@@ -1127,17 +1376,33 @@ echo "link_ryujinxavalonia@$link_ryujinxavalonia" >> $links
 }
 ######################################################################
 # READ SETTINGS FROM COOKIE: -----------------------------------------
-cookie=/userdata/system/switch/extra/batocera-switch-updatersettings
-TEXT_SIZE=$(cat $cookie | grep "TEXT_SIZE=" | cut -d "=" -f 2)
-TEXT_COLOR=$(cat $cookie | grep "TEXT_COLOR=" | cut -d "=" -f 2)
-THEME_COLOR=$(cat $cookie | grep "THEME_COLOR=" | cut -d "=" -f 2)
-THEME_COLOR_YUZU=$(cat $cookie | grep "THEME_COLOR_YUZU=" | cut -d "=" -f 2)
-THEME_COLOR_YUZUEA=$(cat $cookie | grep "THEME_COLOR_YUZUEA=" | cut -d "=" -f 2)
-THEME_COLOR_RYUJINX=$(cat $cookie | grep "THEME_COLOR_RYUJINX=" | cut -d "=" -f 2)
-THEME_COLOR_RYUJINXLDN=$(cat $cookie | grep "THEME_COLOR_RYUJINXLDN=" | cut -d "=" -f 2)
-THEME_COLOR_RYUJINXAVALONIA=$(cat $cookie | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
-THEME_COLOR_OK=$(cat $cookie | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
-EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
+#cookie=/userdata/system/switch/extra/batocera-switch-updatersettings
+#TEXT_SIZE=$(cat $cookie | grep "TEXT_SIZE=" | cut -d "=" -f 2)
+#TEXT_COLOR=$(cat $cookie | grep "TEXT_COLOR=" | cut -d "=" -f 2)
+#THEME_COLOR=$(cat $cookie | grep "THEME_COLOR=" | cut -d "=" -f 2)
+#THEME_COLOR_YUZU=$(cat $cookie | grep "THEME_COLOR_YUZU=" | cut -d "=" -f 2)
+#THEME_COLOR_YUZUEA=$(cat $cookie | grep "THEME_COLOR_YUZUEA=" | cut -d "=" -f 2)
+#THEME_COLOR_RYUJINX=$(cat $cookie | grep "THEME_COLOR_RYUJINX=" | cut -d "=" -f 2)
+#THEME_COLOR_RYUJINXLDN=$(cat $cookie | grep "THEME_COLOR_RYUJINXLDN=" | cut -d "=" -f 2)
+#THEME_COLOR_RYUJINXAVALONIA=$(cat $cookie | grep "THEME_COLOR_RYUJINXAVALONIA=" | cut -d "=" -f 2)
+#THEME_COLOR_OK=$(cat $cookie | grep "THEME_COLOR_OK=" | cut -d "=" -f 2)
+#EMULATORS=$(cat $cookie | grep "EMULATORS=" | cut -d "=" -f 2)
+# GET EMULATORS FROM CONFIG FILE -------------------------------------
+cfg=/userdata/system/switch/CONFIG.txt
+dos2unix $cfg 1>/dev/null 2>/dev/null
+if [[ -e "$cfg" ]]; then 
+   EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
+   EMULATORS=$(echo "$EMULATORS ")
+      if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
+         EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
+      fi
+      if [ "$(echo $EMULATORS | grep "-")" = "" ]; then 
+         EMULATORS="$EMULATORS-"
+         EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
+      fi
+echo "2EMULATORS=$EMULATORS"
+fi 
+# /GET EMULATORS FROM CONFIG FILE -------------------------------------
 # -------------------------
 F=$TEXT_COLOR
 T=$THEME_COLOR
@@ -1174,84 +1439,270 @@ if [[ "$MODE" = "CONSOLE" ]]; then
    W=$X
 fi
 # -------------------------
+# -------------------------
+# -------------------------
+# -------------------------
 clear
-echo -e "${R}---------------------------"
+echo -e "${R}"
+echo -e "${F}S${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-"
+echo -e "${F}SW${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}»-"
+echo -e "${F}${R}s${F}WI${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-»-"
+echo -e "${F}S${R}w${F}IT${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}--»-"
+echo -e "${F}SW${R}i${F}TC${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}---»-"
+echo -e "${F}SWI${R}t${F}CH${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}----»-"
+echo -e "${F}SWIT${R}c${F}H ${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-----»-"
+echo -e "${F}SWITC${R}h${F} U${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}------»-"
+echo -e "${F}SWITCH${R}_${F}UP${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-------»-"
+echo -e "${F}SWITCH ${R}u${F}PD${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}--------»-"
+echo -e "${F}SWITCH U${R}p${F}DA${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}---------»-"
+echo -e "${F}SWITCH UP${R}d${F}AT${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}----------»-"
+echo -e "${F}SWITCH UPD${R}aTE${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-----------»-"
+echo -e "${F}SWITCH UPDA${R}t${F}ER${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}------------»-"
+echo -e "${F}SWITCH UPDAT${R}e${F}R ${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-------------»-"
+echo -e "${F}SWITCH UPDATE${R}r${F} F${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}--------------»-"
+echo -e "${F}SWITCH UPDATER${R}_${F}FO${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}---------------»-"
+echo -e "${F}SWITCH UPDATER ${R}f${F}OR${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}----------------»-"
+echo -e "${F}SWITCH UPDATER F${R}o${F}R ${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-----------------»-"
+echo -e "${F}SWITCH UPDATER FO${R}r${F} B${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}------------------»-"
+echo -e "${F}SWITCH UPDATER FOR${R}_${F}BA${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-------------------»-"
+echo -e "${F}SWITCH UPDATER FOR ${R}b${F}AT${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}--------------------»-"
+echo -e "${F}SWITCH UPDATER FOR B${R}a${F}TO${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}---------------------»-"
+echo -e "${F}SWITCH UPDATER FOR BA${R}t${F}OC${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}----------------------»-"
+echo -e "${F}SWITCH UPDATER FOR BAT${R}o${F}CE${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-----------------------»-"
+echo -e "${F}SWITCH UPDATER FOR BATO${R}c${F}ER${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}------------------------»-"
+echo -e "${F}SWITCH UPDATER FOR BATOC${R}e${F}RA${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}-------------------------»-"
+echo -e "${F}SWITCH UPDATER FOR BATOCE${R}r${F}A${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}--------------------------»"
+echo -e "${F}SWITCH UPDATER FOR BATOCER${R}a${R}"
+echo
+sleep 0.06
+# -------------------------
+clear
+echo -e "${R}---------------------------¬"
+echo -e "${F}SWITCH UPDATER FOR BATOCERA${R}"
+echo
+sleep 0.06
+# -------------------------
+# -------------------------
+# -------------------------
+# -------------------------
+clear
+echo -e "${R}---------------------------¬"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${R}"
 echo
 resolvelinks & spinner $!
 # -------------------------
 clear
-echo -e "${W}${R}>--------------------------"
+echo -e "${W}${R}>--------------------------¬"
 echo -e "${R}.${W}/iTCH UPDATER FOR BATOCERA"
 echo
 echo -e "${R}LOADING EMULATORS"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}\^${R}/>-----------------------"
+echo -e "${W}\^${R}/>-----------------------¬"
 echo -e "${F}${R}:${W}-iTCH UPDATER FOR BATOCERA"
 echo
 echo -e "${R} /OADING/EMULATOR/"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}─<|v${R}x>---------------------"
+echo -e "${W}─<|v${R}x>---------------------¬"
 echo -e "${F}s/${R}:${W}\\\cH UPDATER FOR BATOCERA"
 echo
 echo -e "${R} LOAD/NGEMU/A/ORS"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}───</^${R}\>-------------------"
+echo -e "${W}───</^${R}\>-------------------¬"
 echo -e "${F}SWi-${R}:${W}| UPDATER FOR BATOCERA"
 echo
 echo -e "${R}  LOA//N/EMU/AT/RS"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}──────<xv${R}|>----------------"
+echo -e "${W}──────<xv${R}|>----------------¬"
 echo -e "${F}SWITCH 4${R}.${W}/aTER FOR BATOCERA"
 echo
 echo -e "${R}  LOAD//EMUL//S"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}─────────<\^${R}/>-------------"
+echo -e "${W}─────────<\^${R}/>-------------¬"
 echo -e "${F}SWITCH Up|${R}:${W}-eR FOR BATOCERA"
 echo
 echo -e "${R}   LOA///EMU///S"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}────────────<|v${R}x>----------"
+echo -e "${W}────────────<|v${R}x>----------¬"
 echo -e "${F}SWITCH UPDAt/${R}. ${W}\oR BATOCERA"
 echo
 echo -e "${R}   /OADNEM/TRS"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}───────────────</^${R}\>-------"
+echo -e "${W}───────────────</^${R}\>-------¬"
 echo -e "${F}SWITCH UPDATER -${R}:${W}| BATOCERA"
 echo
 echo -e "${R}   /OA/NEM//RS"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}──────────────────<xv${R}|>----"
+echo -e "${W}──────────────────<xv${R}|>----¬"
 echo -e "${F}SWITCH UPDATER FOR 4${R}.${W}/oCERA"
 echo
 echo -e "${R}   ///A/N${W}EM/${R}//S"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}─────────────────────<\^${R}/>-"
+echo -e "${W}─────────────────────<\^${R}/>-¬"
 echo -e "${F}SWITCH UPDATER FOR BAt|${R}:${W}-rA"
 echo
 echo -e "${R}    ///${W}A/N/${R}/${W}/${R}//S"
 sleep 0.1111
 # -------------------------
 clear
-echo -e "${W}───────────────────────<|v${R}x"
+echo -e "${W}───────────────────────<|v${R}x¬"
 echo -e "${W}SWITCH UPDATER FOR BATOc/${R}.${W}\\"
 echo
 echo -e "${R}     //${W}A${R}//${W}\/${R}/// "
@@ -1290,7 +1741,7 @@ update_emulator 2 5 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_y
 update_emulator 3 5 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 4 5 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 5 5 $(echo "$EMULATORS" | cut -d "-" -f 5) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}5/5${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W} │"
+echo -e "${TEXT_COLOR}       ${TEXT_COLOR}5/5${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}────────────────────────────────────────┘${X}"
 fi
 # UPDATE 4 EMULATORS -------------------------------------
@@ -1299,7 +1750,7 @@ update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_y
 update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W} │"
+echo -e "${TEXT_COLOR}       ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 3 EMULATORS -------------------------------------
@@ -1307,20 +1758,20 @@ if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(
 update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W} │"
+echo -e "${TEXT_COLOR}       ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
 update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${W} │"
+echo -e "${TEXT_COLOR}       ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
 update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}                   EMULATOR UPDATED ${THEME_COLOR_OK}OK ${W} │"
+echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # 
@@ -1632,46 +2083,6 @@ url_portsupdaterkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/
    chmod a+x "/userdata/system/switch/extra/batocera-switch-patcher.sh" 2>/dev/null
 # --------------------------------------------------------------------
 # --------------------------------------------------------------------
-#\
-# \ download ryujinx generator only if custom ryujinx controller patch is not being used
-ryugenpatch=/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator_patched.py
-ryugen=/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py
-ryu382=$(echo "$link_ryujinx" | grep "1.1.382")
-ava382=$(echo "$link_ryujinxavalonia" | grep "1.1.382")
-origen=$(cat /userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py | grep "cvalue\['id" | grep "convuuid")
-   
-   #backup patch gen
-   if [[ "$origen" = "" ]]; then
-      cp "$ryugen" "$ryugenpatch" 2>/dev/null
-   fi
-   
-   #if frozen   
-      if [[ "$ryu382" != "" ]] || [[ "$ava382" != "" ]]; then
-         #frozen and ori gen
-         if [[ "$origen" != "" ]]; then
-            wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
-            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 2>/dev/null
-         fi
-         #frozen and patch gen found, backup
-         if [[ "$origen" = "" ]]; then
-            cp "$ryugen" "$ryugenpatch" 2>/dev/null
-            wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
-            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 2>/dev/null
-         fi
-      fi 
-      
-   #if unfrozen   
-      if [[ "$ryu382" = "" ]] || [[ "$ava382" = "" ]]; then
-         #found patch gen found, restore
-         if [[ -e "$ryugenpatch" ]]; then
-            cp "$ryugenpatch" "$ryugen"
-         else 
-            wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
-            dos2unix "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" 2>/dev/null
-         fi
-      fi 
-# / 
-#/
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
@@ -1780,5 +2191,10 @@ fi
             fi
 #################################################################################################################################
 wait
+   # --- \ restore user config file for the updater if running clean install/update from the switch installer 
+   if [[ -e /tmp/.userconfigfile ]]; then 
+      cp /tmp/.userconfigfile /userdata/system/switch/CONFIG.txt 2>/dev/null
+   fi 
+   # --- /
 killall -9 vlc 2>/dev/null && killall -9 xterm 2>/dev/null && curl http://127.0.0.1:1234/reloadgames && exit 0; exit 1
 #################################################################################################################################
