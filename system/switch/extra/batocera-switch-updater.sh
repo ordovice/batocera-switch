@@ -284,13 +284,24 @@ EMULATORS=$(echo $EMULATORS | sed 's/ /-/g')
    # GET EMULATORS FROM CONFIG FILE -------------------------------------
    cfg=/userdata/system/switch/CONFIG.txt
    if [[ ! -e "$cfg" ]]; then 
-   link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
+      link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
    fi 
    dos2unix $cfg 1>/dev/null 2>/dev/null
    if [[ -e "$cfg" ]]; then 
-   EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
-   EMULATORS=$(echo "$EMULATORS ")
+      # check config file version & update ---------------------------
+      link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/tmp/.CONFIG.txt" "$link_defaultconfig"
+         currentver=$(cat "$cfg" | grep "(ver " | head -n1 | sed 's,^.*(ver ,,g' | cut -d ")" -f1)
+            if [[ "$currentver" = "" ]]; then currentver=1.0.0; fi
+         latestver=$(cat "/tmp/.CONFIG.txt" | grep "(ver " | head -n1 | sed 's,^.*(ver ,,g' | cut -d ")" -f1)
+            if [[ "$latestver" > "$currentver" ]]; then 
+               cp /tmp/.CONFIG.txt $cfg 2>/dev/null
+               echo -e "\n~/switch/CONFIG.txt FILE HAS BEEN UPDATED!\n"
+            fi
+      # check config file version & update ---------------------------
+      EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
+      EMULATORS=$(echo "$EMULATORS ")
          if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
             EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
          fi
@@ -509,8 +520,8 @@ echo "THEME_COLOR_OK=$THEME_COLOR_OK" >> "$f"
    cfg=/userdata/system/switch/CONFIG.txt
    dos2unix $cfg 1>/dev/null 2>/dev/null
    if [[ -e "$cfg" ]]; then 
-   EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
-   EMULATORS=$(echo "$EMULATORS ")
+      EMULATORS=$(cat "$cfg" | grep "EMULATORS=" | cut -d "=" -f2 | head -n1 | cut -d \" -f2 | tr -d '\0')
+      EMULATORS=$(echo "$EMULATORS ")
          if [[ "$EMULATORS" = "DEFAULT" ]] || [[ "$EMULATORS" = "default" ]] || [[ "$EMULATORS" = "ALL" ]] || [[ "$EMULATORS" = "all" ]]; then
             EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
          fi 
@@ -547,6 +558,13 @@ updates=$(cat /tmp/updater-settings | grep "updates=locked" | cut -d "=" -f2)
       link_ryujinx=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/ryujinx-$release_ryujinx-linux_x64.tar.gz
       link_ryujinxavalonia=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/test-ava-ryujinx-$release_ryujinx-linux_x64.tar.gz
    fi
+   # unlock for v<=36 // use settings from config file 
+   if [[ "$(uname -a | awk '{print $3}')" < "6.2" ]] || [[ "$(uname -a | awk '{print $3}')" = "6.2" ]]; then 
+      locked=0
+      release_ryujinx=$(curl -s https://github.com/Ryujinx/release-channel-master | grep "/release-channel-master/releases/tag/" | sed 's,^.*/release-channel-master/releases/tag/,,g' | cut -d \" -f1)
+      link_ryujinx=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/ryujinx-$release_ryujinx-linux_x64.tar.gz
+      link_ryujinxavalonia=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/test-ava-ryujinx-$release_ryujinx-linux_x64.tar.gz
+   fi 
 # ----------------------------------------------------------------------------------
 # pass info cookie: 
 cookie=/userdata/system/switch/extra/updates.txt
@@ -2181,24 +2199,24 @@ fallback=10
          # 
          ## RUN THE UPDATER: ------------------------------------------------- 
             if [[ "$MODE" = "DISPLAY" ]]; then 
-               if [[ "$ANIMATION" = "YES" ]]; then  
+               if [[ "$ANIMATION" = "YES" ]]; then 
                   DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install"
                else 
                   DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && post-install"
                fi 
-            fi
+            fi 
 fi 
 #/ 
 #################################################################################################################################
             if [[ "$MODE" = "CONSOLE" ]]; then 
                   DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch console && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install
-            fi
+            fi 
 #################################################################################################################################
 wait
    # --- \ restore user config file for the updater if running clean install/update from the switch installer 
    if [[ -e /tmp/.userconfigfile ]]; then 
       cp /tmp/.userconfigfile /userdata/system/switch/CONFIG.txt 2>/dev/null
    fi 
-   # --- /
+   # --- / 
 killall -9 vlc 2>/dev/null && killall -9 xterm 2>/dev/null && curl http://127.0.0.1:1234/reloadgames && exit 0; exit 1
 #################################################################################################################################
