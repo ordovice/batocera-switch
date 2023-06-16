@@ -192,7 +192,7 @@ wget -q -O "$path/yuzu.png" "$url/yuzu.png"
 wget -q -O "$path/yuzuEA.png" "$url/yuzuEA.png"
 # -------------------------------------------------------------------- 
 # + get default config file: 
-wget -q -O "/userdata/system/switch/CONFIG.txt" "$url/batocera-switch-config.txt"
+wget -q -O "/userdata/system/switch/CONFIG.txt" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX
 path=/userdata/system/switch/configgen/generators/ryujinx
