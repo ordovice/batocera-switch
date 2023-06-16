@@ -48,8 +48,8 @@ USE_RYUJINXAVALONIA_VERSION=1.1.382
 	#
 	#---------------------------------------------------------------
 	#
-	#    >  default for yuzu:      AUTO
-	#    >  default for ryujinx:   1.1.382
+	#    >  default for yuzu:     AUTO
+	#    >  default for ryujinx:  1.1.382
 	#
 	#---------------------------------------------------------------
 
