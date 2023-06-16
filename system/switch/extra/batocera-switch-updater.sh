@@ -1468,181 +1468,181 @@ clear
 echo -e "${R}"
 echo -e "${F}S${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-"
 echo -e "${F}SW${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}»-"
 echo -e "${F}${R}s${F}WI${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-»-"
 echo -e "${F}S${R}w${F}IT${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}--»-"
 echo -e "${F}SW${R}i${F}TC${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}---»-"
 echo -e "${F}SWI${R}t${F}CH${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}----»-"
 echo -e "${F}SWIT${R}c${F}H ${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-----»-"
 echo -e "${F}SWITC${R}h${F} U${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}------»-"
 echo -e "${F}SWITCH${R}_${F}UP${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-------»-"
 echo -e "${F}SWITCH ${R}u${F}PD${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}--------»-"
 echo -e "${F}SWITCH U${R}p${F}DA${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}---------»-"
 echo -e "${F}SWITCH UP${R}d${F}AT${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}----------»-"
 echo -e "${F}SWITCH UPD${R}aTE${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-----------»-"
 echo -e "${F}SWITCH UPDA${R}t${F}ER${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}------------»-"
 echo -e "${F}SWITCH UPDAT${R}e${F}R ${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-------------»-"
 echo -e "${F}SWITCH UPDATE${R}r${F} F${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}--------------»-"
 echo -e "${F}SWITCH UPDATER${R}_${F}FO${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}---------------»-"
 echo -e "${F}SWITCH UPDATER ${R}f${F}OR${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}----------------»-"
 echo -e "${F}SWITCH UPDATER F${R}o${F}R ${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-----------------»-"
 echo -e "${F}SWITCH UPDATER FO${R}r${F} B${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}------------------»-"
 echo -e "${F}SWITCH UPDATER FOR${R}_${F}BA${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-------------------»-"
 echo -e "${F}SWITCH UPDATER FOR ${R}b${F}AT${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}--------------------»-"
 echo -e "${F}SWITCH UPDATER FOR B${R}a${F}TO${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}---------------------»-"
 echo -e "${F}SWITCH UPDATER FOR BA${R}t${F}OC${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}----------------------»-"
 echo -e "${F}SWITCH UPDATER FOR BAT${R}o${F}CE${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-----------------------»-"
 echo -e "${F}SWITCH UPDATER FOR BATO${R}c${F}ER${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}------------------------»-"
 echo -e "${F}SWITCH UPDATER FOR BATOC${R}e${F}RA${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}-------------------------»-"
 echo -e "${F}SWITCH UPDATER FOR BATOCE${R}r${F}A${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}--------------------------»"
 echo -e "${F}SWITCH UPDATER FOR BATOCER${R}a${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 clear
 echo -e "${R}---------------------------¬"
 echo -e "${F}SWITCH UPDATER FOR BATOCERA${R}"
 echo
-sleep 0.06
+sleep 0.033
 # -------------------------
 # -------------------------
 # -------------------------
@@ -1772,7 +1772,7 @@ update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_y
 update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 3 EMULATORS -------------------------------------
@@ -1780,14 +1780,14 @@ if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(
 update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
 update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
