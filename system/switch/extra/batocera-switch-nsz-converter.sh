@@ -93,7 +93,7 @@
 					#-------------------------------------------
 					# run conversion  
 					#-------------------------------------------
-					sleep 0.5 && nsz -D -w -t 4 -i -P "$rom" 
+					sleep 0.5 && nsz -D -w -t 2 -P "$rom" 
 					wait
 						echo -e "╔═════════════════════════════════════════════╗ "
 						echo -e "║ FINISHED CONVERTING TO NSP                  ║ "
