@@ -1,0 +1,85 @@
+// CONFIG // SETTINGS FOR BATOCERA SWITCH UPDATER (ver 1.0.3)
+################################################################
+
+
+
+EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
+	#---------------------------------------------------------------
+	#  to only update specific emulators: 
+	#---------------------------------------------------------------
+	#
+	#    > example 
+	#    ="YUZU YUZUEA"
+	#    ="RYUJINX RYUJINXAVALONIA YUZU"
+	#
+	#    > default  
+	#    EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
+	#
+	#---------------------------------------------------------------
+
+
+
+USE_YUZU_VERSION=AUTO
+USE_YUZUEA_VERSION=AUTO
+USE_RYUJINX_VERSION=1.1.382
+USE_RYUJINXAVALONIA_VERSION=1.1.382
+	#---------------------------------------------------------------
+	#
+	#  for best ryujinx/avalonia autocontroller compatibility:
+	#    >  use ryujinx/avalonia version =1.1.382
+	#
+	#---------------------------------------------------------------
+	#
+	#  for latest available versions:
+	#    >  use =AUTO, Auto, A, a, or empty
+	#
+	#---------------------------------------------------------------
+	#
+	#  to use a specific emulator version in the updater: 
+	#
+	#    >  for ryujinx / ryujinxavalonia
+	#           version format:   1.1.nnn
+	#                 example1:  =1.1.777
+	#                 example2:  =777
+	#
+	#    >  for yuzu / yuzuea:
+	#           version format:   nnnn
+	#                  example:  =1333
+	#
+	#---------------------------------------------------------------
+	#
+	#    >  default for yuzu:     AUTO
+	#    >  default for ryujinx:  1.1.382
+	#
+	#---------------------------------------------------------------
+
+
+
+TEXT_COLOR=WHITE
+THEME_COLOR=WHITE
+THEME_COLOR_OK=WHITE
+THEME_COLOR_YUZU=RED
+THEME_COLOR_YUZUEA=RED
+THEME_COLOR_RYUJINX=BLUE
+THEME_COLOR_RYUJINXLDN=BLUE
+THEME_COLOR_RYUJINXAVALONIA=BLUE
+	#---------------------------------------------------------------
+	#  available font/theme colors:
+	#---------------------------------------------------------------
+	#
+	#    WHITE,BLACK,RED,GREEN,BLUE,YELLOW,PURPLE,CYAN
+	#    DARKRED,DARKGREEN,DARKBLUE,DARKYELLOW,DARKPURPLE,DARKCYAN
+	#
+	#---------------------------------------------------------------
+
+
+
+TEXT_SIZE=AUTO
+	#---------------------------------------------------------------
+	#  use custom font size for the updater: 
+	#---------------------------------------------------------------	
+	#
+	#    > example: 10   
+	#    > default: AUTO
+	#
+	#---------------------------------------------------------------

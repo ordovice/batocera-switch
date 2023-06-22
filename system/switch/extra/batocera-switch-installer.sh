@@ -128,6 +128,23 @@ echo -e "${X}PLEASE WAIT${X} . . ."
 # -------------------------------------------------------------------- 
 # -------------------------------------------------------------------- 
 # -------------------------------------------------------------------- 
+# PRESERVE CONFIG FILE 
+cfg=/userdata/system/switch/CONFIG.txt 
+if [[ -f "$cfg" ]]; then 
+      # check config file version & update ---------------------------
+      link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/tmp/.CONFIG.txt" "$link_defaultconfig"
+         currentver=$(cat "$cfg" | grep "(ver " | head -n1 | sed 's,^.*(ver ,,g' | cut -d ")" -f1)
+            if [[ "$currentver" = "" ]]; then currentver=1.0.0; fi
+         latestver=$(cat "/tmp/.CONFIG.txt" | grep "(ver " | head -n1 | sed 's,^.*(ver ,,g' | cut -d ")" -f1)
+            if [[ "$latestver" > "$currentver" ]]; then 
+               cp /tmp/.CONFIG.txt $cfg 2>/dev/null
+               echo -e "\n~/switch/CONFIG.txt FILE HAS BEEN UPDATED!\n"
+            fi
+      # check config file version & update ---------------------------
+   cp $cfg /tmp/.userconfigfile 2>/dev/null
+fi
+# -------------------------------------------------------------------- 
 # PURGE OLD INSTALLS 
 rm -rf /userdata/system/switch 2>/dev/null
 rm /userdata/system/configs/emulationstation/add_feat_switch.cfg 2>/dev/null
@@ -184,6 +201,9 @@ wget -q -O "$path/ryujinx-avalonia.png" "$url/ryujinx-avalonia.png"
 wget -q -O "$path/ryujinx.png" "$url/ryujinx.png"
 wget -q -O "$path/yuzu.png" "$url/yuzu.png"
 wget -q -O "$path/yuzuEA.png" "$url/yuzuEA.png"
+# -------------------------------------------------------------------- 
+# + get default config file: 
+wget -q -O "/userdata/system/switch/CONFIG.txt" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX
 path=/userdata/system/switch/configgen/generators/ryujinx
@@ -278,7 +298,12 @@ chmod a+x /tmp/batocera-switch-updater.sh 2>/dev/null
 /tmp/batocera-switch-updater.sh CONSOLE 
 sleep 0.1 
 echo "OK" >> /userdata/system/switch/extra/installation
-sleep 0.1 
+sleep 0.1
+   # --- \ restore user config file for the updater if running clean install/update from the switch installer 
+   if [[ -e /tmp/.userconfigfile ]]; then 
+      cp /tmp/.userconfigfile /userdata/system/switch/CONFIG.txt 2>/dev/null
+   fi 
+   # --- /
 } 
 export -f batocera-pro-installer 2>/dev/null 
 # --------------------------------------------------------------------
@@ -302,12 +327,17 @@ echo -e "   ${X}Use Switch Updater in Ports to update emulators${X}"
 echo -e "   ${X}-----------------------------------------------------${X}"
 echo
 echo 
+echo -e "   ${X}-----------------------------------------------------${X}"
+echo -e "   ${X}For compatibility reasons Ryujinx&Avalonia are locked "
+echo -e "   ${X}to version 1.1.382, to unlock the updates: " 
+echo -e "   ${X}CHECK /userdata/system/switch/CONFIG.txt${X}" 
+echo -e "   ${X}-----------------------------------------------------${X}"
+echo
 echo
 echo -e "   ${X}-----------------------------------------------------${X}"
 echo -e "   ${X}IN CASE OF ISSUES: ${X}"
 echo 
 echo -e "   ${X}1) try using opengl instead of vulkan ${X}"
-echo 
 echo -e "   ${X}2) use [autocontroller = off] in advanced settings & ${X}"
 echo -e "   ${X}   configure controller manually in f1-applications ${X}"
 echo
