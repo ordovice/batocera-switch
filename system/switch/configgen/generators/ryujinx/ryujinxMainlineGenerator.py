@@ -128,7 +128,12 @@ class RyujinxMainlineGenerator(Generator):
 
         data['system_time_zone'] = 'UTC'
         data['system_time_offset'] = 0
-        data['docked_mode'] = bool('true')
+
+        if system.isOptSet('ryu_docked_mode'):
+            data['docked_mode'] = bool(int(system.config["ryu_docked_mode"]))
+        else:
+            data['docked_mode'] = bool('true')
+
         if system.isOptSet('ryu_enable_discord_integration'):
             data['enable_discord_integration'] = bool(int(system.config["ryu_enable_discord_integration"]))
         else:
