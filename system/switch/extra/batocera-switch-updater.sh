@@ -862,10 +862,10 @@ mkdir /userdata/system/switch/extra 2>/dev/null
 mkdir /userdata/system/switch/extra/yuzu 2>/dev/null
 cp $temp/yuzu/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
 #rm /userdata/system/switch/extra/yuzu/libQ* 2>/dev/null
-cp $temp/yuzu/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
-cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
-cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
-cd $temp
+   cp $temp/yuzu/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
+   cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
+   cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
+   cd $temp
 # fix broken libstdc++.so.6 for v37 
    if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
       link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
@@ -873,6 +873,11 @@ cd $temp
    else 
       rm /userdata/system/switch/extra/yuzu/libstdc++.so.6 2>/dev/null
    fi
+# add yuzu's bundled 'optional' libs 
+   cp $temp/yuzu/squashfs-root/usr/optional/libstdc++/libstdc++.so.6 /userdata/system/switch/extra/yuzu/libstdc++.so.6
+   cp $temp/yuzu/squashfs-root/usr/optional/libgcc_s/libgcc_s.so.1 /userdata/system/switch/extra/yuzu/libgcc_s.so.1
+   cp $temp/yuzu/squashfs-root/usr/optional/exec.so /userdata/system/switch/extra/yuzu/exec.so
+   chmod a+x /userdata/system/switch/extra/yuzu/lib* 2>/dev/null
 # make launcher
 f=/userdata/system/switch/yuzu.AppImage
 rm "$f" 2>/dev/null
@@ -919,6 +924,10 @@ size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/d
 #echo -e "${T}» ~/switch/yuzu.AppImage · ${T}$size_yuzu( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/ 
+# send version to cookie: 
+   ver=$(echo "$link_yuzu" | sed 's,^.*mainline-0-,,g' | cut -d "/" -f1)
+      rm /userdata/system/switch/extra/yuzu/version.txt 2>/dev/null
+      echo "$ver" >> /userdata/system/switch/extra/yuzu/version.txt
 fi
 #
 #
@@ -943,10 +952,10 @@ mkdir /userdata/system/switch/extra 2>/dev/null
 mkdir /userdata/system/switch/extra/yuzuea 2>/dev/null
 cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzuea/ 2>/dev/null
 #rm /userdata/system/switch/extra/yuzuea/libQ* 2>/dev/null 
-cp $temp/yuzuea/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
-cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
-cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
-cd $temp
+   cp $temp/yuzuea/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
+   cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
+   cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
+   cd $temp
 # fix broken libstdc++.so.6 for v37 
    if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
       link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
@@ -954,6 +963,11 @@ cd $temp
    else 
       rm /userdata/system/switch/extra/yuzuea/libstdc++.so.6 2>/dev/null
    fi
+# add yuzu's bundled 'optional' libs 
+   cp $temp/yuzu/squashfs-root/usr/optional/libstdc++/libstdc++.so.6 /userdata/system/switch/extra/yuzu/libstdc++.so.6
+   cp $temp/yuzu/squashfs-root/usr/optional/libgcc_s/libgcc_s.so.1 /userdata/system/switch/extra/yuzu/libgcc_s.so.1
+   cp $temp/yuzu/squashfs-root/usr/optional/exec.so /userdata/system/switch/extra/yuzu/exec.so
+   chmod a+x /userdata/system/switch/extra/yuzu/lib* 2>/dev/null
 # make launcher
 f=/userdata/system/switch/yuzuEA.AppImage
 rm "$f" 2>/dev/null
@@ -1000,6 +1014,10 @@ size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)
 #echo -e "${T}» ~/switch/yuzuEA.AppImage · ${T}$size_yuzuea( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
+# send version to cookie: 
+   ver=$(echo "$link_yuzuea" | sed 's,^.*/EA-,,g' | cut -d "/" -f1)
+      rm /userdata/system/switch/extra/yuzuea/version.txt 2>/dev/null
+      echo "$ver" >> /userdata/system/switch/extra/yuzuea/version.txt
 fi
 #
 #
@@ -1106,6 +1124,10 @@ size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 #echo -e "${T}» ~/switch/Ryujinx.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
+# send version to cookie: 
+   ver=$(echo "$link_ryujinx" | sed 's,^.*download/,,g' | cut -d "/" -f1)
+      rm /userdata/system/switch/extra/ryujinx/version.txt 2>/dev/null
+      echo "$ver" >> /userdata/system/switch/extra/ryujinx/version.txt
 fi
 #
 #
@@ -1210,6 +1232,9 @@ size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 #echo -e "${T}» ~/switch/Ryujinx-LDN.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
+# send version to cookie: 
+      rm /userdata/system/switch/extra/ryujinxldn/version.txt 2>/dev/null
+      echo "1.1.368" >> /userdata/system/switch/extra/ryujinxldn/version.txt
 fi
 #
 #
@@ -1319,7 +1344,11 @@ size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 #echo -e "${T}» ~/switch/Ryujinx-Avalonia.AppImage · ${T}$size_ryujinx( )MB   ${T}" | sed 's/( )//g'
 echo
 cd ~/
-fi
+# send version to cookie: 
+   ver=$(echo "$link_ryujinxavalonia" | sed 's,^.*download/,,g' | cut -d "/" -f1)
+      rm /userdata/system/switch/extra/ryujinxavalonia/version.txt 2>/dev/null
+      echo "$ver" >> /userdata/system/switch/extra/ryujinxavalonia/version.txt
+fi 
 #
 #
 # ---------------------------------------------------------------------------------- 
