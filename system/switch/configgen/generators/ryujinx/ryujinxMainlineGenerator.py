@@ -356,6 +356,7 @@ class RyujinxMainlineGenerator(Generator):
                             inputguid = controller.guid
                     else:
                         eslog.debug("Controller Mapping exists, following new logic")
+                        eslog.debug("Controller Mapping {}".format(controller_mapping))
                         convuuid = controller_mapping['new_ryu_guid']
                         if controller_mapping['ryu_type'] == 'xbox':
                             controllernumber = str(int(xbox_index))
@@ -369,11 +370,6 @@ class RyujinxMainlineGenerator(Generator):
                         if controller_mapping['ryu_type'] == 'switch':
                             controllernumber = str(int(switch_index))
                             switch_index = switch_index + 1 
-
-
-                        #Follow New
-                        
-                    #controllernumber = str(int(controller.player) - 1)  #will be replaced shortly
 
                     cvalue = {}
                     left_joycon_stick = {}
