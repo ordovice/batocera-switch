@@ -12,6 +12,12 @@ Controller automapping is a constant work in progress.  You can turn off automap
 ## GET Support Here
 https://discord.gg/cuw5Xt7M7d
 
+## TODO
+Continue building out mapping file for Yuzu and Ryujinx
+Actual Joycon support
+Proper controller type selection (currently everything is forced to Pro Controller)
+Confirm if Motion can just be enabled for all controllers whether they have it or not
+
 ## EASY INSTALL
 From a terminal window, run the following:
 curl -L switch.batocera.pro | bash
@@ -22,9 +28,6 @@ Thanks to uureel for simplifying the install/update of Switch components for the
 
 ## UPGRADING OLDER VERSIONS OF THIS ADD-ON NOT INSTALLED WITH THE EASY INSTALL METHOD
 Delete the \system\switch folder and install this repo as normal.  There are folders in the old install that will break this version.  
-
-## V34 Users
-The Switch Add-On is no longer being supported or maintained for v34 of Batocera
 
 ## Reporting Issues
 Please use the controller issue templates for reporting controller issues.  For other issues, provide as much information as possible, and if it's a launch issue, please be sure to include the es_launch_stdout.log and es_launch_stderr.log log files from \system\logs

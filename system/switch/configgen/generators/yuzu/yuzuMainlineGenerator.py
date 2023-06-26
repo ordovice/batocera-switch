@@ -514,15 +514,14 @@ class YuzuMainlineGenerator(Generator):
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuDSAxis[x]))
                             else:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuDSAxis[x],yuzuDSAxis[x]+1))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
                     else:
                         for x in yuzuButtons:
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
                         for x in yuzuAxis:
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '[empty]')
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '[empty]')
+                    #Enable motion no matter what, as enabling won't hurt things if it doesn't exist
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
                 else:
                     #Follow new logic
                     eslog.debug("Controller Mapping {}".format(controller_mapping))
@@ -580,14 +579,10 @@ class YuzuMainlineGenerator(Generator):
                         for x in yuzuAxisButtons:
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
 
-                    #Do we support motion?
-                    if(controller_mapping['has_motion'] == 'TRUE'):
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
-                    else:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '[empty]')
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '[empty]')
-                
+                    #Enable motion no matter what, as enabling won't hurt things if it doesn't exist
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                    
                 
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
                 if (controllernumber == "0"):
