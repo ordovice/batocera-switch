@@ -453,6 +453,30 @@ class YuzuMainlineGenerator(Generator):
             else:
                 yuzuConfig.set("Controls", "player_3_type", "0")
 
+            # Player 5 Pad Type
+            if system.isOptSet('p5_pad'):
+                yuzuConfig.set("Controls", "player_4_type", system.config["p5_pad"])
+            else:
+                yuzuConfig.set("Controls", "player_4_type", "0")
+
+            # Player 6 Pad Type
+            if system.isOptSet('p6_pad'):
+                yuzuConfig.set("Controls", "player_5_type", system.config["p6_pad"])
+            else:
+                yuzuConfig.set("Controls", "player_5_type", "0")
+
+            # Player 7 Pad Type
+            if system.isOptSet('p7_pad'):
+                yuzuConfig.set("Controls", "player_6_type", system.config["p7_pad"])
+            else:
+                yuzuConfig.set("Controls", "player_6_type", "0")
+
+            # Player 8 Pad Type
+            if system.isOptSet('p8_pad'):
+                yuzuConfig.set("Controls", "player_7_type", system.config["p8_pad"])
+            else:
+                yuzuConfig.set("Controls", "player_7_type", "0")
+
             
             yuzuConfig.set("Controls", "player_1_type\default", "false")
 
