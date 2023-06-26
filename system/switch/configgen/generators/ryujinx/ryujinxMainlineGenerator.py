@@ -92,6 +92,7 @@ class RyujinxMainlineGenerator(Generator):
         else:
             ryu_version = "1.1.382"
 
+        eslog.debug("Ryujinx Version: {}".format(ryu_version))
 
         with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
             reader = csv.DictReader(csv_file)
