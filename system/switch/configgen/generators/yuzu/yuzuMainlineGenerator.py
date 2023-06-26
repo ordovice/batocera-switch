@@ -507,7 +507,6 @@ class YuzuMainlineGenerator(Generator):
                         inputguid = "030000004c050000e60c000000006800"
                     #DS5 corrections
                     if ((controller.guid in guidstoreplace_ds5_wireless) or (controller.guid in guidstoreplace_ds4)) :
-                        #button_a="engine:sdl,port:0,guid:030000004c050000e60c000000006800,button:1"
                         for x in yuzuDSButtons:
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuDSButtons[x]))
                         for x in yuzuDSAxis:
