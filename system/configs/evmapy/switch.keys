@@ -17,8 +17,8 @@
         {
             "trigger": ["hotkey", "l3"],
             "type": "key",
-            "target": ["KEY_ENTER"],
-            "description": "Press enter shortcut 2"
+            "target": ["KEY_F11"],
+            "description": "Press F11"
         }
 	]
 }
