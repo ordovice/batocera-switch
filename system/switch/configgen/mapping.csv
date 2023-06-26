@@ -1,6 +1,6 @@
 ﻿controller_name,old_guid,yuzu_guid,old_ryu_guid,new_ryu_guid,ryu_type,button_a,button_b,button_dup,button_ddown,button_dleft,button_dright,button_home,button_l,button_lstick,button_minus,button_plus,button_r,button_rstick,button_sl,button_sr,button_x,button_y,button_zl,button_zr,axis_lstick,axis_rstick,axis_button_zl,axis_button_zr,has_motion,ryu_x,ryu_b,ryu_y,ryu_a
 8Bitdo SN30 Pro (X),050000005e0400008e02000030110000,050000005e0400008e02000030110000,,f0030003-045e-0000-8e02-000000006800,general,1,0,hat,hat,hat,hat,8,4,9,6,7,5,10,4,5,2,3,axis,axis,0,3,2,5,FALSE,Y,A,X,B
-Pro Controller,050000007e0500000920000001800000,030000007e0500000920000000006803,,fb560003-057e-0000-0920-000000006803,general,0,1,11,12,13,14,5,9,7,4,6,10,8,9,10,2,3,axis,axis,0,2,4,5,TRUE,X,B,Y,A
+Pro Controller,050000007e0500000920000001800000,030000007e0500000920000000006803,,fb560003-057e-0000-0920-000000006803,switch,0,1,11,12,13,14,5,9,7,4,6,10,8,9,10,2,3,axis,axis,0,2,4,5,TRUE,X,B,Y,A
 ZEROPLUS P4 Wired GamepadV2.8,03000000120c0000f10e000011010000,03000000120c0000f10e000000016800,,,general,1,0,11,12,13,14,5,9,7,4,6,10,8,9,10,3,2,axis,axis,0,2,4,5,TRUE,,,,
 Xbox Wireless Controller,050000005e040000fd02000030110000,050000005e0400008e02000030110000,,,xbox,1,0,hat,hat,hat,hat,8,4,9,6,7,5,10,4,5,3,2,axis,axis,0,3,2,5,FALSE,,,,
 Steam Controller,03000000de2800000512000011010000,03000000de2800000512000011010000,,,steam,4,5,19,20,21,22,23,8,15,12,13,9,16,8,9,6,7,axis,axis,0,3,2,5,FALSE,,,,

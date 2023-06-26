@@ -270,11 +270,12 @@ class RyujinxMainlineGenerator(Generator):
         switch_count = 0
         ds4_count = 0
         ds5_count = 0
-        
+
         for index in playersControllers :
             controller = playersControllers[index]
 
             controller_mapping = next((item for item in controller_data if item["old_guid"] == controller.guid),None)
+
             if(controller_mapping == None):
                 if controller.guid in guidstoreplace_xbox:
                     xbox_count = xbox_count + 1
@@ -290,15 +291,25 @@ class RyujinxMainlineGenerator(Generator):
                 if controller_mapping['ryu_type'] == 'xbox':
                     xbox_count = xbox_count + 1
                 if controller_mapping['ryu_type'] == 'sony_ds4':
-                    ds4_count = ds4_count + 1  
+                    ds4_count = ds4_count + 1
                 if controller_mapping['ryu_type'] == 'sony_ds5':
                     ds5_count = ds5_count + 1
                 if controller_mapping['ryu_type'] == 'switch':
-                    switch_count = switch_count + 1                
+                    switch_count = switch_count + 1
+
         ds4_index = 0
         switch_index = ds4_count + ds5_count
         xbox_index = ds4_count + ds5_count + switch_count
         reg_index = ds4_count + ds5_count + xbox_count + switch_count
+
+        eslog.debug("Counts: Sony DS4: {}".format(ds4_count))
+        eslog.debug("Counts: Sony DS5: {}".format(ds5_count))
+        eslog.debug("Counts: Switch: {}".format(switch_count))
+        eslog.debug("Counts: XBox: {}".format(xbox_count))
+
+        eslog.debug("Index: Sony DS4: {}".format(ds4_index))
+        eslog.debug("Index: Switch: {}".format(switch_index))
+        eslog.debug("Index: XBox: {}".format(xbox_index))
 
         if ((system.isOptSet('ryu_auto_controller_config') and not (system.config["ryu_auto_controller_config"] == "0")) or not system.isOptSet('ryu_auto_controller_config')):
             
