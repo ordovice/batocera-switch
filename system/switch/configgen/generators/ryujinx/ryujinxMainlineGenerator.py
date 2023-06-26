@@ -381,7 +381,7 @@ class RyujinxMainlineGenerator(Generator):
                     cvalue['id'] = str(int(controller.player) - 1) + '-' + str(convuuid)
                     cvalue['controller_type'] = "ProController"
                     cvalue['player_index'] = "Player" +  str(int(controller.player))
-
+                    input_config.append(cvalue)
             else:
                 #Old Logic
                 eslog.debug("Following old 1.1.382 logic")
@@ -489,7 +489,8 @@ class RyujinxMainlineGenerator(Generator):
                     cvalue['id'] = controllernumber + '-' + str(convuuid)
                     cvalue['controller_type'] = "ProController"
                     cvalue['player_index'] = "Player" +  str(int(controller.player))
-            input_config.append(cvalue)
+                    input_config.append(cvalue)
+            
             data['input_config'] = input_config
 
         #Vulkan or OpenGl
