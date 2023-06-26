@@ -267,22 +267,38 @@ class RyujinxMainlineGenerator(Generator):
         guidstochangebuttons_xbox = ["030000005e0400008e02000014010000"]
 
         xbox_count = 0
+        switch_count = 0
         ds4_count = 0
         ds5_count = 0
+        
         for index in playersControllers :
             controller = playersControllers[index]
-            if controller.guid in guidstoreplace_xbox:
-                xbox_count = xbox_count + 1
-            if controller.guid in guidstoreplace_ds4a:
-                ds4_count = ds4_count + 1
-            if controller.guid in guidstoreplace_ds4b:
-                ds4_count = ds4_count + 1
-            if controller.guid in guidstoreplace_ds5_wireless:
-                ds5_count = ds5_count + 1
-            if controller.guid in guidstoreplace_ds5_wired:
-                ds5_count = ds5_count + 1
+
+            controller_mapping = next((item for item in controller_data if item["old_guid"] == controller.guid),None)
+            if(controller_mapping == None):
+                if controller.guid in guidstoreplace_xbox:
+                    xbox_count = xbox_count + 1
+                if controller.guid in guidstoreplace_ds4a:
+                    ds4_count = ds4_count + 1
+                if controller.guid in guidstoreplace_ds4b:
+                    ds4_count = ds4_count + 1
+                if controller.guid in guidstoreplace_ds5_wireless:
+                    ds5_count = ds5_count + 1
+                if controller.guid in guidstoreplace_ds5_wired:
+                    ds5_count = ds5_count + 1
+            else:
+                if controller_mapping['ryu_type'] == 'xbox':
+                    xbox_count = xbox_count + 1
+                if controller_mapping['ryu_type'] == 'sony_ds4':
+                    ds4_count = ds4_count + 1  
+                if controller_mapping['ryu_type'] == 'sony_ds5':
+                    ds5_count = ds5_count + 1
+                if controller_mapping['ryu_type'] == 'switch':
+                    switch_count = switch_count + 1                
         ds4_index = 0
-        reg_index = ds4_count + ds5_count + xbox_count
+        switch_index = ds4_count + ds5_count
+        xbox_index = ds4_count + ds5_count + switch_count
+        reg_index = ds4_count + ds5_count + xbox_count + switch_count
 
         if ((system.isOptSet('ryu_auto_controller_config') and not (system.config["ryu_auto_controller_config"] == "0")) or not system.isOptSet('ryu_auto_controller_config')):
             
@@ -296,6 +312,9 @@ class RyujinxMainlineGenerator(Generator):
                 for index in playersControllers :
                     controller = playersControllers[index]
                     inputguid = controller.guid
+
+
+
                     controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
 
                     #Map Keys and GUIDs
@@ -305,10 +324,45 @@ class RyujinxMainlineGenerator(Generator):
                         myid = uuid.UUID(inputguid)
                         myid.bytes_le
                         convuuid = uuid.UUID(bytes=myid.bytes_le)
+                        if controller.guid in guidstoreplace_xbox:
+                            controllernumber = str(int(xbox_index))
+                            xbox_index = xbox_index + 1
+                        elif controller.guid in guidstoreplace_ds4a:
+                            controllernumber = str(int(ds4_index))
+                            ds4_index = ds4_index + 1
+                        elif controller.guid in guidstoreplace_ds4b:
+                            controllernumber = str(int(ds4_index))
+                            ds4_index = ds4_index + 1
+                        elif controller.guid in guidstoreplace_ds5_wireless:
+                            controllernumber = str(int(ds4_index))
+                            ds4_index = ds4_index + 1
+                        elif controller.guid in guidstoreplace_ds5_wired:
+                            controllernumber = str(int(ds4_index))
+                            ds4_index = ds4_index + 1
+                        else:
+                            controllernumber = str(int(reg_index))
+                            reg_index = reg_index + 1
+                            inputguid = controller.guid
                     else:
                         eslog.debug("Controller Mapping exists, following new logic")
-                        convuuid = controller_mapping['ryu_guid']
+                        convuuid = controller_mapping['new_ryu_guid']
+                        if controller_mapping['ryu_type'] == 'xbox':
+                            controllernumber = str(int(xbox_index))
+                            xbox_index = xbox_index + 1
+                        if controller_mapping['ryu_type'] == 'sony_ds4':
+                            controllernumber = str(int(ds4_index))
+                            ds4_index = ds4_index + 1  
+                        if controller_mapping['ryu_type'] == 'sony_ds5':
+                            controllernumber = str(int(ds4_index))
+                            ds4_index = ds4_index + 1 
+                        if controller_mapping['ryu_type'] == 'switch':
+                            controllernumber = str(int(switch_index))
+                            switch_index = switch_index + 1 
+
+
                         #Follow New
+                        
+                    #controllernumber = str(int(controller.player) - 1)  #will be replaced shortly
 
                     cvalue = {}
                     left_joycon_stick = {}
@@ -378,7 +432,7 @@ class RyujinxMainlineGenerator(Generator):
 
                     cvalue['version'] = 1
                     cvalue['backend'] = "GamepadSDL2"
-                    cvalue['id'] = str(int(controller.player) - 1) + '-' + str(convuuid)
+                    cvalue['id'] = controllernumber + '-' + str(convuuid)
                     cvalue['controller_type'] = "ProController"
                     cvalue['player_index'] = "Player" +  str(int(controller.player))
                     input_config.append(cvalue)
