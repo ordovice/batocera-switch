@@ -503,10 +503,9 @@ class YuzuMainlineGenerator(Generator):
                     #DS4 GUIDs from https://github.com/gabomdq/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
                     if controller.guid in guidstoreplace_ds4:
                         inputguid = "030000004c050000cc09000000006800"
-                    if controller.guid in guidstoreplace_ds5_wireless:
-                        inputguid = "030000004c050000e60c000000006800"
+
                     #DS5 corrections
-                    if ((controller.guid in guidstoreplace_ds5_wireless) or (controller.guid in guidstoreplace_ds4)) :
+                    if ((controller.guid in guidstoreplace_ds4)) :
                         for x in yuzuDSButtons:
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuDSButtons[x]))
                         for x in yuzuDSAxis:
