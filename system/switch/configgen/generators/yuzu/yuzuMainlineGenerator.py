@@ -474,9 +474,9 @@ class YuzuMainlineGenerator(Generator):
                 eslog.debug("Controller GUID {}".format(inputguid))
                 controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
                 
-                if controller_mapping == None:
+                if ((controller_mapping == None) or (controller_mapping['yuzu_guid'] == 'SAME')):
                     #Follow old mapping logic until all pre-exisiting mappings are updated
-                    eslog.debug("Controller Mapping Does Not Exist, following old logic")
+                    eslog.debug("Controller Mapping Does Not Exist or follows straight SDL, following old logic")
                     #DS4 GUIDs from https://github.com/gabomdq/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
                     if controller.guid in guidstoreplace_ds4:
                         inputguid = "030000004c050000cc09000000006800"

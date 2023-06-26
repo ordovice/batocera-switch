@@ -1,15 +1,13 @@
 # batocera-switch
 Extends Batocera and adds switch emulation as an UNSUPPORTED ADD-ON to BATOCERA.  
 
-Master branch is currently working on Batocera 35 and 36. If you have v34, please upgrade Batocera as we are no longer supporting v34.
+Master branch is currently working on Batocera 35-37. If you have v34, please upgrade Batocera as we are no longer supporting v34.
 
 This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS).  
 
-Copy the folders and files in this repo into the appropriate folders of Batocera.  This repo setup has all the folders you should need to add.  Add your own title.keys and prod.keys to the switch bios folder.  If you plan on using Ryujinx when it's supported, place the switch firmware in this folder as well (you will need to manually install it in Ryujinx on first start or when prompted)
+This version integrates work from foclabroc, Batocera Nation, and uureel.  It does not include the bios keys.  
 
-You will need to provide Yuzu and Ryujinx installs.  There are update scripts that you can run via Ports to download the appropriate AppImages to the system\switch directory.  You do not need to chmod +x them before running as the configgen script takes care of this.  
-
-This version integrates work from foclabroc and Batocera Nation but does not include the appimages or the bios keys that their download does.  Additionally, controllers in Yuzu and Ryujinx are auto mapped now as of v34, but any DS4/DS5 controllers will not work or will impact the others working.  
+Controller automapping is a constant work in progress.  You can turn off automapping, but you can help improve the project by submitting your controller configs for inclusion in the mapping files.  Not all controllers work with the modern Ryujinx.  
 
 ## GET Support Here
 https://discord.gg/cuw5Xt7M7d
@@ -17,6 +15,8 @@ https://discord.gg/cuw5Xt7M7d
 ## EASY INSTALL
 From a terminal window, run the following:
 curl -L switch.batocera.pro | bash
+
+After installing, copy your prod.keys and title.keys to /share/bios/switch.  If you wish to use Ryujinx you will also need to supply the firmware zip file.
 
 Thanks to uureel for simplifying the install/update of Switch components for the Batocera Add-On.  
 
@@ -31,6 +31,9 @@ Please use the controller issue templates for reporting controller issues.  For 
 
 ## SPECIAL THANKS
 Special thanks for foclabroc, Rion, and Darknior for testing things out as I change things, [RGS] for a controller donation, and anyone else who contributes and helps me make this better. 
+
+## UPDATE 2023-06-26
+Controller auto configuration was finally improved with a mapping table for yuzu, and ryujinx is next up!
 
 ## UPDATE 2023-03-13
 The Controller autoconfiguration is in process of being updated as more of a controller table.  Additionally, Ryujinx is still locked due to incompatibilities with the SDL within Batocera and Ryujinx  
