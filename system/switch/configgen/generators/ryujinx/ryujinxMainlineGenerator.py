@@ -362,16 +362,16 @@ class RyujinxMainlineGenerator(Generator):
                         if controller_mapping['ryu_type'] == 'xbox':
                             controllernumber = str(int(xbox_index))
                             xbox_index = xbox_index + 1
-                        if controller_mapping['ryu_type'] == 'sony_ds4':
+                        elif controller_mapping['ryu_type'] == 'sony_ds4':
                             controllernumber = str(int(ds4_index))
                             ds4_index = ds4_index + 1  
-                        if controller_mapping['ryu_type'] == 'sony_ds5':
+                        elif controller_mapping['ryu_type'] == 'sony_ds5':
                             controllernumber = str(int(ds4_index))
                             ds4_index = ds4_index + 1 
-                        if controller_mapping['ryu_type'] == 'switch':
+                        elif controller_mapping['ryu_type'] == 'switch':
                             controllernumber = str(int(switch_index))
                             switch_index = switch_index + 1 
-                        if controller_mapping['ryu_type'] == 'general':
+                        else:
                             controllernumber = str(int(reg_index))
                             reg_index = reg_index + 1
 
