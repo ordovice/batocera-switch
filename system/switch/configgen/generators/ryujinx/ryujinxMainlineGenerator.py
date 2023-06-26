@@ -371,6 +371,9 @@ class RyujinxMainlineGenerator(Generator):
                         if controller_mapping['ryu_type'] == 'switch':
                             controllernumber = str(int(switch_index))
                             switch_index = switch_index + 1 
+                        if controller_mapping['ryu_type'] == 'general':
+                            controllernumber = str(int(reg_index))
+                            reg_index = reg_index + 1
 
                     cvalue = {}
                     left_joycon_stick = {}
