@@ -295,8 +295,8 @@ class RyujinxMainlineGenerator(Generator):
                         guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
                         command = "udevadm info --query=path --name=" + joy_path.decode()
                         outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
-                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring }
-                        #eslog.debug("Joystick Button: {}".format(sdl2.SDL_GameControllerButtonBind(i,SDL_CONTROLLER_BUTTON_A)))
+                        pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
+                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "type" : pad_type }
                         sdl_devices.append(controller_value)
                         sdl2.SDL_GameControllerClose(pad)
             sdl2.SDL_Quit()
@@ -370,6 +370,7 @@ class RyujinxMainlineGenerator(Generator):
                     right_joycon['button_sr'] = "Unbound"
 
                     if (controller.inputs['a'].id == '1'):
+
                         right_joycon['button_x'] = "Y"
                         right_joycon['button_b'] = "A"
                         right_joycon['button_y'] = "X"
