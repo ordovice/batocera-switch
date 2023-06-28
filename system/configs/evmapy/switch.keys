@@ -9,6 +9,18 @@
             "target": ["unclutter-remote -h && killall -9 yuzu yuzu-room yuzuEA yuzu.AppImage yuzuEA.AppImage ryujinx Ryujinx Ryujinx-LDN Ryujinx-Avalonia Ryujinx.AppImage Ryujinx-LDN.AppImage Ryujinx-Avalonia.AppImage 2>/dev/null"]
         },
         {
+            "trigger": ["hotkey", "l2"],
+            "type": "key",
+            "target": ["KEY_ESC"],
+            "description": "Press Esc"
+        },
+        {
+            "trigger": ["hotkey", "r2"],
+            "type": "key",
+            "target": ["KEY_ENTER"],
+            "description": "Press Enter"
+        },
+        {
             "trigger": ["hotkey", "r3"],
             "type": "key",
             "target": ["KEY_ENTER"],
