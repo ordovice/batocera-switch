@@ -17,6 +17,9 @@ import configparser
 from shutil import copyfile
 from utils.logger import get_logger
 import csv
+import sys
+import subprocess
+
 
 eslog = get_logger(__name__)
 
@@ -45,7 +48,7 @@ class RyujinxMainlineGenerator(Generator):
         RyujinxConfig = batoceraFiles.CONF + '/Ryujinx/Config.json'
         RyujinxHome = batoceraFiles.CONF
         RyujinxSaves = batoceraFiles.CONF
-
+        eslog.debug("System Path: {}".format(sys.path))
         firstrun = True
         if path.exists(RyujinxConfig):
             firstrun = False
@@ -68,11 +71,11 @@ class RyujinxMainlineGenerator(Generator):
                 commandArray = ["/userdata/system/switch/Ryujinx-LDN.AppImage" , rom]
             else:
                 commandArray = ["/userdata/system/switch/Ryujinx.AppImage" , rom]
-        eslog.debug("video mode before minmax: {}".format(controllersConfig.generateSdlGameControllerConfig(playersControllers)))
+        eslog.debug("Controller Config before Playing: {}".format(controllersConfig.generateSdlGameControllerConfig(playersControllers)))
         #, "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)
         return Command.Command(
             array=commandArray,
-            env={"XDG_CONFIG_HOME":RyujinxHome, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb"}
+            env={"XDG_CONFIG_HOME":RyujinxHome, "XDG_CACHE_HOME":batoceraFiles.CACHE, "QT_QPA_PLATFORM":"xcb", "SDL_GAMECONTROLLERCONFIG": controllersConfig.generateSdlGameControllerConfig(playersControllers)}
             )
 
     def writeRyujinxConfig(RyujinxConfigFile, system, playersControllers):
@@ -80,10 +83,13 @@ class RyujinxMainlineGenerator(Generator):
         #Get ryujinx version
         if system.config['emulator'] == 'ryujinx-avalonia':
             filename = "/userdata/system/switch/extra/ryujinxavalonia/version.txt"
+            os.environ["PYSDL2_DLL_PATH"] = "/userdata/system/switch/extra/ryujinxavalonia/"
         elif system.config['emulator'] == 'ryujinx-ldn':
             filename = "/userdata/system/switch/extra/ryujinxldn/version.txt"
+            os.environ["PYSDL2_DLL_PATH"] = "/userdata/system/switch/extra/ryujinxldn/"
         else:
             filename = "/userdata/system/switch/extra/ryujinx/version.txt"
+            os.environ["PYSDL2_DLL_PATH"] = "/userdata/system/switch/extra/ryujinx/"
             
         if os.path.exists(filename):
             file = open(filename, 'r')
@@ -91,8 +97,56 @@ class RyujinxMainlineGenerator(Generator):
             file.close()
         else:
             ryu_version = "1.1.382"
+        #import SDL to try and guess controller order
+        from ..ryujinx import sdl2
+        from ..ryujinx.sdl2 import (
+            SDL_TRUE
+        )
+        from ..ryujinx.sdl2 import joystick
+        from ctypes import create_string_buffer
+        #ret = SDL_Init(sdl2.SDL_INIT_GAMECONTROLLER)
 
-        eslog.debug("Ryujinx Version: {}".format(ryu_version))
+
+
+        sdl2.SDL_ClearError()
+        sdl2.SDL_SetHint(b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", b"1")
+        ret = sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO | sdl2.SDL_INIT_GAMECONTROLLER)
+        assert ret == 0, _check_error_msg()
+            # Also initialize a virtual joystick (if supported)
+        if sdl2.dll.version >= 2014:
+            virt_type = joystick.SDL_JOYSTICK_TYPE_GAMECONTROLLER
+            #virt_index = joystick.SDL_JoystickAttachVirtual(virt_type, 2, 4, 1)
+        
+        sdl_devices = []
+        count = joystick.SDL_NumJoysticks()
+        for i in range(count):
+                if sdl2.SDL_IsGameController(i) == SDL_TRUE:
+                    pad = sdl2.SDL_GameControllerOpen(i)
+                    #padmapping = sdl2.SDL_GameControllerMappingForIndex(i)
+                    #eslog.debug("Pad Mapping: {}".format(padmapping))
+                    #stick = sdl2.SDL_GameControllerGetJoystick(pad)
+                    #joy_name = joystick.SDL_JoystickName(stick)
+                    joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
+                    buff = create_string_buffer(33)
+                    joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
+                    joy_path = joystick.SDL_JoystickPathForIndex(i)
+
+                    guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
+                    #eslog.debug("Pad GUID String: {}".format(guidstring))
+                    #eslog.debug("Pad Player Index: {}".format(player_index))
+                    #eslog.debug("Pad Name: {}".format(joy_name))
+                    #eslog.debug("Pad GUID: {}".format(joy_guid))
+                    command = "udevadm info --query=path --name=" + joy_path.decode()
+                    outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
+                    #eslog.debug("Joystick Path: {}".format(outputpath))
+                    controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring }
+                    sdl_devices.append(controller_value)
+                    #assert isinstance(pad.contents, sdl2.SDL_GameController)
+                    sdl2.SDL_GameControllerClose(pad)
+        sdl2.SDL_Quit()
+
+        eslog.debug("Joystick Path: {}".format(sdl_devices))
+
 
         with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
             reader = csv.DictReader(csv_file)
@@ -271,46 +325,46 @@ class RyujinxMainlineGenerator(Generator):
         switch_count = 0
         ds4_count = 0
         ds5_count = 0
+        if(ryu_version == "1.1.382"):
+            for index in playersControllers :
+                controller = playersControllers[index]
 
-        for index in playersControllers :
-            controller = playersControllers[index]
+                controller_mapping = next((item for item in controller_data if item["old_guid"] == controller.guid),None)
 
-            controller_mapping = next((item for item in controller_data if item["old_guid"] == controller.guid),None)
+                if(controller_mapping == None):
+                    if controller.guid in guidstoreplace_xbox:
+                        xbox_count = xbox_count + 1
+                    if controller.guid in guidstoreplace_ds4a:
+                        ds4_count = ds4_count + 1
+                    if controller.guid in guidstoreplace_ds4b:
+                        ds4_count = ds4_count + 1
+                    if controller.guid in guidstoreplace_ds5_wireless:
+                        ds5_count = ds5_count + 1
+                    if controller.guid in guidstoreplace_ds5_wired:
+                        ds5_count = ds5_count + 1
+                else:
+                    if controller_mapping['ryu_type'] == 'xbox':
+                        xbox_count = xbox_count + 1
+                    if controller_mapping['ryu_type'] == 'sony_ds4':
+                        ds4_count = ds4_count + 1
+                    if controller_mapping['ryu_type'] == 'sony_ds5':
+                        ds5_count = ds5_count + 1
+                    if controller_mapping['ryu_type'] == 'switch':
+                        switch_count = switch_count + 1
 
-            if(controller_mapping == None):
-                if controller.guid in guidstoreplace_xbox:
-                    xbox_count = xbox_count + 1
-                if controller.guid in guidstoreplace_ds4a:
-                    ds4_count = ds4_count + 1
-                if controller.guid in guidstoreplace_ds4b:
-                    ds4_count = ds4_count + 1
-                if controller.guid in guidstoreplace_ds5_wireless:
-                    ds5_count = ds5_count + 1
-                if controller.guid in guidstoreplace_ds5_wired:
-                    ds5_count = ds5_count + 1
-            else:
-                if controller_mapping['ryu_type'] == 'xbox':
-                    xbox_count = xbox_count + 1
-                if controller_mapping['ryu_type'] == 'sony_ds4':
-                    ds4_count = ds4_count + 1
-                if controller_mapping['ryu_type'] == 'sony_ds5':
-                    ds5_count = ds5_count + 1
-                if controller_mapping['ryu_type'] == 'switch':
-                    switch_count = switch_count + 1
+            ds4_index = 0
+            switch_index = ds4_count + ds5_count
+            xbox_index = ds4_count + ds5_count + switch_count
+            reg_index = ds4_count + ds5_count + xbox_count + switch_count
 
-        ds4_index = 0
-        switch_index = ds4_count + ds5_count
-        xbox_index = ds4_count + ds5_count + switch_count
-        reg_index = ds4_count + ds5_count + xbox_count + switch_count
+            eslog.debug("Counts: Sony DS4: {}".format(ds4_count))
+            eslog.debug("Counts: Sony DS5: {}".format(ds5_count))
+            eslog.debug("Counts: Switch: {}".format(switch_count))
+            eslog.debug("Counts: XBox: {}".format(xbox_count))
 
-        eslog.debug("Counts: Sony DS4: {}".format(ds4_count))
-        eslog.debug("Counts: Sony DS5: {}".format(ds5_count))
-        eslog.debug("Counts: Switch: {}".format(switch_count))
-        eslog.debug("Counts: XBox: {}".format(xbox_count))
-
-        eslog.debug("Index: Sony DS4: {}".format(ds4_index))
-        eslog.debug("Index: Switch: {}".format(switch_index))
-        eslog.debug("Index: XBox: {}".format(xbox_index))
+            eslog.debug("Index: Sony DS4: {}".format(ds4_index))
+            eslog.debug("Index: Switch: {}".format(switch_index))
+            eslog.debug("Index: XBox: {}".format(xbox_index))
 
         if ((system.isOptSet('ryu_auto_controller_config') and not (system.config["ryu_auto_controller_config"] == "0")) or not system.isOptSet('ryu_auto_controller_config')):
             
@@ -324,57 +378,17 @@ class RyujinxMainlineGenerator(Generator):
                 for index in playersControllers :
                     controller = playersControllers[index]
                     inputguid = controller.guid
-
-
+                    command = "udevadm info --query=path --name=" + playersControllers[index].dev
+                    outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
 
                     controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
+                    sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
 
+                    myid = uuid.UUID(sdl_mapping['guid'])
+                    myid.bytes_le
+                    convuuid = uuid.UUID(bytes=myid.bytes_le)
+                    controllernumber = str(sdl_mapping['index'])
                     #Map Keys and GUIDs
-                    if (controller_mapping == None):
-                        #Follow Default
-                        eslog.debug("Controller Mapping Does Not Exist or follows straight SDL, following basic mapping")
-                        myid = uuid.UUID(inputguid)
-                        myid.bytes_le
-                        convuuid = uuid.UUID(bytes=myid.bytes_le)
-                        if controller.guid in guidstoreplace_xbox:
-                            controllernumber = str(int(xbox_index))
-                            xbox_index = xbox_index + 1
-                        elif controller.guid in guidstoreplace_ds4a:
-                            controllernumber = str(int(ds4_index))
-                            ds4_index = ds4_index + 1
-                        elif controller.guid in guidstoreplace_ds4b:
-                            controllernumber = str(int(ds4_index))
-                            ds4_index = ds4_index + 1
-                        elif controller.guid in guidstoreplace_ds5_wireless:
-                            controllernumber = str(int(ds4_index))
-                            ds4_index = ds4_index + 1
-                        elif controller.guid in guidstoreplace_ds5_wired:
-                            controllernumber = str(int(ds4_index))
-                            ds4_index = ds4_index + 1
-                        else:
-                            controllernumber = str(int(reg_index))
-                            reg_index = reg_index + 1
-                            inputguid = controller.guid
-                    else:
-                        eslog.debug("Controller Mapping exists, following new logic")
-                        eslog.debug("Controller Mapping {}".format(controller_mapping))
-                        convuuid = controller_mapping['new_ryu_guid']
-                        if controller_mapping['ryu_type'] == 'xbox':
-                            controllernumber = str(int(xbox_index))
-                            xbox_index = xbox_index + 1
-                        elif controller_mapping['ryu_type'] == 'sony_ds4':
-                            controllernumber = str(int(ds4_index))
-                            ds4_index = ds4_index + 1  
-                        elif controller_mapping['ryu_type'] == 'sony_ds5':
-                            controllernumber = str(int(ds4_index))
-                            ds4_index = ds4_index + 1 
-                        elif controller_mapping['ryu_type'] == 'switch':
-                            controllernumber = str(int(switch_index))
-                            switch_index = switch_index + 1 
-                        else:
-                            controllernumber = str(int(reg_index))
-                            reg_index = reg_index + 1
-
                     cvalue = {}
                     left_joycon_stick = {}
                     left_joycon_stick['joystick'] = "Left"
@@ -453,10 +467,6 @@ class RyujinxMainlineGenerator(Generator):
                 
                 for index in playersControllers :
                     controller = playersControllers[index]
-                    #eslog.debug("Controller: {}".format(controller))
-                    #eslog.debug("ControllerDEV: {}".format(controller.dev))
-                    #eslog.debug("ControllerGUI: {}".format(controller.guid))
-                    #eslog.debug("ControllerRealName: {}".format(controller.realName))
                     if controller.guid in guidstoreplace_xbox:
                         controllernumber = str(int(ds4_index))
                         ds4_index = ds4_index + 1
