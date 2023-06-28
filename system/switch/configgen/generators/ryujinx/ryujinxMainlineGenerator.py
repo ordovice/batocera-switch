@@ -318,96 +318,190 @@ class RyujinxMainlineGenerator(Generator):
                 controllernumber = str(sdl_mapping['index'])
                 #Map Keys and GUIDs
                 cvalue = {}
-                left_joycon_stick = {}
-                left_joycon_stick['joystick'] = "Left"
-                left_joycon_stick['invert_stick_x'] = bool(0)
-                left_joycon_stick['invert_stick_y'] = bool(0)
-                left_joycon_stick['rotate90_cw'] = bool(0)
-                left_joycon_stick['stick_button'] = "LeftStick"            
-                cvalue['left_joycon_stick'] = left_joycon_stick
-                right_joycon_stick = {}
-                right_joycon_stick['joystick'] = "Right"
-                right_joycon_stick['invert_stick_x'] = bool(0)
-                right_joycon_stick['invert_stick_y'] = bool(0)
-                right_joycon_stick['rotate90_cw'] = bool(0)
-                right_joycon_stick['stick_button'] = "RightStick"            
-                cvalue['right_joycon_stick'] = right_joycon_stick
-                cvalue['deadzone_left'] = 0.1           
-                cvalue['deadzone_right'] = 0.1 
-                cvalue['range_left'] = 1          
-                cvalue['range_right'] = 1 
-                cvalue['trigger_threshold'] = 0.5  
+ 
 
                 motion = {}
                 motion['motion_backend'] = "GamepadDriver"
                 motion['sensitivity'] = 100
                 motion['gyro_deadzone'] = 1
                 motion['enable_motion'] = bool('true')
-                cvalue['motion'] = motion
 
                 rumble = {}
                 rumble['strong_rumble'] = 1
                 rumble['weak_rumble'] = 1
                 rumble['enable_rumble'] = bool('true')
+                
+                which_pad = "p" + str(int(controller.player)) + "_pad"
+
+                if ((system.isOptSet(which_pad) and ((system.config[which_pad] == "ProController") or (system.config[which_pad] == "JoyconPair")) ) or not system.isOptSet(which_pad)):
+                    left_joycon_stick = {}
+                    left_joycon_stick['joystick'] = "Left"
+                    left_joycon_stick['rotate90_cw'] = bool(0)
+                    left_joycon_stick['invert_stick_x'] = bool(0)
+                    left_joycon_stick['invert_stick_y'] = bool(0)
+                    left_joycon_stick['stick_button'] = "LeftStick"            
+
+                    right_joycon_stick = {}
+                    right_joycon_stick['joystick'] = "Right"
+                    right_joycon_stick['rotate90_cw'] = bool(0)
+                    right_joycon_stick['invert_stick_x'] = bool(0)
+                    right_joycon_stick['invert_stick_y'] = bool(0)
+                    right_joycon_stick['stick_button'] = "RightStick" 
+
+
+
+                    left_joycon = {}
+                    left_joycon['button_minus'] = "Minus"
+                    left_joycon['button_l'] = "LeftShoulder"
+                    left_joycon['button_zl'] = "LeftTrigger"
+                    left_joycon['button_sl'] = "Unbound"
+                    left_joycon['button_sr'] = "Unbound"
+                    left_joycon['dpad_up'] = "DpadUp"
+                    left_joycon['dpad_down'] = "DpadDown"
+                    left_joycon['dpad_left'] = "DpadLeft"
+                    left_joycon['dpad_right'] = "DpadRight"
+
+
+                    right_joycon = {}
+                    right_joycon['button_plus'] = "Plus"
+                    right_joycon['button_r'] = "RightShoulder"
+                    right_joycon['button_zr'] = "RightTrigger"
+                    right_joycon['button_sl'] = "Unbound"
+                    right_joycon['button_sr'] = "Unbound"
+
+                    if (controller.inputs['a'].id == '1'):
+                        right_joycon['button_x'] = "Y"
+                        right_joycon['button_b'] = "A"
+                        right_joycon['button_y'] = "X"
+                        right_joycon['button_a'] = "B" 
+                    else:
+                        right_joycon['button_x'] = "X"
+                        right_joycon['button_b'] = "B"
+                        right_joycon['button_y'] = "Y"
+                        right_joycon['button_a'] = "A" 
+
+
+                    if system.isOptSet(which_pad):
+                        cvalue['controller_type'] = system.config["p1_pad"]
+                    else: 
+                        cvalue['controller_type'] = "ProController"
+
+                elif (system.isOptSet(which_pad) and (system.config[which_pad] == "JoyconLeft")):
+                    left_joycon_stick = {}
+                    left_joycon_stick['joystick'] = "Left"
+                    left_joycon_stick['rotate90_cw'] = bool(0)
+                    left_joycon_stick['invert_stick_x'] = bool(0)
+                    left_joycon_stick['invert_stick_y'] = bool(0)
+                    left_joycon_stick['stick_button'] = "LeftStick"            
+
+                    right_joycon_stick = {}
+                    right_joycon_stick['joystick'] = "Unbound"
+                    right_joycon_stick['rotate90_cw'] = bool(0)
+                    right_joycon_stick['invert_stick_x'] = bool(0)
+                    right_joycon_stick['invert_stick_y'] = bool(0)
+                    right_joycon_stick['stick_button'] = "Unbound"
+
+                    left_joycon = {}
+                    left_joycon['button_minus'] = "Minus"
+                    left_joycon['button_l'] = "LeftShoulder"
+                    left_joycon['button_zl'] = "LeftTrigger"
+                    left_joycon['button_sl'] = "LeftShoulder"
+                    left_joycon['button_sr'] = "RightShoulder"
+
+                    if (controller.inputs['a'].id == '1'):
+                        left_joycon['dpad_up'] = "Y"
+                        left_joycon['dpad_down'] = "A"
+                        left_joycon['dpad_left'] = "X"
+                        left_joycon['dpad_right'] = "B"
+                    else:
+                        left_joycon['dpad_up'] = "Y"
+                        left_joycon['dpad_down'] = "A"
+                        left_joycon['dpad_left'] = "X"
+                        left_joycon['dpad_right'] = "B"
+
+                    right_joycon = {}
+                    right_joycon['button_plus'] = "Plus"
+                    right_joycon['button_r'] = "RightShoulder"
+                    right_joycon['button_zr'] = "RightTrigger"
+                    right_joycon['button_sl'] = "Unbound"
+                    right_joycon['button_sr'] = "Unbound"
+
+                    if (controller.inputs['a'].id == '1'):
+                        right_joycon['button_x'] = "Y"
+                        right_joycon['button_b'] = "A"
+                        right_joycon['button_y'] = "X"
+                        right_joycon['button_a'] = "B" 
+                    else:
+                        right_joycon['button_x'] = "X"
+                        right_joycon['button_b'] = "B"
+                        right_joycon['button_y'] = "Y"
+                        right_joycon['button_a'] = "A" 
+
+                    cvalue['controller_type'] = "JoyconLeft"
+                    
+                elif (system.isOptSet(which_pad) and (system.config[which_pad] == "JoyconRight")):
+                    left_joycon_stick = {}
+                    left_joycon_stick['joystick'] = "Unbound"
+                    left_joycon_stick['rotate90_cw'] = bool(1)
+                    left_joycon_stick['invert_stick_x'] = bool(1)
+                    left_joycon_stick['invert_stick_y'] = bool(1)
+                    left_joycon_stick['stick_button'] = "Unbound"           
+
+                    right_joycon_stick = {}
+                    right_joycon_stick['joystick'] = "Left"
+                    right_joycon_stick['rotate90_cw'] = bool(0)
+                    right_joycon_stick['invert_stick_x'] = bool(0)
+                    right_joycon_stick['invert_stick_y'] = bool(0)
+                    right_joycon_stick['stick_button'] = "LeftStick" 
+
+                    left_joycon = {}
+                    left_joycon['button_minus'] = "Minus"
+                    left_joycon['button_l'] = "LeftShoulder"
+                    left_joycon['button_zl'] = "LeftTrigger"
+                    left_joycon['button_sl'] = "Unbound"
+                    left_joycon['button_sr'] = "Unbound"
+
+                    left_joycon['dpad_up'] = "DpadUp"
+                    left_joycon['dpad_down'] = "DpadDown"
+                    left_joycon['dpad_left'] = "DpadLeft"
+                    left_joycon['dpad_right'] = "DpadRight"
+
+                    right_joycon = {}
+                    right_joycon['button_plus'] = "Plus"
+                    right_joycon['button_r'] = "RightShoulder"
+                    right_joycon['button_zr'] = "RightTrigger"
+                    right_joycon['button_sl'] = "LeftShoulder"
+                    right_joycon['button_sr'] = "RightShoulder"
+
+                    if (controller.inputs['a'].id == '1'):
+                        right_joycon['button_x'] = "B"
+                        right_joycon['button_b'] = "X"
+                        right_joycon['button_y'] = "Y"
+                        right_joycon['button_a'] = "A" 
+                    else:
+                        right_joycon['button_x'] = "A"
+                        right_joycon['button_b'] = "Y"
+                        right_joycon['button_y'] = "X"
+                        right_joycon['button_a'] = "B" 
+                    cvalue['controller_type'] = "JoyconRight"
+
+
+                cvalue['left_joycon_stick'] = left_joycon_stick          
+                cvalue['right_joycon_stick'] = right_joycon_stick
+                cvalue['deadzone_left'] = 0.1           
+                cvalue['deadzone_right'] = 0.1 
+                cvalue['range_left'] = 1          
+                cvalue['range_right'] = 1 
+                cvalue['trigger_threshold'] = 0.5  
+                cvalue['motion'] = motion
                 cvalue['rumble'] = rumble
-
-                left_joycon = {}
-                left_joycon['button_minus'] = "Minus"
-                left_joycon['button_l'] = "LeftShoulder"
-                left_joycon['button_zl'] = "LeftTrigger"
-                left_joycon['button_sl'] = "Unbound"
-                left_joycon['button_sr'] = "Unbound"
-                left_joycon['dpad_up'] = "DpadUp"
-                left_joycon['dpad_down'] = "DpadDown"
-                left_joycon['dpad_left'] = "DpadLeft"
-                left_joycon['dpad_right'] = "DpadRight"
-
                 cvalue['left_joycon'] = left_joycon
-                right_joycon = {}
-                right_joycon['button_plus'] = "Plus"
-                right_joycon['button_r'] = "RightShoulder"
-                right_joycon['button_zr'] = "RightTrigger"
-                right_joycon['button_sl'] = "Unbound"
-                right_joycon['button_sr'] = "Unbound"
-
-                if (controller.inputs['a'].id == '1'):
-                    #Follow Default
-                    #eslog.debug("A is {}".format(controller.inputs['a'].id))
-                    #eslog.debug("Button A is B (Default)")
-                    right_joycon['button_x'] = "Y"
-                    right_joycon['button_b'] = "A"
-                    right_joycon['button_y'] = "X"
-                    right_joycon['button_a'] = "B" 
-                else:
-                    #Follow Default
-                    #eslog.debug("A is {}".format(controller.inputs['a'].id))
-                    #eslog.debug("Button A is A (Default)")
-                    right_joycon['button_x'] = "X"
-                    right_joycon['button_b'] = "B"
-                    right_joycon['button_y'] = "Y"
-                    right_joycon['button_a'] = "A" 
-
-                #if (controller_mapping == None):
-                #    #Follow Default
-                #    eslog.debug("A is {}".format(controller.inputs['a'].id))
-                #    eslog.debug("Button A is A (Default)")
-                #    right_joycon['button_x'] = "X"
-                #    right_joycon['button_b'] = "B"
-                #    right_joycon['button_y'] = "Y"
-                #    right_joycon['button_a'] = "A" 
-                #else:
-                #    eslog.debug("A is {}".format(controller.inputs['a'].id))
-                #    eslog.debug("Button A is {}".format(controller_mapping['ryu_a']))
-                #    right_joycon['button_x'] = controller_mapping['ryu_x']
-                #    right_joycon['button_b'] = controller_mapping['ryu_b']
-                #    right_joycon['button_y'] = controller_mapping['ryu_y']
-                #    right_joycon['button_a'] = controller_mapping['ryu_a']
                 cvalue['right_joycon'] = right_joycon
 
                 cvalue['version'] = 1
                 cvalue['backend'] = "GamepadSDL2"
                 cvalue['id'] = controllernumber + '-' + str(convuuid)
-                cvalue['controller_type'] = "ProController"
+                
                 cvalue['player_index'] = "Player" +  str(int(controller.player))
                 input_config.append(cvalue)
             
