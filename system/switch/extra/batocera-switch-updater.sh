@@ -1040,6 +1040,8 @@ T=$THEME_COLOR_RYUJINX
    fi 
 # --------------------------------------------------------
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
+if [[ "$(echo "$link_ryujinx" | grep "382")" != "" ]]; then version="382"; fi
+version=$(echo "$version" | sed 's,1.1.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinx
@@ -1132,7 +1134,7 @@ echo
 cd ~/
 # send version to cookie: 
    ver=$(echo "$link_ryujinx" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
-   if [[ "$(echo "$$link_ryujinx" | grep "382")" != "" ]]; then ver="382"; fi
+   if [[ "$(echo "$link_ryujinx" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinx/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinx/version.txt
 fi
@@ -1147,6 +1149,7 @@ T=$THEME_COLOR_RYUJINXLDN
 version="3.0.1 / 1.1.368"
 # --------------------------------------------------------
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
+version=$(echo "$version" | sed 's,1.1.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX-LDN   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
@@ -1258,6 +1261,8 @@ T=$THEME_COLOR_RYUJINXAVALONIA
    fi
 # --------------------------------------------------------
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
+if [[ "$(echo "$link_ryujinxavalonia" | grep "382")" != "" ]]; then version="382"; fi
+version=$(echo "$version" | sed 's,1.1.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX-AVALONIA   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
@@ -1353,7 +1358,7 @@ echo
 cd ~/
 # send version to cookie: 
    ver=$(echo "$link_ryujinxavalonia" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
-   if [[ "$(echo "$$link_ryujinxavalonia" | grep "382")" != "" ]]; then ver="382"; fi
+   if [[ "$(echo "$link_ryujinxavalonia" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinxavalonia/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinxavalonia/version.txt
 fi 
