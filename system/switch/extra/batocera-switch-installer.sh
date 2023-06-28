@@ -322,15 +322,10 @@ echo
 echo -e "   ${X}-----------------------------------------------------${X}"
 echo -e "   ${X}Place your keys into /userdata/bios/switch/${X}" 
 echo -e "   ${X}Firmware *.nca into /userdata/bios/switch/firmware/${X}" 
-echo 
-echo -e "   ${X}Use Switch Updater in Ports to update emulators${X}" 
-echo -e "   ${X}-----------------------------------------------------${X}"
 echo
-echo 
-echo -e "   ${X}-----------------------------------------------------${X}"
-echo -e "   ${X}For compatibility reasons Ryujinx&Avalonia are locked "
-echo -e "   ${X}to version 1.1.382, to unlock the updates: " 
-echo -e "   ${X}CHECK /userdata/system/switch/CONFIG.txt${X}" 
+echo -e "   ${X}Use Switch Updater in Ports to update emulators${X}" 
+echo -e "   ${X}For Switch Updater settings, check:${X}"
+echo -e "   ${X}/userdata/system/switch/CONFIG.txt${X}" 
 echo -e "   ${X}-----------------------------------------------------${X}"
 echo
 echo
