@@ -7,7 +7,7 @@ This version of the code requires a file system for userdata that supports symli
 
 This version integrates work from foclabroc, Batocera Nation, and uureel.  It does not include the bios keys.  
 
-Controller automapping is a constant work in progress.  You can turn off automapping, but you can help improve the project by submitting your controller configs for inclusion in the mapping files.  Not all controllers work with the modern Ryujinx.  
+Controller automapping is a constant work in progress.  You can turn off automapping, but you can help improve the project by submitting your controller configs for inclusion in the mapping files.  Not all controllers work with the modern Ryujinx, but autoconfiguration should not need any mapping file anymore.  
 
 ## GET Support Here
 https://discord.gg/cuw5Xt7M7d
