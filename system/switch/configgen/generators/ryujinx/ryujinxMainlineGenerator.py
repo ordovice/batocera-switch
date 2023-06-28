@@ -407,7 +407,7 @@ class RyujinxMainlineGenerator(Generator):
                     left_joycon['button_sl'] = "LeftShoulder"
                     left_joycon['button_sr'] = "RightShoulder"
 
-                    if (sdl_mapping['type'] == '0'):
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
                         left_joycon['dpad_up'] = "Y"
                         left_joycon['dpad_down'] = "A"
                         left_joycon['dpad_left'] = "X"
