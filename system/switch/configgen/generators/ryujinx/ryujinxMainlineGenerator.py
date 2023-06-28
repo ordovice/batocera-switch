@@ -102,6 +102,7 @@ class RyujinxMainlineGenerator(Generator):
         from sdl2 import (
             SDL_TRUE
         )
+        from sdl2 import joystick
         from ctypes import create_string_buffer
         #ret = SDL_Init(sdl2.SDL_INIT_GAMECONTROLLER)
 
