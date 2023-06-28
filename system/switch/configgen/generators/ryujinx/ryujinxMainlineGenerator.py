@@ -122,26 +122,16 @@ class RyujinxMainlineGenerator(Generator):
         for i in range(count):
                 if sdl2.SDL_IsGameController(i) == SDL_TRUE:
                     pad = sdl2.SDL_GameControllerOpen(i)
-                    #padmapping = sdl2.SDL_GameControllerMappingForIndex(i)
-                    #eslog.debug("Pad Mapping: {}".format(padmapping))
-                    #stick = sdl2.SDL_GameControllerGetJoystick(pad)
-                    #joy_name = joystick.SDL_JoystickName(stick)
                     joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
                     buff = create_string_buffer(33)
                     joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
                     joy_path = joystick.SDL_JoystickPathForIndex(i)
 
                     guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
-                    #eslog.debug("Pad GUID String: {}".format(guidstring))
-                    #eslog.debug("Pad Player Index: {}".format(player_index))
-                    #eslog.debug("Pad Name: {}".format(joy_name))
-                    #eslog.debug("Pad GUID: {}".format(joy_guid))
                     command = "udevadm info --query=path --name=" + joy_path.decode()
                     outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
-                    #eslog.debug("Joystick Path: {}".format(outputpath))
                     controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring }
                     sdl_devices.append(controller_value)
-                    #assert isinstance(pad.contents, sdl2.SDL_GameController)
                     sdl2.SDL_GameControllerClose(pad)
         sdl2.SDL_Quit()
 
