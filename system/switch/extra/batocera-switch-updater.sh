@@ -2165,9 +2165,9 @@ mkdir -p $path 2>/dev/null
 wget -q -O "$path/__init__.py" "$url/__init__.py"
 wget -q -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py"
 # -------------------------------------------------------------------- 
-# FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX/SD2L
-path=/userdata/system/switch/configgen/generators/ryujinx/sdl2
-url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/sdl2
+# FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN//SDL2
+path=/userdata/system/switch/configgen/sdl2
+url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/sdl2
 mkdir -p $path 2>/dev/null
    cd $path
       wget -q $url/__init__.py
