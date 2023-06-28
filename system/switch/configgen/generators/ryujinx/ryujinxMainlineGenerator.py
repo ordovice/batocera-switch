@@ -324,234 +324,128 @@ class RyujinxMainlineGenerator(Generator):
         if ((system.isOptSet('ryu_auto_controller_config') and not (system.config["ryu_auto_controller_config"] == "0")) or not system.isOptSet('ryu_auto_controller_config')):
             
 
-
+            import sdl2
+            from sdl2 import (
+                SDL_TRUE
+            )
+            from sdl2 import joystick
+            from ctypes import create_string_buffer
+            sdl2.SDL_ClearError()
+            sdl2.SDL_SetHint(b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", b"1")
+            ret = sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO | sdl2.SDL_INIT_GAMECONTROLLER)
+            assert ret == 0, _check_error_msg()
 
             input_config = []
 
-            if(ryu_version != 382):
+              
 
-                #Only work with SDL if version is newer than 382
-                import sdl2
-                from sdl2 import (
-                    SDL_TRUE
-                )
-                from sdl2 import joystick
-                from ctypes import create_string_buffer
-                sdl2.SDL_ClearError()
-                sdl2.SDL_SetHint(b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", b"1")
-                ret = sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO | sdl2.SDL_INIT_GAMECONTROLLER)
-                assert ret == 0, _check_error_msg()
+            sdl_devices = []
+            count = joystick.SDL_NumJoysticks()
+            for i in range(count):
+                    if sdl2.SDL_IsGameController(i) == SDL_TRUE:
+                        pad = sdl2.SDL_GameControllerOpen(i)
+                        joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
+                        buff = create_string_buffer(33)
+                        joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
+                        joy_path = joystick.SDL_JoystickPathForIndex(i)
 
-                sdl_devices = []
-                count = joystick.SDL_NumJoysticks()
-                for i in range(count):
-                        if sdl2.SDL_IsGameController(i) == SDL_TRUE:
-                            pad = sdl2.SDL_GameControllerOpen(i)
-                            joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
-                            buff = create_string_buffer(33)
-                            joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
-                            joy_path = joystick.SDL_JoystickPathForIndex(i)
+                        guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
+                        command = "udevadm info --query=path --name=" + joy_path.decode()
+                        outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
+                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring }
+                        #eslog.debug("Joystick Button: {}".format(sdl2.SDL_GameControllerButtonBind(i,SDL_CONTROLLER_BUTTON_A)))
+                        sdl_devices.append(controller_value)
+                        sdl2.SDL_GameControllerClose(pad)
+            sdl2.SDL_Quit()
 
-                            guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
-                            command = "udevadm info --query=path --name=" + joy_path.decode()
-                            outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
-                            controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring }
-                            sdl_devices.append(controller_value)
-                            sdl2.SDL_GameControllerClose(pad)
-                sdl2.SDL_Quit()
+            eslog.debug("Joystick Path: {}".format(sdl_devices))
+            #New Logic
+            for index in playersControllers :
+                controller = playersControllers[index]
+                inputguid = controller.guid
+                command = "udevadm info --query=path --name=" + playersControllers[index].dev
+                outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
 
-                eslog.debug("Joystick Path: {}".format(sdl_devices))
-                #New Logic
-                for index in playersControllers :
-                    controller = playersControllers[index]
-                    inputguid = controller.guid
-                    command = "udevadm info --query=path --name=" + playersControllers[index].dev
-                    outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
+                controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
+                sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
 
-                    controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
-                    sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
+                myid = uuid.UUID(sdl_mapping['guid'])
+                myid.bytes_le
+                convuuid = uuid.UUID(bytes=myid.bytes_le)
+                controllernumber = str(sdl_mapping['index'])
+                #Map Keys and GUIDs
+                cvalue = {}
+                left_joycon_stick = {}
+                left_joycon_stick['joystick'] = "Left"
+                left_joycon_stick['invert_stick_x'] = bool(0)
+                left_joycon_stick['invert_stick_y'] = bool(0)
+                left_joycon_stick['rotate90_cw'] = bool(0)
+                left_joycon_stick['stick_button'] = "LeftStick"            
+                cvalue['left_joycon_stick'] = left_joycon_stick
+                right_joycon_stick = {}
+                right_joycon_stick['joystick'] = "Right"
+                right_joycon_stick['invert_stick_x'] = bool(0)
+                right_joycon_stick['invert_stick_y'] = bool(0)
+                right_joycon_stick['rotate90_cw'] = bool(0)
+                right_joycon_stick['stick_button'] = "RightStick"            
+                cvalue['right_joycon_stick'] = right_joycon_stick
+                cvalue['deadzone_left'] = 0.1           
+                cvalue['deadzone_right'] = 0.1 
+                cvalue['range_left'] = 1          
+                cvalue['range_right'] = 1 
+                cvalue['trigger_threshold'] = 0.5  
 
-                    myid = uuid.UUID(sdl_mapping['guid'])
-                    myid.bytes_le
-                    convuuid = uuid.UUID(bytes=myid.bytes_le)
-                    controllernumber = str(sdl_mapping['index'])
-                    #Map Keys and GUIDs
-                    cvalue = {}
-                    left_joycon_stick = {}
-                    left_joycon_stick['joystick'] = "Left"
-                    left_joycon_stick['invert_stick_x'] = bool(0)
-                    left_joycon_stick['invert_stick_y'] = bool(0)
-                    left_joycon_stick['rotate90_cw'] = bool(0)
-                    left_joycon_stick['stick_button'] = "LeftStick"            
-                    cvalue['left_joycon_stick'] = left_joycon_stick
-                    right_joycon_stick = {}
-                    right_joycon_stick['joystick'] = "Right"
-                    right_joycon_stick['invert_stick_x'] = bool(0)
-                    right_joycon_stick['invert_stick_y'] = bool(0)
-                    right_joycon_stick['rotate90_cw'] = bool(0)
-                    right_joycon_stick['stick_button'] = "RightStick"            
-                    cvalue['right_joycon_stick'] = right_joycon_stick
-                    cvalue['deadzone_left'] = 0.1           
-                    cvalue['deadzone_right'] = 0.1 
-                    cvalue['range_left'] = 1          
-                    cvalue['range_right'] = 1 
-                    cvalue['trigger_threshold'] = 0.5  
+                motion = {}
+                motion['motion_backend'] = "GamepadDriver"
+                motion['sensitivity'] = 100
+                motion['gyro_deadzone'] = 1
+                motion['enable_motion'] = bool('true')
+                cvalue['motion'] = motion
 
-                    motion = {}
-                    motion['motion_backend'] = "GamepadDriver"
-                    motion['sensitivity'] = 100
-                    motion['gyro_deadzone'] = 1
-                    motion['enable_motion'] = bool('true')
-                    cvalue['motion'] = motion
+                rumble = {}
+                rumble['strong_rumble'] = 1
+                rumble['weak_rumble'] = 1
+                rumble['enable_rumble'] = bool('true')
+                cvalue['rumble'] = rumble
 
-                    rumble = {}
-                    rumble['strong_rumble'] = 1
-                    rumble['weak_rumble'] = 1
-                    rumble['enable_rumble'] = bool('true')
-                    cvalue['rumble'] = rumble
+                left_joycon = {}
+                left_joycon['button_minus'] = "Minus"
+                left_joycon['button_l'] = "LeftShoulder"
+                left_joycon['button_zl'] = "LeftTrigger"
+                left_joycon['button_sl'] = "Unbound"
+                left_joycon['button_sr'] = "Unbound"
+                left_joycon['dpad_up'] = "DpadUp"
+                left_joycon['dpad_down'] = "DpadDown"
+                left_joycon['dpad_left'] = "DpadLeft"
+                left_joycon['dpad_right'] = "DpadRight"
 
-                    left_joycon = {}
-                    left_joycon['button_minus'] = "Minus"
-                    left_joycon['button_l'] = "LeftShoulder"
-                    left_joycon['button_zl'] = "LeftTrigger"
-                    left_joycon['button_sl'] = "Unbound"
-                    left_joycon['button_sr'] = "Unbound"
-                    left_joycon['dpad_up'] = "DpadUp"
-                    left_joycon['dpad_down'] = "DpadDown"
-                    left_joycon['dpad_left'] = "DpadLeft"
-                    left_joycon['dpad_right'] = "DpadRight"
+                cvalue['left_joycon'] = left_joycon
+                right_joycon = {}
+                right_joycon['button_plus'] = "Plus"
+                right_joycon['button_r'] = "RightShoulder"
+                right_joycon['button_zr'] = "RightTrigger"
+                right_joycon['button_sl'] = "Unbound"
+                right_joycon['button_sr'] = "Unbound"
 
-                    cvalue['left_joycon'] = left_joycon
-                    right_joycon = {}
-                    right_joycon['button_plus'] = "Plus"
-                    right_joycon['button_r'] = "RightShoulder"
-                    right_joycon['button_zr'] = "RightTrigger"
-                    right_joycon['button_sl'] = "Unbound"
-                    right_joycon['button_sr'] = "Unbound"
+                if (controller_mapping == None):
+                    #Follow Default
+                    right_joycon['button_x'] = "X"
+                    right_joycon['button_b'] = "B"
+                    right_joycon['button_y'] = "Y"
+                    right_joycon['button_a'] = "A" 
+                else:
+                    right_joycon['button_x'] = controller_mapping['ryu_x']
+                    right_joycon['button_b'] = controller_mapping['ryu_b']
+                    right_joycon['button_y'] = controller_mapping['ryu_y']
+                    right_joycon['button_a'] = controller_mapping['ryu_a']
+                cvalue['right_joycon'] = right_joycon
 
-                    if (controller_mapping == None):
-                        #Follow Default
-                        right_joycon['button_x'] = "X"
-                        right_joycon['button_b'] = "B"
-                        right_joycon['button_y'] = "Y"
-                        right_joycon['button_a'] = "A" 
-                    else:
-                        right_joycon['button_x'] = controller_mapping['ryu_x']
-                        right_joycon['button_b'] = controller_mapping['ryu_b']
-                        right_joycon['button_y'] = controller_mapping['ryu_y']
-                        right_joycon['button_a'] = controller_mapping['ryu_a']
-                    cvalue['right_joycon'] = right_joycon
-
-                    cvalue['version'] = 1
-                    cvalue['backend'] = "GamepadSDL2"
-                    cvalue['id'] = controllernumber + '-' + str(convuuid)
-                    cvalue['controller_type'] = "ProController"
-                    cvalue['player_index'] = "Player" +  str(int(controller.player))
-                    input_config.append(cvalue)
-            else:
-                #Old Logic
-                eslog.debug("Following old 1.1.382 logic")
-                
-                for index in playersControllers :
-                    controller = playersControllers[index]
-                    if controller.guid in guidstoreplace_xbox:
-                        controllernumber = str(int(ds4_index))
-                        ds4_index = ds4_index + 1
-                        inputguid = "030000005e040000fd02000000006800"
-                    elif controller.guid in guidstoreplace_ds4a:
-                        controllernumber = str(int(ds4_index))
-                        ds4_index = ds4_index + 1
-                        inputguid = "030000004c050000cc09000000006800"
-                    elif controller.guid in guidstoreplace_ds4b:
-                        controllernumber = str(int(ds4_index))
-                        ds4_index = ds4_index + 1
-                        inputguid = "030000004c050000c405000000006800"
-                    elif controller.guid in guidstoreplace_ds5_wireless:
-                        controllernumber = str(int(ds4_index))
-                        ds4_index = ds4_index + 1
-                        inputguid = "030000004c050000e60c000000006800"
-                        #inputguid = "030072264c050000e60c000000006800"  #Ryujinx > 1.1.383
-                    elif controller.guid in guidstoreplace_ds5_wired:
-                        controllernumber = str(int(ds4_index))
-                        ds4_index = ds4_index + 1
-                        inputguid = "030000004c050000e60c000000016800"
-                    else:
-                        controllernumber = str(int(reg_index))
-                        reg_index = reg_index + 1
-                        inputguid = controller.guid
-                    myid = uuid.UUID(inputguid)
-                    myid.bytes_le
-                    convuuid = uuid.UUID(bytes=myid.bytes_le)
-                    cvalue = {}
-                    left_joycon_stick = {}
-                    left_joycon_stick['joystick'] = "Left"
-                    left_joycon_stick['invert_stick_x'] = bool(0)
-                    left_joycon_stick['invert_stick_y'] = bool(0)
-                    left_joycon_stick['rotate90_cw'] = bool(0)
-                    left_joycon_stick['stick_button'] = "LeftStick"            
-                    cvalue['left_joycon_stick'] = left_joycon_stick
-                    right_joycon_stick = {}
-                    right_joycon_stick['joystick'] = "Right"
-                    right_joycon_stick['invert_stick_x'] = bool(0)
-                    right_joycon_stick['invert_stick_y'] = bool(0)
-                    right_joycon_stick['rotate90_cw'] = bool(0)
-                    right_joycon_stick['stick_button'] = "RightStick"            
-                    cvalue['right_joycon_stick'] = right_joycon_stick
-                    cvalue['deadzone_left'] = 0.1           
-                    cvalue['deadzone_right'] = 0.1 
-                    cvalue['range_left'] = 1          
-                    cvalue['range_right'] = 1 
-                    cvalue['trigger_threshold'] = 0.5  
-
-                    motion = {}
-                    motion['motion_backend'] = "GamepadDriver"
-                    motion['sensitivity'] = 100
-                    motion['gyro_deadzone'] = 1
-                    motion['enable_motion'] = bool('true')
-                    cvalue['motion'] = motion
-
-                    rumble = {}
-                    rumble['strong_rumble'] = 1
-                    rumble['weak_rumble'] = 1
-                    rumble['enable_rumble'] = bool('true')
-                    cvalue['rumble'] = rumble
-
-                    left_joycon = {}
-                    left_joycon['button_minus'] = "Minus"
-                    left_joycon['button_l'] = "LeftShoulder"
-                    left_joycon['button_zl'] = "LeftTrigger"
-                    left_joycon['button_sl'] = "Unbound"
-                    left_joycon['button_sr'] = "Unbound"
-                    left_joycon['dpad_up'] = "DpadUp"
-                    left_joycon['dpad_down'] = "DpadDown"
-                    left_joycon['dpad_left'] = "DpadLeft"
-                    left_joycon['dpad_right'] = "DpadRight"
-
-                    cvalue['left_joycon'] = left_joycon
-                    right_joycon = {}
-                    right_joycon['button_plus'] = "Plus"
-                    right_joycon['button_r'] = "RightShoulder"
-                    right_joycon['button_zr'] = "RightTrigger"
-                    right_joycon['button_sl'] = "Unbound"
-                    right_joycon['button_sr'] = "Unbound"
-                    if controller.guid in guidstoreplace_ds4a or controller.guid in guidstoreplace_ds4b or controller.guid in guidstoreplace_ds5_wireless or controller.guid in guidstoreplace_ds5_wired or controller.guid in guidstoreplace_ds5_wired or controller.guid in guidstochangebuttons_xbox:
-                        right_joycon['button_x'] = "Y"
-                        right_joycon['button_b'] = "A"
-                        right_joycon['button_y'] = "X"
-                        right_joycon['button_a'] = "B"
-                    else:
-                        right_joycon['button_x'] = "X"
-                        right_joycon['button_b'] = "B"
-                        right_joycon['button_y'] = "Y"
-                        right_joycon['button_a'] = "A"               
-                    cvalue['right_joycon'] = right_joycon
-
-                    cvalue['version'] = 1
-                    cvalue['backend'] = "GamepadSDL2"
-                    cvalue['id'] = controllernumber + '-' + str(convuuid)
-                    cvalue['controller_type'] = "ProController"
-                    cvalue['player_index'] = "Player" +  str(int(controller.player))
-                    input_config.append(cvalue)
+                cvalue['version'] = 1
+                cvalue['backend'] = "GamepadSDL2"
+                cvalue['id'] = controllernumber + '-' + str(convuuid)
+                cvalue['controller_type'] = "ProController"
+                cvalue['player_index'] = "Player" +  str(int(controller.player))
+                input_config.append(cvalue)
             
             data['input_config'] = input_config
 
