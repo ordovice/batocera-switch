@@ -1125,7 +1125,7 @@ size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 echo
 cd ~/
 # send version to cookie: 
-   ver=$(echo "$link_ryujinx" | sed 's,^.*download/,,g' | cut -d "/" -f1)
+   ver=$(echo "$link_ryujinx" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
       rm /userdata/system/switch/extra/ryujinx/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinx/version.txt
 fi
@@ -1234,7 +1234,7 @@ echo
 cd ~/
 # send version to cookie: 
       rm /userdata/system/switch/extra/ryujinxldn/version.txt 2>/dev/null
-      echo "1.1.368" >> /userdata/system/switch/extra/ryujinxldn/version.txt
+      echo "368" >> /userdata/system/switch/extra/ryujinxldn/version.txt
 fi
 #
 #
@@ -1345,7 +1345,7 @@ size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 echo
 cd ~/
 # send version to cookie: 
-   ver=$(echo "$link_ryujinxavalonia" | sed 's,^.*download/,,g' | cut -d "/" -f1)
+   ver=$(echo "$link_ryujinxavalonia" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
       rm /userdata/system/switch/extra/ryujinxavalonia/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinxavalonia/version.txt
 fi 
