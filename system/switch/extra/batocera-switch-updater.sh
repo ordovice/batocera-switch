@@ -2133,6 +2133,95 @@ url_portsupdaterkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/
    dos2unix "/userdata/system/switch/extra/batocera-switch-patcher.sh" 2>/dev/null
    chmod a+x "/userdata/system/switch/extra/batocera-switch-patcher.sh" 2>/dev/null
 # --------------------------------------------------------------------
+# pull the whole configgen to sync all autocontroller changes: 
+# -------------------------------------------------------------------- 
+# FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN
+path=/userdata/system/switch/configgen
+url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen
+mkdir -p $path 2>/dev/null
+wget -q -O "$path/GeneratorImporter.py" "$url/GeneratorImporter.py"
+wget -q -O "$path/mapping.csv" "$url/mapping.csv"
+wget -q -O "$path/switchlauncher.py" "$url/switchlauncher.py"
+wget -q -O "$path/switchlauncher_old.py" "$url/switchlauncher_old.py"
+# -------------------------------------------------------------------- 
+# FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS
+path=/userdata/system/switch/configgen/generators
+url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators
+mkdir -p $path 2>/dev/null
+wget -q -O "$path/__init__.py" "$url/__init__.py"
+wget -q -O "$path/Generator.py" "$url/Generator.py"
+# -------------------------------------------------------------------- 
+# FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/YUZU
+path=/userdata/system/switch/configgen/generators/yuzu
+url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu
+mkdir -p $path 2>/dev/null
+wget -q -O "$path/__init__.py" "$url/__init__.py"
+wget -q -O "$path/yuzuMainlineGenerator.py" "$url/yuzuMainlineGenerator.py"
+# -------------------------------------------------------------------- 
+# FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX
+path=/userdata/system/switch/configgen/generators/ryujinx
+url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx
+mkdir -p $path 2>/dev/null
+wget -q -O "$path/__init__.py" "$url/__init__.py"
+wget -q -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py"
+# -------------------------------------------------------------------- 
+# FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX/SD2L
+path=/userdata/system/switch/configgen/generators/ryujinx/sdl2
+url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx/sdl2
+mkdir -p $path 2>/dev/null
+   cd $path
+      wget -q $url/__init__.py
+      wget -q $url/_internal.py
+      wget -q $url/_sdl_init.py
+      wget -q $url/audio.py
+      wget -q $url/blendmode.py
+      wget -q $url/clipboard.py
+      wget -q $url/cpuinfo.py
+      wget -q $url/dll.py
+      wget -q $url/endian.py
+      wget -q $url/error.py
+      wget -q $url/events.py
+      wget -q $url/filesystem.py
+      wget -q $url/gamecontroller.py
+      wget -q $url/gesture.py
+      wget -q $url/guid.py
+      wget -q $url/haptic.py
+      wget -q $url/hidapi.py
+      wget -q $url/hints.py
+      wget -q $url/joystick.py
+      wget -q $url/keyboard.py
+      wget -q $url/keycode.py
+      wget -q $url/loadso.py
+      wget -q $url/locale.py
+      wget -q $url/log.py
+      wget -q $url/messagebox.py
+      wget -q $url/metal.py
+      wget -q $url/misc.py
+      wget -q $url/mouse.py
+      wget -q $url/pixels.py
+      wget -q $url/platform.py
+      wget -q $url/power.py
+      wget -q $url/rect.py
+      wget -q $url/render.py
+      wget -q $url/rwops.py
+      wget -q $url/scancode.py
+      wget -q $url/sdlgfx.py
+      wget -q $url/sdlimage.py
+      wget -q $url/sdlmixer.py
+      wget -q $url/sdlttf.py
+      wget -q $url/sensor.py
+      wget -q $url/shape.py
+      wget -q $url/stdinc.py
+      wget -q $url/surface.py
+      wget -q $url/syswm.py
+      wget -q $url/timer.py
+      wget -q $url/touch.py
+      wget -q $url/version.py
+      wget -q $url/video.py
+      wget -q $url/vulkan.py
+   cd ~/
+# -------------------------------------------------------------------- 
+
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
