@@ -98,11 +98,10 @@ class RyujinxMainlineGenerator(Generator):
         else:
             ryu_version = "1.1.382"
         #import SDL to try and guess controller order
-        from ..ryujinx import sdl2
-        from ..ryujinx.sdl2 import (
+        import sdl2
+        from sdl2 import (
             SDL_TRUE
         )
-        from ..ryujinx.sdl2 import joystick
         from ctypes import create_string_buffer
         #ret = SDL_Init(sdl2.SDL_INIT_GAMECONTROLLER)
 
