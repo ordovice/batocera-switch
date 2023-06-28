@@ -1132,6 +1132,7 @@ echo
 cd ~/
 # send version to cookie: 
    ver=$(echo "$link_ryujinx" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
+   if [[ "$(echo "$$link_ryujinx" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinx/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinx/version.txt
 fi
@@ -1352,6 +1353,7 @@ echo
 cd ~/
 # send version to cookie: 
    ver=$(echo "$link_ryujinxavalonia" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
+   if [[ "$(echo "$$link_ryujinxavalonia" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinxavalonia/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinxavalonia/version.txt
 fi 
