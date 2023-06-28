@@ -48,7 +48,7 @@ class RyujinxMainlineGenerator(Generator):
         RyujinxConfig = batoceraFiles.CONF + '/Ryujinx/Config.json'
         RyujinxHome = batoceraFiles.CONF
         RyujinxSaves = batoceraFiles.CONF
-        eslog.debug("System Path: {}".format(sys.path))
+
         firstrun = True
         if path.exists(RyujinxConfig):
             firstrun = False
@@ -93,49 +93,14 @@ class RyujinxMainlineGenerator(Generator):
             
         if os.path.exists(filename):
             file = open(filename, 'r')
-            ryu_version = file.readline()
+            ryu_version = (file.readline()).replace("\n", " ")
             file.close()
         else:
             ryu_version = "1.1.382"
         #import SDL to try and guess controller order
-        import sdl2
-        from sdl2 import (
-            SDL_TRUE
-        )
-        from sdl2 import joystick
-        from ctypes import create_string_buffer
-        #ret = SDL_Init(sdl2.SDL_INIT_GAMECONTROLLER)
 
 
-
-        sdl2.SDL_ClearError()
-        sdl2.SDL_SetHint(b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", b"1")
-        ret = sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO | sdl2.SDL_INIT_GAMECONTROLLER)
-        assert ret == 0, _check_error_msg()
-            # Also initialize a virtual joystick (if supported)
-        if sdl2.dll.version >= 2014:
-            virt_type = joystick.SDL_JOYSTICK_TYPE_GAMECONTROLLER
-            #virt_index = joystick.SDL_JoystickAttachVirtual(virt_type, 2, 4, 1)
-        
-        sdl_devices = []
-        count = joystick.SDL_NumJoysticks()
-        for i in range(count):
-                if sdl2.SDL_IsGameController(i) == SDL_TRUE:
-                    pad = sdl2.SDL_GameControllerOpen(i)
-                    joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
-                    buff = create_string_buffer(33)
-                    joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
-                    joy_path = joystick.SDL_JoystickPathForIndex(i)
-
-                    guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
-                    command = "udevadm info --query=path --name=" + joy_path.decode()
-                    outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
-                    controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring }
-                    sdl_devices.append(controller_value)
-                    sdl2.SDL_GameControllerClose(pad)
-        sdl2.SDL_Quit()
-
-        eslog.debug("Joystick Path: {}".format(sdl_devices))
+        eslog.debug("Ryu_Version Matches: {}".format('1.1.382' in ryu_version))
 
 
         with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
@@ -147,10 +112,11 @@ class RyujinxMainlineGenerator(Generator):
                 data = json.load(read_file)
         else:
                 data = {}
+
         if system.config['emulator'] == 'ryujinx-avalonia':
             data['version'] = 42  #Avalonia Version needs to see 38
         else:
-            if(ryu_version == '1.1.382'):
+            if('1.1.382' in ryu_version):
                 data['version'] = 40  #1.1.382 version
             else:
                 data['version'] = 47 #1.1.924 version
@@ -315,7 +281,8 @@ class RyujinxMainlineGenerator(Generator):
         switch_count = 0
         ds4_count = 0
         ds5_count = 0
-        if(ryu_version == "1.1.382"):
+        if('1.1.382' in ryu_version):
+
             for index in playersControllers :
                 controller = playersControllers[index]
 
@@ -363,7 +330,47 @@ class RyujinxMainlineGenerator(Generator):
 
             input_config = []
 
-            if(ryu_version != "1.1.382"):
+            if('1.1.382' not in ryu_version):
+
+                #Only work with SDL if version is newer than 382
+                import sdl2
+                from sdl2 import (
+                    SDL_TRUE
+                )
+                from sdl2 import joystick
+                from ctypes import create_string_buffer
+                #ret = SDL_Init(sdl2.SDL_INIT_GAMECONTROLLER)
+
+
+
+                sdl2.SDL_ClearError()
+                sdl2.SDL_SetHint(b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", b"1")
+                ret = sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO | sdl2.SDL_INIT_GAMECONTROLLER)
+                assert ret == 0, _check_error_msg()
+                    # Also initialize a virtual joystick (if supported)
+                if sdl2.dll.version >= 2014:
+                    virt_type = joystick.SDL_JOYSTICK_TYPE_GAMECONTROLLER
+                    #virt_index = joystick.SDL_JoystickAttachVirtual(virt_type, 2, 4, 1)
+                
+                sdl_devices = []
+                count = joystick.SDL_NumJoysticks()
+                for i in range(count):
+                        if sdl2.SDL_IsGameController(i) == SDL_TRUE:
+                            pad = sdl2.SDL_GameControllerOpen(i)
+                            joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
+                            buff = create_string_buffer(33)
+                            joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
+                            joy_path = joystick.SDL_JoystickPathForIndex(i)
+
+                            guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
+                            command = "udevadm info --query=path --name=" + joy_path.decode()
+                            outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
+                            controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring }
+                            sdl_devices.append(controller_value)
+                            sdl2.SDL_GameControllerClose(pad)
+                sdl2.SDL_Quit()
+
+                eslog.debug("Joystick Path: {}".format(sdl_devices))
                 #New Logic
                 for index in playersControllers :
                     controller = playersControllers[index]
