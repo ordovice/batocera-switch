@@ -42,9 +42,6 @@ class RyujinxMainlineGenerator(Generator):
         if not path.isdir(batoceraFiles.CONF + "/Ryujinx/system"):
             os.mkdir(batoceraFiles.CONF + "/Ryujinx/system")
 
-        #copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/Ryujinx/system/prod.keys")
-        #copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/Ryujinx/system/title.keys")
-
         RyujinxConfig = batoceraFiles.CONF + '/Ryujinx/Config.json'
         RyujinxHome = batoceraFiles.CONF
         RyujinxSaves = batoceraFiles.CONF
@@ -266,60 +263,6 @@ class RyujinxMainlineGenerator(Generator):
         column_sort['sort_column_id'] = 0
         column_sort['sort_ascending'] = bool(0)         
         data['column_sort'] = column_sort
-
-        #guidstoreplace_ds4a = ["050000004c050000cc09000000810000","050000004c050000c405000000783f00","050000004c050000c4050000fffe3f00","050000004c050000c4050000ffff3f00","050000004c050000cc090000fffe3f00","050000004c050000cc090000ffff3f00","30303839663330346632363232623138","31326235383662333266633463653332","34613139376634626133336530386430","37626233336235343937333961353732","38393161636261653636653532386639","63313733393535663339656564343962","63393662363836383439353064663939","65366465656364636137653363376531","66613532303965383534396638613230","050000004c050000cc090000df070000","050000004c050000cc090000df870001","050000004c050000cc090000ff070000","030000004c050000a00b000011010000","030000004c050000a00b000011810000","030000004c050000c405000011010000","030000004c050000c405000011810000","030000004c050000cc09000000010000","030000004c050000cc09000011010000","030000004c050000cc09000011810000","03000000c01100000140000011010000","050000004c050000c405000000010000","050000004c050000c405000001800000","050000004c050000cc09000000010000","050000004c050000cc09000001800000","030000004c050000a00b000000010000","030000004c050000c405000000000000","030000004c050000c405000000010000","03000000120c00000807000000000000","03000000120c0000111e000000000000","03000000120c0000121e000000000000","03000000120c0000130e000000000000","03000000120c0000150e000000000000","03000000120c0000180e000000000000","03000000120c0000181e000000000000","03000000120c0000191e000000000000","03000000120c00001e0e000000000000","03000000120c0000a957000000000000","03000000120c0000aa57000000000000","03000000120c0000f21c000000000000","03000000120c0000f31c000000000000","03000000120c0000f41c000000000000","03000000120c0000f51c000000000000","03000000120c0000f70e000000000000","03000000120e0000120c000000000000","03000000160e0000120c000000000000","030000001a1e0000120c000000000000","030000004c050000a00b000000000000","030000004c050000cc09000000000000","35643031303033326130316330353564","31373231336561636235613666323035","536f6e7920496e746572616374697665","576972656c65737320436f6e74726f6c","050000004c050000cc090000ff870001","050000004c050000cc090000ff876d01","31663838336334393132303338353963"]
-        #guidstoreplace_ds4b = ["050000004c050000c405000000810000"]
-
-        #guidstoreplace_ds5_wireless = ["32633532643734376632656664383733","37363764353731323963323639666565","61303162353165316365336436343139","050000004c050000e60c0000df870000","050000004c050000e60c000000810000","030000004c050000e60c000000010000","050000004c050000e60c0000fffe3f00","030000004c050000e60c000000000000","050000004c050000e60c000000010000","030000004c050000e60c000011010000","32346465346533616263386539323932","050000004c050000e60c0000ff870000"]
-        #guidstoreplace_ds5_wired = ["030000004c050000e60c000011810000"]
-        #guidstoreplace_xbox = ["050000005e040000fd02000030110000"]
-        #guidstochangebuttons_xbox = ["030000005e0400008e02000014010000"]
-
-        #xbox_count = 0
-        #switch_count = 0
-        #ds4_count = 0
-        #ds5_count = 0
-        #if(ryu_version == 382):
-        #
-        #    for index in playersControllers :
-        #        controller = playersControllers[index]
-        #
-        #        controller_mapping = next((item for item in controller_data if item["old_guid"] == controller.guid),None)
-        #
-        #        if(controller_mapping == None):
-        #            if controller.guid in guidstoreplace_xbox:
-        #                xbox_count = xbox_count + 1
-        #            if controller.guid in guidstoreplace_ds4a:
-        #                ds4_count = ds4_count + 1
-        #            if controller.guid in guidstoreplace_ds4b:
-        #                ds4_count = ds4_count + 1
-        #            if controller.guid in guidstoreplace_ds5_wireless:
-        #                ds5_count = ds5_count + 1
-        #            if controller.guid in guidstoreplace_ds5_wired:
-        #                ds5_count = ds5_count + 1
-        #        else:
-        #            if controller_mapping['ryu_type'] == 'xbox':
-        #                xbox_count = xbox_count + 1
-        #            if controller_mapping['ryu_type'] == 'sony_ds4':
-        #                ds4_count = ds4_count + 1
-        #            if controller_mapping['ryu_type'] == 'sony_ds5':
-        #                ds5_count = ds5_count + 1
-        #            if controller_mapping['ryu_type'] == 'switch':
-        #                switch_count = switch_count + 1
-
-        #    ds4_index = 0
-        #    switch_index = ds4_count + ds5_count
-        #    xbox_index = ds4_count + ds5_count + switch_count
-        #    reg_index = ds4_count + ds5_count + xbox_count + switch_count
-
-        #    eslog.debug("Counts: Sony DS4: {}".format(ds4_count))
-        #    eslog.debug("Counts: Sony DS5: {}".format(ds5_count))
-        #    eslog.debug("Counts: Switch: {}".format(switch_count))
-        #    eslog.debug("Counts: XBox: {}".format(xbox_count))
-
-        #    eslog.debug("Index: Sony DS4: {}".format(ds4_index))
-        #    eslog.debug("Index: Switch: {}".format(switch_index))
-        #    eslog.debug("Index: XBox: {}".format(xbox_index))
 
         if ((system.isOptSet('ryu_auto_controller_config') and not (system.config["ryu_auto_controller_config"] == "0")) or not system.isOptSet('ryu_auto_controller_config')):
             
