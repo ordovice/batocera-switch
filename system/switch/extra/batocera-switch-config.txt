@@ -1,4 +1,4 @@
-// CONFIG // SETTINGS FOR BATOCERA SWITCH UPDATER (ver 1.0.3)
+// CONFIG // SETTINGS FOR BATOCERA SWITCH UPDATER (ver 1.0.4)
 ################################################################
 
 
@@ -21,13 +21,8 @@ EMULATORS="YUZU YUZUEA RYUJINX RYUJINXLDN RYUJINXAVALONIA"
 
 USE_YUZU_VERSION=AUTO
 USE_YUZUEA_VERSION=AUTO
-USE_RYUJINX_VERSION=1.1.382
-USE_RYUJINXAVALONIA_VERSION=1.1.382
-	#---------------------------------------------------------------
-	#
-	#  for best ryujinx/avalonia autocontroller compatibility:
-	#    >  use ryujinx/avalonia version =1.1.382
-	#
+USE_RYUJINX_VERSION=AUTO
+USE_RYUJINXAVALONIA_VERSION=AUTO
 	#---------------------------------------------------------------
 	#
 	#  for latest available versions:
@@ -48,8 +43,13 @@ USE_RYUJINXAVALONIA_VERSION=1.1.382
 	#
 	#---------------------------------------------------------------
 	#
+	#  for better ryujinx/avalonia autocontroller compatibility try:
+	#    >  use ryujinx/avalonia version =1.1.382
+	#
+	#---------------------------------------------------------------
+	#
 	#    >  default for yuzu:     AUTO
-	#    >  default for ryujinx:  1.1.382
+	#    >  default for ryujinx:  AUTO
 	#
 	#---------------------------------------------------------------
 
@@ -64,7 +64,7 @@ THEME_COLOR_RYUJINX=BLUE
 THEME_COLOR_RYUJINXLDN=BLUE
 THEME_COLOR_RYUJINXAVALONIA=BLUE
 	#---------------------------------------------------------------
-	#  available font/theme colors:
+	#  available font/theme colors: 
 	#---------------------------------------------------------------
 	#
 	#    WHITE,BLACK,RED,GREEN,BLUE,YELLOW,PURPLE,CYAN

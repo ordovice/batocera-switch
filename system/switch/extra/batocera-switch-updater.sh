@@ -30,7 +30,7 @@ MODE=DISPLAY
 #
 ################################################################################
 #
-UPDATES=LOCKED
+UPDATES=UNLOCKED
 #      | 
 #      default: LOCKED
 #       
