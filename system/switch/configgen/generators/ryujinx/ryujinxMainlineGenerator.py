@@ -98,9 +98,9 @@ class RyujinxMainlineGenerator(Generator):
 
         eslog.debug("Ryujinx Version: {}".format(ryu_version))
 
-        with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
-            reader = csv.DictReader(csv_file)
-            controller_data = list(reader)
+        #with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
+        #    reader = csv.DictReader(csv_file)
+        #    controller_data = list(reader)
 
         if os.path.exists(RyujinxConfigFile):
             with open(RyujinxConfigFile, "r") as read_file:
@@ -305,11 +305,11 @@ class RyujinxMainlineGenerator(Generator):
             #New Logic
             for index in playersControllers :
                 controller = playersControllers[index]
-                inputguid = controller.guid
+                #inputguid = controller.guid
                 command = "udevadm info --query=path --name=" + playersControllers[index].dev
                 outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
 
-                controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
+                #controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
                 sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
 
                 myid = uuid.UUID(sdl_mapping['guid'])
@@ -370,17 +370,38 @@ class RyujinxMainlineGenerator(Generator):
                 right_joycon['button_sl'] = "Unbound"
                 right_joycon['button_sr'] = "Unbound"
 
-                if (controller_mapping == None):
+                if (controller.inputs['a'].id == '1'):
                     #Follow Default
+                    #eslog.debug("A is {}".format(controller.inputs['a'].id))
+                    #eslog.debug("Button A is B (Default)")
+                    right_joycon['button_x'] = "Y"
+                    right_joycon['button_b'] = "A"
+                    right_joycon['button_y'] = "X"
+                    right_joycon['button_a'] = "B" 
+                else:
+                    #Follow Default
+                    #eslog.debug("A is {}".format(controller.inputs['a'].id))
+                    #eslog.debug("Button A is A (Default)")
                     right_joycon['button_x'] = "X"
                     right_joycon['button_b'] = "B"
                     right_joycon['button_y'] = "Y"
                     right_joycon['button_a'] = "A" 
-                else:
-                    right_joycon['button_x'] = controller_mapping['ryu_x']
-                    right_joycon['button_b'] = controller_mapping['ryu_b']
-                    right_joycon['button_y'] = controller_mapping['ryu_y']
-                    right_joycon['button_a'] = controller_mapping['ryu_a']
+
+                #if (controller_mapping == None):
+                #    #Follow Default
+                #    eslog.debug("A is {}".format(controller.inputs['a'].id))
+                #    eslog.debug("Button A is A (Default)")
+                #    right_joycon['button_x'] = "X"
+                #    right_joycon['button_b'] = "B"
+                #    right_joycon['button_y'] = "Y"
+                #    right_joycon['button_a'] = "A" 
+                #else:
+                #    eslog.debug("A is {}".format(controller.inputs['a'].id))
+                #    eslog.debug("Button A is {}".format(controller_mapping['ryu_a']))
+                #    right_joycon['button_x'] = controller_mapping['ryu_x']
+                #    right_joycon['button_b'] = controller_mapping['ryu_b']
+                #    right_joycon['button_y'] = controller_mapping['ryu_y']
+                #    right_joycon['button_a'] = controller_mapping['ryu_a']
                 cvalue['right_joycon'] = right_joycon
 
                 cvalue['version'] = 1
