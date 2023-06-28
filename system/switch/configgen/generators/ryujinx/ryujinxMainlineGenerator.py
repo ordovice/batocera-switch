@@ -369,18 +369,16 @@ class RyujinxMainlineGenerator(Generator):
                     right_joycon['button_sl'] = "Unbound"
                     right_joycon['button_sr'] = "Unbound"
 
-                    if (controller.inputs['a'].id == '1'):
-
-                        right_joycon['button_x'] = "Y"
-                        right_joycon['button_b'] = "A"
-                        right_joycon['button_y'] = "X"
-                        right_joycon['button_a'] = "B" 
-                    else:
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
                         right_joycon['button_x'] = "X"
                         right_joycon['button_b'] = "B"
                         right_joycon['button_y'] = "Y"
                         right_joycon['button_a'] = "A" 
-
+                    else:
+                        right_joycon['button_x'] = "Y"
+                        right_joycon['button_b'] = "A"
+                        right_joycon['button_y'] = "X"
+                        right_joycon['button_a'] = "B" 
 
                     if system.isOptSet(which_pad):
                         cvalue['controller_type'] = system.config["p1_pad"]
@@ -409,7 +407,7 @@ class RyujinxMainlineGenerator(Generator):
                     left_joycon['button_sl'] = "LeftShoulder"
                     left_joycon['button_sr'] = "RightShoulder"
 
-                    if (controller.inputs['a'].id == '1'):
+                    if (sdl_mapping['type'] == '0'):
                         left_joycon['dpad_up'] = "Y"
                         left_joycon['dpad_down'] = "A"
                         left_joycon['dpad_left'] = "X"
@@ -418,7 +416,7 @@ class RyujinxMainlineGenerator(Generator):
                         left_joycon['dpad_up'] = "Y"
                         left_joycon['dpad_down'] = "A"
                         left_joycon['dpad_left'] = "X"
-                        left_joycon['dpad_right'] = "B"
+                        left_joycon['dpad_right'] = "B"                        
 
                     right_joycon = {}
                     right_joycon['button_plus'] = "Plus"
@@ -427,16 +425,16 @@ class RyujinxMainlineGenerator(Generator):
                     right_joycon['button_sl'] = "Unbound"
                     right_joycon['button_sr'] = "Unbound"
 
-                    if (controller.inputs['a'].id == '1'):
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
+                        right_joycon['button_x'] = "X"
+                        right_joycon['button_b'] = "B"
+                        right_joycon['button_y'] = "Y"
+                        right_joycon['button_a'] = "A"                         
+                    else:
                         right_joycon['button_x'] = "Y"
                         right_joycon['button_b'] = "A"
                         right_joycon['button_y'] = "X"
                         right_joycon['button_a'] = "B" 
-                    else:
-                        right_joycon['button_x'] = "X"
-                        right_joycon['button_b'] = "B"
-                        right_joycon['button_y'] = "Y"
-                        right_joycon['button_a'] = "A" 
 
                     cvalue['controller_type'] = "JoyconLeft"
                     
@@ -474,16 +472,16 @@ class RyujinxMainlineGenerator(Generator):
                     right_joycon['button_sl'] = "LeftShoulder"
                     right_joycon['button_sr'] = "RightShoulder"
 
-                    if (controller.inputs['a'].id == '1'):
-                        right_joycon['button_x'] = "B"
-                        right_joycon['button_b'] = "X"
-                        right_joycon['button_y'] = "Y"
-                        right_joycon['button_a'] = "A" 
-                    else:
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
                         right_joycon['button_x'] = "A"
                         right_joycon['button_b'] = "Y"
                         right_joycon['button_y'] = "X"
                         right_joycon['button_a'] = "B" 
+                    else:
+                        right_joycon['button_x'] = "B"
+                        right_joycon['button_b'] = "X"
+                        right_joycon['button_y'] = "Y"
+                        right_joycon['button_a'] = "A"                         
                     cvalue['controller_type'] = "JoyconRight"
 
 
