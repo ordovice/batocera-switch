@@ -1137,6 +1137,8 @@ cd ~/
    if [[ "$(echo "$link_ryujinx" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinx/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinx/version.txt
+# disable inapp autoupdates: 
+sed -i 's,"check_updates_on_start": true,"check_updates_on_start": false,g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null
 fi
 #
 #
@@ -1245,6 +1247,8 @@ cd ~/
 # send version to cookie: 
       rm /userdata/system/switch/extra/ryujinxldn/version.txt 2>/dev/null
       echo "368" >> /userdata/system/switch/extra/ryujinxldn/version.txt
+# disable inapp autoupdates: 
+sed -i 's,"check_updates_on_start": true,"check_updates_on_start": false,g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null
 fi
 #
 #
@@ -1361,6 +1365,8 @@ cd ~/
    if [[ "$(echo "$link_ryujinxavalonia" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinxavalonia/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinxavalonia/version.txt
+# disable inapp autoupdates: 
+sed -i 's,"check_updates_on_start": true,"check_updates_on_start": false,g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null
 fi 
 #
 #
