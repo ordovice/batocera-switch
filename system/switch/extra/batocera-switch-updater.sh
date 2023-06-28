@@ -797,6 +797,9 @@ if [[ -e "$cfg" ]]; then
             ryujinx_custom_version=$(echo "1.1.$ryujinx_custom_version")
          fi
               link_ryujinx=$(echo "https://github.com/Ryujinx/release-channel-master/releases/download/$ryujinx_custom_version/ryujinx-$ryujinx_custom_version-linux_x64.tar.gz")
+                  if [[ "$(echo "$ryujinx_custom_version" | grep "382")" != "" ]]; then 
+                     link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
+                  fi
       fi
    ### ryujinxavalonia
    ryujinxavalonia_custom_version=$(cat /userdata/system/switch/CONFIG.txt | grep "USE_RYUJINXAVALONIA_VERSION" | head -n1 | sed 's, ,,g' | cut -d "=" -f2 | sed 's, ,,g' | tr -d '\0')
@@ -805,6 +808,9 @@ if [[ -e "$cfg" ]]; then
             ryujinxavalonia_custom_version=$(echo "1.1.$ryujinxavalonia_custom_version")
          fi
             link_ryujinxavalonia=$(echo "https://github.com/Ryujinx/release-channel-master/releases/download/$ryujinxavalonia_custom_version/test-ava-ryujinx-$ryujinx_custom_version-linux_x64.tar.gz")
+                  if [[ "$(echo "$ryujinxavalonia_custom_version" | grep "382")" != "" ]]; then 
+                     link_ryujinxavalonia=https://github.com/uureel/batocera.pro/raw/main/switch/extra/test-ava-ryujinx-1.1.382-linux_x64.tar.gz
+                  fi
        fi
    # ///
 fi
