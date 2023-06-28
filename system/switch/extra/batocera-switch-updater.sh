@@ -2023,6 +2023,12 @@ echo '#' >> "$f"
 echo "sed -i 's/inline_limit=\"20\"/inline_limit=\"111\"/' /etc/xdg/menus/batocera-applications.menu" >> "$f"
 echo '#' >> "$f" 
 #
+#\ add yuzu's/./././././avators symlink as saves/yuzu/profile
+echo "mkdir -p /userdata/saves/yuzu 2>/dev/null" >> "$f"
+echo "ln -s /userdata/system/configs/yuzu/nand/system/save/8000000000000010/su/avators /userdata/saves/yuzu/profile 2>/dev/null" >> "$f"
+echo '#' >> "$f" 
+#
+#
 dos2unix "$f" 2>/dev/null
 chmod a+x "$f" 2>/dev/null
 # -------------------------------------------------------------------
