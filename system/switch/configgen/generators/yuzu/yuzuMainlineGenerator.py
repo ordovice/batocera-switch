@@ -418,8 +418,108 @@ class YuzuMainlineGenerator(Generator):
             for i in range(count):
                     if sdl2.SDL_IsGameController(i) == SDL_TRUE:
                         pad = sdl2.SDL_JoystickOpen(i)
+                        cont = sdl2.SDL_GameControllerOpen(i)
+                        #iid = sdl2.SDL_JoystickInstanceID(pad)
+                        gc = sdl2.SDL_GameControllerMappingForDeviceIndex(i)
+                        eslog.debug("Joystick Mapping: {}".format(gc))
 
-                        iid = sdl2.SDL_JoystickInstanceID(pad)
+                        gc_a = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_A)
+                        if(gc_a.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_b = "hat:" + str(gc_a.value.hat.hat)
+                        else:
+                            button_b = gc_a.value.button
+
+                        gc_b = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_B)
+                        if(gc_b.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_a = "hat:" + str(gc_b.value.hat.hat)
+                        else:
+                            button_a = gc_b.value.button
+
+                        gc_x = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_X)
+                        if(gc_x.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_y = "hat:" + str(gc_x.value.hat.hat)
+                        else:
+                            button_y = gc_x.value.button
+
+                        gc_y = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_Y)
+                        if(gc_y.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_x = "hat:" + str(gc_y.value.hat.hat)
+                        else:
+                            button_x = gc_y.value.button
+
+                        gc_dup = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_DPAD_UP)
+                        if(gc_dup.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_dup = "hat:" + str(gc_dup.value.hat.hat)
+                        else:
+                            button_dup = gc_dup.value.button
+
+                        gc_ddown = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_DPAD_DOWN)
+                        if(gc_ddown.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_ddown = "hat:" + str(gc_ddown.value.hat.hat)
+                        else:
+                            button_ddown = gc_ddown.value.button    
+
+                        gc_dleft = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_DPAD_LEFT)
+                        if(gc_dleft.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_dleft = "hat:" + str(gc_ddown.value.hat.hat)
+                        else:
+                            button_dleft = gc_dleft.value.button                     
+
+                        gc_dright = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+                        if(gc_dright.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_dright = "hat:" + str(gc_ddown.value.hat.hat)
+                        else:
+                            button_dright = gc_dright.value.button 
+
+                        gc_l = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_LEFTSHOULDER)
+                        if(gc_l.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_l = "hat:" + str(gc_l.value.hat.hat)
+                        else:
+                            button_l = gc_l.value.button
+
+                        gc_r = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_RIGHTSHOULDER)
+                        if(gc_r.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
+                            button_r = "hat:" + str(gc_r.value.hat.hat)
+                        else:
+                            button_r = gc_r.value.button
+
+                        gc_lstick = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_LEFTSTICK)
+                        button_lstick = gc_lstick.value.button
+
+                        gc_rstick = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_RIGHTSTICK)
+                        button_rstick = gc_rstick.value.button
+
+                        gc_home = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_GUIDE)
+                        button_home = gc_home.value.button
+
+                        gc_minus = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_BACK)
+                        button_minus = gc_minus.value.button
+
+                        gc_plus = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_START)
+                        button_plus = gc_plus.value.button
+
+                        gc_zl = sdl2.SDL_GameControllerGetBindForAxis(cont,sdl2.SDL_CONTROLLER_AXIS_TRIGGERLEFT)
+                        if(gc_zl.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_AXIS):
+                            button_zl = "axis"
+                            axis_button_zl = gc_zl.value.axis
+                        else:
+                            button_zl = gc_zl.value.button
+                            axis_button_zl = "noaxis"
+                        
+                        gc_zr = sdl2.SDL_GameControllerGetBindForAxis(cont,sdl2.SDL_CONTROLLER_AXIS_TRIGGERRIGHT)
+                        if(gc_zr.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_AXIS):
+                            button_zr = "axis"
+                            axis_button_zr = gc_zr.value.axis
+                        else:
+                            button_zr = gc_zr.value.button
+                            axis_button_zr = "noaxis"
+
+                        gc_axis_lstick_x = sdl2.SDL_GameControllerGetBindForAxis(cont,sdl2.SDL_CONTROLLER_AXIS_LEFTX)
+                        axis_lstick_x = gc_axis_lstick_x.value.axis
+
+                        gc_axis_rstick_x = sdl2.SDL_GameControllerGetBindForAxis(cont,sdl2.SDL_CONTROLLER_AXIS_RIGHTX)
+                        axis_rstick_x = gc_axis_rstick_x.value.axis
+
                         joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
                         buff = create_string_buffer(33)
                         joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
@@ -435,68 +535,45 @@ class YuzuMainlineGenerator(Generator):
                         outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
                         sdl_controls = ((sdl2.SDL_GameControllerMappingForGUID(joy_guid)).decode()).split(",", 2)[2]
+
                         #Fix for Steam controller assignment
-                        if( "Steam" in ((sdl2.SDL_GameControllerNameForIndex(i)).decode())):
-                            pad_type = 1
-                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "instance" : iid,  "type" : pad_type, "controls" : sdl_controls }
+                        controller_value = {
+                            "index" : i , 
+                            'path' : outputpath, 
+                            "guid" : guidstring, 
+                            #"instance" : iid,  
+                            "type" : pad_type, 
+                            "button_a" : button_a, 
+                            "button_b" : button_b, 
+                            "button_x" : button_x, 
+                            "button_y" : button_y,                                             
+                            "button_dup" : button_dup, 
+                            "button_ddown" : button_ddown,
+                            "button_dleft" : button_dleft,
+                            "button_dright" : button_dright,    
+                            "button_l" : button_l,
+                            "button_r" : button_r,
+                            "button_sl" : button_l,
+                            "button_sr" : button_r,
+                            "button_lstick" : button_lstick,
+                            "button_rstick" : button_rstick,
+                            "button_minus" : button_minus,
+                            "button_plus" : button_plus,
+                            "button_home" : button_home,
+                            "button_zl" : button_zl,
+                            "button_zr" : button_zr,
+                            "axis_button_zl" : axis_button_zl,
+                            "axis_button_zr" : axis_button_zr,
+                            "axis_lstick_x" : axis_lstick_x,
+                            "axis_rstick_x" : axis_rstick_x                                                      
+                            }
                         sdl_devices.append(controller_value)
+                        sdl2.SDL_GameControllerClose(cont)
                         sdl2.SDL_JoystickClose(pad)
             sdl2.SDL_Quit()
 
 
             eslog.debug("Joystick Path: {}".format(sdl_devices))
-
-            # Player 1 Pad Type
-            if system.isOptSet('p1_pad'):
-                yuzuConfig.set("Controls", "player_0_type", system.config["p1_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_0_type", "0")
-            yuzuConfig.set("Controls", "player_0_type\default", "false")
-
-            # Player 2 Pad Type
-            if system.isOptSet('p2_pad'):
-                yuzuConfig.set("Controls", "player_1_type", system.config["p2_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_1_type", "0")
-            
-            # Player 3 Pad Type
-            if system.isOptSet('p3_pad'):
-                yuzuConfig.set("Controls", "player_2_type", system.config["p3_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_2_type", "0")
-
-            # Player 4 Pad Type
-            if system.isOptSet('p4_pad'):
-                yuzuConfig.set("Controls", "player_3_type", system.config["p4_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_3_type", "0")
-
-            # Player 5 Pad Type
-            if system.isOptSet('p5_pad'):
-                yuzuConfig.set("Controls", "player_4_type", system.config["p5_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_4_type", "0")
-
-            # Player 6 Pad Type
-            if system.isOptSet('p6_pad'):
-                yuzuConfig.set("Controls", "player_5_type", system.config["p6_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_5_type", "0")
-
-            # Player 7 Pad Type
-            if system.isOptSet('p7_pad'):
-                yuzuConfig.set("Controls", "player_6_type", system.config["p7_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_6_type", "0")
-
-            # Player 8 Pad Type
-            if system.isOptSet('p8_pad'):
-                yuzuConfig.set("Controls", "player_7_type", system.config["p8_pad"])
-            else:
-                yuzuConfig.set("Controls", "player_7_type", "0")
-
-            
-            yuzuConfig.set("Controls", "player_1_type\default", "false")
 
             yuzuConfig.set("Controls", "vibration_enabled", "true")
             yuzuConfig.set("Controls", "vibration_enabled\\default", "true")
@@ -506,87 +583,78 @@ class YuzuMainlineGenerator(Generator):
             for index in playersControllers :
                 controller = playersControllers[index]
 
-                command = "udevadm info --query=path --name=" + playersControllers[index].dev
-                outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
-
-                portnumber = cguid.count(controller.guid)
-                controllernumber = str(int(controller.player) - 1)
-                cguid[int(controllernumber)] = controller.guid
-                inputguid = controller.guid
-                eslog.debug("Controller GUID {}".format(inputguid))
-                controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
-                eslog.debug("Mapping GUID {}".format(controller_mapping['yuzu_guid']))
+                which_pad = "p" + str(int(controller.player)) + "_pad"
 
                 command = "udevadm info --query=path --name=" + playersControllers[index].dev
                 outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
-                eslog.debug("Output Path {}".format(outputpath))               
+
+                command = "udevadm info --query=path --name=" + playersControllers[index].dev
+                outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
 
                 sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
-                eslog.debug("New GUID {}".format(sdl_mapping['guid']))
                 
+                eslog.debug("Mapping: {}".format(sdl_mapping))
 
-                if ((controller_mapping == None) or (controller_mapping['yuzu_guid'] == 'SAME')):
-                    eslog.debug("Controller Mapping Does Not Exist or follows straight SDL, following old logic")
-                    for x in yuzuButtons:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
-                    for x in yuzuAxis:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber)))
-                else:
-                    #Follow new logic
-                    eslog.debug("Controller Mapping {}".format(controller_mapping))
-                    inputguid = controller_mapping['yuzu_guid']
-                    yuzuButtons = {
-                        "button_a":      controller_mapping['button_a'],
-                        "button_b":      controller_mapping['button_b'],
-                        "button_x":      controller_mapping['button_x'],
-                        "button_y":      controller_mapping['button_y'],
-                        "button_l":      controller_mapping['button_l'],
-                        "button_r":      controller_mapping['button_r'],
-                        "button_plus":   controller_mapping['button_plus'],
-                        "button_minus":  controller_mapping['button_minus'],
-                        "button_sl":     controller_mapping['button_sl'],
-                        "button_sr":     controller_mapping['button_sr'],
-                        "button_lstick": controller_mapping['button_lstick'],
-                        "button_rstick": controller_mapping['button_rstick'],
-                        "button_home":   controller_mapping['button_home'],
-                        "button_dup":    controller_mapping['button_dup'],
-                        "button_ddown":  controller_mapping['button_ddown'],
-                        "button_dleft":  controller_mapping['button_dleft'],
-                        "button_dright": controller_mapping['button_dright'],
-                    }
+                inputguid = sdl_mapping['guid']
 
-                    yuzuAxis = {
-                        "lstick":    int(controller_mapping['axis_lstick']),
-                        "rstick":    int(controller_mapping['axis_rstick'])
-                    }
+                controllernumber = str(int(controller.player) - 1)
+                portnumber = cguid.count(inputguid)
+                cguid[int(controllernumber)] = inputguid
+                
+                yuzuConfig.set("Controls", "player_1_type\default", "false")
 
-                    yuzuAxisButtons = {
-                        "button_zl": controller_mapping['axis_button_zl'],
-                        "button_zr": controller_mapping['axis_button_zr']
-                    }
+                yuzuButtons = {
+                    "button_a":      sdl_mapping['button_a'],
+                    "button_b":      sdl_mapping['button_b'],
+                    "button_x":      sdl_mapping['button_x'],
+                    "button_y":      sdl_mapping['button_y'],
+                    "button_l":      sdl_mapping['button_l'],
+                    "button_r":      sdl_mapping['button_r'],
+                    "button_plus":   sdl_mapping['button_plus'],
+                    "button_minus":  sdl_mapping['button_minus'],
+                    "button_sl":     sdl_mapping['button_sl'],
+                    "button_sr":     sdl_mapping['button_sr'],
+                    "button_lstick": sdl_mapping['button_lstick'],
+                    "button_rstick": sdl_mapping['button_rstick'],
+                    "button_home":   sdl_mapping['button_home'],
+                    "button_dup":    sdl_mapping['button_dup'],
+                    "button_ddown":  sdl_mapping['button_ddown'],
+                    "button_dleft":  sdl_mapping['button_dleft'],
+                    "button_dright": sdl_mapping['button_dright'],
+                    "button_zl": sdl_mapping['button_zl'],
+                    "button_zr": sdl_mapping['button_zr']
+                }
 
-                    yuzuHat = {
-                        "button_dup":     'up',
-                        "button_ddown":   'down',
-                        "button_dleft":   'left',
-                        "button_dright":  'right',
-                    }
+                yuzuAxis = {
+                    "lstick":    int(sdl_mapping['axis_lstick_x']),
+                    "rstick":    int(sdl_mapping['axis_rstick_x'])
+                }
 
-                    #Configure buttons
-                    for x in yuzuButtons:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},button:{}"'.format(portnumber,inputguid,yuzuButtons[x]))
-                    #Replace Buttons that are actually hats (d-pad)
-                    if(controller_mapping['button_dup'] == 'hat'):
-                        for x in yuzuHat:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"hat:0,direction:{},guid:{},port:{},engine:sdl"'.format(yuzuHat[x],inputguid,portnumber))
+                yuzuAxisButtons = {
+                    "button_zl": sdl_mapping['axis_button_zl'],
+                    "button_zr": sdl_mapping['axis_button_zr']
+                }
 
-                    #set joysticks
-                    for x in yuzuAxis:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuAxis[x],yuzuAxis[x]+1))
-                    #Replace Buttons that are actually axes (generally l2/r2)
-                    if(controller_mapping['button_zl'] == 'axis'):
-                        for x in yuzuAxisButtons:
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                yuzuHat = {
+                    "button_dup":     'up',
+                    "button_ddown":   'down',
+                    "button_dleft":   'left',
+                    "button_dright":  'right'
+                }
+
+                #Configure buttons and triggers
+                for x in yuzuButtons:
+                    if("hat" in str(yuzuButtons[x])):
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
+                    elif("axis" in str(yuzuButtons[x])):
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                    else:
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+
+                #set joysticks
+                for x in yuzuAxis:
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuAxis[x],yuzuAxis[x]+1))
+            
 
                 #Enable motion no matter what, as enabling won't hurt things if it doesn't exist
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
@@ -596,12 +664,19 @@ class YuzuMainlineGenerator(Generator):
                 if (controllernumber == "0"):
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
                 else:
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")                    
-                yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
+
+                if system.isOptSet(which_pad):
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_type", system.config["p1_pad"])
+                    #yuzuConfig.set("Controls", "player_0_type", system.config["p1_pad"])
+                else:
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
                 lastplayer = int(controllernumber)
+
             lastplayer = lastplayer + 1
             eslog.debug("Last Player {}".format(lastplayer))
             for y in range(lastplayer, 9):
