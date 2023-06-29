@@ -11,7 +11,6 @@ import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
 from utils.logger import get_logger
-import csv
 import subprocess
 
 eslog = get_logger(__name__)
@@ -86,9 +85,6 @@ class YuzuMainlineGenerator(Generator):
         if not os.path.exists("/userdata/system/.cache/yuzu/game_list"):
             st = os.symlink("/userdata/saves/yuzu","/userdata/system/.cache/yuzu/game_list")
 
-        #copyfile(batoceraFiles.BIOS + "/switch/prod.keys", batoceraFiles.CONF + "/yuzu/keys/prod.keys")
-        #copyfile(batoceraFiles.BIOS + "/switch/title.keys", batoceraFiles.CONF + "/yuzu/keys/title.keys")
-
         yuzuConfig = batoceraFiles.CONF + '/yuzu/qt-config.ini'
         beforeyuzuConfig = batoceraFiles.CONF + '/yuzu/before-qt-config.ini'
         
@@ -107,11 +103,7 @@ class YuzuMainlineGenerator(Generator):
     # @staticmethod
     def writeYuzuConfig(yuzuConfigFile, beforeyuzuConfigFile, system, playersControllers):
         # pads
-        with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
-            reader = csv.DictReader(csv_file)
-            controller_data = list(reader)
         
-        #os.environ["PYSDL2_DLL_PATH"] = "/usr/lib/"
         os.environ["PYSDL2_DLL_PATH"] = "/userdata/system/switch/extra/ryujinx/"
         
         yuzuButtons = {
