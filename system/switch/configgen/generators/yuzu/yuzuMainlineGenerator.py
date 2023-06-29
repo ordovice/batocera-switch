@@ -6,10 +6,7 @@ import Command as Command
 import os
 import shutil
 import stat
-from os import path
 import batoceraFiles as batoceraFiles
-from xml.dom import minidom
-import codecs
 import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
@@ -425,17 +422,22 @@ class YuzuMainlineGenerator(Generator):
                         buff = create_string_buffer(33)
                         joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
                         joy_path = joystick.SDL_JoystickPathForIndex(i)
-
+                        buff[2] = b'0'
+                        buff[3] = b'0'
+                        buff[4] = b'0'
+                        buff[5] = b'0'
+                        buff[6] = b'0'
+                        buff[7] = b'0'
                         guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
                         command = "udevadm info --query=path --name=" + joy_path.decode()
                         outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
+                        sdl_controls = ((sdl2.SDL_GameControllerMappingForGUID(joy_guid)).decode()).split(",", 2)[2]
                         #Fix for Steam controller assignment
                         if( "Steam" in ((sdl2.SDL_GameControllerNameForIndex(i)).decode())):
                             pad_type = 1
-                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "type" : pad_type }
+                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "type" : pad_type, "controls" : sdl_controls }
                         sdl_devices.append(controller_value)
-                        eslog.debug("SDL Mapping: {}".format(sdl2.SDL_GameControllerMappingForGUID(joy_guid)))
                         sdl2.SDL_GameControllerClose(pad)
             sdl2.SDL_Quit()
 
