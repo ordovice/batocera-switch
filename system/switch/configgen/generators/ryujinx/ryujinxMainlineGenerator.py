@@ -10,10 +10,7 @@ import uuid
 from os import path
 from os import environ
 import batoceraFiles as batoceraFiles
-from xml.dom import minidom
-import codecs
 import controllersConfig as controllersConfig
-import configparser
 from shutil import copyfile
 from utils.logger import get_logger
 import subprocess
@@ -42,7 +39,6 @@ class RyujinxMainlineGenerator(Generator):
 
         RyujinxConfig = batoceraFiles.CONF + '/Ryujinx/Config.json'
         RyujinxHome = batoceraFiles.CONF
-        RyujinxSaves = batoceraFiles.CONF
 
         firstrun = True
         if path.exists(RyujinxConfig):
