@@ -417,7 +417,9 @@ class YuzuMainlineGenerator(Generator):
             count = joystick.SDL_NumJoysticks()
             for i in range(count):
                     if sdl2.SDL_IsGameController(i) == SDL_TRUE:
-                        pad = sdl2.SDL_GameControllerOpen(i)
+                        pad = sdl2.SDL_JoystickOpen(i)
+
+                        iid = sdl2.SDL_JoystickInstanceID(pad)
                         joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
                         buff = create_string_buffer(33)
                         joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
@@ -436,9 +438,9 @@ class YuzuMainlineGenerator(Generator):
                         #Fix for Steam controller assignment
                         if( "Steam" in ((sdl2.SDL_GameControllerNameForIndex(i)).decode())):
                             pad_type = 1
-                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "type" : pad_type, "controls" : sdl_controls }
+                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "instance" : iid,  "type" : pad_type, "controls" : sdl_controls }
                         sdl_devices.append(controller_value)
-                        sdl2.SDL_GameControllerClose(pad)
+                        sdl2.SDL_JoystickClose(pad)
             sdl2.SDL_Quit()
 
 
@@ -503,6 +505,10 @@ class YuzuMainlineGenerator(Generator):
             lastplayer = 0
             for index in playersControllers :
                 controller = playersControllers[index]
+
+                command = "udevadm info --query=path --name=" + playersControllers[index].dev
+                outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
+
                 portnumber = cguid.count(controller.guid)
                 controllernumber = str(int(controller.player) - 1)
                 cguid[int(controllernumber)] = controller.guid
