@@ -15,6 +15,7 @@ import configparser
 from shutil import copyfile
 from utils.logger import get_logger
 import csv
+import subprocess
 
 eslog = get_logger(__name__)
 
@@ -112,7 +113,10 @@ class YuzuMainlineGenerator(Generator):
         with open('/userdata/system/switch/configgen/mapping.csv', mode='r', encoding='utf-8-sig') as csv_file:
             reader = csv.DictReader(csv_file)
             controller_data = list(reader)
-
+        
+        #os.environ["PYSDL2_DLL_PATH"] = "/usr/lib/"
+        os.environ["PYSDL2_DLL_PATH"] = "/userdata/system/switch/extra/ryujinx/"
+        
         yuzuButtons = {
             "button_a":      "a",
             "button_b":      "b",
@@ -400,6 +404,44 @@ class YuzuMainlineGenerator(Generator):
 
 
         if ((system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")) or not system.isOptSet('yuzu_auto_controller_config')):
+
+            import sdl2
+            from sdl2 import (
+                SDL_TRUE
+            )
+            from sdl2 import joystick
+            from ctypes import create_string_buffer
+            sdl2.SDL_ClearError()
+            sdl2.SDL_SetHint(b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", b"1")
+            ret = sdl2.SDL_Init(sdl2.SDL_INIT_VIDEO | sdl2.SDL_INIT_GAMECONTROLLER)
+            assert ret == 0, _check_error_msg()
+
+            sdl_devices = []
+            count = joystick.SDL_NumJoysticks()
+            for i in range(count):
+                    if sdl2.SDL_IsGameController(i) == SDL_TRUE:
+                        pad = sdl2.SDL_GameControllerOpen(i)
+                        joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
+                        buff = create_string_buffer(33)
+                        joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
+                        joy_path = joystick.SDL_JoystickPathForIndex(i)
+
+                        guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
+                        command = "udevadm info --query=path --name=" + joy_path.decode()
+                        outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
+                        pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
+                        #Fix for Steam controller assignment
+                        if( "Steam" in ((sdl2.SDL_GameControllerNameForIndex(i)).decode())):
+                            pad_type = 1
+                        controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "type" : pad_type }
+                        sdl_devices.append(controller_value)
+                        eslog.debug("SDL Mapping: {}".format(sdl2.SDL_GameControllerMappingForGUID(joy_guid)))
+                        sdl2.SDL_GameControllerClose(pad)
+            sdl2.SDL_Quit()
+
+
+            eslog.debug("Joystick Path: {}".format(sdl_devices))
+
             # Player 1 Pad Type
             if system.isOptSet('p1_pad'):
                 yuzuConfig.set("Controls", "player_0_type", system.config["p1_pad"])
@@ -465,7 +507,16 @@ class YuzuMainlineGenerator(Generator):
                 inputguid = controller.guid
                 eslog.debug("Controller GUID {}".format(inputguid))
                 controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
+                eslog.debug("Mapping GUID {}".format(controller_mapping['yuzu_guid']))
+
+                command = "udevadm info --query=path --name=" + playersControllers[index].dev
+                outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
+                eslog.debug("Output Path {}".format(outputpath))               
+
+                sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
+                eslog.debug("New GUID {}".format(sdl_mapping['guid']))
                 
+
                 if ((controller_mapping == None) or (controller_mapping['yuzu_guid'] == 'SAME')):
                     eslog.debug("Controller Mapping Does Not Exist or follows straight SDL, following old logic")
                     for x in yuzuButtons:
