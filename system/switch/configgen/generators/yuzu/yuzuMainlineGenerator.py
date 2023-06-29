@@ -526,8 +526,8 @@ class YuzuMainlineGenerator(Generator):
                         command = "udevadm info --query=path --name=" + joy_path.decode()
                         outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
-                        sdl_controls = ((sdl2.SDL_GameControllerMappingForGUID(joy_guid)).decode()).split(",", 2)[2]
-
+                        if( "Steam" in ((sdl2.SDL_GameControllerNameForIndex(i)).decode())):
+                            pad_type = 1
                         #Fix for Steam controller assignment
                         controller_value = {
                             "index" : i , 
@@ -594,28 +594,51 @@ class YuzuMainlineGenerator(Generator):
                 cguid[int(controllernumber)] = inputguid
                 
                 yuzuConfig.set("Controls", "player_1_type\default", "false")
-
-                yuzuButtons = {
-                    "button_a":      sdl_mapping['button_a'],
-                    "button_b":      sdl_mapping['button_b'],
-                    "button_x":      sdl_mapping['button_x'],
-                    "button_y":      sdl_mapping['button_y'],
-                    "button_l":      sdl_mapping['button_l'],
-                    "button_r":      sdl_mapping['button_r'],
-                    "button_plus":   sdl_mapping['button_plus'],
-                    "button_minus":  sdl_mapping['button_minus'],
-                    "button_sl":     sdl_mapping['button_sl'],
-                    "button_sr":     sdl_mapping['button_sr'],
-                    "button_lstick": sdl_mapping['button_lstick'],
-                    "button_rstick": sdl_mapping['button_rstick'],
-                    "button_home":   sdl_mapping['button_home'],
-                    "button_dup":    sdl_mapping['button_dup'],
-                    "button_ddown":  sdl_mapping['button_ddown'],
-                    "button_dleft":  sdl_mapping['button_dleft'],
-                    "button_dright": sdl_mapping['button_dright'],
-                    "button_zl": sdl_mapping['button_zl'],
-                    "button_zr": sdl_mapping['button_zr']
-                }
+                #Switch and generic controllers aren't swapping ABXY
+                if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
+                    yuzuButtons = {
+                        "button_a":      sdl_mapping['button_b'],
+                        "button_b":      sdl_mapping['button_a'],
+                        "button_x":      sdl_mapping['button_y'],
+                        "button_y":      sdl_mapping['button_x'],
+                        "button_l":      sdl_mapping['button_l'],
+                        "button_r":      sdl_mapping['button_r'],
+                        "button_plus":   sdl_mapping['button_plus'],
+                        "button_minus":  sdl_mapping['button_minus'],
+                        "button_sl":     sdl_mapping['button_sl'],
+                        "button_sr":     sdl_mapping['button_sr'],
+                        "button_lstick": sdl_mapping['button_lstick'],
+                        "button_rstick": sdl_mapping['button_rstick'],
+                        "button_home":   sdl_mapping['button_home'],
+                        "button_dup":    sdl_mapping['button_dup'],
+                        "button_ddown":  sdl_mapping['button_ddown'],
+                        "button_dleft":  sdl_mapping['button_dleft'],
+                        "button_dright": sdl_mapping['button_dright'],
+                        "button_zl": sdl_mapping['button_zl'],
+                        "button_zr": sdl_mapping['button_zr']
+                    }
+                else:
+                    yuzuButtons = {
+                        "button_a":      sdl_mapping['button_a'],
+                        "button_b":      sdl_mapping['button_b'],
+                        "button_x":      sdl_mapping['button_x'],
+                        "button_y":      sdl_mapping['button_y'],
+                        "button_l":      sdl_mapping['button_l'],
+                        "button_r":      sdl_mapping['button_r'],
+                        "button_plus":   sdl_mapping['button_plus'],
+                        "button_minus":  sdl_mapping['button_minus'],
+                        "button_sl":     sdl_mapping['button_sl'],
+                        "button_sr":     sdl_mapping['button_sr'],
+                        "button_lstick": sdl_mapping['button_lstick'],
+                        "button_rstick": sdl_mapping['button_rstick'],
+                        "button_home":   sdl_mapping['button_home'],
+                        "button_dup":    sdl_mapping['button_dup'],
+                        "button_ddown":  sdl_mapping['button_ddown'],
+                        "button_dleft":  sdl_mapping['button_dleft'],
+                        "button_dright": sdl_mapping['button_dright'],
+                        "button_zl": sdl_mapping['button_zl'],
+                        "button_zr": sdl_mapping['button_zr']
+                    }
 
                 yuzuAxis = {
                     "lstick":    int(sdl_mapping['axis_lstick_x']),
