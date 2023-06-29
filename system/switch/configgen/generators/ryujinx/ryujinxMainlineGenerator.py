@@ -16,8 +16,6 @@ import controllersConfig as controllersConfig
 import configparser
 from shutil import copyfile
 from utils.logger import get_logger
-import csv
-import sys
 import subprocess
 
 
