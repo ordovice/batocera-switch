@@ -596,7 +596,7 @@ class YuzuMainlineGenerator(Generator):
                 
                 yuzuConfig.set("Controls", "player_1_type\default", "false")
                 #Switch and generic controllers aren't swapping ABXY
-                if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
+                if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) (sdl_mapping['type'] >= 11):
                     yuzuButtons = {
                         "button_a":      sdl_mapping['button_b'],
                         "button_b":      sdl_mapping['button_a'],
