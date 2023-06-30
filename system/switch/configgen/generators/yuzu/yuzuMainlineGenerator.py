@@ -516,6 +516,7 @@ class YuzuMainlineGenerator(Generator):
                         buff = create_string_buffer(33)
                         joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
                         joy_path = joystick.SDL_JoystickPathForIndex(i)
+                        eslog.debug("Joysticks: {}".format(joy_path.decode()))
                         buff[2] = b'0'
                         buff[3] = b'0'
                         buff[4] = b'0'
@@ -565,7 +566,7 @@ class YuzuMainlineGenerator(Generator):
             sdl2.SDL_Quit()
 
 
-            eslog.debug("Joystick Path: {}".format(sdl_devices))
+            eslog.debug("Joysticks: {}".format(sdl_devices))
 
             yuzuConfig.set("Controls", "vibration_enabled", "true")
             yuzuConfig.set("Controls", "vibration_enabled\\default", "true")

@@ -285,7 +285,7 @@ class RyujinxMainlineGenerator(Generator):
                         buff = create_string_buffer(33)
                         joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
                         joy_path = joystick.SDL_JoystickPathForIndex(i)
-
+                        eslog.debug("Joysticks: {}".format(joy_path.decode()))
                         guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
                         command = "udevadm info --query=path --name=" + joy_path.decode()
                         outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
@@ -298,7 +298,7 @@ class RyujinxMainlineGenerator(Generator):
                         sdl2.SDL_GameControllerClose(pad)
             sdl2.SDL_Quit()
 
-            eslog.debug("Joystick Path: {}".format(sdl_devices))
+            eslog.debug("Joysticks: {}".format(sdl_devices))
             #New Logic
             for index in playersControllers :
                 controller = playersControllers[index]
