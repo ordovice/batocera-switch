@@ -483,7 +483,58 @@ class RyujinxMainlineGenerator(Generator):
                         right_joycon['button_y'] = "Y"
                         right_joycon['button_a'] = "A"                         
                     cvalue['controller_type'] = "JoyconRight"
+                else:
+                    #Handle old settings that don't match above
+                    left_joycon_stick = {}
+                    left_joycon_stick['joystick'] = "Left"
+                    left_joycon_stick['rotate90_cw'] = bool(0)
+                    left_joycon_stick['invert_stick_x'] = bool(0)
+                    left_joycon_stick['invert_stick_y'] = bool(0)
+                    left_joycon_stick['stick_button'] = "LeftStick"            
 
+                    right_joycon_stick = {}
+                    right_joycon_stick['joystick'] = "Right"
+                    right_joycon_stick['rotate90_cw'] = bool(0)
+                    right_joycon_stick['invert_stick_x'] = bool(0)
+                    right_joycon_stick['invert_stick_y'] = bool(0)
+                    right_joycon_stick['stick_button'] = "RightStick" 
+
+
+
+                    left_joycon = {}
+                    left_joycon['button_minus'] = "Minus"
+                    left_joycon['button_l'] = "LeftShoulder"
+                    left_joycon['button_zl'] = "LeftTrigger"
+                    left_joycon['button_sl'] = "Unbound"
+                    left_joycon['button_sr'] = "Unbound"
+                    left_joycon['dpad_up'] = "DpadUp"
+                    left_joycon['dpad_down'] = "DpadDown"
+                    left_joycon['dpad_left'] = "DpadLeft"
+                    left_joycon['dpad_right'] = "DpadRight"
+
+
+                    right_joycon = {}
+                    right_joycon['button_plus'] = "Plus"
+                    right_joycon['button_r'] = "RightShoulder"
+                    right_joycon['button_zr'] = "RightTrigger"
+                    right_joycon['button_sl'] = "Unbound"
+                    right_joycon['button_sr'] = "Unbound"
+
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
+                        right_joycon['button_x'] = "X"
+                        right_joycon['button_b'] = "B"
+                        right_joycon['button_y'] = "Y"
+                        right_joycon['button_a'] = "A" 
+                    else:
+                        right_joycon['button_x'] = "Y"
+                        right_joycon['button_b'] = "A"
+                        right_joycon['button_y'] = "X"
+                        right_joycon['button_a'] = "B" 
+
+                    if system.isOptSet(which_pad):
+                        cvalue['controller_type'] = system.config["p1_pad"]
+                    else: 
+                        cvalue['controller_type'] = "ProController"
 
                 cvalue['left_joycon_stick'] = left_joycon_stick          
                 cvalue['right_joycon_stick'] = right_joycon_stick
