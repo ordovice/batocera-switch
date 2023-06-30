@@ -291,7 +291,10 @@ class RyujinxMainlineGenerator(Generator):
                         outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
                         #Fix for Steam controller assignment
-                        if( "Steam" in ((sdl2.SDL_GameControllerNameForIndex(i)).decode())):
+                        controllername = (sdl2.SDL_GameControllerNameForIndex(i)).decode()
+                        if( "Steam" in controllername):
+                            pad_type = 1
+                        if("Xin-Mo Xin-Mo Dual Arcade" in controllername):
                             pad_type = 1
                         controller_value = {"index" : i , 'path' : outputpath, "guid" : guidstring, "type" : pad_type }
                         sdl_devices.append(controller_value)
