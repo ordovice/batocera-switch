@@ -366,7 +366,7 @@ class RyujinxMainlineGenerator(Generator):
                     right_joycon['button_sl'] = "Unbound"
                     right_joycon['button_sr'] = "Unbound"
 
-                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) (sdl_mapping['type'] >= 11):
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
                         right_joycon['button_x'] = "X"
                         right_joycon['button_b'] = "B"
                         right_joycon['button_y'] = "Y"
@@ -404,7 +404,7 @@ class RyujinxMainlineGenerator(Generator):
                     left_joycon['button_sl'] = "LeftShoulder"
                     left_joycon['button_sr'] = "RightShoulder"
 
-                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) (sdl_mapping['type'] >= 11):
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
                         left_joycon['dpad_up'] = "Y"
                         left_joycon['dpad_down'] = "A"
                         left_joycon['dpad_left'] = "X"
@@ -422,7 +422,7 @@ class RyujinxMainlineGenerator(Generator):
                     right_joycon['button_sl'] = "Unbound"
                     right_joycon['button_sr'] = "Unbound"
 
-                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) (sdl_mapping['type'] >= 11):
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
                         right_joycon['button_x'] = "X"
                         right_joycon['button_b'] = "B"
                         right_joycon['button_y'] = "Y"
@@ -469,7 +469,7 @@ class RyujinxMainlineGenerator(Generator):
                     right_joycon['button_sl'] = "LeftShoulder"
                     right_joycon['button_sr'] = "RightShoulder"
 
-                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) (sdl_mapping['type'] >= 11):
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
                         right_joycon['button_x'] = "A"
                         right_joycon['button_b'] = "Y"
                         right_joycon['button_y'] = "X"
