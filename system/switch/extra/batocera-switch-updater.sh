@@ -2415,7 +2415,9 @@ mkdir -p $path 2>/dev/null
    cd ~/
 # -------------------------------------------------------------------- 
 # GET RYUJINX 942 libSDL2.so for updated controllers processing 
-sdl=/userdata/system/switch/extra/batocera-switch-libSDL2.so
+rm /userdata/system/switch/extra/batocera-switch-libSDL2.so 2>/dev/null
+mkdir -p /userdata/system/switch/extra/sdl 2>/dev/null
+sdl=/userdata/system/switch/extra/sdl/libSDL2.so
 sdlurl=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-libSDL2.so
    if [[ ! -e "$sdl" ]]; then 
       wget -q -O "$sdl" "$sdlurl"
