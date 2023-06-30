@@ -531,10 +531,7 @@ class RyujinxMainlineGenerator(Generator):
                         right_joycon['button_y'] = "X"
                         right_joycon['button_a'] = "B" 
 
-                    if system.isOptSet(which_pad):
-                        cvalue['controller_type'] = system.config["p1_pad"]
-                    else: 
-                        cvalue['controller_type'] = "ProController"
+                    cvalue['controller_type'] = "ProController"
 
                 cvalue['left_joycon_stick'] = left_joycon_stick          
                 cvalue['right_joycon_stick'] = right_joycon_stick
