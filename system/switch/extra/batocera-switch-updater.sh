@@ -2033,9 +2033,10 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
 # ------------------------------------------------------------------- 
    extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
 # ------------------------------------------------------------------- 
-# get mapping.csv file 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/mapping.csv" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/mapping.csv"
-   dos2unix /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
+# get mapping.csv file (obsolete)
+#   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/mapping.csv" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/mapping.csv"
+#   dos2unix /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
+   rm /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
 # ------------------------------------------------------------------- 
 # get batocera-switch-sync-firmware.sh
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh" "$extraurl/batocera-switch-sync-firmware.sh"
@@ -2332,7 +2333,7 @@ path=/userdata/system/switch/configgen
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen
 mkdir -p $path 2>/dev/null
 wget -q -O "$path/GeneratorImporter.py" "$url/GeneratorImporter.py"
-wget -q -O "$path/mapping.csv" "$url/mapping.csv"
+#wget -q -O "$path/mapping.csv" "$url/mapping.csv"
 wget -q -O "$path/switchlauncher.py" "$url/switchlauncher.py"
 wget -q -O "$path/switchlauncher_old.py" "$url/switchlauncher_old.py"
 # -------------------------------------------------------------------- 
@@ -2413,7 +2414,19 @@ mkdir -p $path 2>/dev/null
       wget -q $url/vulkan.py
    cd ~/
 # -------------------------------------------------------------------- 
-
+# GET RYUJINX 942 libSDL2.so for updated controllers processing 
+rm /userdata/system/switch/extra/batocera-switch-libSDL2.so 2>/dev/null
+mkdir -p /userdata/system/switch/extra/sdl 2>/dev/null
+sdl=/userdata/system/switch/extra/sdl/libSDL2.so
+sdlurl=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-libSDL2.so
+   if [[ ! -e "$sdl" ]]; then 
+      wget -q -O "$sdl" "$sdlurl"
+   else 
+      if [[ "$(md5sum $sdl | awk '{print $1}')" != "dc4a162f60622b04813fbf1756419c89" ]] || [[ "$(wc -c $sdl | awk '{print $1}')" != "2493584" ]]; then 
+         wget -q -O "$sdl" "$sdlurl"   
+      fi 
+   fi 
+      chmod a+x "$sdl" 2>/dev/null 
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
