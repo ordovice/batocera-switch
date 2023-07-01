@@ -287,8 +287,13 @@ class RyujinxMainlineGenerator(Generator):
                         joy_path = joystick.SDL_JoystickPathForIndex(i)
                         eslog.debug("Joysticks: {}".format(joy_path.decode()))
                         guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
-                        command = "udevadm info --query=path --name=" + joy_path.decode()
-                        outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
+
+                        if(joy_path.decode() == 'nintendo_joycons_combined' ):
+                            outputpath = 'nintendo_joycons_combined'
+                        else:    
+                            command = "udevadm info --query=path --name=" + joy_path.decode()
+                            outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
+                            
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
                         #Fix for Steam controller assignment
                         controllername = (sdl2.SDL_GameControllerNameForIndex(i)).decode()
@@ -306,8 +311,12 @@ class RyujinxMainlineGenerator(Generator):
             for index in playersControllers :
                 controller = playersControllers[index]
                 #inputguid = controller.guid
-                command = "udevadm info --query=path --name=" + playersControllers[index].dev
-                outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
+
+                if(playersControllers[index].dev == 'nintendo_joycons_combined'):
+                    outputpath = 'nintendo_joycons_combined'
+                else:
+                    command = "udevadm info --query=path --name=" + playersControllers[index].dev
+                    outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
 
                 #controller_mapping = next((item for item in controller_data if item["old_guid"] == inputguid),None)
                 sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
