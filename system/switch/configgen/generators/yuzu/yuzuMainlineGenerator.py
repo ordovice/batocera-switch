@@ -599,84 +599,247 @@ class YuzuMainlineGenerator(Generator):
                 controllernumber = str(int(controller.player) - 1)
                 portnumber = cguid.count(inputguid)
                 cguid[int(controllernumber)] = inputguid
-                
-                yuzuConfig.set("Controls", "player_1_type\default", "false")
-                #Switch and generic controllers aren't swapping ABXY
-                if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
-                    yuzuButtons = {
-                        "button_a":      sdl_mapping['button_b'],
-                        "button_b":      sdl_mapping['button_a'],
-                        "button_x":      sdl_mapping['button_y'],
-                        "button_y":      sdl_mapping['button_x'],
-                        "button_l":      sdl_mapping['button_l'],
-                        "button_r":      sdl_mapping['button_r'],
-                        "button_plus":   sdl_mapping['button_plus'],
-                        "button_minus":  sdl_mapping['button_minus'],
-                        "button_sl":     sdl_mapping['button_sl'],
-                        "button_sr":     sdl_mapping['button_sr'],
-                        "button_lstick": sdl_mapping['button_lstick'],
-                        "button_rstick": sdl_mapping['button_rstick'],
-                        "button_home":   sdl_mapping['button_home'],
-                        "button_dup":    sdl_mapping['button_dup'],
-                        "button_ddown":  sdl_mapping['button_ddown'],
-                        "button_dleft":  sdl_mapping['button_dleft'],
-                        "button_dright": sdl_mapping['button_dright'],
-                        "button_zl": sdl_mapping['button_zl'],
-                        "button_zr": sdl_mapping['button_zr']
-                    }
-                else:
-                    yuzuButtons = {
-                        "button_a":      sdl_mapping['button_a'],
-                        "button_b":      sdl_mapping['button_b'],
-                        "button_x":      sdl_mapping['button_x'],
-                        "button_y":      sdl_mapping['button_y'],
-                        "button_l":      sdl_mapping['button_l'],
-                        "button_r":      sdl_mapping['button_r'],
-                        "button_plus":   sdl_mapping['button_plus'],
-                        "button_minus":  sdl_mapping['button_minus'],
-                        "button_sl":     sdl_mapping['button_sl'],
-                        "button_sr":     sdl_mapping['button_sr'],
-                        "button_lstick": sdl_mapping['button_lstick'],
-                        "button_rstick": sdl_mapping['button_rstick'],
-                        "button_home":   sdl_mapping['button_home'],
-                        "button_dup":    sdl_mapping['button_dup'],
-                        "button_ddown":  sdl_mapping['button_ddown'],
-                        "button_dleft":  sdl_mapping['button_dleft'],
-                        "button_dright": sdl_mapping['button_dright'],
-                        "button_zl": sdl_mapping['button_zl'],
-                        "button_zr": sdl_mapping['button_zr']
-                    }
-
-                yuzuAxis = {
-                    "lstick":    int(sdl_mapping['axis_lstick_x']),
-                    "rstick":    int(sdl_mapping['axis_rstick_x'])
-                }
-
-                yuzuAxisButtons = {
-                    "button_zl": sdl_mapping['axis_button_zl'],
-                    "button_zr": sdl_mapping['axis_button_zr']
-                }
-
-                yuzuHat = {
-                    "button_dup":     'up',
-                    "button_ddown":   'down',
-                    "button_dleft":   'left',
-                    "button_dright":  'right'
-                }
-
-                #Configure buttons and triggers
-                for x in yuzuButtons:
-                    if("hat" in str(yuzuButtons[x])):
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
-                    elif("axis" in str(yuzuButtons[x])):
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+          
+                if (system.isOptSet(which_pad) and (system.config[which_pad] == "2")):
+                    eslog.debug("Controller Type: Left Joycon")
+                    #2 = Left Joycon
+                    #Switch and generic controllers aren't swapping ABXY
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
+                        yuzuButtons = {
+                            "button_a":      sdl_mapping['button_b'], #notused on left joycon
+                            "button_b":      sdl_mapping['button_a'], #notused on left joycon
+                            "button_x":      sdl_mapping['button_y'], #notused on left joycon
+                            "button_y":      sdl_mapping['button_x'], #notused on left joycon
+                            "button_l":      sdl_mapping['button_l'], 
+                            "button_r":      sdl_mapping['button_r'], #notused on left joycon
+                            "button_plus":   sdl_mapping['button_plus'], #notused on left joycon
+                            "button_minus":  sdl_mapping['button_minus'],
+                            "button_sl":     sdl_mapping['button_sl'], 
+                            "button_sr":     sdl_mapping['button_sr'],
+                            "button_lstick": sdl_mapping['button_lstick'],
+                            "button_rstick": sdl_mapping['button_rstick'], #notused on left joycon
+                            "button_home":   sdl_mapping['button_home'],  #notused on left joycon
+                            "button_screenshot": sdl_mapping['button_home'], #Added to left joycon to act as "home"
+                            "button_dup":    sdl_mapping['button_x'], 
+                            "button_ddown":  sdl_mapping['button_b'],
+                            "button_dleft":  sdl_mapping['button_a'],
+                            "button_dright": sdl_mapping['button_y'],
+                            "button_zl": sdl_mapping['button_zl'],
+                            "button_zr": sdl_mapping['button_zr'] #notused on left joycon
+                        }
                     else:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+                        yuzuButtons = {
+                            "button_a":      sdl_mapping['button_a'], #notused on left joycon
+                            "button_b":      sdl_mapping['button_b'], #notused on left joycon
+                            "button_x":      sdl_mapping['button_x'], #notused on left joycon
+                            "button_y":      sdl_mapping['button_y'], #notused on left joycon
+                            "button_l":      sdl_mapping['button_l'], 
+                            "button_r":      sdl_mapping['button_r'], #notused on left joycon
+                            "button_plus":   sdl_mapping['button_plus'], #notused on left joycon
+                            "button_minus":  sdl_mapping['button_minus'],
+                            "button_sl":     sdl_mapping['button_sl'], 
+                            "button_sr":     sdl_mapping['button_sr'],
+                            "button_lstick": sdl_mapping['button_lstick'],
+                            "button_rstick": sdl_mapping['button_rstick'], #notused on left joycon
+                            "button_home":   sdl_mapping['button_home'],  #notused on left joycon
+                            "button_screenshot": sdl_mapping['button_home'], #Added to left joycon to act as "home"
+                            "button_dup":    sdl_mapping['button_y'], 
+                            "button_ddown":  sdl_mapping['button_a'],
+                            "button_dleft":  sdl_mapping['button_b'],
+                            "button_dright": sdl_mapping['button_x'],
+                            "button_zl": sdl_mapping['button_zl'],
+                            "button_zr": sdl_mapping['button_zr'] #notused on left joycon
+                        }
 
-                #set joysticks
-                for x in yuzuAxis:
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuAxis[x],yuzuAxis[x]+1))
-            
+                    yuzuAxis = {
+                        "lstick":    int(sdl_mapping['axis_lstick_x']),
+                        "rstick":    int(sdl_mapping['axis_rstick_x'])
+                    }
+
+                    yuzuAxisButtons = {
+                        "button_zl": sdl_mapping['axis_button_zl'],
+                        "button_zr": sdl_mapping['axis_button_zr']
+                    }
+
+                    yuzuHat = {
+                        "button_dup":     'up',
+                        "button_ddown":   'down',
+                        "button_dleft":   'left',
+                        "button_dright":  'right'
+                    }
+
+                    #Configure buttons and triggers
+                    for x in yuzuButtons:
+                        if("hat" in str(yuzuButtons[x])):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
+                        elif("axis" in str(yuzuButtons[x])):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+
+                    #set joysticks
+                    for x in yuzuAxis:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:-,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuAxis[x]+1,yuzuAxis[x]))
+                elif (system.isOptSet(which_pad) and (system.config[which_pad] == "3")):
+                    eslog.debug("Controller Type: Right Joycon")
+                    #2 = Left Joycon
+                    #Switch and generic controllers aren't swapping ABXY
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
+                        yuzuButtons = {
+                            "button_a":      sdl_mapping['button_a'], #was b
+                            "button_b":      sdl_mapping['button_x'], #was a
+                            "button_x":      sdl_mapping['button_b'], #was y
+                            "button_y":      sdl_mapping['button_y'], #was x
+                            "button_l":      sdl_mapping['button_l'], #notused on right joycon
+                            "button_r":      sdl_mapping['button_r'],
+                            "button_plus":   sdl_mapping['button_plus'],
+                            "button_minus":  sdl_mapping['button_minus'], #notused on right joycon
+                            "button_sl":     sdl_mapping['button_sl'], 
+                            "button_sr":     sdl_mapping['button_sr'],
+                            "button_lstick": sdl_mapping['button_lstick'], #notused on right joycon
+                            "button_rstick": sdl_mapping['button_lstick'], #mapping to left stick
+                            "button_home":   sdl_mapping['button_home'], 
+                            #"button_screenshot": sdl_mapping['button_home'],
+                            "button_dup":    sdl_mapping['button_x'],  #notused on right joycon
+                            "button_ddown":  sdl_mapping['button_b'], #notused on right joycon
+                            "button_dleft":  sdl_mapping['button_a'], #notused on right joycon
+                            "button_dright": sdl_mapping['button_y'], #notused on right joycon
+                            "button_zl": sdl_mapping['button_zl'], #notused on right joycon
+                            "button_zr": sdl_mapping['button_zr'] 
+                        }
+                    else:
+                        yuzuButtons = {
+                            "button_a":      sdl_mapping['button_b'], 
+                            "button_b":      sdl_mapping['button_y'],
+                            "button_x":      sdl_mapping['button_a'],
+                            "button_y":      sdl_mapping['button_x'],
+                            "button_l":      sdl_mapping['button_l'], #notused on right joycon
+                            "button_r":      sdl_mapping['button_r'],
+                            "button_plus":   sdl_mapping['button_plus'],
+                            "button_minus":  sdl_mapping['button_minus'], #notused on right joycon
+                            "button_sl":     sdl_mapping['button_sl'], 
+                            "button_sr":     sdl_mapping['button_sr'],
+                            "button_lstick": sdl_mapping['button_lstick'], #notused on right joycon
+                            "button_rstick": sdl_mapping['button_lstick'], #mapping to left stick
+                            "button_home":   sdl_mapping['button_home'], 
+                            #"button_screenshot": sdl_mapping['button_home'],
+                            "button_dup":    sdl_mapping['button_x'],  #notused on right joycon
+                            "button_ddown":  sdl_mapping['button_b'], #notused on right joycon
+                            "button_dleft":  sdl_mapping['button_a'], #notused on right joycon
+                            "button_dright": sdl_mapping['button_y'], #notused on right joycon
+                            "button_zl": sdl_mapping['button_zl'], #notused on right joycon
+                            "button_zr": sdl_mapping['button_zr'] 
+                        }
+
+                    yuzuAxis = {
+                        "lstick":    int(sdl_mapping['axis_lstick_x']), #notused on right joycon
+                        "rstick":    int(sdl_mapping['axis_lstick_x']) #mapping to left stick
+                    }
+
+                    yuzuAxisButtons = {
+                        "button_zl": sdl_mapping['axis_button_zl'],
+                        "button_zr": sdl_mapping['axis_button_zr']
+                    }
+
+                    yuzuHat = {
+                        "button_dup":     'up',
+                        "button_ddown":   'down',
+                        "button_dleft":   'left',
+                        "button_dright":  'right'
+                    }
+
+                    #Configure buttons and triggers
+                    for x in yuzuButtons:
+                        if("hat" in str(yuzuButtons[x])):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
+                        elif("axis" in str(yuzuButtons[x])):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+
+                    #set joysticks
+                    for x in yuzuAxis:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:-,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuAxis[x]+1,yuzuAxis[x]))
+                        
+                else:
+                    #0 = Pro Controller, 1 = Dual Joycons, 4 = Handheld Mode,  (and other cases not yet defined)
+                    #Switch and generic controllers aren't swapping ABXY
+                    if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5) or (sdl_mapping['type'] >= 11):
+                        yuzuButtons = {
+                            "button_a":      sdl_mapping['button_b'],
+                            "button_b":      sdl_mapping['button_a'],
+                            "button_x":      sdl_mapping['button_y'],
+                            "button_y":      sdl_mapping['button_x'],
+                            "button_l":      sdl_mapping['button_l'],
+                            "button_r":      sdl_mapping['button_r'],
+                            "button_plus":   sdl_mapping['button_plus'],
+                            "button_minus":  sdl_mapping['button_minus'],
+                            "button_sl":     sdl_mapping['button_sl'],
+                            "button_sr":     sdl_mapping['button_sr'],
+                            "button_lstick": sdl_mapping['button_lstick'],
+                            "button_rstick": sdl_mapping['button_rstick'],
+                            "button_home":   sdl_mapping['button_home'],
+                            "button_dup":    sdl_mapping['button_dup'],
+                            "button_ddown":  sdl_mapping['button_ddown'],
+                            "button_dleft":  sdl_mapping['button_dleft'],
+                            "button_dright": sdl_mapping['button_dright'],
+                            "button_zl": sdl_mapping['button_zl'],
+                            "button_zr": sdl_mapping['button_zr']
+                        }
+                    else:
+                        yuzuButtons = {
+                            "button_a":      sdl_mapping['button_a'],
+                            "button_b":      sdl_mapping['button_b'],
+                            "button_x":      sdl_mapping['button_x'],
+                            "button_y":      sdl_mapping['button_y'],
+                            "button_l":      sdl_mapping['button_l'],
+                            "button_r":      sdl_mapping['button_r'],
+                            "button_plus":   sdl_mapping['button_plus'],
+                            "button_minus":  sdl_mapping['button_minus'],
+                            "button_sl":     sdl_mapping['button_sl'],
+                            "button_sr":     sdl_mapping['button_sr'],
+                            "button_lstick": sdl_mapping['button_lstick'],
+                            "button_rstick": sdl_mapping['button_rstick'],
+                            "button_home":   sdl_mapping['button_home'],
+                            "button_dup":    sdl_mapping['button_dup'],
+                            "button_ddown":  sdl_mapping['button_ddown'],
+                            "button_dleft":  sdl_mapping['button_dleft'],
+                            "button_dright": sdl_mapping['button_dright'],
+                            "button_zl": sdl_mapping['button_zl'],
+                            "button_zr": sdl_mapping['button_zr']
+                        }
+
+                    yuzuAxis = {
+                        "lstick":    int(sdl_mapping['axis_lstick_x']),
+                        "rstick":    int(sdl_mapping['axis_rstick_x'])
+                    }
+
+                    yuzuAxisButtons = {
+                        "button_zl": sdl_mapping['axis_button_zl'],
+                        "button_zr": sdl_mapping['axis_button_zr']
+                    }
+
+                    yuzuHat = {
+                        "button_dup":     'up',
+                        "button_ddown":   'down',
+                        "button_dleft":   'left',
+                        "button_dright":  'right'
+                    }
+
+                    #Configure buttons and triggers
+                    for x in yuzuButtons:
+                        if("hat" in str(yuzuButtons[x])):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
+                        elif("axis" in str(yuzuButtons[x])):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+
+                    #set joysticks
+                    for x in yuzuAxis:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000"'.format(portnumber,inputguid,yuzuAxis[x],yuzuAxis[x]+1))
+                                  
+
 
                 #Enable motion no matter what, as enabling won't hurt things if it doesn't exist
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
@@ -684,9 +847,9 @@ class YuzuMainlineGenerator(Generator):
 
                 yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
                 if (controllernumber == "0"):
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "true")
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\\default", "true")
                 else:
-                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\default", "false")
+                    yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\\default", "false")
 
                 if system.isOptSet(which_pad):
                     yuzuConfig.set("Controls", "player_" + controllernumber + "_type", system.config["p1_pad"])
