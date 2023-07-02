@@ -5,7 +5,7 @@ Master branch is currently working on Batocera 35-37. If you have v34, please up
 
 This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS).  
 
-This version integrates work from foclabroc, Batocera Nation, and [uureel].  It does not include the bios keys.  
+This version integrates work from foclabroc, Batocera Nation, and uureel.  It does not include the bios keys.  
 
 Controller automapping is a constant work in progress.  Autoconfiguration of controllers is now handled via [pySDL](https://github.com/py-sdl/py-sdl2) and some python magic.
 
