@@ -104,7 +104,7 @@ class YuzuMainlineGenerator(Generator):
     def writeYuzuConfig(yuzuConfigFile, beforeyuzuConfigFile, system, playersControllers):
         # pads
         
-        os.environ["PYSDL2_DLL_PATH"] = "/userdata/system/switch/extra/ryujinx/"
+        os.environ["PYSDL2_DLL_PATH"] = "/userdata/system/switch/extra/sdl/"
         
         yuzuButtons = {
             "button_a":      "a",
