@@ -13,10 +13,9 @@ Controller automapping is a constant work in progress.  Autoconfiguration of con
 https://discord.gg/cuw5Xt7M7d
 
 ## TODO
-Continue building out mapping file for Yuzu and Ryujinx
 Actual Joycon support
-Proper controller type selection (currently everything is forced to Pro Controller)
-Confirm if Motion can just be enabled for all controllers whether they have it or not
+Turn off/on rumble based on SDL support for the feature (currently just 'on')
+Turn off/on motion based on SDL support for the feature (currently just 'on')
 
 ## EASY INSTALL
 From a terminal window, run the following:
