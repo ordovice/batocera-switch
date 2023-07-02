@@ -394,6 +394,24 @@ class YuzuMainlineGenerator(Generator):
 
         if ((system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")) or not system.isOptSet('yuzu_auto_controller_config')):
 
+            filename = "/userdata/system/switch/configgen/debugcontrollers.txt"
+            if os.path.exists(filename):
+                file = open(filename, 'r')
+                debugcontrollers = bool(file.readline())
+                file.close()
+            else:
+                debugcontrollers = False
+            
+            if debugcontrollers:
+                for index in playersControllers :
+                    controller = playersControllers[index]
+                    eslog.debug("Controller configName: {}".format(controller.configName))
+                    eslog.debug("Controller index: {}".format(controller.index))
+                    eslog.debug("Controller realName: {}".format(controller.realName))                
+                    eslog.debug("Controller dev: {}".format(controller.dev))
+                    eslog.debug("Controller player: {}".format(controller.player))
+                    eslog.debug("Controller GUID: {}".format(controller.guid))
+
             import sdl2
             from sdl2 import (
                 SDL_TRUE
@@ -407,13 +425,38 @@ class YuzuMainlineGenerator(Generator):
 
             sdl_devices = []
             count = joystick.SDL_NumJoysticks()
+
+            if debugcontrollers:
+                for i in range(count):
+                    if sdl2.SDL_IsGameController(i) == SDL_TRUE:
+                        pad = sdl2.SDL_JoystickOpen(i)
+                        cont = sdl2.SDL_GameControllerOpen(i)
+                        joy_guid = joystick.SDL_JoystickGetDeviceGUID(i)
+                        buff = create_string_buffer(33)
+                        joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)
+                        buff[2] = b'0'
+                        buff[3] = b'0'
+                        buff[4] = b'0'
+                        buff[5] = b'0'
+                        buff[6] = b'0'
+                        buff[7] = b'0'
+                        guidstring = ((bytes(buff)).decode()).split('\x00',1)[0]
+                        eslog.debug("Joystick GUID: {}".format(guidstring))                 
+                        joy_path = joystick.SDL_JoystickPathForIndex(i)
+                        eslog.debug("Joystick Path: {}".format(joy_path.decode()))
+                        pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
+                        eslog.debug("Joystick Pad Type: {}".format(pad_type))                    
+                        controllername = (sdl2.SDL_GameControllerNameForIndex(i)).decode()
+                        eslog.debug("Joystick Name: {}".format(controllername))                  
+                        sdl2.SDL_GameControllerClose(cont)
+                        sdl2.SDL_JoystickClose(pad)
+
             for i in range(count):
                     if sdl2.SDL_IsGameController(i) == SDL_TRUE:
                         pad = sdl2.SDL_JoystickOpen(i)
                         cont = sdl2.SDL_GameControllerOpen(i)
                         #iid = sdl2.SDL_JoystickInstanceID(pad)
                         gc = sdl2.SDL_GameControllerMappingForDeviceIndex(i)
-                        eslog.debug("Joystick Mapping: {}".format(gc))
 
                         gc_a = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_A)
                         if(gc_a.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
@@ -516,7 +559,6 @@ class YuzuMainlineGenerator(Generator):
                         buff = create_string_buffer(33)
                         joystick.SDL_JoystickGetGUIDString(joy_guid,buff,33)                    
                         joy_path = joystick.SDL_JoystickPathForIndex(i)
-                        eslog.debug("Joysticks: {}".format(joy_path.decode()))
                         buff[2] = b'0'
                         buff[3] = b'0'
                         buff[4] = b'0'
@@ -570,7 +612,6 @@ class YuzuMainlineGenerator(Generator):
                         sdl2.SDL_GameControllerClose(cont)
                         sdl2.SDL_JoystickClose(pad)
             sdl2.SDL_Quit()
-
 
             eslog.debug("Joysticks: {}".format(sdl_devices))
 
