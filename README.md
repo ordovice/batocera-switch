@@ -29,11 +29,14 @@ Thanks to [uureel] for simplifying the install/update of Switch components for t
 ## UPGRADING OLDER VERSIONS OF THIS ADD-ON NOT INSTALLED WITH THE EASY INSTALL METHOD
 Delete the \system\switch folder and install this repo as normal.  There are folders in the old install that will break this version.  
 
-## Reporting Issues
+## REPORTING ISSUES
 Please use the controller issue templates for reporting controller issues.  For other issues, provide as much information as possible, and if it's a launch issue, please be sure to include the es_launch_stdout.log and es_launch_stderr.log log files from \system\logs
 
 ## SPECIAL THANKS
 Special thanks for foclabroc, Rion, and Darknior and multiple members of the [Batocera Nation Discord](https://discord.gg/cuw5Xt7M7d) for testing things especially with the migration to SDL, [RGS] for a controller donation, and anyone else who contributes and helps me make this better. 
+
+## HELP ME BUY CONTROLLERS OR A BEER
+Feel free to send anything or nothing to my [Paypal](https://www.paypal.com/paypalme/ordovice)
 
 ## UPDATE 2023-06-28
 Controller auto configuration has been migrated to the same versions of SDL that yuzu and ryujinx are using, utilizing the [pySDL project](https://github.com/py-sdl/py-sdl2).
