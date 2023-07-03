@@ -1151,7 +1151,7 @@ class YuzuMainlineGenerator(Generator):
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
                         lastplayer = int(controllernumber) + 1
 
-            lastplayer = lastplayer + 1
+            #lastplayer = lastplayer + 1
             eslog.debug("Last Player {}".format(lastplayer))
             for y in range(lastplayer, 9):
                 controllernumber = str(y)
