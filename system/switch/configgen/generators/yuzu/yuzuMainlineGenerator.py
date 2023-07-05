@@ -403,6 +403,7 @@ class YuzuMainlineGenerator(Generator):
                 debugcontrollers = False
             
             if debugcontrollers:
+                eslog.debug("=====================================================Start Bato Controller Debug Info=========================================================")
                 for index in playersControllers :
                     controller = playersControllers[index]
                     eslog.debug("Controller configName: {}".format(controller.configName))
@@ -411,6 +412,9 @@ class YuzuMainlineGenerator(Generator):
                     eslog.debug("Controller dev: {}".format(controller.dev))
                     eslog.debug("Controller player: {}".format(controller.player))
                     eslog.debug("Controller GUID: {}".format(controller.guid))
+                    eslog.debug("")
+                eslog.debug("=====================================================End Bato Controller Debug Info===========================================================")
+                eslog.debug("")
 
             import sdl2
             from sdl2 import (
@@ -427,6 +431,7 @@ class YuzuMainlineGenerator(Generator):
             count = joystick.SDL_NumJoysticks()
 
             if debugcontrollers:
+                eslog.debug("=====================================================Start SDL Controller Debug Info==========================================================")
                 for i in range(count):
                     if sdl2.SDL_IsGameController(i) == SDL_TRUE:
                         pad = sdl2.SDL_JoystickOpen(i)
@@ -447,16 +452,24 @@ class YuzuMainlineGenerator(Generator):
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
                         eslog.debug("Joystick Pad Type: {}".format(pad_type))                    
                         controllername = (sdl2.SDL_GameControllerNameForIndex(i)).decode()
-                        eslog.debug("Joystick Name: {}".format(controllername))                  
+                        eslog.debug("Joystick Name: {}".format(controllername))     
+
+                        eslog.debug("Joystick Vendor: {}".format(joystick.SDL_JoystickGetDeviceVendor(i)))
+                        eslog.debug("Joystick Product: {}".format(joystick.SDL_JoystickGetDeviceProduct(i)))
+                        eslog.debug("Joystick Product Version: {}".format(joystick.SDL_JoystickGetDeviceProductVersion(i)))
+
                         sdl2.SDL_GameControllerClose(cont)
                         sdl2.SDL_JoystickClose(pad)
+                        eslog.debug("")
+                eslog.debug("=====================================================End SDL Controller Debug Info============================================================")
+                eslog.debug("")
 
             for i in range(count):
                     if sdl2.SDL_IsGameController(i) == SDL_TRUE:
                         pad = sdl2.SDL_JoystickOpen(i)
                         cont = sdl2.SDL_GameControllerOpen(i)
                         #iid = sdl2.SDL_JoystickInstanceID(pad)
-                        gc = sdl2.SDL_GameControllerMappingForDeviceIndex(i)
+                        #gc = sdl2.SDL_GameControllerMappingForDeviceIndex(i)
 
                         gc_a = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_A)
                         if(gc_a.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
@@ -661,8 +674,6 @@ class YuzuMainlineGenerator(Generator):
                         yuzuPad1Buttons = {
                                 "button_l":      64, 
                                 "button_minus":  65536,
-                                #"button_sl":     32, 
-                                #"button_sr":     16,
                                 "button_lstick": 524288,
                                 "button_screenshot": 2097152,
                                 "button_dup":    2, 
@@ -679,8 +690,6 @@ class YuzuMainlineGenerator(Generator):
                                 "button_y":      256, #notused on left joycon
                                 "button_r":      16384, #notused on left joycon
                                 "button_plus":   131072, #notused on left joycon
-                                #"button_sl":     8192, 
-                                #"button_sr":     4096,
                                 "button_rstick": 262144, #notused on left joycon
                                 "button_home":   1048576,  #notused on left joycon
                                 "button_zr": 32768 #notused on left joycon
