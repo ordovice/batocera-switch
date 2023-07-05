@@ -449,6 +449,7 @@ class YuzuMainlineGenerator(Generator):
                         eslog.debug("Joystick GUID: {}".format(guidstring))                 
                         joy_path = joystick.SDL_JoystickPathForIndex(i)
                         eslog.debug("Joystick Path: {}".format(joy_path.decode()))
+                        eslog.debug("Joystick Type: {}".format(sdl2.SDL_JoystickGetDeviceType(i))) 
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
                         eslog.debug("Joystick Pad Type: {}".format(pad_type))                    
                         controllername = (sdl2.SDL_GameControllerNameForIndex(i)).decode()
