@@ -13,7 +13,7 @@ Controller automapping is a constant work in progress.  Autoconfiguration of con
 https://discord.gg/cuw5Xt7M7d
 
 ## TODO
-Actual Joycon support
+Actual Joycon support for Ryujinx (already completed for Yuzu)
 Turn off/on rumble based on SDL support for the feature (currently just 'on')
 Turn off/on motion based on SDL support for the feature (currently just 'on')
 
