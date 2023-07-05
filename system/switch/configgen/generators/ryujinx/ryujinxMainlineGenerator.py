@@ -269,6 +269,7 @@ class RyujinxMainlineGenerator(Generator):
                 debugcontrollers = False
             
             if debugcontrollers:
+                eslog.debug("=====================================================Start Bato Controller Debug Info=========================================================")
                 for index in playersControllers :
                     controller = playersControllers[index]
                     eslog.debug("Controller configName: {}".format(controller.configName))
@@ -277,6 +278,9 @@ class RyujinxMainlineGenerator(Generator):
                     eslog.debug("Controller dev: {}".format(controller.dev))
                     eslog.debug("Controller player: {}".format(controller.player))
                     eslog.debug("Controller GUID: {}".format(controller.guid))
+                    eslog.debug("")
+                eslog.debug("=====================================================End Bato Controller Debug Info===========================================================")
+                eslog.debug("")
 
             import sdl2
             from sdl2 import (
@@ -297,6 +301,7 @@ class RyujinxMainlineGenerator(Generator):
             count = joystick.SDL_NumJoysticks()
 
             if debugcontrollers:
+                eslog.debug("=====================================================Start SDL Controller Debug Info==========================================================")
                 for i in range(count):
                     if sdl2.SDL_IsGameController(i) == SDL_TRUE:
                         pad = sdl2.SDL_JoystickOpen(i)
@@ -317,9 +322,17 @@ class RyujinxMainlineGenerator(Generator):
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
                         eslog.debug("Joystick Pad Type: {}".format(pad_type))                    
                         controllername = (sdl2.SDL_GameControllerNameForIndex(i)).decode()
-                        eslog.debug("Joystick Name: {}".format(controllername))                  
+                        eslog.debug("Joystick Name: {}".format(controllername))     
+
+                        eslog.debug("Joystick Vendor: {}".format(joystick.SDL_JoystickGetDeviceVendor(i)))
+                        eslog.debug("Joystick Product: {}".format(joystick.SDL_JoystickGetDeviceProduct(i)))
+                        eslog.debug("Joystick Product Version: {}".format(joystick.SDL_JoystickGetDeviceProductVersion(i)))
+
                         sdl2.SDL_GameControllerClose(cont)
                         sdl2.SDL_JoystickClose(pad)
+                        eslog.debug("")
+                eslog.debug("=====================================================End SDL Controller Debug Info============================================================")
+                eslog.debug("")
 
 
             for i in range(count):
