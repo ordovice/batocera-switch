@@ -140,111 +140,33 @@ f=$extra/$Name.desktop
 rm -rf "$f" 2>/dev/null
    echo "[Desktop Entry]" >> "$f"
    echo "Version=1.0" >> "$f"
-      if [[ "$(echo $name | grep yuzu)" != "" ]]; then
+      if [[ "$Name" = "yuzu" ]]; then 
          echo "Icon=/userdata/system/switch/extra/icon_yuzu.png" >> "$f"
-      else
+         echo 'Exec=/userdata/system/switch/extra/yuzu.AppImage' >> "$f" 
+         fi
+      if [[ "$Name" = "yuzuEA" ]]; then 
+         echo "Icon=/userdata/system/switch/extra/icon_yuzu.png" >> "$f"
+         echo 'Exec=/userdata/system/switch/extra/yuzuEA.AppImage' >> "$f" 
+         fi
+      if [[ "$Name" = "Ryujinx" ]]; then 
          echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> "$f"
-      fi
-   echo "Exec=/userdata/system/switch/extra/batocera-switch-launcher-$Name" >> "$f"
+         echo 'Exec=/userdata/system/switch/extra/Ryujinx.AppImage' >> "$f" 
+         fi
+      if [[ "$Name" = "Ryujinx-LDN" ]]; then 
+         echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> "$f"
+         echo 'Exec=/userdata/system/switch/extra/Ryujinx-LDN.AppImage' >> "$f" 
+         fi
+      if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
+         echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> "$f"
+         echo 'Exec=/userdata/system/switch/extra/Ryujinx-Avalonia.AppImage' >> "$f" 
+         fi
    echo "Terminal=false" >> "$f"
    echo "Type=Application" >> "$f"
    echo "Categories=Game;batocera.linux;" >> "$f"
    echo "Name=$name-config" >> "$f"
    ####
-# --------------------------------------------------------------------
-f=/userdata/system/switch/extra/batocera-switch-launcher-$Name
-rm -rf "$f" 2>/dev/null 
-# --------------------------------------------------------------------
-   echo "#!/bin/bash" >> "$f"
-   if [[ "$Name" = "yuzu" ]]; then 
-      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
-      echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
-      echo 'log1=/userdata/system/switch/logs/yuzu-out.txt 2>/dev/null ' >> "$f"
-      echo 'log2=/userdata/system/switch/logs/yuzu-err.txt 2>/dev/null ' >> "$f"
-      echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
-      echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu;' >> "$f"
-      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu 1>$log1 2>$log2 ' >> "$f"
-      fi
-   if [[ "$Name" = "yuzuEA" ]]; then 
-      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
-      echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
-      echo 'log1=/userdata/system/switch/logs/yuzuEA-out.txt 2>/dev/null ' >> "$f"
-      echo 'log2=/userdata/system/switch/logs/yuzuEA-err.txt 2>/dev/null ' >> "$f"
-      echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
-      echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu;' >> "$f"
-      echo 'QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu 1>$log1 2>$log2 ' >> "$f"
-      fi
-   if [[ "$Name" = "Ryujinx" ]]; then 
-      echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> "$f"
-         echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> "$f"
-      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
-      echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
-      echo 'log1=/userdata/system/switch/logs/Ryujinx-out.txt 2>/dev/null ' >> "$f"
-      echo 'log2=/userdata/system/switch/logs/Ryujinx-err.txt 2>/dev/null ' >> "$f"
-      echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
-      echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx.AppImage;' >> "$f"
-      echo 'LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> "$f"
-      fi
-   if [[ "$Name" = "Ryujinx-LDN" ]]; then 
-      echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> "$f"
-         echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> "$f"
-      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
-      echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
-      echo 'log1=/userdata/system/switch/logs/Ryujinx-LDN-out.txt 2>/dev/null ' >> "$f"
-      echo 'log2=/userdata/system/switch/logs/Ryujinx-LDN-err.txt 2>/dev/null ' >> "$f"
-      echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
-      echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-LDN.AppImage;' >> "$f"
-      echo 'LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> "$f"
-      fi
-   if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
-      echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> "$f"
-         echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> "$f"
-      echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
-      echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
-      echo 'log1=/userdata/system/switch/logs/Ryujinx-Avalonia-out.txt 2>/dev/null ' >> "$f"
-      echo 'log2=/userdata/system/switch/logs/Ryujinx-Avalonia-err.txt 2>/dev/null ' >> "$f"
-      echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
-      echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 Ryujinx-Avalonia.AppImage;' >> "$f"
-      echo 'LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> "$f"
-      fi
       dos2unix "$f" 2>/dev/null
       chmod a+x "$f" 2>/dev/null
-         dos2unix "$shortcut" 2>/dev/null
-         chmod a+x "$shortcut" 2>/dev/null
-cp "$shortcut" "$extra" 2>/dev/null
 } 
 # -----------------------------------------------------------------
 #
@@ -891,6 +813,12 @@ cp $temp/yuzu/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu/ 
 f=/userdata/system/switch/yuzu.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
+
+echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
+echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
+echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
+echo 'export DESKTOP_SESSION=XFCE' >> "$f"
+
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '#cp /userdata/system/switch/extra/yuzu/lib* /lib64/ 2>/dev/null' >> "$f" 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
@@ -919,10 +847,10 @@ echo '    rom="$(cat /tmp/switchromname)" ' >> "$f"
 echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
 echo '  if [[ "$fs" == *"EXT"* ]] || [[ "$fs" == *"BTR"* ]]; then ' >> "$f"
 echo '    rm /tmp/yuzurom 2>/dev/null; ln -sf "$rom" "/tmp/yuzurom"; ROM="/tmp/yuzurom"; ' >> "$f"
-echo '    QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+echo '    XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
 echo '  else ' >> "$f"
 echo '    ROM="$rom" ' >> "$f"
-echo '    QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+echo '    XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
 echo '  fi ' >> "$f"
 echo 'fi' >> "$f"
 
@@ -981,6 +909,12 @@ cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu
 f=/userdata/system/switch/yuzuEA.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
+
+echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
+echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
+echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
+echo 'export DESKTOP_SESSION=XFCE' >> "$f"
+
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '#cp /userdata/system/switch/extra/yuzuea/lib* /lib64/ 2>/dev/null' >> "$f" 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
@@ -1009,10 +943,10 @@ echo '    rom="$(cat /tmp/switchromname)" ' >> "$f"
 echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
 echo '  if [[ "$fs" == *"EXT"* ]] || [[ "$fs" == *"BTR"* ]]; then ' >> "$f"
 echo '    rm /tmp/yuzurom 2>/dev/null; ln -sf "$rom" "/tmp/yuzurom"; ROM="/tmp/yuzurom"; ' >> "$f"
-echo '    QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+echo '    XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
 echo '  else ' >> "$f"
 echo '    ROM="$rom" ' >> "$f"
-echo '    QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+echo '    XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
 echo '  fi ' >> "$f"
 echo 'fi' >> "$f"
 
@@ -1090,6 +1024,12 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 f=/userdata/system/switch/Ryujinx.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
+
+echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
+echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
+echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
+echo 'export DESKTOP_SESSION=XFCE' >> "$f"
+
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 
@@ -1126,8 +1066,8 @@ echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> "$f"
 echo 'rom="$(cat /tmp/switchromname)" ' >> "$f"
 
-echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> "$f"
-echo 'else LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" 1>$log1 2>$log2; fi' >> "$f"
+echo 'if [[ "$1" = "" ]]; then XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> "$f"
+echo 'else XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinx:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" 1>$log1 2>$log2; fi' >> "$f"
 dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -1204,6 +1144,12 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 f=/userdata/system/switch/Ryujinx-LDN.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
+
+echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
+echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
+echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
+echo 'export DESKTOP_SESSION=XFCE' >> "$f"
+
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 
@@ -1240,8 +1186,8 @@ echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> "$f"
 echo 'rom="$(cat /tmp/switchromname)" ' >> "$f"
 
-echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2' >> "$f"
-echo 'else LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" 1>$log1 2>$log2; fi' >> "$f"
+echo 'if [[ "$1" = "" ]]; then XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2' >> "$f"
+echo 'else XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxldn:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" 1>$log1 2>$log2; fi' >> "$f"
 dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -1317,6 +1263,12 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 f=/userdata/system/switch/Ryujinx-Avalonia.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
+
+echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
+echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
+echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
+echo 'export DESKTOP_SESSION=XFCE' >> "$f"
+
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 
@@ -1353,8 +1305,8 @@ echo 'echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> "$f"
 echo 'rom="$(cat /tmp/switchromname)" ' >> "$f"
 
-echo 'if [[ "$1" = "" ]]; then LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> "$f"
-echo 'else LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" 1>$log1 2>$log2; fi' >> "$f"
+echo 'if [[ "$1" = "" ]]; then XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> "$f"
+echo 'else XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE LD_LIBRARY_PATH="/userdata/system/switch/extra/ryujinxavalonia:${LD_LIBRARY_PATH}" QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" 1>$log1 2>$log2; fi' >> "$f"
 
 dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
 # --------------------------------------------------------
@@ -2033,6 +1985,15 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
 # ------------------------------------------------------------------- 
    extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
 # ------------------------------------------------------------------- 
+# prepare xdg integration 
+   if [[ ! -d "/userdata/system/switch/extra/xdg" ]] || [[ "$(du -Hs /userdata/system/switch/extra/xdg | awk '{print $1}')" < "69000" ]]; then 
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/xdg.tar.gz" "$extraurl/xdg.tar.gz"
+   fi 
+      cd /userdata/system/switch/extra/ 
+      rm -rf /userdata/system/switch/extra/xdg 2>/dev/null
+         tar -xf /userdata/system/switch/extra/xdg.tar.gz 2>/dev/null
+   cd /userdata/system/ 
+# ------------------------------------------------------------------- 
 # get mapping.csv file (obsolete)
 #   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/mapping.csv" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/mapping.csv"
 #   dos2unix /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
@@ -2194,6 +2155,13 @@ echo '#' >> "$f"
 #
 #\ fix batocera.linux folder issue for f1/apps menu tx to drizzt
 echo "sed -i 's/inline_limit=\"20\"/inline_limit=\"111\"/' /etc/xdg/menus/batocera-applications.menu" >> "$f"
+echo '#' >> "$f" 
+#
+#\ add xdg integration with pcmanfm for f1 emu configs
+echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
+echo '    if [[ "$fs" == *"EXT"* ]] || [[ "$fs" == *"BTR"* ]]; then ' >> "$f"
+echo '      /userdata/system/switch/extra/batocera-switch-xdg.sh ' >> "$f"
+echo '    fi' >> "$f"
 echo '#' >> "$f" 
 #
 dos2unix "$f" 2>/dev/null
