@@ -49,7 +49,7 @@ cd $xdg/usr/libexec
 		fi
 
 	# systemd (11MB)
-		cp -r $xdg/usr/lib/systemd /usr/lib/systemd 2>/dev/null
+		cp -r $xdg/usr/lib/systemd /usr/lib/ 2>/dev/null
 
 	# x86_64-linux-gnu 
 		if [[ ! -d "/usr/lib/x86_64-linux-gnu" ]]; then
