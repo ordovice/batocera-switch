@@ -142,23 +142,23 @@ rm -rf "$f" 2>/dev/null
    echo "Version=1.0" >> "$f"
       if [[ "$Name" = "yuzu" ]]; then 
          echo "Icon=/userdata/system/switch/extra/icon_yuzu.png" >> "$f"
-         echo 'Exec=/userdata/system/switch/extra/yuzu.AppImage' >> "$f" 
+         echo 'Exec=/userdata/system/switch/yuzu.AppImage' >> "$f" 
          fi
       if [[ "$Name" = "yuzuEA" ]]; then 
          echo "Icon=/userdata/system/switch/extra/icon_yuzu.png" >> "$f"
-         echo 'Exec=/userdata/system/switch/extra/yuzuEA.AppImage' >> "$f" 
+         echo 'Exec=/userdata/system/switch/yuzuEA.AppImage' >> "$f" 
          fi
       if [[ "$Name" = "Ryujinx" ]]; then 
          echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> "$f"
-         echo 'Exec=/userdata/system/switch/extra/Ryujinx.AppImage' >> "$f" 
+         echo 'Exec=/userdata/system/switch/Ryujinx.AppImage' >> "$f" 
          fi
       if [[ "$Name" = "Ryujinx-LDN" ]]; then 
          echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> "$f"
-         echo 'Exec=/userdata/system/switch/extra/Ryujinx-LDN.AppImage' >> "$f" 
+         echo 'Exec=/userdata/system/switch/Ryujinx-LDN.AppImage' >> "$f" 
          fi
       if [[ "$Name" = "Ryujinx-Avalonia" ]]; then 
          echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> "$f"
-         echo 'Exec=/userdata/system/switch/extra/Ryujinx-Avalonia.AppImage' >> "$f" 
+         echo 'Exec=/userdata/system/switch/Ryujinx-Avalonia.AppImage' >> "$f" 
          fi
    echo "Terminal=false" >> "$f"
    echo "Type=Application" >> "$f"
@@ -1992,6 +1992,10 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
       cd /userdata/system/switch/extra/ 
       rm -rf /userdata/system/switch/extra/xdg 2>/dev/null
          tar -xf /userdata/system/switch/extra/xdg.tar.gz 2>/dev/null
+   #
+      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-xdg.sh" "$extraurl/batocera-switch-xdg.sh"
+      dos2unix /userdata/system/switch/extra/batocera-switch-xdg.sh 2>/dev/null 
+      chmod a+x /userdata/system/switch/extra/batocera-switch-xdg.sh 2>/dev/null 
    cd /userdata/system/ 
 # ------------------------------------------------------------------- 
 # get mapping.csv file (obsolete)
