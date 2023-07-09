@@ -2023,14 +2023,14 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
          chmod a+x /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
    cd /userdata/system/switch/extra/ 
    rm -rf /userdata/system/switch/extra/nsz 2>/dev/null
-   yes "A" | unzip -qq /userdata/system/switch/extra/nsz.zip 2>/dev/null
+   unzip -o -qq /userdata/system/switch/extra/nsz.zip 2>/dev/null
    cd /userdata/system/ 
 # -------------------------------------------------------------------
 # prepare gdk/svg libs for ryujinx / needed for gui controller config 
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.zip" "$extraurl/lib.zip"
    cd /userdata/system/switch/extra/ 
    rm -rf /userdata/system/switch/extra/lib 2>/dev/null
-   yes "A" | unzip -qq /userdata/system/switch/extra/lib.zip 
+   unzip -o -qq /userdata/system/switch/extra/lib.zip 2>/dev/null
 #   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinx/ 2>/dev/null
 #   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxldn/ 2>/dev/null
 #   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinxavalonia/ 2>/dev/null
