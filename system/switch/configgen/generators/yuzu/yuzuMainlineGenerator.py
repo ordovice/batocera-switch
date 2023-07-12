@@ -472,6 +472,8 @@ class YuzuMainlineGenerator(Generator):
                         #iid = sdl2.SDL_JoystickInstanceID(pad)
                         #gc = sdl2.SDL_GameControllerMappingForDeviceIndex(i)
 
+                        pad_type = sdl2.SDL_GameControllerGetType(cont)
+
                         gc_a = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_A)
                         if(gc_a.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
                             button_b = "hat:" + str(gc_a.value.hat.hat)
@@ -495,6 +497,11 @@ class YuzuMainlineGenerator(Generator):
                             button_x = "hat:" + str(gc_y.value.hat.hat)
                         else:
                             button_x = gc_y.value.button
+
+                        # Fix mapping on Nintendo Switch Pro controllers
+                        if pad_type == sdl2.SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO:
+                            button_a, button_b = button_b, button_a
+                            button_x, button_y = button_y, button_x
 
                         gc_dup = sdl2.SDL_GameControllerGetBindForButton(cont,sdl2.SDL_CONTROLLER_BUTTON_DPAD_UP)
                         if(gc_dup.bindType == sdl2.SDL_CONTROLLER_BINDTYPE_HAT):
