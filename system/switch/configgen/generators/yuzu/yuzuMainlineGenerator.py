@@ -394,6 +394,7 @@ class YuzuMainlineGenerator(Generator):
 
         if ((system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")) or not system.isOptSet('yuzu_auto_controller_config')):
 
+            known_reversed_guids = ["03000000c82d00000631000014010000"]
             filename = "/userdata/system/switch/configgen/debugcontrollers.txt"
             if os.path.exists(filename):
                 file = open(filename, 'r')
@@ -587,6 +588,7 @@ class YuzuMainlineGenerator(Generator):
                             outputpath = (((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]).partition('/hidraw')[0]
                         pad_type = sdl2.SDL_GameControllerTypeForIndex(i)
                         controllername = (sdl2.SDL_GameControllerNameForIndex(i)).decode()
+
                         if( "Steam" in controllername):
                             pad_type = 1
                         if("Xin-Mo Xin-Mo Dual Arcade" in controllername):
@@ -637,6 +639,7 @@ class YuzuMainlineGenerator(Generator):
             for index in playersControllers :
                 controller = playersControllers[index]
 
+
                 if(controller.guid != "050000007e0500000620000001800000" and controller.guid != "050000007e0500000720000001800000"):
                     #don't run the code for Joy-Con (L) or Joy-Con (R) - Batocera adds these and only works with a pair
                     if debugcontrollers:
@@ -657,7 +660,12 @@ class YuzuMainlineGenerator(Generator):
                         outputpath = ((subprocess.check_output(command, shell=True)).decode()).partition('/input/')[0]
                         sdl_mapping = next((item for item in sdl_devices if item["path"] == outputpath),None)
 
-                    
+                    if(controller.guid in known_reversed_guids):
+                        eslog.debug("Swapping type for GUID")
+                        if(sdl_mapping['type'] == 0):
+                            sdl_mapping['type'] = 1
+                        else:
+                            sdl_mapping['type'] = 0          
                     
                     eslog.debug("Mapping: {}".format(sdl_mapping))
 
