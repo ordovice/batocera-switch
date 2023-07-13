@@ -911,7 +911,7 @@ class YuzuMainlineGenerator(Generator):
                             eslog.debug("Controller Type: Left Joycon")
                             #2 = Left Joycon
                             #Switch and generic controllers aren't swapping ABXY
-                            if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
+                            if (sdl_mapping['type'] == 0):
                                 yuzuButtons = {
                                     "button_a":      sdl_mapping['button_b'], #notused on left joycon
                                     "button_b":      sdl_mapping['button_a'], #notused on left joycon
@@ -991,7 +991,7 @@ class YuzuMainlineGenerator(Generator):
                             eslog.debug("Controller Type: Right Joycon")
                             #2 = Left Joycon
                             #Switch and generic controllers aren't swapping ABXY
-                            if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
+                            if (sdl_mapping['type'] == 0):
                                 yuzuButtons = {
                                     "button_a":      sdl_mapping['button_a'], #was b
                                     "button_b":      sdl_mapping['button_x'], #was a
@@ -1071,7 +1071,7 @@ class YuzuMainlineGenerator(Generator):
                         else:
                             #0 = Pro Controller, 1 = Dual Joycons, 4 = Handheld Mode,  (and other cases not yet defined)
                             #Switch and generic controllers aren't swapping ABXY
-                            if (sdl_mapping['type'] == 0) or (sdl_mapping['type'] == 5):
+                            if (sdl_mapping['type'] == 0):
                                 yuzuButtons = {
                                     "button_a":      sdl_mapping['button_b'],
                                     "button_b":      sdl_mapping['button_a'],
