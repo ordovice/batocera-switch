@@ -819,6 +819,7 @@ echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
 echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
+echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '#cp /userdata/system/switch/extra/yuzu/lib* /lib64/ 2>/dev/null' >> "$f" 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
@@ -915,6 +916,7 @@ echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
 echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
+echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '#cp /userdata/system/switch/extra/yuzuea/lib* /lib64/ 2>/dev/null' >> "$f" 
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
@@ -1032,19 +1034,20 @@ echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
+echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh' >> "$f" 
 
-         echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
-         echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> "$f"
-         echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> "$f"
-         echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> "$f"
-         echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> "$f"
+echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/* 2>/dev/null' >> "$f"
+echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders/* 2>/dev/null' >> "$f"
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib64/ 2>/dev/null' >> "$f"
+echo 'cp -r /userdata/system/switch/extra/lib/librsvg-2.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
+echo 'cp -r /userdata/system/switch/extra/lib/libcairo.so.2 /usr/lib64/ 2>/dev/null' >> "$f"
+echo 'chmod a+x /userdata/system/switch/extra/usr/bin/* 2>/dev/null' >> "$f"
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/* /usr/bin/ 2>/dev/null' >> "$f"
+echo 'cp -rL /userdata/system/switch/extra/usr/bin/rev /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null' >> "$f"
+echo 'mkdir -p /usr/lib/x86_64-linux-gnu 2>/dev/null' >> "$f"
+echo 'cp -r /userdata/system/switch/extra/lib/gdk-pixbuf-2.0 /usr/lib/x86_64-linux-gnu/ 2>/dev/null' >> "$f"
 
 echo 'cp /userdata/system/switch/extra/'$emu'/xdg-mime /usr/bin/ 2>/dev/null' >> "$f"
 echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
@@ -1152,6 +1155,7 @@ echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
+echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh' >> "$f" 
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
@@ -1271,6 +1275,7 @@ echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
+echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh' >> "$f" 
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
@@ -2002,6 +2007,15 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
 #   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/mapping.csv" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/mapping.csv"
 #   dos2unix /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
    rm /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
+# ------------------------------------------------------------------- 
+# get batocera-switch-mousemove.sh
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-mousemove.sh" "$extraurl/batocera-switch-mousemove.sh"
+   dos2unix /userdata/system/switch/extra/batocera-switch-mousemove.sh 2>/dev/null 
+   chmod a+x /userdata/system/switch/extra/batocera-switch-mousemove.sh 2>/dev/null 
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-libxdo.so.3" "$extraurl/batocera-switch-libxdo.so.3"
+   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-xdotool" "$extraurl/batocera-switch-xdotool"
+   chmod a+x /userdata/system/switch/extra/batocera-switch-lib* 2>/dev/null 
+   chmod a+x /userdata/system/switch/extra/batocera-switch-xdo* 2>/dev/null 
 # ------------------------------------------------------------------- 
 # get batocera-switch-sync-firmware.sh
    wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh" "$extraurl/batocera-switch-sync-firmware.sh"
