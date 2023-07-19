@@ -84,20 +84,6 @@ cd $xdg/usr/libexec
 
 
 # -------------------------------------------------------
-# fix dbus 
-	sed -i 's,deny ,allow ,g' /usr/share/dbus-1/system.conf
-	sed -i 's,deny ,allow ,g' /usr/share/dbus-1/session.conf
-	sed -i 's,deny ,allow ,g' /etc/dbus-1/session.conf
-	sed -i 's,deny ,allow ,g' /etc/dbus-1/system.conf
-		rm /run/messagebus.pid && dbus-daemon --system --nofork &
-
-		#stop dbus
-		dbus-daemon --system --fork --nopidfile --nofork --address=unix:path=/var/run/dbus/system_bus_socket --syslog-only
-		#start dbus
-		dbus-daemon --system --fork --nopidfile --nofork --address=unix:path=/var/run/dbus/system_bus_socket --syslog-only
-
-
-# -------------------------------------------------------
 # mime files
 	
 	# filemanager/desktop  
@@ -123,7 +109,6 @@ cd $xdg/usr/libexec
 		export XDG_CURRENT_DESKTOP=XFCE
 		export DESKTOP_SESSION=XFCE
 
-
 # end;
-
+exit 0
 
