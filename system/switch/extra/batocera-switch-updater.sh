@@ -1991,12 +1991,12 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
    extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
 # ------------------------------------------------------------------- 
 # prepare xdg integration 
-   if [[ ! -d "/userdata/system/switch/extra/xdg" ]] || [[ "$(du -Hs /userdata/system/switch/extra/xdg | awk '{print $1}')" < "69000" ]]; then 
+   if [[ "$(md5sum /userdata/system/switch/extra/xdg.tar.gz | awk '{print $1}')" != "4ec8265c999a0c324f5938cb32824d34" ]]; then 
       wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/xdg.tar.gz" "$extraurl/xdg.tar.gz"
-   fi 
       cd /userdata/system/switch/extra/ 
       rm -rf /userdata/system/switch/extra/xdg 2>/dev/null
          tar -xf /userdata/system/switch/extra/xdg.tar.gz 2>/dev/null
+   fi 
    #
       wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-xdg.sh" "$extraurl/batocera-switch-xdg.sh"
       dos2unix /userdata/system/switch/extra/batocera-switch-xdg.sh 2>/dev/null 

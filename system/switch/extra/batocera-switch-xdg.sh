@@ -97,6 +97,8 @@ cd $xdg/usr/libexec
 	mkdir -p /userdata/system/.local/share/xfce4/helpers 2>/dev/null
 	cp -r $xdg/local/share/xfce4/helpers/* /userdata/system/.local/share/xfce4/helpers/ 2>/dev/null
 
+	mkdir -p /userdata/system/.config/xfce4 2>/dev/null
+	cp -r $xdg/config/helpers.rc /userdata/system/.config/xfce4/ 2>/dev/null
 
 # -------------------------------------------------------
 # export flags
