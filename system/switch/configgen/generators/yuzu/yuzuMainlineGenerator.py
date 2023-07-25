@@ -378,20 +378,19 @@ class YuzuMainlineGenerator(Generator):
         else:
             yuzuConfig.set("System", "region_index", "1")
             yuzuConfig.set("System", "region_index\\default", "true")
+            
+        # Dock Mode
+        if system.isOptSet('dock_mode'):
+            yuzuConfig.set("System", "use_docked_mode", system.config["dock_mode"])
+            yuzuConfig.set("System", "use_docked_mode\\default", "false")
+        else:
+            yuzuConfig.set("System", "use_docked_mode", "true")
+            yuzuConfig.set("System", "use_docked_mode\\default", "true")
 
     # controls section
         if not yuzuConfig.has_section("Controls"):
             yuzuConfig.add_section("Controls")
-
-        # Dock Mode
-        if system.isOptSet('dock_mode'):
-            yuzuConfig.set("Controls", "use_docked_mode", system.config["dock_mode"])
-            yuzuConfig.set("Controls", "use_docked_mode\\default", "false")
-        else:
-            yuzuConfig.set("Controls", "use_docked_mode", "true")
-            yuzuConfig.set("Controls", "use_docked_mode\\default", "true")
-
-
+            
         if ((system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")) or not system.isOptSet('yuzu_auto_controller_config')):
 
             known_reversed_guids = ["03000000c82d00000631000014010000"]
