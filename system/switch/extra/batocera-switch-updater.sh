@@ -265,6 +265,23 @@ if [[ "$MODE" = "DISPLAY" ]] || [[ "$MODE" = "display" ]]; then
    fi
 fi
 # -------------------------------------------------------------------
+# get tar dependencies 
+# \\ 
+link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
+if [[ -e "$extra/batocera-switch-tar" ]]; then 
+chmod a+x "$extra/batocera-switch-tar"
+else 
+wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
+chmod a+x "$extra/batocera-switch-tar"
+fi
+if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
+wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+chmod a+x "$extra/batocera-switch-libselinux.so.1"
+cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
+# //
+# -------------------------------------------------------------------
 rm /tmp/updater-textsize 2>/dev/null
    if [[ "$(echo $TEXT_SIZE | grep "AUTO")" != "" ]] || [[ "$(echo $TEXT_SIZE | grep "auto")" != "" ]]; then 
       echo "$TEXT_SIZE" >> /tmp/updater-textsize 
@@ -274,7 +291,7 @@ temp=/userdata/system/switch/extra/downloads
 mkdir /userdata/system/switch 2>/dev/null
 mkdir /userdata/system/switch/extra 2>/dev/null
 mkdir /userdata/system/switch/extra/downloads 2>/dev/null
-clear 
+#clear 
 # TEXT & THEME COLORS: 
 ###########################
 X='\033[0m'               # / resetcolor
@@ -985,13 +1002,18 @@ echo -e "${T}██ $C   ${F}RYUJINX   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinx
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
 chmod a+x "$extra/batocera-switch-tar"
 else 
 wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
 chmod a+x "$extra/batocera-switch-tar"
 fi
-cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
+if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
+wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+chmod a+x "$extra/batocera-switch-libselinux.so.1"
+cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
 # //
 # /userdata/system/switch/extra/ryujinx/ will keep all ryujinx related dependencies
 emu=ryujinx
@@ -1002,7 +1024,7 @@ cd $temp/$emu
 wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
 chmod a+x "$extra/$emu/xdg-mime"
 curl --progress-bar --remote-name --location $link_ryujinx
-$extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz
+LD_LIBRARY_PATH="/userdata/system/switch/extra:$LD_LIBRARY_PATH" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz
 cp $temp/$emu/publish/lib* $extra/$emu/
 mkdir $extra/$emu/mime 2>/dev/null; 
 cp -rL $temp/$emu/publish/mime/* $extra/$emu/mime/ 2>/dev/null;
@@ -1100,13 +1122,18 @@ echo -e "${T}██ $C   ${F}RYUJINX-LDN   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
    chmod a+x "$extra/batocera-switch-tar"
 else 
    wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
    chmod a+x "$extra/batocera-switch-tar"
 fi
-cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
+if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
+wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+chmod a+x "$extra/batocera-switch-libselinux.so.1"
+cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
 emu=ryujinxldn
@@ -1117,7 +1144,7 @@ cd $temp/$emu
 wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
 chmod a+x "$extra/$emu/xdg-mime"
 curl --progress-bar --remote-name --location $link_ryujinxldn
-$extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
+LD_LIBRARY_PATH="/userdata/system/switch/extra:$LD_LIBRARY_PATH" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
 cp $temp/$emu/publish/lib* $extra/$emu/ 2>/dev/null
 mkdir $extra/$emu/mime 2>/dev/null; 
 cp -rL $temp/$emu/publish/mime/* $extra/$emu/mime/ 2>/dev/null;
@@ -1224,13 +1251,18 @@ echo -e "${T}██ $C   ${F}RYUJINX-AVALONIA   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
 link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
    chmod a+x "$extra/batocera-switch-tar"
 else 
    wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
    chmod a+x "$extra/batocera-switch-tar"
 fi
-cp "$extra/batocera-switch-libselinux.so.1" "/lib/libselinux.so.1" 2>/dev/null
+if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
+wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+chmod a+x "$extra/batocera-switch-libselinux.so.1"
+cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
 emu=ryujinxavalonia
@@ -1241,7 +1273,7 @@ cd $temp/$emu
 wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
 chmod a+x "$extra/$emu/xdg-mime"
 curl --progress-bar --remote-name --location $link_ryujinxavalonia
-$extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
+LD_LIBRARY_PATH="/userdata/system/switch/extra:$LD_LIBRARY_PATH" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
 cp $temp/$emu/publish/lib* $extra/$emu/ 2>/dev/null
 mkdir $extra/$emu/mime 2>/dev/null; 
 cp -rL $temp/$emu/publish/mime/* $extra/$emu/mime/ 2>/dev/null;
@@ -1991,7 +2023,7 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
    extraurl="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
 # ------------------------------------------------------------------- 
 # prepare xdg integration 
-   if [[ ! -f /userdata/system/switch/extra/xdg.tar.gz ]]; then 
+   if [[ ! -d /userdata/system/switch/extra/xdg ]] || [[ "$(du -Hs /userdata/system/switch/extra/xdg | awk '{print $1}')" < "50000" ]]; then 
       wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/xdg.tar.gz" "$extraurl/xdg.tar.gz"
       cd /userdata/system/switch/extra/ 
       rm -rf /userdata/system/switch/extra/xdg 2>/dev/null
