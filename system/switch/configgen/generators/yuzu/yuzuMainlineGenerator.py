@@ -352,8 +352,8 @@ class YuzuMainlineGenerator(Generator):
         else:
             yuzuConfig.set("Renderer", "accelerate_astc", "1")
             yuzuConfig.set("Renderer", "accelerate_astc\\default", "true")
-            yuzuConfig.set("Renderer", "astc_recompression", "2")
-            yuzuConfig.set("Renderer", "astc_recompression\\default", "false")
+            yuzuConfig.set("Renderer", "astc_recompression", "0")
+            yuzuConfig.set("Renderer", "astc_recompression\\default", "true")
             yuzuConfig.set("Renderer", "async_astc", "false")
             yuzuConfig.set("Renderer", "async_astc\\default", "true")
 
