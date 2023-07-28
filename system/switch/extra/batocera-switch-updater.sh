@@ -125,6 +125,9 @@ fi
 # clear old logs: 
 rm -rf /userdata/system/switch/extra/logs 2>/dev/null
 # --------------------------------------------------------------------
+# clear all old/broken/user desktop shortcuts: 
+rm -rf /userdata/system/switch/*.desktop 2>/dev/null
+# --------------------------------------------------------------------
 # PREPARE SHORTCUTS FOR F1-APPLICATIONS MENU 
 # --------------------------------------------------------------------
 function generate-shortcut-launcher { 
