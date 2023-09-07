@@ -1002,7 +1002,7 @@ T=$THEME_COLOR_RYUJINX
 # --------------------------------------------------------
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
 if [[ "$(echo "$link_ryujinx" | grep "382")" != "" ]]; then version="382"; fi
-version=$(echo "$version" | sed 's,1.1.,,g')
+version=$(echo "$version" | sed 's,1\.1\.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinx
@@ -1107,7 +1107,7 @@ size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 echo
 cd ~/
 # send version to cookie: 
-   ver=$(echo "$link_ryujinx" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
+   ver=$(echo "$link_ryujinx" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1\.1\.,,g')
    if [[ "$(echo "$link_ryujinx" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinx/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinx/version.txt
@@ -1123,7 +1123,7 @@ T=$THEME_COLOR_RYUJINXLDN
 version="3.0.1 / 1.1.368"
 # --------------------------------------------------------
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
-version=$(echo "$version" | sed 's,1.1.,,g')
+version=$(echo "$version" | sed 's,1\.1\.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX-LDN   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
@@ -1253,7 +1253,7 @@ T=$THEME_COLOR_RYUJINXAVALONIA
 # --------------------------------------------------------
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
 if [[ "$(echo "$link_ryujinxavalonia" | grep "382")" != "" ]]; then version="382"; fi
-version=$(echo "$version" | sed 's,1.1.,,g')
+version=$(echo "$version" | sed 's,1\.1\.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX-AVALONIA   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
@@ -1361,7 +1361,7 @@ size_ryujinx=$(($(wc -c $path_ryujinx | awk '{print $1}')/1048576)) 2>/dev/null
 echo
 cd ~/
 # send version to cookie: 
-   ver=$(echo "$link_ryujinxavalonia" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1.1.,,g')
+   ver=$(echo "$link_ryujinxavalonia" | sed 's,^.*download/,,g' | cut -d "/" -f1 | sed 's,1\.1\.,,g')
    if [[ "$(echo "$link_ryujinxavalonia" | grep "382")" != "" ]]; then ver="382"; fi
       rm /userdata/system/switch/extra/ryujinxavalonia/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/ryujinxavalonia/version.txt
