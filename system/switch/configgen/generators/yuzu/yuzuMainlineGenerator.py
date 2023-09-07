@@ -399,10 +399,14 @@ class YuzuMainlineGenerator(Generator):
             
         # Dock Mode
         if system.isOptSet('dock_mode'):
-            yuzuConfig.set("System", "use_docked_mode", system.config["dock_mode"])
-            yuzuConfig.set("System", "use_docked_mode\\default", "false")
+            if system.config["dock_mode"] == "1":
+                yuzuConfig.set("System", "use_docked_mode", "1")
+                yuzuConfig.set("System", "use_docked_mode\\default", "true")
+            elif system.config["dock_mode"] == "0":
+                yuzuConfig.set("System", "use_docked_mode", "0")
+                yuzuConfig.set("System", "use_docked_mode\\default", "false")
         else:
-            yuzuConfig.set("System", "use_docked_mode", "true")
+            yuzuConfig.set("System", "use_docked_mode", "1")
             yuzuConfig.set("System", "use_docked_mode\\default", "true")
 
     # controls section
