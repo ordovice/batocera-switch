@@ -164,7 +164,7 @@ class RyujinxMainlineGenerator(Generator):
         else:
             data['enable_discord_integration'] = bool('true')    
 
-        data['check_updates_on_start'] = bool(0)
+        data['check_updates_on_start'] = bool('false')
         data['show_confirm_exit'] = bool(0)
         data['hide_cursor_on_idle'] = bool('true')
 
