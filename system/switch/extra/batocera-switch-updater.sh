@@ -1054,6 +1054,9 @@ f=/userdata/system/switch/Ryujinx.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
 
+echo 'sed -i '\''s/"check_updates_on_start": true,/"check_updates_on_start": false,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
+echo 'sed -i '\''s/"start_fullscreen": false,/"start_fullscreen": true,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
+
 echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
 echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
@@ -1181,6 +1184,9 @@ f=/userdata/system/switch/Ryujinx-LDN.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
 
+echo 'sed -i '\''s/"check_updates_on_start": true,/"check_updates_on_start": false,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
+echo 'sed -i '\''s/"start_fullscreen": false,/"start_fullscreen": true,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
+
 echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
 echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
@@ -1306,6 +1312,9 @@ chmod a+x "$path_ryujinx" 2>/dev/null
 f=/userdata/system/switch/Ryujinx-Avalonia.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
+
+echo 'sed -i '\''s/"check_updates_on_start": true,/"check_updates_on_start": false,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
+echo 'sed -i '\''s/"start_fullscreen": false,/"start_fullscreen": true,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
 
 echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
 echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
