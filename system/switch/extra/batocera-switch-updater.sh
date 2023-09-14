@@ -2378,31 +2378,31 @@ url_portsupdaterkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/
 path=/userdata/system/switch/configgen
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen
 mkdir -p $path 2>/dev/null
-wget -q -O "$path/GeneratorImporter.py" "$url/GeneratorImporter.py"
-#wget -q -O "$path/mapping.csv" "$url/mapping.csv"
-wget -q -O "$path/switchlauncher.py" "$url/switchlauncher.py"
-wget -q -O "$path/switchlauncher_old.py" "$url/switchlauncher_old.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/GeneratorImporter.py" "$url/GeneratorImporter.py"
+#wget -q --no-check-certificate --no-cache --no-cookies -O "$path/mapping.csv" "$url/mapping.csv"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/switchlauncher.py" "$url/switchlauncher.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/switchlauncher_old.py" "$url/switchlauncher_old.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS
 path=/userdata/system/switch/configgen/generators
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators
 mkdir -p $path 2>/dev/null
-wget -q -O "$path/__init__.py" "$url/__init__.py"
-wget -q -O "$path/Generator.py" "$url/Generator.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/Generator.py" "$url/Generator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/YUZU
 path=/userdata/system/switch/configgen/generators/yuzu
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu
 mkdir -p $path 2>/dev/null
-wget -q -O "$path/__init__.py" "$url/__init__.py"
-wget -q -O "$path/yuzuMainlineGenerator.py" "$url/yuzuMainlineGenerator.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/yuzuMainlineGenerator.py" "$url/yuzuMainlineGenerator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX
 path=/userdata/system/switch/configgen/generators/ryujinx
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx
 mkdir -p $path 2>/dev/null
-wget -q -O "$path/__init__.py" "$url/__init__.py"
-wget -q -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
+wget -q --no-check-certificate --no-cache --no-cookies -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/SDL2
 path=/userdata/system/switch/configgen/sdl2
@@ -2427,7 +2427,7 @@ fi
          mkdir -p $path 2>/dev/null
             if [[ ! -e "$path/$file" ]]; then
                cd $path
-               wget -q $url/$file
+               wget -q --no-check-certificate --no-cache --no-cookies -O "$path/$file" "$url/$file"
             fi
    }
       get __init__.py
@@ -2479,6 +2479,7 @@ fi
       get version.py
       get video.py
       get vulkan.py
+   chmod 777 $path/* 2>/dev/null
 cd ~/
 # -------------------------------------------------------------------- 
 # GET RYUJINX 942 libSDL2.so for updated controllers processing 
@@ -2487,10 +2488,10 @@ mkdir -p /userdata/system/switch/extra/sdl 2>/dev/null
 sdl=/userdata/system/switch/extra/sdl/libSDL2.so
 sdlurl=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-libSDL2.so
    if [[ ! -e "$sdl" ]]; then 
-      wget -q -O "$sdl" "$sdlurl"
+      wget -q --no-check-certificate --no-cache --no-cookies -O "$sdl" "$sdlurl"
    else 
       if [[ "$(md5sum $sdl | awk '{print $1}')" != "dc4a162f60622b04813fbf1756419c89" ]] || [[ "$(wc -c $sdl | awk '{print $1}')" != "2493584" ]]; then 
-         wget -q -O "$sdl" "$sdlurl"   
+         wget -q --no-check-certificate --no-cache --no-cookies -O "$sdl" "$sdlurl"   
       fi 
    fi 
       chmod a+x "$sdl" 2>/dev/null 
