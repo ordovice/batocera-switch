@@ -2408,57 +2408,6 @@ wget -q -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py
 path=/userdata/system/switch/configgen/sdl2
 mkdir -p $path 2>/dev/null
 cd $path
-rm -rf /userdata/system/switch/configgen/sdl2/*.py 2>/dev/null
-#url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/sdl2
-#      wget -q $url/__init__.py
-#      wget -q $url/_internal.py
-#      wget -q $url/_sdl_init.py
-#      wget -q $url/audio.py
-#      wget -q $url/blendmode.py
-#      wget -q $url/clipboard.py
-#      wget -q $url/cpuinfo.py
-#      wget -q $url/dll.py
-#      wget -q $url/endian.py
-#      wget -q $url/error.py
-#      wget -q $url/events.py
-#      wget -q $url/filesystem.py
-#      wget -q $url/gamecontroller.py
-#      wget -q $url/gesture.py
-#      wget -q $url/guid.py
-#      wget -q $url/haptic.py
-#      wget -q $url/hidapi.py
-#      wget -q $url/hints.py
-#      wget -q $url/joystick.py
-#      wget -q $url/keyboard.py
-#      wget -q $url/keycode.py
-#      wget -q $url/loadso.py
-#      wget -q $url/locale.py
-#      wget -q $url/log.py
-#      wget -q $url/messagebox.py
-#      wget -q $url/metal.py
-#      wget -q $url/misc.py
-#      wget -q $url/mouse.py
-#      wget -q $url/pixels.py
-#      wget -q $url/platform.py
-#      wget -q $url/power.py
-#      wget -q $url/rect.py
-#      wget -q $url/render.py
-#      wget -q $url/rwops.py
-#      wget -q $url/scancode.py
-#      wget -q $url/sdlgfx.py
-#      wget -q $url/sdlimage.py
-#      wget -q $url/sdlmixer.py
-#      wget -q $url/sdlttf.py
-#      wget -q $url/sensor.py
-#      wget -q $url/shape.py
-#      wget -q $url/stdinc.py
-#      wget -q $url/surface.py
-#      wget -q $url/syswm.py
-#      wget -q $url/timer.py
-#      wget -q $url/touch.py
-#      wget -q $url/version.py
-#      wget -q $url/video.py
-#      wget -q $url/vulkan.py
 if [[ ! -f "/userdata/system/switch/configgen/sdl2/sdl2.zip" ]]; then 
 rm -rf /userdata/system/switch/configgen/sdl2/sdl2.zip 2>/dev/null
 wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/sdl2/sdl2.zip" "$extraurl/sdl2.zip"
@@ -2470,6 +2419,66 @@ else
    unzip -oq /userdata/system/switch/configgen/sdl2/sdl2.zip
    fi
 fi 
+# additional pass for folks who have issues connecting to github
+   function get() {
+      file="$1"
+      path=/userdata/system/switch/configgen/sdl2
+      url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/sdl2
+         mkdir -p $path 2>/dev/null
+            if [[ ! -e "$path/$file" ]]; then
+               cd $path
+               wget -q $url/$file
+            fi
+   }
+      get __init__.py
+      get _internal.py
+      get _sdl_init.py
+      get audio.py
+      get blendmode.py
+      get clipboard.py
+      get cpuinfo.py
+      get dll.py
+      get endian.py
+      get error.py
+      get events.py
+      get filesystem.py
+      get gamecontroller.py
+      get gesture.py
+      get guid.py
+      get haptic.py
+      get hidapi.py
+      get hints.py
+      get joystick.py
+      get keyboard.py
+      get keycode.py
+      get loadso.py
+      get locale.py
+      get log.py
+      get messagebox.py
+      get metal.py
+      get misc.py
+      get mouse.py
+      get pixels.py
+      get platform.py
+      get power.py
+      get rect.py
+      get render.py
+      get rwops.py
+      get scancode.py
+      get sdlgfx.py
+      get sdlimage.py
+      get sdlmixer.py
+      get sdlttf.py
+      get sensor.py
+      get shape.py
+      get stdinc.py
+      get surface.py
+      get syswm.py
+      get timer.py
+      get touch.py
+      get version.py
+      get video.py
+      get vulkan.py
 cd ~/
 # -------------------------------------------------------------------- 
 # GET RYUJINX 942 libSDL2.so for updated controllers processing 
