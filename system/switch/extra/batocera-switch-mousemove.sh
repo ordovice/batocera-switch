@@ -9,7 +9,7 @@
 
 # prepare dependencies 
   ln -sf /userdata/system/switch/extra/batocera-switch-libxdo.so.3 /lib/libxdo.so.3
-  ln -sf /userdata/system/switch/extra/batocera-switch-xdotool /usr/lib/xdotool
+  ln -sf /userdata/system/switch/extra/batocera-switch-xdotool /usr/bin/xdotool
  
 # move mouse cursor to bottom right corner 
   xdotool mousemove $w $h
