@@ -2127,12 +2127,6 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
          cd /userdata/system/switch/extra/ 
          rm -rf /userdata/system/switch/extra/lib 2>/dev/null
          tar -xf /userdata/system/switch/extra/lib.tar.gz 
-      fi   
-      if [[ "$(wc -c "/userdata/system/switch/extra/lib.tar.gz" | awk '{print $1}')" < "3000000" ]]; then 
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.tar.gz" "$extraurl/lib.tar.gz"
-         cd /userdata/system/switch/extra/ 
-         rm -rf /userdata/system/switch/extra/lib 2>/dev/null
-         tar -xf /userdata/system/switch/extra/lib.tar.gz 
       fi
    fi
 #   cp -rL /userdata/system/switch/extra/lib/* /userdata/system/switch/extra/ryujinx/ 2>/dev/null
