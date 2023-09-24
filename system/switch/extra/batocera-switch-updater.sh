@@ -860,7 +860,7 @@ echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu;' >> "$
 
 echo 'rom="$(echo "$@" | sed '\''s,-f -g ,,g'\'')" ' >> "$f"
 echo 'if [[ "$rom" = "" ]]; then ' >> "$f"
-echo '  LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g 1>$log1 2>$log2 ' >> "$f" 
+echo '  LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f" 
 echo 'else ' >> "$f"
 echo '  rm /tmp/switchromname 2>/dev/null ' >> "$f" 
 echo '    echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f" 
@@ -958,7 +958,7 @@ echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu;' >> "$
 
 echo 'rom="$(echo "$@" | sed '\''s,-f -g ,,g'\'')" ' >> "$f"
 echo 'if [[ "$rom" = "" ]]; then ' >> "$f"
-echo '  LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g 1>$log1 2>$log2 ' >> "$f" 
+echo '  LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f" 
 echo 'else ' >> "$f"
 echo '  rm /tmp/switchromname 2>/dev/null ' >> "$f" 
 echo '    echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f" 
@@ -1102,9 +1102,9 @@ echo 'rom="$(cat /tmp/switchromname)" ' >> "$f"
 
 echo 'd=/userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders ' >> "$f"
 echo 'if [[ "$1" = "" ]]; then ' >> "$f"
-echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinx:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage 1>$log1 2>$log2 ' >> "$f"
+echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinx:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f"
 echo 'else ' >> "$f"
-echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinx:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" 1>$log1 2>$log2 ' >> "$f"
+echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinx DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinx:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinx/Ryujinx.AppImage "$rom" > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f"
 echo 'fi ' >> "$f"
 echo ' ' >> "$f"
 dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
@@ -1237,10 +1237,10 @@ echo 'rom="$(cat /tmp/switchromname)" ' >> "$f"
 
 echo 'd=/userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders ' >> "$f"
 echo 'if [[ "$1" = "" ]]; then ' >> "$f"
-echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxldn:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage 1>$log1 2>$log2 ' >> "$f"
+echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxldn:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f"
 
 echo 'else ' >> "$f"
-echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxldn:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" 1>$log1 2>$log2 ' >> "$f"
+echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxldn DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxldn:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxldn/Ryujinx-LDN.AppImage "$rom" > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f"
 echo 'fi ' >> "$f"
 echo ' ' >> "$f"
 dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
@@ -1373,9 +1373,9 @@ echo 'rom="$(cat /tmp/switchromname)" ' >> "$f"
 echo 'd=/userdata/system/switch/extra/lib/gdk-pixbuf-2.0/2.10.0/loaders ' >> "$f"
 #without preload for avalonia
 echo 'if [[ "$1" = "" ]]; then ' >> "$f"
-echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxavalonia:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage 1>$log1 2>$log2 ' >> "$f"
+echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxavalonia:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f"
 echo 'else ' >> "$f"
-echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxavalonia:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" 1>$log1 2>$log2 ' >> "$f"
+echo 'XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=128 QT_SCALE_FACTOR=1 GDK_SCALE=1 SCRIPT_DIR=/userdata/system/switch/extra/ryujinxavalonia DOTNET_EnableAlternateStackCheck=1 QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt/plugins QT_PLUGIN_PATH=/usr/lib/qt/plugins XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb LD_LIBRARY_PATH=/userdata/system/switch/extra/lib:/userdata/system/switch/extra/ryujinxavalonia:$LD_LIBRARY_PATH /userdata/system/switch/extra/ryujinxavalonia/Ryujinx-Avalonia.AppImage "$rom" > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f"
 echo 'fi ' >> "$f"
 echo ' ' >> "$f"
 
