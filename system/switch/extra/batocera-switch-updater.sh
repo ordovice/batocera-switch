@@ -2121,7 +2121,8 @@ echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
          rm -rf /userdata/system/switch/extra/lib 2>/dev/null
          tar -xf /userdata/system/switch/extra/lib.tar.gz 
    else 
-      if [[ "$(wc -c "/userdata/system/switch/extra/lib.tar.gz" | awk '{print $1}')" < "3000000" ]]; then 
+      if [[ "$(md5sum "/userdata/system/switch/extra/lib.tar.gz" | awk '{print $1}')" != "0a1e5284feab9591d7755d48e3d867d5" ]]; then
+      rm /userdata/system/switch/extra/lib.tar.gz 2>/dev/null
       wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.tar.gz" "$extraurl/lib.tar.gz"
          cd /userdata/system/switch/extra/ 
          rm -rf /userdata/system/switch/extra/lib 2>/dev/null
