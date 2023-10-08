@@ -2,9 +2,7 @@
 # batocera-desktop-xdg.sh
 #########################
 
-
 xdg=/userdata/system/switch/extra/xdg 
-
 
 # -------------------------------------------------------
 # usr/bin
@@ -17,7 +15,6 @@ cd $xdg/usr/bin
 	    fi
 	done
 
-
 # -------------------------------------------------------
 # usr/libexec
 cd $xdg/usr/libexec
@@ -29,7 +26,6 @@ cd $xdg/usr/libexec
 	        ln -sf "$(pwd)/$file" "/usr/bin/$file" 2>/dev/null
 	    fi
 	done
-
 
 # -------------------------------------------------------
 # usr/lib 
@@ -77,11 +73,12 @@ cd $xdg/usr/libexec
 	# extra libs (1.7MB)
 		cp -r $xdg/usr/lib/x86_64-linux-gnu/lib* /usr/lib/ 2>/dev/null
 
+	# extra libcrypt to /lib64/ (0.5MB)
+		cp -r $xdg/lib64/lib* /lib64/ 2>/dev/null
 
 # -------------------------------------------------------
 # usr/share folders (7MB)
 	cp -r $xdg/usr/share/* /usr/share 2>/dev/null 
-
 
 # -------------------------------------------------------
 # mime files
@@ -106,10 +103,10 @@ cd $xdg/usr/libexec
 	export PATH=/usr/share/applications:${PATH}
 	export XDG_DATA_DIRS=/usr/share/applications:${XDG_DATA_DIRS}
 	
-	# and this still might be needed per each app: 
-	# XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE
-		export XDG_CURRENT_DESKTOP=XFCE
-		export DESKTOP_SESSION=XFCE
+# this is still needed per each app: 
+# XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE
+export XDG_CURRENT_DESKTOP=XFCE
+export DESKTOP_SESSION=XFCE
 
 # end;
 exit 0
