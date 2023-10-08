@@ -1128,7 +1128,7 @@ fi
 #
 if [ "$3" = "RYUJINXLDN" ]; then
 T=$THEME_COLOR_RYUJINXLDN
-version="3.0.1 / 1.1.368"
+version="651 / 3.1.3"
 # --------------------------------------------------------
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
 version=$(echo "$version" | sed 's,1\.1\.,,g')
@@ -1458,7 +1458,8 @@ link_ryujinx=https://github.com/Ryujinx/release-channel-master/releases/download
 # -------------------------------------------------------------------
 # RYUJINXLDN:
 #link_ryujinxldn=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ava-ryujinx-1.1.0-ldn3.0.1-linux_x64.tar.gz
-link_ryujinxldn=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.0-ldn3.0.1-linux_x64.tar.gz
+#link_ryujinxldn=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.0-ldn3.0.1-linux_x64.tar.gz
+link_ryujinxldn=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.0-ldn3.1.3-linux_x64.tar.gz
 ## -------------------------------------------------------------------
 # RYUJINXAVALONIA:
 link_ryujinxavalonia=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/test-ava-ryujinx-$release_ryujinx-linux_x64.tar.gz
