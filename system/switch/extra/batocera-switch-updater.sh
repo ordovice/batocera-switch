@@ -124,6 +124,7 @@ fi
 # --------------------------------------------------------------------
 # clear old logs: 
 rm -rf /userdata/system/switch/extra/logs 2>/dev/null
+mkdir -p /userdata/system/switch/logs 2>/dev/null
 # --------------------------------------------------------------------
 # clear all old/broken/user desktop shortcuts: 
 rm -rf /userdata/system/switch/*.desktop 2>/dev/null
@@ -2163,7 +2164,7 @@ echo '#' >> "$f"
 #\ prepare system 
 echo '#\ prepare system ' >> "$f" 
 echo 'cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null ' >> "$f" 
-echo 'rm /userdata/system/switch/logs/* 2>/dev/null ' >> "$f" 
+#echo 'rm /userdata/system/switch/logs/* 2>/dev/null ' >> "$f" 
 echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
 echo 'sysctl -w vm.max_map_count=2147483642 1>/dev/null' >> "$f"
 echo 'extra=/userdata/system/switch/extra' >> "$f"
