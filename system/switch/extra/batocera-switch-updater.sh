@@ -101,6 +101,8 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 export DISPLAY=:0.0
 export LC_ALL=en_US.UTF-8
 # --------------------------------------------------------------------
+cp $(which xterm) /tmp/batocera-switch-updater && chmod 777 /tmp/batocera-switch-updater
+# --------------------------------------------------------------------
 if [[ "$1" = "CONSOLE" ]] || [[ "$1" = "console" ]]; then 
 MODE=CONSOLE
 fi
@@ -119,7 +121,7 @@ if [[ "$net1" = "off" ]] && [[ "$net2" = "off" ]] && [[ "$net3" = "off" ]]; then
 if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then net="on"; fi 
 ##
 if [[ "$net" = "off" ]]; then 
-DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
+DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
 fi 
 # --------------------------------------------------------------------
 # clear old logs: 
@@ -164,10 +166,35 @@ rm -rf "$f" 2>/dev/null
          echo "Icon=/userdata/system/switch/extra/icon_ryujinx.png" >> "$f"
          echo 'Exec=/userdata/system/switch/Ryujinx-Avalonia.AppImage' >> "$f" 
          fi
+      if [[ "$Name" = "switch-updater" ]]; then 
+         echo "Icon=/userdata/system/switch/extra/icon_updater.png" >> "$f"
+         echo 'Exec=/userdata/system/switch/extra/batocera-switch-desktopupdater.sh' >> "$f" 
+         #also prepare desktop updater 
+         ####################################################################
+            u=/userdata/system/switch/extra/batocera-switch-desktopupdater.sh
+               rm "$u" 2>/dev/null
+                  echo '#!/bin/bash' >> "$u"
+                  echo "sed -i 's/^Icon=.*$/Icon=\/userdata\/system\/switch\/extra\/icon_loading.png/' /usr/share/applications/switch-updater.desktop 2>/dev/null" >> "$u"
+                  echo "  rm /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
+                  echo "  wget -q --no-check-certificate --no-cache --no-cookies -O /tmp/.batocera-switch-updater.sh https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh" >> "$u"
+                  echo "  dos2unix /tmp/.batocera-switch-updater.sh 2>/dev/null && chmod 777 /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
+                  echo "    bash /tmp/.batocera-switch-updater.sh" >> "$u"
+                  echo "  rm /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
+                  echo "sed -i 's/^Icon=.*$/Icon=\/userdata\/system\/switch\/extra\/icon_updater.png/' /usr/share/applications/switch-updater.desktop 2>/dev/null" >> "$u"
+                  echo "exit 0" >> "$u"
+                     dos2unix "$u" 2>/dev/null && chmod a+x "$u" 2>/dev/null
+         ####################################################################
+         #/
+         fi
    echo "Terminal=false" >> "$f"
    echo "Type=Application" >> "$f"
    echo "Categories=Game;batocera.linux;" >> "$f"
-   echo "Name=$name-config" >> "$f"
+   ####
+   if [[ "$Name" != "switch-updater" ]]; then 
+      echo "Name=$name-config" >> "$f"
+   else
+      echo "Name=$name" >> "$f"
+   fi 
    ####
       dos2unix "$f" 2>/dev/null
       chmod a+x "$f" 2>/dev/null
@@ -197,6 +224,7 @@ generate-shortcut-launcher 'yuzuEA' 'yuzuEA'
 generate-shortcut-launcher 'Ryujinx' 'ryujinx'
 generate-shortcut-launcher 'Ryujinx-LDN' 'ryujinx-LDN'
 generate-shortcut-launcher 'Ryujinx-Avalonia' 'ryujinx-Avalonia'
+generate-shortcut-launcher 'switch-updater' 'switch-updater'
 ######################################################################
 ######################################################################
 ######################################################################
@@ -1847,7 +1875,7 @@ update_emulator 2 5 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_y
 update_emulator 3 5 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 4 5 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 5 5 $(echo "$EMULATORS" | cut -d "-" -f 5) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}5/5${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}       ${TEXT_COLOR}5/5${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}────────────────────────────────────────┘${X}"
 fi
 # UPDATE 4 EMULATORS -------------------------------------
@@ -1856,7 +1884,7 @@ update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_y
 update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 3 EMULATORS -------------------------------------
@@ -1864,20 +1892,20 @@ if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(
 update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
 update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
 update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${THEME_COLOR_OK}OK ${THEME_COLOR} │${X}"
+echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
 echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
 fi
 # 
@@ -2060,9 +2088,9 @@ function post-install() {
          fi
 # ------------------------------------------------------------------- 
 # show info 
-sleep 0.17
+sleep 1
 echo
-echo -e "${T}❯❯ ${F}UPDATING ADDITIONAL FILES . . .${T}"
+echo -e "${THEME_COLOR_YUZU}❯❯❯ ${F}UPDATING ADDITIONAL FILES ${T}...${T}"
 
 # -------------------------------------------------------------------
 # get additional files 
@@ -2541,8 +2569,8 @@ rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
 rm /userdata/system/switch/extra/updater.settings 2>/dev/null
 
-echo -e "${T}❯❯ ${F}DONE ${T}"
-echo
+echo -e "${GREEN}❯❯❯ ${F}DONE ${T}"
+sleep 2
 
 }
 export -f post-install
@@ -2569,32 +2597,32 @@ if [[ "$MODE" != "CONSOLE" ]]; then
    cp "$libtinfo" "/usr/lib/libtinfo.so.6" 2>/dev/null
    fi
 # 
-      function get-xterm-fontsize {
+      function get-fontsize {
          cfg=/userdata/system/switch/extra/display.cfg
             rm /tmp/cols 2>/dev/null
-            killall -9 xterm 2>/dev/null
-            DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols" 2>/dev/null
-            killall -9 xterm 2>/dev/null
+            killall -9 /tmp/batocera-switch-updater 2>/dev/null
+            DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols" 2>/dev/null
+            killall -9 /tmp/batocera-switch-updater 2>/dev/null
          res=$(xrandr | grep " connected " | awk '{print $3}' | cut -d x -f1)
          columns=$(cat /tmp/cols); echo "$res=$columns" >> "$cfg"
          cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
-         TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null
+         TEXT_SIZE=$(bc <<<"scale=0;$cols/11" 2>/dev/null) 2>/dev/null
       }
-      export -f get-xterm-fontsize
+      export -f get-fontsize
 ##################################
-get-xterm-fontsize 2>/dev/null
+get-fontsize 2>/dev/null
 #
 # ensure fontsize: 
 cfg=/userdata/system/switch/extra/display.cfg
 cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
 colres=$(cat "$cfg" | tail -n 1 | cut -d "=" -f1 2>/dev/null) 2>/dev/null
 res=$(xrandr | grep " connected " | awk '{print $3}' | cut -d x -f1)
-fallback=10 
+fallback=9 
 #
 #####
    if [[ -e "$cfg" ]] && [[ "$cols" != "80" ]]; then 
       if [[ "$colres" = "$res" ]]; then
-         TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null
+         TEXT_SIZE=$(bc <<<"scale=0;$cols/11" 2>/dev/null) 2>/dev/null
       fi
       #|
       if [[ "$colres" != "$res" ]]; then
@@ -2602,25 +2630,25 @@ fallback=10
             try=1
             until [[ "$cols" != "80" ]] 
             do
-            get-xterm-fontsize 2>/dev/null
+            get-fontsize 2>/dev/null
             cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
             try=$(($try+1)); if [[ "$try" -ge "10" ]]; then TEXT_SIZE=$fallback; cols=1; fi
             done 
-            if [[ "$cols" != "1" ]]; then TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null; fi
+            if [[ "$cols" != "1" ]]; then TEXT_SIZE=$(bc <<<"scale=0;$cols/11" 2>/dev/null) 2>/dev/null; fi
       fi
    # 
    else
    # 
-      get-xterm-fontsize 2>/dev/null
+      get-fontsize 2>/dev/null
       cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
          try=1
          until [[ "$cols" != "80" ]] 
          do
-            get-xterm-fontsize 2>/dev/null
+            get-fontsize 2>/dev/null
             cols=$(cat "$cfg" | tail -n 1 | cut -d "=" -f2 2>/dev/null) 2>/dev/null
             try=$(($try+1)); if [[ "$try" -ge "10" ]]; then TEXT_SIZE=$fallback; cols=1; fi
          done 
-         if [[ "$cols" != "1" ]]; then TEXT_SIZE=$(bc <<<"scale=0;$cols/10" 2>/dev/null) 2>/dev/null; fi
+         if [[ "$cols" != "1" ]]; then TEXT_SIZE=$(bc <<<"scale=0;$cols/11" 2>/dev/null) 2>/dev/null; fi
          if [ "$TEXT_SIZE" = "" ]; then TEXT_SIZE=$fallback; fi
    fi    #
    ##### #
@@ -2635,9 +2663,9 @@ fallback=10
          ## RUN THE UPDATER: ------------------------------------------------- 
             if [[ "$MODE" = "DISPLAY" ]]; then 
                if [[ "$ANIMATION" = "YES" ]]; then 
-                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install"
+                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install"
                else 
-                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 xterm -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && post-install"
+                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && post-install"
                fi 
             fi 
 fi 
@@ -2654,5 +2682,5 @@ wait
       rm /tmp/.userconfigfile 2>/dev/null
    fi 
    # --- / 
-killall -9 vlc 2>/dev/null && killall -9 xterm 2>/dev/null && curl http://127.0.0.1:1234/reloadgames && exit 0; exit 1
+sleep 2 && killall -9 batocera-switch-updater 2>/dev/null && curl http://127.0.0.1:1234/reloadgames && exit 0; exit 1
 #################################################################################################################################
