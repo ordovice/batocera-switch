@@ -2300,8 +2300,9 @@ echo 'mkdir -p /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /user
 echo '#' >> "$f"
 #
 #\ fix batocera.linux folder issue for f1/apps menu tx to drizzt
-echo "sed -i 's/inline_limit=\"20\"/inline_limit=\"111\"/' /etc/xdg/menus/batocera-applications.menu" >> "$f"
-echo '#' >> "$f" 
+echo "sed -i 's/inline_limit=\"20\"/inline_limit=\"256\"/' /etc/xdg/menus/batocera-applications.menu 2>/dev/null" >> "$f"
+echo "sed -i 's/inline_limit=\"60\"/inline_limit=\"256\"/' /etc/xdg/menus/batocera-applications.menu 2>/dev/null" >> "$f"
+echo '#' >> "$f"
 #
 #\ add xdg integration with pcmanfm for f1 emu configs
 echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
