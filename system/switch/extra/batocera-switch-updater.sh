@@ -177,6 +177,7 @@ rm -rf "$f" 2>/dev/null
                   echo "sed -i 's/^Icon=.*$/Icon=\/userdata\/system\/switch\/extra\/icon_loading.png/' /usr/share/applications/switch-updater.desktop 2>/dev/null" >> "$u"
                   echo "  rm /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
                   echo "  wget -q --no-check-certificate --no-cache --no-cookies -O /tmp/.batocera-switch-updater.sh https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh" >> "$u"
+                  echo "  sed -i 's,unclutter-remote -h,unclutter-remote -s,g' /tmp/.batocera-switch-updater.sh" >> "$u"
                   echo "  dos2unix /tmp/.batocera-switch-updater.sh 2>/dev/null && chmod 777 /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
                   echo "    bash /tmp/.batocera-switch-updater.sh" >> "$u"
                   echo "  rm /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
