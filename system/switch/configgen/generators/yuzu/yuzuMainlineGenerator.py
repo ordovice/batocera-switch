@@ -416,6 +416,8 @@ class YuzuMainlineGenerator(Generator):
         if ((system.isOptSet('yuzu_auto_controller_config') and not (system.config["yuzu_auto_controller_config"] == "0")) or not system.isOptSet('yuzu_auto_controller_config')):
 
             known_reversed_guids = ["03000000c82d00000631000014010000"]
+            #These are controllers that use Batocera mappings for some reason
+            use_batocera_guids = ["050000005e0400008e02000030110000"]
             filename = "/userdata/system/switch/configgen/debugcontrollers.txt"
             if os.path.exists(filename):
                 file = open(filename, 'r')
@@ -690,14 +692,150 @@ class YuzuMainlineGenerator(Generator):
                     
                     eslog.debug("Mapping: {}".format(sdl_mapping))
 
-                    inputguid = sdl_mapping['guid']
+                    if(controller.guid in use_batocera_guids):
+                        inputguid = controller.guid
+                        sdl_mapping = None
+                        #Force the non-SDL controller branch
+                    else:
+                        inputguid = sdl_mapping['guid']
 
                     controllernumber = str(lastplayer)
                     portnumber = cguid.count(inputguid)
                     cguid[int(controllernumber)] = inputguid
                     if(sdl_mapping == None):
-                        #do nothing
-                        eslog.debug("No Mapping Found")
+                        eslog.debug("Batocera controller Branch")
+                        if (system.isOptSet(which_pad) and (system.config[which_pad] == "2")):
+                            eslog.debug("Controller Type: Left Joycon")
+                            #2 = Left Joycon
+                            #Switch and generic controllers aren't swapping ABXY
+                            yuzuButtons = {
+                                "button_a":      "a", #notused on left joycon
+                                "button_b":      "b", #notused on left joycon
+                                "button_x":      "x", #notused on left joycon
+                                "button_y":      "y", #notused on left joycon
+                                "button_dup":     "y",
+                                "button_ddown":   "a",
+                                "button_dleft":   "b",
+                                "button_dright":  "x",
+                                "button_l":      "pageup",
+                                "button_r":      "pagedown", #notused on left joycon
+                                "button_plus":  "start", #notused on left joycon
+                                "button_minus": "select",
+                                "button_sl":     "pageup",
+                                "button_sr":     "pagedown",
+                                "button_lstick":     "l3",
+                                "button_rstick":     "r3", #notused on left joycon
+                                "button_home":   "hotkey", #notused on left joycon
+								"button_screenshot": "hotkey", #Added to left joycon to act as "home"
+								"button_zl": "l2",
+                                "button_zr": "r2" #notused on left joycon
+                            }
+
+                            yuzuAxis = {
+                                "lstick":    "joystick1",
+                                "rstick":    "joystick1"
+                            }
+
+                            #Configure buttons and triggers
+                            for x in yuzuButtons:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                            for x in yuzuAxis:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber, 1)))
+
+                        elif (system.isOptSet(which_pad) and (system.config[which_pad] == "3")):
+                            eslog.debug("Controller Type: Right Joycon")
+                            #3 = Right Joycon
+                            #Switch and generic controllers aren't swapping ABXY
+                            yuzuButtons = {
+                                "button_a":      "b", 
+                                "button_b":      "y", 
+                                "button_x":      "a", 
+                                "button_y":      "x", 
+                                "button_dup":     "y", #notused on right joycon
+                                "button_ddown":   "a", #notused on right joycon
+                                "button_dleft":   "b", #notused on right joycon
+                                "button_dright":  "x", #notused on right joycon
+                                "button_l":      "pageup", #notused on right joycon
+                                "button_r":      "pagedown",
+                                "button_plus":  "start", #notused on left joycon
+                                "button_minus": "select",
+                                "button_sl":     "pageup",
+                                "button_sr":     "pagedown",
+                                "button_lstick":     "l3", #notused on right joycon
+                                "button_rstick":     "r3", 
+                                "button_home":   "hotkey", 
+								"button_screenshot": "hotkey", #Added to left joycon to act as "home"
+								"button_zl": "l2",
+                                "button_zr": "r2"
+                            }
+
+                            yuzuAxis = {
+                                "lstick":    "joystick1",
+                                "rstick":    "joystick1"
+                            }
+
+                            #Configure buttons and triggers
+                            for x in yuzuButtons:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                            for x in yuzuAxis:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber,2)))
+                        else:
+                            #0 = Pro Controller, 1 = Dual Joycons, 4 = Handheld Mode,  (and other cases not yet defined)
+                            #Switch and generic controllers aren't swapping ABXY
+                            yuzuButtons = {
+                                "button_a":      "a",
+                                "button_b":      "b",
+                                "button_x":      "x",
+                                "button_y":      "y",
+                                "button_dup":     "up",
+                                "button_ddown":   "down",
+                                "button_dleft":   "left",
+                                "button_dright":  "right",
+                                "button_l":      "pageup",
+                                "button_r":      "pagedown",
+                                "button_plus":  "start",
+                                "button_minus": "select",
+                                "button_sl":     "pageup",
+                                "button_sr":     "pagedown",
+                                "button_lstick":     "l3",
+                                "button_rstick":     "r3",
+                                "button_home":   "hotkey",
+                                "button_zl": "l2",
+                                "button_zr": "r2"
+                            }
+
+                            yuzuAxis = {
+                                "lstick":    "joystick1",
+                                "rstick":    "joystick2"
+                            }
+
+                            #Configure buttons and triggers
+                            for x in yuzuButtons:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                            for x in yuzuAxis:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber,0)))     
+
+                        #Enable motion no matter what, as enabling won't hurt things if it doesn't exist
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_motionright", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
+
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_connected", "true")
+                        if (controllernumber == "0"):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\\default", "true")
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_connected\\default", "false")
+
+                        if system.isOptSet(which_pad):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_type", system.config["p1_pad"])
+                            #yuzuConfig.set("Controls", "player_0_type", system.config["p1_pad"])
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
+
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+                        lastplayer = int(controllernumber) + 1
+
                     elif (sdl_mapping['type'] == 13):
                         #we have real joycons
                         eslog.debug("Joycon Branch")
@@ -1282,18 +1420,17 @@ class YuzuMainlineGenerator(Generator):
         # it would be better to pass the joystick num instead of the guid because 2 joysticks may have the same guid
         if key in padInputs:
             input = padInputs[key]
+            eslog.debug("Mapping: {}".format(input))
 
             if input.type == "button":
-                return ("engine:sdl,button:{},guid:{},port:{}").format(input.id, padGuid, controllernumber)
+                return ("button:{},guid:{},port:{},engine:sdl").format(input.id, padGuid, controllernumber)
             elif input.type == "hat":
-                return ("engine:sdl,hat:{},direction:{},guid:{},port:{}").format(input.id, YuzuMainlineGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
-            elif input.type == "axis":
-                # untested, need to configure an axis as button / triggers buttons to be tested too
-                return ("engine:sdl,threshold:{},axis:{},guid:{},port:{},invert:{}").format(0.5, input.id, padGuid, controllernumber, "+")
-                
+                return ("hat:{},direction:{},guid:{},port:{},engine:sdl").format(input.id, YuzuMainlineGenerator.hatdirectionvalue(input.value), padGuid, controllernumber)
+            elif input.type == 'axis':
+                return ("threshold:0.500000,axis:{},pad:0,port:{},guid:{},engine:sdl").format(input.id, controllernumber, padGuid)
 
     @staticmethod
-    def setAxis(key, padGuid, padInputs,controllernumber):
+    def setAxis(key, padGuid, padInputs,controllernumber, axisReversed):
         inputx = -1
         inputy = -1
 
@@ -1319,10 +1456,23 @@ class YuzuMainlineGenerator(Generator):
             except:
                 inputy = ["0"]
 
-        try:
-            return ("engine:sdl,range:1.000000,deadzone:0.100000,invert_y:+,invert_x:+,offset_y:-0.000000,axis_y:{},offset_x:-0.000000,axis_x:{},guid:{},port:{}").format(inputy.id, inputx.id, padGuid, controllernumber)
-        except:
-            return ("0")
+        if(axisReversed == 1):
+            #Left Joycon
+            try:
+                return ("engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:-,invert_y:+,deadzone:0.150000,range:0.950000").format(controllernumber, padGuid, inputy.id, inputx.id)
+            except:
+                return ("0")
+        if(axisReversed == 2):
+            #Right Joycon
+            try:
+                return ("engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:1,deadzone:0.150000,range:0.950000").format(controllernumber, padGuid, inputy.id, inputx.id)
+            except:
+                return ("0")
+        else:
+            try:
+                return ("engine:sdl,port:{},guid:{},axis_x:{},offset_x:-0.011750,axis_y:{},offset_y:-0.027467,invert_x:+,invert_y:+,deadzone:0.150000,range:0.950000").format(controllernumber, padGuid, inputx.id, inputy.id)
+            except:
+                return ("0")
 
     @staticmethod
     def hatdirectionvalue(value):
