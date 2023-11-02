@@ -1,51 +1,49 @@
 #!/bin/bash
 # batocera-desktop-xdg.sh
-#########################
+#########################---------------------------------------------------------------------------------------------
 
 xdg=/userdata/system/switch/extra/xdg 
 
-# -------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------
+# check filesystem
+fs=$(blkid | grep "$(df -h /userdata | awk 'END {print $1}')" | sed 's,^.*TYPE=,,g' | sed 's,",,g' | tr 'a-z' 'A-Z')
+  if [[ "$(echo "$fs" | grep "EXT")" != "" ]] || [[ "$(echo "$fs" | grep "BTR")" != "" ]]; then
+  	:
+  else
+  	exit 1
+  fi
+
+# --------------------------------------------------------------------------------------------------------------------
 # usr/bin
 cd $xdg/usr/bin
 	for file in *; do
 	    # Check if file is not a directory
 	    if [ -f "$file" ]; then
 	        # Create symlink in /usr/bin/
-	        ln -sf "$(pwd)/$file" "/usr/bin/$file" 2>/dev/null
+	        if [[ ! -e "/usr/bin/$file" ]]; then
+	        	ln -sf "$(pwd)/$file" "/usr/bin/$file" 2>/dev/null
+	    	fi
 	    fi
 	done
 
-# -------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------
 # usr/libexec
 cd $xdg/usr/libexec
 	for file in *; do
 	    # Check if file is not a directory
 	    if [ -f "$file" ]; then
 	        # Create symlink in /usr/bin/
-	        ln -sf "$(pwd)/$file" "/usr/libexec/$file" 2>/dev/null
-	        ln -sf "$(pwd)/$file" "/usr/bin/$file" 2>/dev/null
+	        if [[ ! -e "/usr/libexec/$file" ]]; then
+		        ln -sf "$(pwd)/$file" "/usr/libexec/$file" 2>/dev/null
+			fi
+			if [[ ! -e "/usr/bin/$file" ]]; then
+	        	ln -sf "$(pwd)/$file" "/usr/bin/$file" 2>/dev/null
+	        fi
 	    fi
 	done
 
-# -------------------------------------------------------
-# usr/lib 
-
-	# python (350kB)
-		if [[ -d "/usr/lib/python3.11" ]]; then 
-			cp -r $xdg/usr/lib/python3/dist-packages/xdg /usr/lib/python3.11/site-packages
-				#cd /usr/lib/python3.11/site-packages/xdg/__pycache__
-				#for file in *-38.*; do mv -- "$file" "${file/-38./-311.}"; done
-				#cd ~/ 
-		fi
-		if [[ -d "/usr/lib/python3.10" ]]; then 
-			cp -r $xdg/usr/lib/python3/dist-packages/xdg /usr/lib/python3.10/site-packages
-				cd /usr/lib/python3.10/site-packages/xdg/__pycache__
-				for file in *-311.*; do mv -- "$file" "${file/-311./-310.}"; done
-				cd ~/ 
-		fi
-
-	# systemd (11MB)
-		cp -r $xdg/usr/lib/systemd /usr/lib/ 2>/dev/null
+# --------------------------------------------------------------------------------------------------------------------
+# libs 
 
 	# x86_64-linux-gnu 
 		if [[ ! -d "/usr/lib/x86_64-linux-gnu" ]]; then
@@ -70,17 +68,82 @@ cd $xdg/usr/libexec
 					ln -sf $xdg/usr/lib/x86_64-linux-gnu/xfce4 /usr/lib/xfce4 2>/dev/null
 		fi 
 
-	# extra libs (1.7MB)
-		cp -r $xdg/usr/lib/x86_64-linux-gnu/lib* /usr/lib/ 2>/dev/null
+	# python (350kB)
+		if [[ -d "/usr/lib/python3.11" ]]; then 
+			cp -r $xdg/usr/lib/python3/dist-packages/xdg /usr/lib/python3.11/site-packages
+				#cd /usr/lib/python3.11/site-packages/xdg/__pycache__
+				#for file in *-38.*; do mv -- "$file" "${file/-38./-311.}"; done
+				#cd ~/ 
+		fi
+		if [[ -d "/usr/lib/python3.10" ]]; then 
+			cp -r $xdg/usr/lib/python3/dist-packages/xdg /usr/lib/python3.10/site-packages
+				cd /usr/lib/python3.10/site-packages/xdg/__pycache__
+				for file in *-311.*; do mv -- "$file" "${file/-311./-310.}"; done
+				cd ~/ 
+		fi
 
-	# extra libcrypt to /lib64/ (0.5MB)
-		cp -r $xdg/lib64/lib* /lib64/ 2>/dev/null
+	## systemd (11MB)
+	#  cp -r $xdg/usr/lib/systemd /usr/lib/ 2>/dev/null
+	cd $xdg/usr/lib/systemd
+	for item in *; do
+	    # Check if file is not a directory
+	    if [ -f "$item" ]; then
+	        # Create symlink in /usr/bin/
+	        if [[ ! -e "/usr/lib/$item" ]]; then
+		        ln -sf "$(pwd)/$item" "/usr/lib/$item" 2>/dev/null
+			fi
+	    fi
+	    if [ -d "$item" ]; then
+	        # Create symlink in /usr/bin/
+	        if [[ ! -d "/usr/lib/$item" ]]; then
+		        ln -sf "$(pwd)/$item" "/usr/lib/$item" 2>/dev/null
+			fi
+	    fi
+	done
 
-# -------------------------------------------------------
+	## extra libs (1.7MB)
+	#  cp -r $xdg/usr/lib/x86_64-linux-gnu/lib* /usr/lib/ 2>/dev/null
+	cd $xdg/usr/lib/x86_64-linux-gnu
+	for item in *; do
+	    # Check if file is not a directory
+	    if [ -f "$item" ]; then
+	        # Create symlink in /usr/bin/
+	        if [[ ! -e "/usr/lib/$item" ]]; then
+		        ln -sf "$(pwd)/$item" "/usr/lib/$item" 2>/dev/null
+			fi
+	    fi
+	    if [ -d "$item" ]; then
+	        # Create symlink in /usr/bin/
+	        if [[ ! -d "/usr/lib/$item" ]]; then
+		        ln -sf "$(pwd)/$item" "/usr/lib/$item" 2>/dev/null
+			fi
+	    fi
+	done
+
+	## extra libcrypt (0.5MB)
+	#  cp -r $xdg/lib64/lib* /usr/lib/ 2>/dev/null
+	cd $xdg/lib64
+	for item in *; do
+	    # Check if file is not a directory
+	    if [ -f "$item" ]; then
+	        # Create symlink in /usr/bin/
+	        if [[ ! -e "/usr/lib/$item" ]]; then
+		        ln -sf "$(pwd)/$item" "/usr/lib/$item" 2>/dev/null
+			fi
+	    fi
+	    if [ -d "$item" ]; then
+	        # Create symlink in /usr/bin/
+	        if [[ ! -d "/usr/lib/$item" ]]; then
+		        ln -sf "$(pwd)/$item" "/usr/lib/$item" 2>/dev/null
+			fi
+	    fi
+	done
+
+# --------------------------------------------------------------------------------------------------------------------
 # usr/share folders (7MB)
 	cp -r $xdg/usr/share/* /usr/share 2>/dev/null 
 
-# -------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------
 # mime files
 	
 	# filemanager/desktop  
@@ -97,7 +160,7 @@ cd $xdg/usr/libexec
 	mkdir -p /userdata/system/.config/xfce4 2>/dev/null
 	cp -r $xdg/config/helpers.rc /userdata/system/.config/xfce4/ 2>/dev/null
 
-# -------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------
 # export flags
 	export PATH=/usr/libexec:${PATH}
 	export PATH=/usr/share/applications:${PATH}
