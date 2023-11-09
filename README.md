@@ -1,9 +1,9 @@
 # batocera-switch
 Extends Batocera and adds switch emulation as an UNSUPPORTED ADD-ON to BATOCERA.  
 
-Master branch is currently working on Batocera 35-37. If you have v34, please upgrade Batocera as we are no longer supporting v34.
+Master branch is tested and currently working on Batocera 37-38. If you have v35 or lower, please upgrade Batocera as we are no longer supporting these versions.
 
-This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS).  
+This version of the code requires a file system for userdata that supports symlinking (EXT4, BTRFS) and is for x86_64 only!!  
 
 This version integrates work from foclabroc, Batocera Nation, and uureel.  It does not include the bios keys.  
 
