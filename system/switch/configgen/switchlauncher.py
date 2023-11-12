@@ -44,6 +44,19 @@ from Emulator import Emulator
 import controllersConfig as controllers
 import utils.bezels as bezelsUtil
 
+def get_batocera_version():
+    batocera_version_path = '/usr/bin/batocera-version'
+    if os.path.exists(batocera_version_path):
+        try:
+            result = subprocess.run([batocera_version_path], capture_output=True, text=True)
+            if result.returncode == 0:
+                return int(result.stdout.strip()[:2])
+        except Exception:
+            pass
+    return None
+
+batocera_version = get_batocera_version()
+
 def squashfs_begin(rom):
     eslog.debug(f"squashfs_begin({rom})")
     rommountpoint = "/var/run/squashfs/" + os.path.basename(rom)[:-9]
@@ -229,9 +242,14 @@ def start_rom(args, maxnbplayers, rom, romConfiguration):
         if args.state_filename is not None:
             system.config["state_filename"] = args.state_filename
 
-        if generator.getMouseMode(system.config):
-            mouseChanged = True
-            videoMode.changeMouse(True)
+        if batocera_version is not None and batocera_version >= 39:
+            if generator.getMouseMode(system.config, effectiveRom):
+                mouseChanged = True
+                videoMode.changeMouse(True)
+        else:
+            if generator.getMouseMode(system.config):
+                mouseChanged = True
+                videoMode.changeMouse(True)
 
         # SDL VSync is a big deal on OGA and RPi4
         if system.isOptSet('sdlvsync') and system.getOptBoolean('sdlvsync') == False:
