@@ -2566,6 +2566,12 @@ sdlurl=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/sw
    fi 
       chmod a+x "$sdl" 2>/dev/null 
 # --------------------------------------------------------------------
+# REMOVE NEW VER YUZU QUIT PROMPT
+if [[ -e /userdata/system/configs/yuzu/qt-config.ini ]]; then 
+   sed -i 's,confirmStop=0,confirmStop=2,g' /userdata/system/configs/yuzu/qt-config.ini 2>/dev/null
+   sed -i 's,confirmStop\\default=true,confirmStop\\default=false,g' /userdata/system/configs/yuzu/qt-config.ini 2>/dev/null
+fi
+# --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
