@@ -2572,6 +2572,12 @@ if [[ -e /userdata/system/configs/yuzu/qt-config.ini ]]; then
    sed -i 's,confirmStop\\default=true,confirmStop\\default=false,g' /userdata/system/configs/yuzu/qt-config.ini 2>/dev/null
 fi
 # --------------------------------------------------------------------
+# GET GUI-UPDATER ICONS
+urldir=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra
+icon1=icon_updater.png ; icon2=icon_loading.png ; dest=/userdata/system/switch/extra ; mkdir -p $dest 2>/dev/null
+      wget -q -O "$dest/$icon1" "$urldir/$icon1"
+      wget -q -O "$dest/$icon2" "$urldir/$icon2"
+# --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
 rm /userdata/system/switch/extra/display.settings 2>/dev/null
