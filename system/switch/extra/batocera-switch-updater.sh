@@ -99,7 +99,6 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 ######################################################################
 # --------------------------------------------------------------------
 export DISPLAY=:0.0
-export LC_ALL=en_US.UTF-8
 # --------------------------------------------------------------------
 cp $(which xterm) /tmp/batocera-switch-updater && chmod 777 /tmp/batocera-switch-updater
 # --------------------------------------------------------------------
@@ -119,7 +118,7 @@ if [[ "$net1" = "off" ]] && [[ "$net2" = "off" ]] && [[ "$net3" = "off" ]]; then
 if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then net="on"; fi 
 ##
 if [[ "$net" = "off" ]]; then 
-DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fs 10 -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
+DISPLAY=:0.0 /tmp/batocera-switch-updater -fs 10 -maximized -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
 fi 
 # --------------------------------------------------------------------
 # clear old logs: 
@@ -2632,12 +2631,14 @@ if [[ -e /userdata/system/configs/yuzu/qt-config.ini ]]; then
 fi
 # --------------------------------------------------------------------
 # GET GUI-UPDATER ICONS
-urldir=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra
+urldir="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra"
+icon1url="http://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/icon_updater.png"
+icon2url="http://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/icon_loading.png"
 icon1=icon_updater.png ; icon2=icon_loading.png ; dest=/userdata/system/switch/extra ; mkdir -p $dest 2>/dev/null
-      ##wget -q -O "$dest/$icon1" "$urldir/$icon1"
-      curl -sSf "$urldir/$icon1" -o "$dest/$icon1"
-      ##wget -q -O "$dest/$icon2" "$urldir/$icon2"
-      curl -sSf "$urldir/$icon2" -o "$dest/$icon2"
+      wget -q -O "$dest/$icon1" "$urldir/$icon1"
+      ##curl -sSf "$urldir/$icon1" -o "/userdata/system/switch/extra/icon_updater.png"
+      wget -q -O "$dest/$icon2" "$urldir/$icon2"
+      ##curl -sSf "$urldir/$icon2" -o "/userdata/system/switch/extra/icon_loading.png"
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
@@ -2660,12 +2661,12 @@ if [[ "$MODE" != "CONSOLE" ]]; then
       if [[ ( -e "$tput" && "$(wc -c "$tput" | awk '{print $1}')" < "444" ) || ( ! -e "$tput" ) ]]; then
          rm "$tput" 2>/dev/null
          ##wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-tput https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
-         curl -sSf "https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput" -o "/userdata/system/switch/extra/batocera-switch-tput"
+         curl -sSf "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-tput" -o "/userdata/system/switch/extra/batocera-switch-tput"
       fi
       if [[ ( -e "$libtinfo" && "$(wc -c "$libtinfo" | awk '{print $1}')" < "444" ) || ( ! -e "$libtinfo" ) ]]; then
          rm "$libtinfo" 2>/dev/null
          ##wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
-         curl -sSf "https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6" -o "/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
+         curl -sSf "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-libtinfo.so.6" -o "/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
       fi
    chmod a+x "$tput" 2>/dev/null
    if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then 
@@ -2678,7 +2679,7 @@ if [[ "$MODE" != "CONSOLE" ]]; then
          cfg=/userdata/system/switch/extra/display.cfg
             rm /tmp/cols 2>/dev/null
             killall -9 /tmp/batocera-switch-updater 2>/dev/null
-            DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols" 2>/dev/null
+            DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols 2>/dev/null" 2>/dev/null
             killall -9 /tmp/batocera-switch-updater 2>/dev/null
          res=$(xrandr | grep " connected " | awk '{print $3}' | cut -d x -f1)
          columns=$(cat /tmp/cols); echo "$res=$columns" >> "$cfg"
@@ -2734,22 +2735,22 @@ fallback=9
          else 
             TEXT_SIZE=$(cat "/tmp/updater-textsize")
          fi
-         TEXT_SIZE=$(bc <<<"scale=0;$TEXT_SIZE/1")
+         TEXT_SIZE=$(bc <<< "$TEXT_SIZE/1")
          # ###################################################################
          # 
          ## RUN THE UPDATER: ------------------------------------------------- 
             if [[ "$MODE" = "DISPLAY" ]]; then 
                if [[ "$ANIMATION" = "YES" ]]; then 
-                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install"
+                  DISPLAY=:0.0 unclutter-remote -h && DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fs "$TEXT_SIZE" -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 batocera_update_switch && DISPLAY=:0.0 post-install"
                else 
-                  DISPLAY=:0.0 unclutter-remote -h & DISPLAY=:0.0 LC_ALL=en_US.UTF-8 /tmp/batocera-switch-updater -fs $TEXT_SIZE -fullscreen -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch && post-install"
+                  DISPLAY=:0.0 unclutter-remote -h && DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fs "$TEXT_SIZE" -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 batocera_update_switch && post-install"
                fi 
             fi 
 fi 
 #/ 
 #################################################################################################################################
             if [[ "$MODE" = "CONSOLE" ]]; then 
-                  DISPLAY=:0.0 LC_ALL=en_US.UTF-8 batocera_update_switch console && DISPLAY=:0.0 LC_ALL=en_US.UTF-8 post-install
+                  DISPLAY=:0.0 batocera_update_switch console && DISPLAY=:0.0 post-install
             fi 
 #################################################################################################################################
 wait
