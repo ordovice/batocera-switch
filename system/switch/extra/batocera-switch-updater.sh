@@ -302,7 +302,7 @@ fi
 # -------------------------------------------------------------------
 # get tar dependencies 
 # \\ 
-link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+link_tar=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tar
 link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
 chmod a+x "$extra/batocera-switch-tar"
@@ -1042,15 +1042,15 @@ if [[ "$(echo "$link_ryujinx" | grep "382")" != "" ]]; then version="382"; fi
 version=$(echo "$version" | sed 's,1\.1\.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
-# \\ get dependencies for handling ryujinx
-link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+# \\ get dependencies for handling ryujinxavalonia
+link_tar=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tar
 link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
-chmod a+x "$extra/batocera-switch-tar"
+   chmod a+x "$extra/batocera-switch-tar"
 else 
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
-###curl -sSf "$link_tar" -o "$extra/batocera-switch-tar"
-chmod a+x "$extra/batocera-switch-tar"
+   wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
+   ###curl -sSf "$link_tar" -o "$extra/batocera-switch-tar"
+   chmod a+x "$extra/batocera-switch-tar"
 fi
 if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
 wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
@@ -1184,7 +1184,7 @@ version=$(echo "$version" | sed 's,1\.1\.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX-LDN   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
-link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+link_tar=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tar
 link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
    chmod a+x "$extra/batocera-switch-tar"
@@ -1334,7 +1334,7 @@ version=$(echo "$version" | sed 's,1\.1\.,,g')
 echo -e "${T}██ $C   ${F}RYUJINX-AVALONIA   ${T}❯❯   ${T}$version"
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
-link_tar=https://github.com/ordovice/batocera-switch/blob/main/system/switch/extra/batocera-switch-tar
+link_tar=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tar
 link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libselinux.so.1
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
    chmod a+x "$extra/batocera-switch-tar"
