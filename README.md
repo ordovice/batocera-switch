@@ -21,6 +21,9 @@ Turn off/on motion based on SDL support for the feature (currently just 'on')
 From a terminal window, run the following:
 curl -L switch.batocera.pro | bash
 
+If the above method does not work for you, use this command: 
+wget -O s batocera.pro/s && chmod 777 s && ./s
+
 After installing, copy your prod.keys and title.keys to /share/bios/switch.  If you wish to use Ryujinx you will also need to supply the firmware zip file.
 
 Thanks to [uureel] for simplifying the install/update of Switch components for the Batocera Add-On.  
