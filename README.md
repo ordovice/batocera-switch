@@ -18,11 +18,11 @@ Turn off/on rumble based on SDL support for the feature (currently just 'on')
 Turn off/on motion based on SDL support for the feature (currently just 'on')
 
 ## EASY INSTALL
-From a terminal window, run the following:
-curl -L switch.batocera.pro | bash
+From a terminal window, run the following:<br>
+```curl -L switch.batocera.pro | bash```
 
-If the above method does not work for you, use this command: 
-cd /userdata ; wget -O s batocera.pro/s ; chmod 777 s ; ./s
+If the above method does not work for you, use this command:<br>
+```cd /userdata ; wget -O s batocera.pro/s ; chmod 777 s ; ./s```
 
 After installing, copy your prod.keys and title.keys to /share/bios/switch.  If you wish to use Ryujinx you will also need to supply the firmware zip file.
 
