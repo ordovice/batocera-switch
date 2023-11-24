@@ -417,7 +417,7 @@ class YuzuMainlineGenerator(Generator):
 
             known_reversed_guids = ["03000000c82d00000631000014010000"]
             #These are controllers that use Batocera mappings for some reason
-            use_batocera_guids = ["050000005e0400008e02000030110000"]
+            use_batocera_guids = ["050000005e0400008e02000030110000","030000005e0400008e02000014010000"]
             filename = "/userdata/system/switch/configgen/debugcontrollers.txt"
             if os.path.exists(filename):
                 file = open(filename, 'r')
