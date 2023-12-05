@@ -105,6 +105,7 @@ cp $(which xterm) /tmp/batocera-switch-updater && chmod 777 /tmp/batocera-switch
 if [[ "$1" = "CONSOLE" ]] || [[ "$1" = "console" ]]; then 
 MODE=CONSOLE
 fi
+function check-connection() {
 # CHECK CONNECTION
 net="on" ; net1="on" ; net2="on" ; net3="on"
 case "$(curl -s --max-time 2 -I http://github.com | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in
@@ -120,6 +121,32 @@ if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then ne
 if [[ "$net" = "off" ]]; then 
 DISPLAY=:0.0 /tmp/batocera-switch-updater -fs 10 -maximized -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
 fi 
+}
+function check_internet() {
+    # Check using curl
+    if curl -s --max-time 2 -I http://github.com | grep -q "HTTP/[12].[01] [23].."; then
+        return 0
+    fi 
+    
+    # Check using ping
+    if ping -q -w 1 -c 1 github.com > /dev/null; then
+        return 0
+    fi
+
+    # Check using wget
+    if wget -q --spider http://github.com; then
+        return 0
+    fi
+
+    # If all methods fail, report no connectivity
+    return 1
+}
+# Check for an internet connection
+if check_internet; then
+   net="on"
+else 
+   DISPLAY=:0.0 /tmp/batocera-switch-updater -fs 10 -maximized -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 && exit 1 && exit 2   
+fi
 # --------------------------------------------------------------------
 # clear old logs: 
 rm -rf /userdata/system/switch/extra/logs 2>/dev/null
@@ -173,7 +200,7 @@ rm -rf "$f" 2>/dev/null
                   echo '#!/bin/bash' >> "$u"
                   echo "sed -i 's/^Icon=.*$/Icon=\/userdata\/system\/switch\/extra\/icon_loading.png/' /usr/share/applications/switch-updater.desktop 2>/dev/null" >> "$u"
                   echo "  rm /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
-                  echo "  wget -q --no-check-certificate --no-cache --no-cookies -O /tmp/.batocera-switch-updater.sh https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh" >> "$u"
+                  echo "  wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O /tmp/.batocera-switch-updater.sh https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh" >> "$u"
                   ##echo "  curl -sSf https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh -o /tmp/.batocera-switch-updater.sh " >> "$u"
                   echo "  sed -i 's,unclutter-remote -h,unclutter-remote -s,g' /tmp/.batocera-switch-updater.sh" >> "$u"
                   echo "  dos2unix /tmp/.batocera-switch-updater.sh 2>/dev/null && chmod 777 /tmp/.batocera-switch-updater.sh 2>/dev/null" >> "$u"
@@ -240,7 +267,7 @@ EMULATORS="$(echo $EMULATORS | sed 's/ /-/g')"
    cfg=/userdata/system/switch/CONFIG.txt
    if [[ ! -f $cfg ]]; then 
       link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
       ###curl -sSf "$link_defaultconfig" -o "/userdata/system/switch/CONFIG.txt"
    fi 
    dos2unix $cfg 1>/dev/null 2>/dev/null
@@ -248,7 +275,7 @@ EMULATORS="$(echo $EMULATORS | sed 's/ /-/g')"
       # check config file version & update ---------------------------
       link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
       rm "/tmp/.CONFIG.txt" 2>/dev/null
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/tmp/.CONFIG.txt" "$link_defaultconfig"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/tmp/.CONFIG.txt" "$link_defaultconfig"
       ###curl -sSf "$link_defaultconfig" -o "/tmp/.CONFIG.txt"
          currentver=$(cat "/userdata/system/switch/CONFIG.txt" | grep "(ver " | head -n1 | sed 's,^.*(ver ,,g' | cut -d ")" -f1)
          if [[ "$currentver" = "" ]]; then currentver=1.0.0; fi
@@ -290,11 +317,11 @@ if [[ "$MODE" = "DISPLAY" ]] || [[ "$MODE" = "display" ]]; then
    url_loader=https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/loader.mp4
    loader=/userdata/system/switch/extra/loader.mp4 
       if [[ ! -e "$loader" ]]; then 
-         wget -q --no-check-certificate --no-cache --no-cookies -O $loader $url_loader 2>/dev/null
+         wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O $loader $url_loader 2>/dev/null
          ###curl -sSf "$url_loader" -o "$loader"
       fi 
       if [[ -e "$loader" ]] && [[ "$(wc -c $loader | awk '{print $1}')" < "6918849" ]]; then 
-         wget -q --no-check-certificate --no-cache --no-cookies -O $loader $url_loader 2>/dev/null
+         wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O $loader $url_loader 2>/dev/null
          ###curl -sSf "$url_loader" -o "$loader"
       fi
    fi
@@ -307,15 +334,18 @@ link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/swit
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
 chmod a+x "$extra/batocera-switch-tar"
 else 
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
 ###curl -sSf "$link_tar" -o "$extra/batocera-switch-tar"
 chmod a+x "$extra/batocera-switch-tar"
 fi
 if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
 ###curl -sSf "$link_libselinux" -o "$extra/batocera-switch-libselinux.so.1"
 chmod a+x "$extra/batocera-switch-libselinux.so.1"
 cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
+if [[ -e "/userdata/system/switch/extra/batocera-switch-libselinux.so.1" ]]; then 
+   cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 cp /userdata/system/switch/extra/libselinux.so.1 2>/dev/null
 fi
 # //
 # -------------------------------------------------------------------
@@ -589,7 +619,7 @@ cfg=/userdata/system/switch/CONFIG.txt
 dos2unix $cfg 1>/dev/null 2>/dev/null
 if [[ ! -e "$cfg" ]]; then 
 link_defaultconfig=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-config.txt
-wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/CONFIG.txt" "$link_defaultconfig"
 ###curl -sSf "$link_defaultconfig" -o "/userdata/system/switch/CONFIG.txt"
 fi 
 if [[ -e "$cfg" ]]; then 
@@ -855,7 +885,7 @@ cp $temp/yuzu/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu/ 
 # fix broken libstdc++.so.6 for v37 
    if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
       link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzu/libstdc++.so.6" "$link_libstdc"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzu/libstdc++.so.6" "$link_libstdc"
       ###curl -sSf "$link_libstdc" -o "/userdata/system/switch/extra/yuzuea/libstdc++.so.6"
    else 
       rm /userdata/system/switch/extra/yuzu/libstdc++.so.6 2>/dev/null
@@ -954,7 +984,7 @@ cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu
 # fix broken libstdc++.so.6 for v37 
    if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
       link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzuea/libstdc++.so.6" "$link_libstdc"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzuea/libstdc++.so.6" "$link_libstdc"
       ###curl -sSf "$link_libstdc" -o "/userdata/system/switch/extra/yuzuea/libstdc++.so.6"
    else 
       rm /userdata/system/switch/extra/yuzuea/libstdc++.so.6 2>/dev/null
@@ -1048,20 +1078,23 @@ link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/swit
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
    chmod a+x "$extra/batocera-switch-tar"
 else 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
    ###curl -sSf "$link_tar" -o "$extra/batocera-switch-tar"
    chmod a+x "$extra/batocera-switch-tar"
 fi
 if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
 ###curl -sSf "$link_libselinux" -o "$extra/batocera-switch-libselinux.so.1"
  if [[ -f "$extra/batocera-switch-libselinux.so.1" ]]; then 
   if [[ "$(wc -c "$extra/batocera-switch-libselinux.so.1" | awk '{print $1}')" < "100" ]]; then 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"   
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"   
   fi
  fi
 chmod a+x "$extra/batocera-switch-libselinux.so.1"
 cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
+if [[ -e "/userdata/system/switch/extra/batocera-switch-libselinux.so.1" ]]; then 
+   cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 cp /userdata/system/switch/extra/libselinux.so.1 2>/dev/null
 fi
 # //
 # /userdata/system/switch/extra/ryujinx/ will keep all ryujinx related dependencies
@@ -1070,11 +1103,11 @@ mkdir $extra/$emu 2>/dev/null
 rm -rf $temp/$emu 2>/dev/null
 mkdir $temp/$emu 2>/dev/null
 cd $temp/$emu
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
 ###curl -sSf "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime" -o "$extra/$emu/xdg-mime"
 chmod a+x "$extra/$emu/xdg-mime"
 curl --progress-bar --remote-name --location $link_ryujinx
-LD_LIBRARY_PATH="/userdata/system/switch/extra:$LD_LIBRARY_PATH" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz
+LD_LIBRARY_PATH="/userdata/system/switch/extra:/usr/lib64:/usr/lib:/lib:${LD_LIBRARY_PATH}" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz
 cp $temp/$emu/publish/lib* $extra/$emu/
 mkdir $extra/$emu/mime 2>/dev/null; 
 cp -rL $temp/$emu/publish/mime/* $extra/$emu/mime/ 2>/dev/null;
@@ -1189,20 +1222,23 @@ link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/swit
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
    chmod a+x "$extra/batocera-switch-tar"
 else 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
    ###curl -sSf "$link_tar" -o "$extra/batocera-switch-tar"
    chmod a+x "$extra/batocera-switch-tar"
 fi
 if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
 ###curl -sSf "$link_libselinux" -o "$extra/batocera-switch-libselinux.so.1"
  if [[ -f "$extra/batocera-switch-libselinux.so.1" ]]; then 
   if [[ "$(wc -c "$extra/batocera-switch-libselinux.so.1" | awk '{print $1}')" < "100" ]]; then 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"   
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"   
   fi
  fi
 chmod a+x "$extra/batocera-switch-libselinux.so.1"
 cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
+if [[ -e "/userdata/system/switch/extra/batocera-switch-libselinux.so.1" ]]; then 
+   cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 cp /userdata/system/switch/extra/libselinux.so.1 2>/dev/null
 fi
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
@@ -1211,11 +1247,11 @@ mkdir $extra/$emu 2>/dev/null
 rm -rf $temp/$emu 2>/dev/null
 mkdir $temp/$emu 2>/dev/null
 cd $temp/$emu
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
 ###curl -sSf "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime" -o "$extra/$emu/xdg-mime"
 chmod a+x "$extra/$emu/xdg-mime"
 curl --progress-bar --remote-name --location $link_ryujinxldn
-LD_LIBRARY_PATH="/userdata/system/switch/extra:$LD_LIBRARY_PATH" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
+LD_LIBRARY_PATH="/userdata/system/switch/extra:/usr/lib64:/usr/lib:/lib:${LD_LIBRARY_PATH}" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
 cp $temp/$emu/publish/lib* $extra/$emu/ 2>/dev/null
 mkdir $extra/$emu/mime 2>/dev/null; 
 cp -rL $temp/$emu/publish/mime/* $extra/$emu/mime/ 2>/dev/null;
@@ -1339,20 +1375,23 @@ link_libselinux=https://github.com/ordovice/batocera-switch/raw/main/system/swit
 if [[ -e "$extra/batocera-switch-tar" ]]; then 
    chmod a+x "$extra/batocera-switch-tar"
 else 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-tar" "$link_tar"
    ###curl -sSf "$link_tar" -o "$extra/batocera-switch-tar"
    chmod a+x "$extra/batocera-switch-tar"
 fi
 if [[ ! -e "/usr/lib/libselinux.so.1" ]]; then
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"
 ###curl -sSf "$link_libselinux" -o "$extra/batocera-switch-libselinux.so.1"
  if [[ -f "$extra/batocera-switch-libselinux.so.1" ]]; then 
   if [[ "$(wc -c "$extra/batocera-switch-libselinux.so.1" | awk '{print $1}')" < "100" ]]; then 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"   
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/batocera-switch-libselinux.so.1" "$link_libselinux"   
   fi
  fi
 chmod a+x "$extra/batocera-switch-libselinux.so.1"
 cp "$extra/batocera-switch-libselinux.so.1" "/usr/lib/libselinux.so.1" 2>/dev/null
+fi
+if [[ -e "/userdata/system/switch/extra/batocera-switch-libselinux.so.1" ]]; then 
+   cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 cp /userdata/system/switch/extra/libselinux.so.1 2>/dev/null
 fi
 # //
 # /userdata/system/switch/extra/ryujinxavalonia/ will keep all ryujinxavalonia related dependencies
@@ -1361,11 +1400,11 @@ mkdir $extra/$emu 2>/dev/null
 rm -rf $temp/$emu 2>/dev/null
 mkdir $temp/$emu 2>/dev/null
 cd $temp/$emu
-wget -q --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$extra/$emu/xdg-mime" "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime"
 ###curl -sSf "https://github.com/uureel/batocera.pro/raw/main/switch/extra/xdg-mime" -o "$extra/$emu/xdg-mime"
 chmod a+x "$extra/$emu/xdg-mime"
 curl --progress-bar --remote-name --location $link_ryujinxavalonia
-LD_LIBRARY_PATH="/userdata/system/switch/extra:$LD_LIBRARY_PATH" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
+LD_LIBRARY_PATH="/userdata/system/switch/extra:/usr/lib64:/usr/lib:/lib:${LD_LIBRARY_PATH}" $extra/batocera-switch-tar -xf $temp/$emu/*.tar.gz 2>/dev/null
 cp $temp/$emu/publish/lib* $extra/$emu/ 2>/dev/null
 mkdir $extra/$emu/mime 2>/dev/null; 
 cp -rL $temp/$emu/publish/mime/* $extra/$emu/mime/ 2>/dev/null;
@@ -2131,7 +2170,7 @@ echo -e "${THEME_COLOR_YUZU}❯❯❯ ${F}UPDATING ADDITIONAL FILES ${T}...${T}"
 # ------------------------------------------------------------------- 
 # prepare xdg integration 
    if [[ ! -d /userdata/system/switch/extra/xdg ]] || [[ "$(du -Hs /userdata/system/switch/extra/xdg | awk '{print $1}')" < "50000" ]]; then 
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/xdg.tar.gz" "$extraurl/xdg.tar.gz"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/xdg.tar.gz" "$extraurl/xdg.tar.gz"
       ###curl -sSf "$extraurl/xdg.tar.gz" -o "/userdata/system/switch/extra/xdg.tar.gz"
       cd /userdata/system/switch/extra/ 
       rm -rf /userdata/system/switch/extra/xdg 2>/dev/null
@@ -2139,7 +2178,7 @@ echo -e "${THEME_COLOR_YUZU}❯❯❯ ${F}UPDATING ADDITIONAL FILES ${T}...${T}"
    else 
       if [[ "$(md5sum /userdata/system/switch/extra/xdg.tar.gz | awk '{print $1}')" != "4ec8265c999a0c324f5938cb32824d34" ]]; then 
          rm /userdata/system/switch/extra/xdg.tar.gz 2>/dev/null 
-         wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/xdg.tar.gz" "$extraurl/xdg.tar.gz"
+         wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/xdg.tar.gz" "$extraurl/xdg.tar.gz"
          ###curl -sSf "$extraurl/xdg.tar.gz" -o "/userdata/system/switch/extra/xdg.tar.gz"
          cd /userdata/system/switch/extra/ 
          rm -rf /userdata/system/switch/extra/xdg 2>/dev/null
@@ -2147,49 +2186,49 @@ echo -e "${THEME_COLOR_YUZU}❯❯❯ ${F}UPDATING ADDITIONAL FILES ${T}...${T}"
       fi 
    fi
    #
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-xdg.sh" "$extraurl/batocera-switch-xdg.sh"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-xdg.sh" "$extraurl/batocera-switch-xdg.sh"
       ###curl -sSf "$extraurl/batocera-switch-xdg.sh" -o "/userdata/system/switch/extra/batocera-switch-xdg.sh"
       dos2unix /userdata/system/switch/extra/batocera-switch-xdg.sh 2>/dev/null 
       chmod a+x /userdata/system/switch/extra/batocera-switch-xdg.sh 2>/dev/null 
    cd /userdata/system/ 
 # ------------------------------------------------------------------- 
 # get mapping.csv file (obsolete)
-#   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/mapping.csv" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/mapping.csv"
+#   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/mapping.csv" "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/mapping.csv"
 #   dos2unix /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
    rm /userdata/system/switch/configgen/mapping.csv 2>/dev/null 
 # ------------------------------------------------------------------- 
 # get batocera-switch-mousemove.sh
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-mousemove.sh" "$extraurl/batocera-switch-mousemove.sh"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-mousemove.sh" "$extraurl/batocera-switch-mousemove.sh"
    ###curl -sSf "$extraurl/batocera-switch-mousemove.sh" -o "/userdata/system/switch/extra/batocera-switch-mousemove.sh"
    dos2unix /userdata/system/switch/extra/batocera-switch-mousemove.sh 2>/dev/null 
    chmod a+x /userdata/system/switch/extra/batocera-switch-mousemove.sh 2>/dev/null 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-libxdo.so.3" "$extraurl/batocera-switch-libxdo.so.3"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-libxdo.so.3" "$extraurl/batocera-switch-libxdo.so.3"
    ###curl -sSf "$extraurl/batocera-switch-libxdo.so.3" -o "/userdata/system/switch/extra/batocera-switch-libxdo.so.3"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-xdotool" "$extraurl/batocera-switch-xdotool"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-xdotool" "$extraurl/batocera-switch-xdotool"
    ###curl -sSf "$extraurl/batocera-switch-xdotool" -o "/userdata/system/switch/extra/batocera-switch-xdotool"
    chmod a+x /userdata/system/switch/extra/batocera-switch-lib* 2>/dev/null 
    chmod a+x /userdata/system/switch/extra/batocera-switch-xdo* 2>/dev/null 
 # ------------------------------------------------------------------- 
 # get batocera-switch-sync-firmware.sh
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh" "$extraurl/batocera-switch-sync-firmware.sh"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh" "$extraurl/batocera-switch-sync-firmware.sh"
    ###curl -sSf "$extraurl/batocera-switch-sync-firmware.sh" -o "/userdata/system/switch/extra/batocera-switch-sync-firmware.sh"
    dos2unix /userdata/system/switch/extra/batocera-switch-sync-firmware.sh 2>/dev/null 
    chmod a+x /userdata/system/switch/extra/batocera-switch-sync-firmware.sh 2>/dev/null 
 # ------------------------------------------------------------------- 
 # get batocera-switch-stat
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-stat" "$extraurl/batocera-switch-stat"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-stat" "$extraurl/batocera-switch-stat"
    ###curl -sSf "$extraurl/batocera-switch-stat" -o "/userdata/system/switch/extra/batocera-switch-stat"
    chmod a+x /userdata/system/switch/extra/batocera-switch-stat 2>/dev/null 
 # ------------------------------------------------------------------- 
 # prepare nsz converter 
    if [[ ! -f "/userdata/system/switch/extra/nsz.zip" ]] || [[ "$(wc -c "/userdata/system/switch/extra/nsz.zip" | awk '{print $1}')" < "1000000" ]]; then 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/nsz.zip" "$extraurl/nsz.zip"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/nsz.zip" "$extraurl/nsz.zip"
    ###curl -sSf "$extraurl/nsz.zip" -o "/userdata/system/switch/extra/nsz.zip"
 fi 
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-rev" "$extraurl/batocera-switch-rev"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-rev" "$extraurl/batocera-switch-rev"
       ###curl -sSf "$extraurl/batocera-switch-rev" -o "/userdata/system/switch/extra/batocera-switch-rev"
       chmod a+x /userdata/system/switch/extra/batocera-switch-rev 2>/dev/null 
-         wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-nsz-converter.sh" "$extraurl/batocera-switch-nsz-converter.sh"
+         wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-nsz-converter.sh" "$extraurl/batocera-switch-nsz-converter.sh"
          ###curl -sSf "$extraurl/batocera-switch-nsz-converter.sh" -o "/userdata/system/switch/extra/batocera-switch-nsz-converter.sh"
          dos2unix /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
          chmod a+x /userdata/system/switch/extra/batocera-switch-nsz-converter.sh 2>/dev/null 
@@ -2200,7 +2239,7 @@ fi
 # -------------------------------------------------------------------
 # prepare gdk/svg libs for ryujinx / needed for gui controller config 
    if [[ ! -f "/userdata/system/switch/extra/lib.tar.gz" ]]; then 
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.tar.gz" "$extraurl/lib.tar.gz"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.tar.gz" "$extraurl/lib.tar.gz"
       ###curl -sSf "$extraurl/lib.tar.gz" -o "/userdata/system/switch/extra/lib.tar.gz"
          cd /userdata/system/switch/extra/ 
          rm -rf /userdata/system/switch/extra/lib 2>/dev/null
@@ -2208,7 +2247,7 @@ fi
    else 
       if [[ "$(md5sum "/userdata/system/switch/extra/lib.tar.gz" | awk '{print $1}')" != "83952eb2897a61337ca10ff0e19c672f" ]]; then
       rm /userdata/system/switch/extra/lib.tar.gz 2>/dev/null
-      wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.tar.gz" "$extraurl/lib.tar.gz"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/lib.tar.gz" "$extraurl/lib.tar.gz"
       ###curl -sSf "$extraurl/lib.tar.gz" -o "/userdata/system/switch/extra/lib.tar.gz"
          cd /userdata/system/switch/extra/ 
          rm -rf /userdata/system/switch/extra/lib 2>/dev/null
@@ -2221,20 +2260,20 @@ fi
    cd /userdata/system/ 
 # -------------------------------------------------------------------
 # get ryujinx-controller-patcher.sh 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/ryujinx-controller-patcher.sh" "$extraurl/ryujinx-controller-patcher.sh"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/ryujinx-controller-patcher.sh" "$extraurl/ryujinx-controller-patcher.sh"
    ###curl -sSf "$extraurl/ryujinx-controller-patcher.sh" -o "/userdata/system/switch/extra/ryujinx-controller-patcher.sh"
    dos2unix /userdata/system/switch/extra/ryujinx-controller-patcher.sh 2>/dev/null 
    chmod a+x /userdata/system/switch/extra/ryujinx-controller-patcher.sh 2>/dev/null  
 # -------------------------------------------------------------------
 # get yuzu-controller-patcher.sh 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzu-controller-patcher.sh" "$extraurl/yuzu-controller-patcher.sh"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzu-controller-patcher.sh" "$extraurl/yuzu-controller-patcher.sh"
    ###curl -sSf "$extraurl/yuzu-controller-patcher.sh" -o "/userdata/system/switch/extra/yuzu-controller-patcher.sh"
    dos2unix /userdata/system/switch/extra/yuzu-controller-patcher.sh 2>/dev/null 
    chmod a+x /userdata/system/switch/extra/yuzu-controller-patcher.sh 2>/dev/null  
 # -------------------------------------------------------------------
 # prepare patcher 
 url_patcher="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-patcher.sh"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
    ###curl -sSf "$url_patcher" -o "/userdata/system/switch/extra/batocera-switch-patcher.sh"
    dos2unix ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
    chmod a+x ~/switch/extra/batocera-switch-patcher.sh 2>/dev/null
@@ -2258,9 +2297,9 @@ echo 'extra=/userdata/system/switch/extra' >> "$f"
 echo 'cp $extra/*.desktop /usr/share/applications/ 2>/dev/null' >> "$f"
 echo '#' >> "$f"
 #echo 'cp $extra/lib* /lib/ 2>/dev/null' >> "$f"
-echo 'if [[ -e "/lib/libthai.so.0.3.1" ]] || [[ -e "/usr/lib/libthai.so.0.3.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/libthai.so.0.3.1 /lib/libthai.so.0.3.1 2>/dev/null; fi' >> "$f"
-echo 'if [[ -e "/lib/libthai.so.0.3" ]] || [[ -e "/usr/lib/libthai.so.0.3" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libthai.so.0.3 /lib/libthai.so.0.3 2>/dev/null; fi' >> "$f"
-echo 'if [[ -e "/lib/libselinux.so.1" ]] || [[ -e "/usr/lib/libselinux.so.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 /lib/libselinux.so.1 2>/dev/null; fi' >> "$f"
+echo 'if [[ -e "/lib/libthai.so.0.3.1" ]] || [[ -e "/usr/lib/libthai.so.0.3.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/libthai.so.0.3.1 /usr/lib/libthai.so.0.3.1 2>/dev/null; fi' >> "$f"
+echo 'if [[ -e "/lib/libthai.so.0.3" ]] || [[ -e "/usr/lib/libthai.so.0.3" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libthai.so.0.3 /usr/lib/libthai.so.0.3 2>/dev/null; fi' >> "$f"
+echo 'if [[ -e "/lib/libselinux.so.1" ]] || [[ -e "/usr/lib/libselinux.so.1" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libselinux.so.1 /usr/lib/libselinux.so.1 2>/dev/null; fi' >> "$f"
 echo 'if [[ -e "/lib/libtinfo.so.6" ]] || [[ -e "/usr/lib/libtinfo.so.6" ]]; then echo 1>/dev/null; else cp /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 /usr/lib/libtinfo.so.6 2>/dev/null; fi' >> "$f"
 echo '#' >> "$f"
 #\ link ryujinx config folders 
@@ -2454,19 +2493,19 @@ url_sshupdater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/s
 url_updater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-updater.sh
 url_portsupdater=https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports/Switch%20Updater.sh
 url_portsupdaterkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/main/roms/ports/Switch%20Updater.sh.keys   
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/configs/evmapy/switch.keys" "$url_switchkeys"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/configs/evmapy/switch.keys" "$url_switchkeys"
    ###curl -sSf "$url_switchkeys" -o "/userdata/system/configs/evmapy/switch.keys"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/configs/emulationstation/es_features_switch.cfg" "$url_es_features_switch"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/configs/emulationstation/es_features_switch.cfg" "$url_es_features_switch"
    ###curl -sSf "$url_es_features_switch" -o "/userdata/system/configs/emulationstation/es_features_switch.cfg"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/configs/emulationstation/es_systems_switch.cfg" "$url_es_systems_switch"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/configs/emulationstation/es_systems_switch.cfg" "$url_es_systems_switch"
    ###curl -sSf "$url_es_systems_switch" -o "/userdata/system/configs/emulationstation/es_systems_switch.cfg"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/switchlauncher.py" "$url_switchlauncher"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/switchlauncher.py" "$url_switchlauncher"
    ###curl -sSf "$url_switchlauncher" -o "/userdata/system/switch/configgen/switchlauncher.py"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/GeneratorImporter.py" "$url_GeneratorImporter"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/GeneratorImporter.py" "$url_GeneratorImporter"
    ###curl -sSf "$url_GeneratorImporter" -o "/userdata/system/switch/configgen/GeneratorImporter.py"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py" "$url_ryujinxMainlineGenerator"
    ###curl -sSf "$url_ryujinxMainlineGenerator" -o "/userdata/system/switch/configgen/generators/ryujinx/ryujinxMainlineGenerator.py"
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" "$url_yuzuMainlineGenerator"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" "$url_yuzuMainlineGenerator"
    ###curl -sSf "$url_yuzuMainlineGenerator" -o "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py"
       dos2unix "/userdata/system/configs/evmapy/switch.keys" 2>/dev/null
       dos2unix "/userdata/system/configs/emulationstation/es_features_switch.cfg" 2>/dev/null 
@@ -2477,26 +2516,26 @@ url_portsupdaterkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/
       dos2unix "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" 2>/dev/null
       dos2unix "/userdata/system/switch/configgen/generators/yuzu/yuzuMainlineGenerator.py" 2>/dev/null
    # update batocera-switch-sshupdater.sh
-   ##wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" "$url_sshupdater"
+   ##wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" "$url_sshupdater"
    ###curl -sSf "$url_sshupdater" -o "/userdata/system/switch/extra/batocera-switch-sshupdater.sh"
    ###dos2unix "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" 2>/dev/null
    ###chmod a+x "/userdata/system/switch/extra/batocera-switch-sshupdater.sh" 2>/dev/null
    # update batocera-switch-updater.sh
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-updater.sh" "$url_updater"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-updater.sh" "$url_updater"
    ###curl -sSf "$url_updater" -o "/userdata/system/switch/extra/batocera-switch-updater.sh"
    dos2unix "/userdata/system/switch/extra/batocera-switch-updater.sh" 2>/dev/null
    chmod a+x "/userdata/system/switch/extra/batocera-switch-updater.sh" 2>/dev/null
    # update ports Switch Updater.sh
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/roms/ports/Switch Updater.sh" "$url_portsupdater"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/roms/ports/Switch Updater.sh" "$url_portsupdater"
    ###curl -sSf "$url_portsupdater" -o "/userdata/roms/ports/Switch Updater.sh"
    dos2unix "/userdata/system/roms/ports/Switch Updater.sh" 2>/dev/null
    chmod a+x "/userdata/system/roms/ports/Switch Updater.sh" 2>/dev/null
    # update ports Switch Updater.sh.keys
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/roms/ports/Switch Updater.sh.keys" "$url_portsupdaterkeys"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/roms/ports/Switch Updater.sh.keys" "$url_portsupdaterkeys"
    ###curl -sSf "$url_portsupdaterkeys" -o "/userdata/roms/ports/Switch Updater.sh.keys"
    dos2unix "/userdata/system/roms/ports/Switch Updater.sh.keys" 2>/dev/null
    # get batocera-switch-patcher.sh 
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/batocera-switch-patcher.sh" "$url_patcher"
    ###curl -sSf "$url_patcher" -o "/userdata/system/switch/extra/batocera-switch-patcher.sh"
    dos2unix "/userdata/system/switch/extra/batocera-switch-patcher.sh" 2>/dev/null
    chmod a+x "/userdata/system/switch/extra/batocera-switch-patcher.sh" 2>/dev/null
@@ -2507,39 +2546,39 @@ url_portsupdaterkeys=https://raw.githubusercontent.com/ordovice/batocera-switch/
 path=/userdata/system/switch/configgen
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen
 mkdir -p $path 2>/dev/null
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/GeneratorImporter.py" "$url/GeneratorImporter.py"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/GeneratorImporter.py" "$url/GeneratorImporter.py"
 ###curl -sSf "$url/GeneratorImporter.py" -o "$path/GeneratorImporter.py"
-#wget -q --no-check-certificate --no-cache --no-cookies -O "$path/mapping.csv" "$url/mapping.csv"
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/switchlauncher.py" "$url/switchlauncher.py"
+#wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/mapping.csv" "$url/mapping.csv"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/switchlauncher.py" "$url/switchlauncher.py"
 ###curl -sSf "$url/switchlauncher.py" -o "$path/switchlauncher.py"
-####wget -q --no-check-certificate --no-cache --no-cookies -O "$path/switchlauncher_old.py" "$url/switchlauncher_old.py"
+####wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/switchlauncher_old.py" "$url/switchlauncher_old.py"
 #####curl -sSf "$url/switchlauncher_old.py" -o "$path/switchlauncher_old.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS
 path=/userdata/system/switch/configgen/generators
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators
 mkdir -p $path 2>/dev/null
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
 ##curl -sSf "$url/__init__.py" -o "$path/__init__.py"
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/Generator.py" "$url/Generator.py"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/Generator.py" "$url/Generator.py"
 ##curl -sSf "$url/Generator.py" -o "$path/Generator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/YUZU
 path=/userdata/system/switch/configgen/generators/yuzu
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/yuzu
 mkdir -p $path 2>/dev/null
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
 ##curl -sSf "$url/__init__.py" -o "$path/__init__.py"
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/yuzuMainlineGenerator.py" "$url/yuzuMainlineGenerator.py"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/yuzuMainlineGenerator.py" "$url/yuzuMainlineGenerator.py"
 ##curl -sSf "$url/yuzuMainlineGenerator.py" -o "$path/yuzuMainlineGenerator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/GENERATORS/RYUJINX
 path=/userdata/system/switch/configgen/generators/ryujinx
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/configgen/generators/ryujinx
 mkdir -p $path 2>/dev/null
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/__init__.py" "$url/__init__.py"
 ##curl -sSf "$url/__init__.py" -o "$path/__init__.py"
-wget -q --no-check-certificate --no-cache --no-cookies -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/ryujinxMainlineGenerator.py" "$url/ryujinxMainlineGenerator.py"
 ##curl -sSf "$url/ryujinxMainlineGenerator.py" -o "$path/ryujinxMainlineGenerator.py"
 # -------------------------------------------------------------------- 
 # FILL /USERDATA/SYSTEM/SWITCH/CONFIGGEN/SDL2
@@ -2548,13 +2587,13 @@ mkdir -p $path 2>/dev/null
 cd $path
 if [[ ! -f "/userdata/system/switch/configgen/sdl2/sdl2.zip" ]]; then 
 rm -rf /userdata/system/switch/configgen/sdl2/sdl2.zip 2>/dev/null
-wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/sdl2/sdl2.zip" "$extraurl/sdl2.zip"
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/sdl2/sdl2.zip" "$extraurl/sdl2.zip"
 ##curl -sSf "$extraurl/sdl2.zip" -o "/userdata/system/switch/configgen/sdl2/sdl2.zip"
 unzip -oq /userdata/system/switch/configgen/sdl2/sdl2.zip
 else 
    if [[ "$(wc -c "/userdata/system/switch/configgen/sdl2/sdl2.zip" | awk '{print $1}')" < "100000" ]]; then 
    rm -rf /userdata/system/switch/configgen/sdl2/sdl2.zip 2>/dev/null
-   wget -q --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/sdl2/sdl2.zip" "$extraurl/sdl2.zip"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/configgen/sdl2/sdl2.zip" "$extraurl/sdl2.zip"
    ##curl -sSf "$extraurl/sdl2.zip" -o "/userdata/system/switch/configgen/sdl2/sdl2.zip"
    unzip -oq /userdata/system/switch/configgen/sdl2/sdl2.zip
    fi
@@ -2567,8 +2606,13 @@ fi
          mkdir -p $path 2>/dev/null
             if [[ ! -e "$path/$file" ]]; then
                cd $path
-               wget -q --no-check-certificate --no-cache --no-cookies -O "$path/$file" "$url/$file"
+               wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$file" "$url/$file"
                ###curl -sSf "$url/$file" -o "$path/$file"
+            else 
+               if [[ "$(wc -c "$path/$file" | awk '{print $1}')" < "5" ]]; then 
+               cd $path
+               wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$file" "$url/$file"
+               fi
             fi
    }
       get __init__.py
@@ -2629,11 +2673,11 @@ mkdir -p /userdata/system/switch/extra/sdl 2>/dev/null
 sdl=/userdata/system/switch/extra/sdl/libSDL2.so
 sdlurl=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-libSDL2.so
    if [[ ! -e "$sdl" ]]; then 
-      wget -q --no-check-certificate --no-cache --no-cookies -O "$sdl" "$sdlurl"
+      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$sdl" "$sdlurl"
       ###curl -sSf "$sdlurl" -o "$sdl"
    else 
       if [[ "$(md5sum $sdl | awk '{print $1}')" != "dc4a162f60622b04813fbf1756419c89" ]] || [[ "$(wc -c $sdl | awk '{print $1}')" != "2493584" ]]; then 
-         wget -q --no-check-certificate --no-cache --no-cookies -O "$sdl" "$sdlurl"
+         wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$sdl" "$sdlurl"
          ###curl -sSf "$sdlurl" -o "$sdl"
       fi 
    fi 
@@ -2650,9 +2694,9 @@ urldir="https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/s
 icon1url="http://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/icon_updater.png"
 icon2url="http://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/icon_loading.png"
 icon1=icon_updater.png ; icon2=icon_loading.png ; dest=/userdata/system/switch/extra ; mkdir -p $dest 2>/dev/null
-      wget -q -O "$dest/$icon1" "$urldir/$icon1"
+      wget -q --tries=10 -O "$dest/$icon1" "$urldir/$icon1"
       ##curl -sSf "$urldir/$icon1" -o "/userdata/system/switch/extra/icon_updater.png"
-      wget -q -O "$dest/$icon2" "$urldir/$icon2"
+      wget -q --tries=10 -O "$dest/$icon2" "$urldir/$icon2"
       ##curl -sSf "$urldir/$icon2" -o "/userdata/system/switch/extra/icon_loading.png"
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
@@ -2675,12 +2719,12 @@ if [[ "$MODE" != "CONSOLE" ]]; then
    mkdir /userdata/system/switch 2>/dev/null; mkdir /userdata/system/switch/extra 2>/dev/null
       if [[ ( -e "$tput" && "$(wc -c "$tput" | awk '{print $1}')" < "444" ) || ( ! -e "$tput" ) ]]; then
          rm "$tput" 2>/dev/null
-         wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-tput https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
+         wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-tput https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-tput
          ##curl -sSf "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-tput" -o "/userdata/system/switch/extra/batocera-switch-tput"
       fi
       if [[ ( -e "$libtinfo" && "$(wc -c "$libtinfo" | awk '{print $1}')" < "444" ) || ( ! -e "$libtinfo" ) ]]; then
          rm "$libtinfo" 2>/dev/null
-         wget -q --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
+         wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O /userdata/system/switch/extra/batocera-switch-libtinfo.so.6 https://github.com/uureel/batocera-switch/raw/main/system/switch/extra/batocera-switch-libtinfo.so.6
          ##curl -sSf "https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-libtinfo.so.6" -o "/userdata/system/switch/extra/batocera-switch-libtinfo.so.6"
       fi
    chmod a+x "$tput" 2>/dev/null
