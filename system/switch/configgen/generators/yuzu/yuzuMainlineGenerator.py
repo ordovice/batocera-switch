@@ -343,6 +343,7 @@ class YuzuMainlineGenerator(Generator):
         if system.isOptSet('astc_recompression'):
             yuzuConfig.set("Renderer", "accelerate_astc", "1")
             yuzuConfig.set("Renderer", "accelerate_astc\\default", "true")
+
             yuzuConfig.set("Renderer", "astc_recompression", system.config["astc_recompression"])
             yuzuConfig.set("Renderer", "astc_recompression\\default", "false")
             if system.config["astc_recompression"] == "0":
@@ -654,8 +655,14 @@ class YuzuMainlineGenerator(Generator):
 
             eslog.debug("Joysticks: {}".format(sdl_devices))
 
-            yuzuConfig.set("Controls", "vibration_enabled", "true")
-            yuzuConfig.set("Controls", "vibration_enabled\\default", "true")
+
+            if system.isOptSet("yuzu_enable_rumble"):
+                yuzuConfig.set("Controls", "vibration_enabled", system.config["yuzu_enable_rumble"])
+                yuzuConfig.set("Controls", "vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+            else:
+                yuzuConfig.set("Controls", "vibration_enabled", "true")
+                yuzuConfig.set("Controls", "vibration_enabled\\default", "true")
+
 
             cguid = [0 for x in range(10)]
             lastplayer = 0
@@ -854,8 +861,14 @@ class YuzuMainlineGenerator(Generator):
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
 
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+
+                        if system.isOptSet("yuzu_enable_rumble"):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", system.config["yuzu_enable_rumble"])
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+
                         lastplayer = int(controllernumber) + 1
 
                     elif (sdl_mapping['type'] == 13):
@@ -921,8 +934,12 @@ class YuzuMainlineGenerator(Generator):
                             #Forcing to left joycon
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "2")
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+                            if system.isOptSet("yuzu_enable_rumble"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", system.config["yuzu_enable_rumble"])
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
 
                             eslog.debug("Controller Type: Right Joycon after Left")
                             pad1 = 2
@@ -962,8 +979,12 @@ class YuzuMainlineGenerator(Generator):
                             #Forcing to right joycons
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "3")
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+                            if system.isOptSet("yuzu_enable_rumble"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", system.config["yuzu_enable_rumble"])
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
 
 
 
@@ -1007,8 +1028,12 @@ class YuzuMainlineGenerator(Generator):
                             #Forcing to right joycons
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "3")
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+                            if system.isOptSet("yuzu_enable_rumble"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", system.config["yuzu_enable_rumble"])
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
 
 
                             eslog.debug("Controller Type: Left Joycon After Right")
@@ -1047,8 +1072,12 @@ class YuzuMainlineGenerator(Generator):
                             #Forcing to left joycon
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "2")
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+                            if system.isOptSet("yuzu_enable_rumble"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", system.config["yuzu_enable_rumble"])
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
 
                         else:
                             eslog.debug("Controller Type: Dual Joycons")
@@ -1083,8 +1112,12 @@ class YuzuMainlineGenerator(Generator):
                             #Forcing to dual joycons
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "1")
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "false")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+                            if system.isOptSet("yuzu_enable_rumble"):
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", system.config["yuzu_enable_rumble"])
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+                            else:
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
                             
                     else:
                         eslog.debug("SDL controller Branch")
@@ -1360,8 +1393,14 @@ class YuzuMainlineGenerator(Generator):
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_button_screenshot", "[empty]")
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_button_screenshot\\default", "false")
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
-                        yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+
+
+                        if system.isOptSet("yuzu_enable_rumble"):
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", system.config["yuzu_enable_rumble"])
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", system.config["yuzu_enable_rumble"])
+                        else:
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
+                            yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
 
                         lastplayer = int(controllernumber) + 1
 
