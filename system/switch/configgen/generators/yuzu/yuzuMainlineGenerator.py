@@ -665,6 +665,8 @@ class YuzuMainlineGenerator(Generator):
 
                 if(controller.guid != "050000007e0500000620000001800000" and controller.guid != "050000007e0500000720000001800000"):
                     #don't run the code for Joy-Con (L) or Joy-Con (R) - Batocera adds these and only works with a pair
+                    which_pad = "p" + str(lastplayer+1) + "_pad"
+
                     if debugcontrollers:
                         eslog.debug("Controller configName: {}".format(controller.configName))
                         eslog.debug("Controller index: {}".format(controller.index))
@@ -672,8 +674,8 @@ class YuzuMainlineGenerator(Generator):
                         eslog.debug("Controller dev: {}".format(controller.dev))
                         eslog.debug("Controller player: {}".format(controller.player))
                         eslog.debug("Controller GUID: {}".format(controller.guid))
+                        eslog.debug("Which Pad: {}".format(which_pad))
 
-                    which_pad = "p" + str(lastplayer+1) + "_pad"
 
                     if(playersControllers[index].realName == 'Nintendo Switch Combined Joy-Cons'):  #works in Batocera v37
                         outputpath = "nintendo_joycons_combined"
@@ -702,6 +704,13 @@ class YuzuMainlineGenerator(Generator):
                     controllernumber = str(lastplayer)
                     portnumber = cguid.count(inputguid)
                     cguid[int(controllernumber)] = inputguid
+
+                    if debugcontrollers:
+                        eslog.debug("Controller number: {}".format(controllernumber))
+                        eslog.debug("Controller port: {}".format(portnumber))
+                        eslog.debug("Controller cguid: {}".format(cguid[int(controllernumber)]))                
+
+
                     if(sdl_mapping == None):
                         eslog.debug("Batocera controller Branch")
                         if (system.isOptSet(which_pad) and (system.config[which_pad] == "2")):
@@ -739,8 +748,12 @@ class YuzuMainlineGenerator(Generator):
                             #Configure buttons and triggers
                             for x in yuzuButtons:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
+
                             for x in yuzuAxis:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber, 1)))
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
+
 
                         elif (system.isOptSet(which_pad) and (system.config[which_pad] == "3")):
                             eslog.debug("Controller Type: Right Joycon")
@@ -777,9 +790,14 @@ class YuzuMainlineGenerator(Generator):
                             #Configure buttons and triggers
                             for x in yuzuButtons:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
+
                             for x in yuzuAxis:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber,2)))
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
+
                         else:
+                            eslog.debug("Controller Type: Non-Joycon")
                             #0 = Pro Controller, 1 = Dual Joycons, 4 = Handheld Mode,  (and other cases not yet defined)
                             #Switch and generic controllers aren't swapping ABXY
                             yuzuButtons = {
@@ -812,8 +830,12 @@ class YuzuMainlineGenerator(Generator):
                             #Configure buttons and triggers
                             for x in yuzuButtons:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setButton(yuzuButtons[x], inputguid, controller.inputs,portnumber)))
+                        
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")                           
+
                             for x in yuzuAxis:
                                 yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{}"'.format(YuzuMainlineGenerator.setAxis(yuzuAxis[x], inputguid, controller.inputs, portnumber,0)))     
+                                yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
 
                         #Enable motion no matter what, as enabling won't hurt things if it doesn't exist
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_motionleft", '"engine:sdl,motion:0,port:{},guid:{}"'.format(portnumber,inputguid))
@@ -1138,10 +1160,15 @@ class YuzuMainlineGenerator(Generator):
                             for x in yuzuButtons:
                                 if("hat" in str(yuzuButtons[x])):
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
+
                                 elif("axis" in str(yuzuButtons[x])):
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
+
                                 else:
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
 
                             #set joysticks
                             for x in yuzuAxis:
@@ -1218,10 +1245,13 @@ class YuzuMainlineGenerator(Generator):
                             for x in yuzuButtons:
                                 if("hat" in str(yuzuButtons[x])):
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
                                 elif("axis" in str(yuzuButtons[x])):
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
                                 else:
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
 
                             #set joysticks
                             for x in yuzuAxis:
@@ -1296,10 +1326,13 @@ class YuzuMainlineGenerator(Generator):
                             for x in yuzuButtons:
                                 if("hat" in str(yuzuButtons[x])):
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"{},direction:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],yuzuHat[x],inputguid,portnumber))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
                                 elif("axis" in str(yuzuButtons[x])):
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"engine:sdl,invert:+,port:{},guid:{},axis:{},threshold:0.500000"'.format(portnumber,inputguid,yuzuAxisButtons[x]))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
                                 else:
                                     yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x, '"button:{},guid:{},port:{},engine:sdl"'.format(yuzuButtons[x],inputguid,portnumber))
+                                    yuzuConfig.set("Controls", "player_" + controllernumber + "_" + x + "\\default", "false")
 
                             #set joysticks
                             for x in yuzuAxis:
@@ -1323,11 +1356,17 @@ class YuzuMainlineGenerator(Generator):
                         else:
                             yuzuConfig.set("Controls", "player_" + controllernumber + "_type", "0")
 
+
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_button_screenshot", "[empty]")
+                        yuzuConfig.set("Controls", "player_" + controllernumber + "_button_screenshot\\default", "false")
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_type\\default", "true")
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled", "true")
                         yuzuConfig.set("Controls", "player_" + controllernumber + "_vibration_enabled\\default", "true")
+
                         lastplayer = int(controllernumber) + 1
 
+            
+            
             #lastplayer = lastplayer + 1
             eslog.debug("Last Player {}".format(lastplayer))
             for y in range(lastplayer, 9):
@@ -1420,7 +1459,7 @@ class YuzuMainlineGenerator(Generator):
         # it would be better to pass the joystick num instead of the guid because 2 joysticks may have the same guid
         if key in padInputs:
             input = padInputs[key]
-            eslog.debug("Mapping: {}".format(input))
+            #eslog.debug("Mapping: {}".format(input))
 
             if input.type == "button":
                 return ("button:{},guid:{},port:{},engine:sdl").format(input.id, padGuid, controllernumber)
