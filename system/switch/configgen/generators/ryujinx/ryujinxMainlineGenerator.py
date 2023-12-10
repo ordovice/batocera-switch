@@ -402,12 +402,16 @@ class RyujinxMainlineGenerator(Generator):
                     motion['motion_backend'] = "GamepadDriver"
                     motion['sensitivity'] = 100
                     motion['gyro_deadzone'] = 1
+
                     motion['enable_motion'] = bool('true')
 
                     rumble = {}
                     rumble['strong_rumble'] = 1
                     rumble['weak_rumble'] = 1
-                    rumble['enable_rumble'] = bool('true')
+                    if system.isOptSet("ryu_enable_rumble"):
+                        rumble['enable_rumble'] = bool(int(system.config["ryu_enable_rumble"]))
+                    else:
+                        rumble['enable_rumble'] = bool('true')
                     
                     which_pad = "p" + str(int(controller.player)) + "_pad"
 
