@@ -339,10 +339,17 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Renderer", "anti_aliasing", "0")
             yuzuConfig.set("Renderer", "anti_aliasing\\default", "true")
 
+        #ASTC Decoding Method
+        if system.isOptSet('accelerate_astc'):
+            yuzuConfig.set("Renderer", "accelerate_astc", system.config["accelerate_astc"])
+            yuzuConfig.set("Renderer", "accelerate_astc\\default", "false")
+        else:
+            yuzuConfig.set("Renderer", "accelerate_astc", "1")
+            yuzuConfig.set("Renderer", "accelerate_astc\\default", "true")            
+
         # ASTC Texture Recompression
         if system.isOptSet('astc_recompression'):
-            yuzuConfig.set("Renderer", "accelerate_astc", "1")
-            yuzuConfig.set("Renderer", "accelerate_astc\\default", "true")
+
 
             yuzuConfig.set("Renderer", "astc_recompression", system.config["astc_recompression"])
             yuzuConfig.set("Renderer", "astc_recompression\\default", "false")
@@ -351,8 +358,6 @@ class YuzuMainlineGenerator(Generator):
             yuzuConfig.set("Renderer", "async_astc", "false")
             yuzuConfig.set("Renderer", "async_astc\\default", "true")
         else:
-            yuzuConfig.set("Renderer", "accelerate_astc", "1")
-            yuzuConfig.set("Renderer", "accelerate_astc\\default", "true")
             yuzuConfig.set("Renderer", "astc_recompression", "0")
             yuzuConfig.set("Renderer", "astc_recompression\\default", "true")
             yuzuConfig.set("Renderer", "async_astc", "false")
