@@ -119,7 +119,7 @@ if [[ "$net1" = "off" ]] && [[ "$net2" = "off" ]] && [[ "$net3" = "off" ]]; then
 if [[ "$net1" = "on" ]] || [[ "$net2" = "on" ]] || [[ "$net3" = "on" ]]; then net="on"; fi 
 ##
 if [[ "$net" = "off" ]]; then 
-DISPLAY=:0.0 /tmp/batocera-switch-updater -fs 10 -maximized -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
+DISPLAY=:0.0 /tmp/batocera-switch-updater -fs 10 -maximized -fg black -bg black -fa "DejaVuSansMono" -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 & exit 1 & exit 2
 fi 
 }
 function check_internet() {
@@ -145,7 +145,7 @@ function check_internet() {
 if check_internet; then
    net="on"
 else 
-   DISPLAY=:0.0 /tmp/batocera-switch-updater -fs 10 -maximized -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 && exit 1 && exit 2   
+   DISPLAY=:0.0 /tmp/batocera-switch-updater -fs 10 -maximized -fg black -bg black -fa "DejaVuSansMono" -en UTF-8 -e bash -c "echo -e \"\n \033[0;37m NO INTERNET CONNECTION :( \033[0;30m \" & sleep 3" 2>/dev/null && exit 0 && exit 1 && exit 2   
 fi
 # --------------------------------------------------------------------
 # clear old logs: 
@@ -2738,7 +2738,7 @@ if [[ "$MODE" != "CONSOLE" ]]; then
          cfg=/userdata/system/switch/extra/display.cfg
             rm /tmp/cols 2>/dev/null
             killall -9 /tmp/batocera-switch-updater 2>/dev/null
-            DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols 2>/dev/null" 2>/dev/null
+            DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fg black -bg black -fa "DejaVuSansMono" -en UTF-8 -e bash -c "unset COLUMNS & /userdata/system/switch/extra/batocera-switch-tput cols >> /tmp/cols 2>/dev/null" 2>/dev/null
             killall -9 /tmp/batocera-switch-updater 2>/dev/null
          res=$(xrandr | grep " connected " | awk '{print $3}' | cut -d x -f1)
          columns=$(cat /tmp/cols); echo "$res=$columns" >> "$cfg"
@@ -2800,9 +2800,9 @@ fallback=9
          ## RUN THE UPDATER: ------------------------------------------------- 
             if [[ "$MODE" = "DISPLAY" ]]; then 
                if [[ "$ANIMATION" = "YES" ]]; then 
-                  DISPLAY=:0.0 unclutter-remote -h && DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fs "$TEXT_SIZE" -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 batocera_update_switch && DISPLAY=:0.0 post-install"
+                  DISPLAY=:0.0 unclutter-remote -h && DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fs "$TEXT_SIZE" -fg black -bg black -fa "DejaVuSansMono" -en UTF-8 -e bash -c "DISPLAY=:0.0 cvlc -f --no-audio --no-video-title-show --no-mouse-events --no-keyboard-events --no-repeat /userdata/system/switch/extra/loader.mp4 2>/dev/null & sleep 3.69 && killall -9 vlc && DISPLAY=:0.0 batocera_update_switch && DISPLAY=:0.0 post-install"
                else 
-                  DISPLAY=:0.0 unclutter-remote -h && DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fs "$TEXT_SIZE" -fg black -bg black -fa Monospace -en UTF-8 -e bash -c "DISPLAY=:0.0 batocera_update_switch && post-install"
+                  DISPLAY=:0.0 unclutter-remote -h && DISPLAY=:0.0 /tmp/batocera-switch-updater -maximized -fs "$TEXT_SIZE" -fg black -bg black -fa "DejaVuSansMono" -en UTF-8 -e bash -c "DISPLAY=:0.0 batocera_update_switch && post-install"
                fi 
             fi 
 fi 
