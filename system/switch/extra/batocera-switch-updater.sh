@@ -2712,12 +2712,14 @@ icon1=icon_updater.png ; icon2=icon_loading.png ; dest=/userdata/system/switch/e
 path=/userdata/system/switch/extra/translations
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/translations
 mkdir -p $path 2>/dev/null
-  english=en_US/es_features_switch.cfg
-  french=fr_FR/es_features_switch.cfg
-    wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$english" "$url/$english"
-    wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$french" "$url/$french"
-    dos2unix "$path/$english" 2>/dev/null
-    dos2unix "$path/$french" 2>/dev/null
+mkdir -p $path/es_US 2>/dev/null
+mkdir -p $path/fr_FR 2>/dev/null
+   english=en_US/es_features_switch.cfg
+   french=fr_FR/es_features_switch.cfg
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$english" "$url/$english"
+   wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$french" "$url/$french"
+   dos2unix "$path/$english" 2>/dev/null
+   dos2unix "$path/$french" 2>/dev/null
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
