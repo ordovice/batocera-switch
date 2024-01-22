@@ -2712,7 +2712,7 @@ icon1=icon_updater.png ; icon2=icon_loading.png ; dest=/userdata/system/switch/e
 path=/userdata/system/switch/extra/translations
 url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/translations
 mkdir -p $path 2>/dev/null
-mkdir -p $path/es_US 2>/dev/null
+mkdir -p $path/en_US 2>/dev/null
 mkdir -p $path/fr_FR 2>/dev/null
    english=en_US/es_features_switch.cfg
    french=fr_FR/es_features_switch.cfg
