@@ -2720,6 +2720,12 @@ mkdir -p $path/fr_FR 2>/dev/null
    wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$french" "$url/$french"
    dos2unix "$path/$english" 2>/dev/null
    dos2unix "$path/$french" 2>/dev/null
+# GET TRANSLATOR
+translator=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-translator.sh
+path=/userdata/system/switch/extra/batocera-switch-translator.sh
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path" "$translator"
+   dos2unix "$path" 2>/dev/null
+   chmod 777 "$path" 2>/dev/null
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
