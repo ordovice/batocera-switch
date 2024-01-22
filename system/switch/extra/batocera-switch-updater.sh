@@ -905,6 +905,7 @@ echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
 echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
+echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '#cp /userdata/system/switch/extra/yuzu/lib* /lib64/ 2>/dev/null' >> "$f" 
@@ -1004,6 +1005,7 @@ echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
 echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
+echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '#cp /userdata/system/switch/extra/yuzuea/lib* /lib64/ 2>/dev/null' >> "$f" 
@@ -1143,6 +1145,7 @@ echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
+echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
@@ -1293,6 +1296,7 @@ echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
+echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
@@ -1442,6 +1446,7 @@ echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
+echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
 
 echo 'chmod a+x /userdata/system/switch/extra/lib/* 2>/dev/null' >> "$f"
 echo 'chmod a+x /userdata/system/switch/extra/lib/gdk-pixbuf-2.0/* 2>/dev/null' >> "$f"
@@ -2286,11 +2291,14 @@ url_patcher="https://raw.githubusercontent.com/ordovice/batocera-switch/main/sys
 f=/userdata/system/switch/extra/batocera-switch-startup
 rm "$f" 2>/dev/null 
 # 
-echo '#!/bin/bash' >> "$f" 
+echo '#!/bin/bash' >> "$f"
 echo '#' >> "$f"
+#\ check language
+echo '#\ check language ' >> "$f"
+echo '/userdata/system/switch/extra/batocera-switch-translator.sh 2>/dev/null &' >> "$f"
 #\ prepare system 
-echo '#\ prepare system ' >> "$f" 
-echo 'cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null ' >> "$f" 
+echo '#\ prepare system ' >> "$f"
+echo 'cp /userdata/system/switch/extra/batocera-switch-rev /usr/bin/rev 2>/dev/null ' >> "$f"
 #echo 'rm /userdata/system/switch/logs/* 2>/dev/null ' >> "$f" 
 echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
 echo 'sysctl -w vm.max_map_count=2147483642 1>/dev/null' >> "$f"
@@ -2699,6 +2707,17 @@ icon1=icon_updater.png ; icon2=icon_loading.png ; dest=/userdata/system/switch/e
       ##curl -sSf "$urldir/$icon1" -o "/userdata/system/switch/extra/icon_updater.png"
       wget -q --tries=10 -O "$dest/$icon2" "$urldir/$icon2"
       ##curl -sSf "$urldir/$icon2" -o "/userdata/system/switch/extra/icon_loading.png"
+# -------------------------------------------------------------------- 
+# GET TRANSLATIONS
+path=/userdata/system/switch/extra/translations
+url=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/translations
+mkdir -p $path 2>/dev/null
+  english=en_US/es_features_switch.cfg
+  french=fr_FR/es_features_switch.cfg
+    wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$english" "$url/$english"
+    wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path/$french" "$url/$french"
+    dos2unix "$path/$english" 2>/dev/null
+    dos2unix "$path/$french" 2>/dev/null
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
