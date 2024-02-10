@@ -21,7 +21,7 @@
 			function nsz-install() 
 			{
 				echo -e "╔═════════════════════════════════════════════╗ "
-				echo -e "║ PREPARING NSZ CONVERTER . . .               ║ "
+				echo -e "║ PREPARING NSZ / XCZ CONVERTER . . .         ║ "
 				echo -e "╚═════════════════════════════════════════════╝ "
 					echo
 					echo
@@ -121,7 +121,7 @@
 			function nsz-install() 
 			{
 				echo -e "╔═════════════════════════════════════════════╗ "
-				echo -e "║ PREPARING NSZ CONVERTER . . .               ║ "
+				echo -e "║ PREPARING NSZ / XCZ CONVERTER . . .         ║ "
 				echo -e "╚═════════════════════════════════════════════╝ "
 					echo
 					echo
@@ -182,10 +182,10 @@
 						echo -e "╚═════════════════════════════════════════════╝ "
 						sleep 0.5 					
 					#-------------------------------------------
-					# remove the nsz file 
+					# remove the xcz file 
 					rm -rf "$rom" 2>/dev/null
 					#-------------------------------------------
-					# & reload games to remove the nsz entry  
+					# & reload games to remove the xcz entry  
 					curl http://127.0.0.1:1234/reloadgames 
 			} 
 			export -f convert-xcz
