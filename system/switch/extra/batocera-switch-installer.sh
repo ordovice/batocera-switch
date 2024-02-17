@@ -10,6 +10,8 @@ ORIGIN="${ORIGIN^^}"
 extra=/userdata/system/switch/extra 
 mkdir /userdata/system/switch 2>/dev/null 
 mkdir /userdata/system/switch/extra 2>/dev/null 
+sysctl -w net.ipv6.conf.default.disable_ipv6=1 1>/dev/null 2>/dev/null
+sysctl -w net.ipv6.conf.all.disable_ipv6=1 1>/dev/null 2>/dev/null
 #/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 # --------------------------------------------------------------------
 #\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\   
@@ -309,6 +311,8 @@ export -f batocera-pro-installer 2>/dev/null
 # --------------------------------------------------------------------
 batocera-pro-installer "$APPNAME" "$ORIGIN" 
 # --------------------------------------------------------------------
+sysctl -w net.ipv6.conf.default.disable_ipv6=0 1>/dev/null 2>/dev/null
+sysctl -w net.ipv6.conf.all.disable_ipv6=0 1>/dev/null 2>/dev/null
 X='\033[0m' # / resetcolor
 if [[ -e /userdata/system/switch/extra/installation ]]; then
 rm /userdata/system/switch/extra/installation 2>/dev/null

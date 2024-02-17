@@ -98,6 +98,9 @@ THEME_COLOR_RYUJINXAVALONIA=BLUE
 ######################################################################
 ######################################################################
 # --------------------------------------------------------------------
+sysctl -w net.ipv6.conf.default.disable_ipv6=1 1>/dev/null 2>/dev/null
+sysctl -w net.ipv6.conf.all.disable_ipv6=1 1>/dev/null 2>/dev/null
+# --------------------------------------------------------------------
 export DISPLAY=:0.0
 # --------------------------------------------------------------------
 cp $(which xterm) /tmp/batocera-switch-updater && chmod 777 /tmp/batocera-switch-updater
@@ -2847,5 +2850,7 @@ wait
       rm /tmp/.userconfigfile 2>/dev/null
    fi 
    # --- / 
+sysctl -w net.ipv6.conf.default.disable_ipv6=0 1>/dev/null 2>/dev/null
+sysctl -w net.ipv6.conf.all.disable_ipv6=0 1>/dev/null 2>/dev/null
 sleep 2 && killall -9 batocera-switch-updater 2>/dev/null && curl http://127.0.0.1:1234/reloadgames && exit 0; exit 1
 #################################################################################################################################
