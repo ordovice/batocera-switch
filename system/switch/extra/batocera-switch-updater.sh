@@ -865,6 +865,11 @@ mkdir /userdata/system/switch/extra/downloads 2>/dev/null
 #
 #
 if [ "$3" = "YUZU" ]; then
+yuzuis="dead"
+T=$THEME_COLOR_YUZU
+echo -e "${T}██ X/X   ${T}YUZU WAS SLAIN BY BOWNSER"
+echo
+if [[ "$yuzuis" != "dead" ]]; then
 T=$THEME_COLOR_YUZU
 version=$(echo "$link_yuzu" | sed 's,^.*/download/,,g' | cut -d "/" -f1 | cut -d "-" -f3)
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
@@ -957,6 +962,8 @@ cd ~/
    ver=$(echo "$link_yuzu" | sed 's,^.*mainline-0-,,g' | cut -d "/" -f1)
       rm /userdata/system/switch/extra/yuzu/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/yuzu/version.txt
+
+fi
 fi
 #
 #
@@ -994,10 +1001,10 @@ cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu
       rm /userdata/system/switch/extra/yuzuea/libstdc++.so.6 2>/dev/null
    fi
 # add yuzu's bundled 'optional' libs 
-   cp $temp/yuzu/squashfs-root/usr/optional/libstdc++/libstdc++.so.6 /userdata/system/switch/extra/yuzu/libstdc++.so.6
-   cp $temp/yuzu/squashfs-root/usr/optional/libgcc_s/libgcc_s.so.1 /userdata/system/switch/extra/yuzu/libgcc_s.so.1
-   cp $temp/yuzu/squashfs-root/usr/optional/exec.so /userdata/system/switch/extra/yuzu/exec.so
-   chmod a+x /userdata/system/switch/extra/yuzu/lib* 2>/dev/null
+   cp $temp/yuzuea/squashfs-root/usr/optional/libstdc++/libstdc++.so.6 /userdata/system/switch/extra/yuzuea/libstdc++.so.6
+   cp $temp/yuzuea/squashfs-root/usr/optional/libgcc_s/libgcc_s.so.1 /userdata/system/switch/extra/yuzuea/libgcc_s.so.1
+   cp $temp/yuzuea/squashfs-root/usr/optional/exec.so /userdata/system/switch/extra/yuzuea/exec.so
+   chmod a+x /userdata/system/switch/extra/yuzuea/lib* 2>/dev/null
 # make launcher
 f=/userdata/system/switch/yuzuEA.AppImage
 rm "$f" 2>/dev/null
@@ -1955,8 +1962,8 @@ update_emulator 2 5 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_y
 update_emulator 3 5 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 4 5 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 5 5 $(echo "$EMULATORS" | cut -d "-" -f 5) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}       ${TEXT_COLOR}5/5${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
-echo -e "${THEME_COLOR}────────────────────────────────────────┘${X}"
+echo -e "${TEXT_COLOR}     ${TEXT_COLOR}   ${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
+echo -e "${THEME_COLOR}──────────────────────────────────────┘${X}"
 fi
 # UPDATE 4 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" != "" ]]; then
@@ -1964,29 +1971,29 @@ update_emulator 1 4 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_y
 update_emulator 2 4 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 4 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 4 4 $(echo "$EMULATORS" | cut -d "-" -f 4) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}      ${TEXT_COLOR}4/4${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
-echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
+echo -e "${TEXT_COLOR}     ${TEXT_COLOR}   ${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
+echo -e "${THEME_COLOR}──────────────────────────────────────┘${X}"
 fi
 # UPDATE 3 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" != "" ]]; then
 update_emulator 1 3 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 3 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 3 3 $(echo "$EMULATORS" | cut -d "-" -f 3) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}      ${TEXT_COLOR}3/3${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
-echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
+echo -e "${TEXT_COLOR}     ${TEXT_COLOR}   ${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
+echo -e "${THEME_COLOR}──────────────────────────────────────┘${X}"
 fi
 # UPDATE 2 EMULATORS -------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" != "" ]]; then
 update_emulator 1 2 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
 update_emulator 2 2 $(echo "$EMULATORS" | cut -d "-" -f 2) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}      ${TEXT_COLOR}2/2${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
-echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
+echo -e "${TEXT_COLOR}     ${TEXT_COLOR}   ${TEXT_COLOR} SWITCH EMULATORS UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
+echo -e "${THEME_COLOR}──────────────────────────────────────┘${X}"
 fi
 # UPDATE 1 EMULATOR ---------------------------------------
 if [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 5)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 4)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 3)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 2)" = "" ]] && [[ "$(echo $EMULATORS | cut -d "=" -f 2 | cut -d "-" -f 1)" != "" ]]; then
 update_emulator 1 1 $(echo "$EMULATORS" | cut -d "-" -f 1) "$link_yuzu" "$link_yuzuea" "$link_ryujinx" "$link_ryujinxldn" "$link_ryujinxavalonia"
-echo -e "${TEXT_COLOR}                  EMULATOR UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
-echo -e "${THEME_COLOR}───────────────────────────────────────┘${X}"
+echo -e "${TEXT_COLOR}     ${TEXT_COLOR}   ${TEXT_COLOR} SWITCH EMULATOR UPDATED ${GREEN}OK ${THEME_COLOR} │${X}"
+echo -e "${THEME_COLOR}─────────────────────────────────────┘${X}"
 fi
 # 
 #sleep 1.1 
