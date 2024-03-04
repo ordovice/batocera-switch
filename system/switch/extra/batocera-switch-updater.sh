@@ -1064,6 +1064,46 @@ cd ~/
    ver=$(echo "$link_yuzuea" | sed 's,^.*/EA-,,g' | cut -d "/" -f1)
       rm /userdata/system/switch/extra/yuzuea/version.txt 2>/dev/null
       echo "$ver" >> /userdata/system/switch/extra/yuzuea/version.txt
+#
+###\# clone yuzuea to yuzu, if there's no yuzu
+   if [[ ! -d /userdata/system/switch/extra/yuzu ]]; then
+      mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
+      cp -r /userdata/system/switch/extra/yuzuea/* /userdata/system/switch/extra/yuzu/ 2>/dev/null
+         if [[ ! -e /userdata/system/switch/yuzu.AppImage ]]; then
+            cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
+         else 
+            if [[ "$(cat /userdata/system/switch/yuzu.AppImage | grep yuzuea)" != "" ]]; then
+               cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
+            fi
+         fi
+   else 
+      if [[ "$(ls /userdata/system/switch/extra/yuzu)" = "" ]] || [[ ! -e "/userdata/system/switch/extra/yuzu/yuzu" ]]; then
+         mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
+         cp -r /userdata/system/switch/extra/yuzuea/* /userdata/system/switch/extra/yuzu/ 2>/dev/null
+            if [[ ! -e /userdata/system/switch/yuzu.AppImage ]]; then
+               cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
+            else 
+               if [[ "$(cat /userdata/system/switch/yuzu.AppImage | grep yuzuea)" != "" ]]; then
+                  cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
+               fi
+            fi
+      fi
+      if [[ -e /userdata/system/switch/extra/yuzu/version.txt ]]; then
+         if [[ "$(cat /userdata/system/switch/extra/yuzu/version.txt)" -gt "4000" ]]; then
+            mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
+            cp -r /userdata/system/switch/extra/yuzuea/* /userdata/system/switch/extra/yuzu/ 2>/dev/null
+               if [[ ! -e /userdata/system/switch/yuzu.AppImage ]]; then
+                  cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
+               else 
+                  if [[ "$(cat /userdata/system/switch/yuzu.AppImage | grep yuzuea)" != "" ]]; then
+                     cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
+                  fi
+               fi
+         fi
+      fi
+   fi
+###/#
+#
 fi
 #
 #
