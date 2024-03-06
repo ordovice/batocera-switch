@@ -967,7 +967,8 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
              echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
              sleep 0.4444
              echo
-               generate_launcher
+               mv /userdata/system/switch/yuzu.AppImage /userdata/system/switch/_yuzu.AppImage
+                  generate_launcher
             fi
          fi
       else 
@@ -993,7 +994,8 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
              echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
              sleep 0.4444
              echo
-               generate_launcher
+               mv /userdata/system/switch/yuzu.AppImage /userdata/system/switch/_yuzu.AppImage
+                  generate_launcher
            else 
              f=/userdata/system/switch/_yuzu.AppImage
              if [[ -e $f ]]; then
@@ -1128,7 +1130,8 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
              echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
              sleep 0.4444
              echo
-               generate_launcher
+               mv /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/_yuzuEA.AppImage
+                  generate_launcher
             fi
          fi
       else 
@@ -1154,7 +1157,8 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
              echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
              sleep 0.4444
              echo
-               generate_launcher
+               mv /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/_yuzuEA.AppImage
+                  generate_launcher
            else 
              f=/userdata/system/switch/_yuzuEA.AppImage
              if [[ -e $f ]]; then
