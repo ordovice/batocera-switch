@@ -952,7 +952,7 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
                 sleep 0.4444
                 echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
                 sleep 0.4444
-                echo -e "${T}■■       ${T}       ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzu.AppImage"
+                echo -e "${T}##       ${T}       ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzu.AppImage"
                 sleep 0.4444
                 echo
                   generate_launcher
@@ -977,7 +977,7 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
          sleep 0.4444
          echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
          sleep 0.4444
-         echo -e "${T}■■       ${T}       ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzu.AppImage"
+         echo -e "${T}##       ${T}       ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzu.AppImage"
          sleep 0.4444
          echo
             generate_launcher
@@ -1115,7 +1115,7 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
                 sleep 0.4444
                 echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
                 sleep 0.4444
-                echo -e "${T}■■       ${T}         ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzuEA.AppImage"
+                echo -e "${T}##       ${T}         ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzuEA.AppImage"
                 sleep 0.4444
                 echo
                   generate_launcher
@@ -1140,7 +1140,7 @@ if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
          sleep 0.4444
          echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
          sleep 0.4444
-         echo -e "${T}■■       ${T}         ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzuEA.AppImage"
+         echo -e "${T}##       ${T}         ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzuEA.AppImage"
          sleep 0.4444
          echo
             generate_launcher
