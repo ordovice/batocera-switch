@@ -864,247 +864,322 @@ mkdir /userdata/system/switch/extra/downloads 2>/dev/null
 # ---------------------------------------------------------------------------------- 
 #
 #
+##
 if [ "$3" = "YUZU" ]; then
-yuzuis="dead"
+##
 T=$THEME_COLOR_YUZU
-echo -e "${T}██ X/X   ${T}YUZU WAS SLAIN BY BOWNSER"
-echo
-if [[ "$yuzuis" != "dead" ]]; then
-T=$THEME_COLOR_YUZU
-version=$(echo "$link_yuzu" | sed 's,^.*/download/,,g' | cut -d "/" -f1 | cut -d "-" -f3)
+killall -9 yuzu yuzuea yuzu-room yuzu.AppImage yuzuEA.AppImage 2>/dev/null
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
-echo -e "${T}██ $C   ${F}YUZU   ${T}❯❯   ${T}$version"
-rm -rf $temp/yuzu 2>/dev/null
-mkdir $temp/yuzu 2>/dev/null
-cd $temp/yuzu
-curl --progress-bar --remote-name --location $link_yuzu
-mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
-chmod a+x "$temp/yuzu/yuzu.AppImage" 2>/dev/null
-$temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 2>/dev/null 
-mkdir /userdata/system/switch 2>/dev/null
-mkdir /userdata/system/switch/extra 2>/dev/null
-mkdir /userdata/system/switch/extra/yuzu 2>/dev/null
-cp $temp/yuzu/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
-#rm /userdata/system/switch/extra/yuzu/libQ* 2>/dev/null
-   cp $temp/yuzu/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzu/ 2>/dev/null 
-   cp $temp/yuzu/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzu/yuzu 2>/dev/null
-   cp $temp/yuzu/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzu/yuzu-room 2>/dev/null
-   cd $temp
-# fix broken libstdc++.so.6 for v37 
-   if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
-      link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
-      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzu/libstdc++.so.6" "$link_libstdc"
-      ###curl -sSf "$link_libstdc" -o "/userdata/system/switch/extra/yuzuea/libstdc++.so.6"
-   else 
-      rm /userdata/system/switch/extra/yuzu/libstdc++.so.6 2>/dev/null
-   fi
-# add yuzu's bundled 'optional' libs 
-   cp $temp/yuzu/squashfs-root/usr/optional/libstdc++/libstdc++.so.6 /userdata/system/switch/extra/yuzu/libstdc++.so.6
-   cp $temp/yuzu/squashfs-root/usr/optional/libgcc_s/libgcc_s.so.1 /userdata/system/switch/extra/yuzu/libgcc_s.so.1
-   cp $temp/yuzu/squashfs-root/usr/optional/exec.so /userdata/system/switch/extra/yuzu/exec.so
-   chmod a+x /userdata/system/switch/extra/yuzu/lib* 2>/dev/null
-# make launcher
-f=/userdata/system/switch/yuzu.AppImage
-rm "$f" 2>/dev/null
-echo '#!/bin/bash' >> "$f"
-
-echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
-echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
-echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
-echo 'export DESKTOP_SESSION=XFCE' >> "$f"
-
-echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
-echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
-echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
-echo '#cp /userdata/system/switch/extra/yuzu/lib* /lib64/ 2>/dev/null' >> "$f" 
-echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
-echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> "$f"
-echo 'mkdir -p /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null ' >> "$f"
-echo 'mkdir -p /userdata/system/.local/share/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/.local/share/yuzu/keys/ 2>/dev/null ' >> "$f"
-echo 'mkdir -p /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null ' >> "$f"
-echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> "$f"
-echo 'ln -s /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> "$f"
-echo 'cp /userdata/system/switch/extra/yuzu/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> "$f"
-
-echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
-echo 'log1=/userdata/system/switch/logs/yuzu-out.txt 2>/dev/null ' >> "$f"
-echo 'log2=/userdata/system/switch/logs/yuzu-err.txt 2>/dev/null ' >> "$f"
-echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
-
-echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu;' >> "$f"
-
-echo 'rom="$(echo "$@" | sed '\''s,-f -g ,,g'\'')" ' >> "$f"
-echo 'if [[ "$rom" = "" ]]; then ' >> "$f"
-echo '  DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f" 
-echo 'else ' >> "$f"
-echo '  rm /tmp/switchromname 2>/dev/null ' >> "$f" 
-echo '    echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f" 
-echo '      /userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> "$f" 
-echo '    rom="$(cat /tmp/switchromname)" ' >> "$f"
-echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
-echo '  if [[ "$fs" == *"EXT"* ]] || [[ "$fs" == *"BTR"* ]]; then ' >> "$f"
-echo '    rm /tmp/yuzurom 2>/dev/null; ln -sf "$rom" "/tmp/yuzurom"; ROM="/tmp/yuzurom"; ' >> "$f"
-echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
-echo '  else ' >> "$f"
-echo '    ROM="$rom" ' >> "$f"
-echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzu:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzu/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
-echo '  fi ' >> "$f"
-echo 'fi' >> "$f"
-
-dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
-chmod a+x "/userdata/system/switch/extra/yuzu/yuzu" 2>/dev/null
-chmod a+x "/userdata/system/switch/extra/yuzu/yuzu-room" 2>/dev/null
-size_yuzu=$(($(wc -c $temp/yuzu/yuzu.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
-#echo -e "${T}» ~/switch/yuzu.AppImage · ${T}$size_yuzu( )MB   ${T}" | sed 's/( )//g'
-echo
-cd ~/ 
-# send version to cookie: 
-   ver=$(echo "$link_yuzu" | sed 's,^.*mainline-0-,,g' | cut -d "/" -f1)
-      rm /userdata/system/switch/extra/yuzu/version.txt 2>/dev/null
-      echo "$ver" >> /userdata/system/switch/extra/yuzu/version.txt
-
-fi
-fi
-#
-#
-# ---------------------------------------------------------------------------------- 
-# ---------------------------------------------------------------------------------- 
-#
-#
-if [ "$3" = "YUZUEA" ]; then
-T=$THEME_COLOR_YUZUEA
-version=$(echo "$link_yuzuea" | sed 's,^.*Linux-Yuzu-EA-,,g' | sed 's,.AppImage,,g')
-if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
-echo -e "${T}██ $C   ${F}YUZU-EA   ${T}❯❯   ${T}$version"
-rm -rf $temp/yuzuea 2>/dev/null
-mkdir $temp/yuzuea 2>/dev/null
-cd $temp/yuzuea
-curl --progress-bar --remote-name --location $link_yuzuea
-mv $temp/yuzuea/* $temp/yuzuea/yuzuEA.AppImage 2>/dev/null
-chmod a+x "$temp/yuzuea/yuzuEA.AppImage" 2>/dev/null
-$temp/yuzuea/yuzuEA.AppImage --appimage-extract 1>/dev/null 2>/dev/null 
-mkdir /userdata/system/switch 2>/dev/null
-mkdir /userdata/system/switch/extra 2>/dev/null
-mkdir /userdata/system/switch/extra/yuzuea 2>/dev/null
-cp $temp/yuzuea/squashfs-root/usr/lib/libQt5* /userdata/system/switch/extra/yuzuea/ 2>/dev/null
-#rm /userdata/system/switch/extra/yuzuea/libQ* 2>/dev/null 
-   cp $temp/yuzuea/squashfs-root/usr/lib/libicu* /userdata/system/switch/extra/yuzuea/ 2>/dev/null 
-   cp $temp/yuzuea/squashfs-root/usr/bin/yuzu /userdata/system/switch/extra/yuzuea/yuzu 2>/dev/null
-   cp $temp/yuzuea/squashfs-root/usr/bin/yuzu-room /userdata/system/switch/extra/yuzuea/yuzu-room 2>/dev/null
-   cd $temp
-# fix broken libstdc++.so.6 for v37 
-   if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
-      link_libstdc=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-libstdc++.so.6
-      wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "/userdata/system/switch/extra/yuzuea/libstdc++.so.6" "$link_libstdc"
-      ###curl -sSf "$link_libstdc" -o "/userdata/system/switch/extra/yuzuea/libstdc++.so.6"
-   else 
-      rm /userdata/system/switch/extra/yuzuea/libstdc++.so.6 2>/dev/null
-   fi
-# add yuzu's bundled 'optional' libs 
-   cp $temp/yuzuea/squashfs-root/usr/optional/libstdc++/libstdc++.so.6 /userdata/system/switch/extra/yuzuea/libstdc++.so.6
-   cp $temp/yuzuea/squashfs-root/usr/optional/libgcc_s/libgcc_s.so.1 /userdata/system/switch/extra/yuzuea/libgcc_s.so.1
-   cp $temp/yuzuea/squashfs-root/usr/optional/exec.so /userdata/system/switch/extra/yuzuea/exec.so
-   chmod a+x /userdata/system/switch/extra/yuzuea/lib* 2>/dev/null
-# make launcher
-f=/userdata/system/switch/yuzuEA.AppImage
-rm "$f" 2>/dev/null
-echo '#!/bin/bash' >> "$f"
-
-echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
-echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
-echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
-echo 'export DESKTOP_SESSION=XFCE' >> "$f"
-
-echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
-echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
-echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
-echo '#cp /userdata/system/switch/extra/yuzuea/lib* /lib64/ 2>/dev/null' >> "$f" 
-echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
-echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> "$f"
-echo 'mkdir -p /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null ' >> "$f"
-echo 'mkdir -p /userdata/system/.local/share/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/.local/share/yuzu/keys/ 2>/dev/null ' >> "$f"
-echo 'mkdir -p /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null ' >> "$f"
-echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> "$f"
-echo 'ln -s /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> "$f"
-echo 'cp /userdata/system/switch/extra/yuzuea/yuzu-room /usr/bin/yuzu-room 2>/dev/null' >> "$f"
-
-echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
-echo 'log1=/userdata/system/switch/logs/yuzuEA-out.txt 2>/dev/null ' >> "$f"
-echo 'log2=/userdata/system/switch/logs/yuzuEA-err.txt 2>/dev/null ' >> "$f"
-echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
-
-echo 'ulimit -H -n 819200; ulimit -S -n 819200; ulimit -S -n 819200 yuzu;' >> "$f"
-
-echo 'rom="$(echo "$@" | sed '\''s,-f -g ,,g'\'')" ' >> "$f"
-echo 'if [[ "$rom" = "" ]]; then ' >> "$f"
-echo '  DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f" 
-echo 'else ' >> "$f"
-echo '  rm /tmp/switchromname 2>/dev/null ' >> "$f" 
-echo '    echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f" 
-echo '      /userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> "$f" 
-echo '    rom="$(cat /tmp/switchromname)" ' >> "$f"
-echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
-echo '  if [[ "$fs" == *"EXT"* ]] || [[ "$fs" == *"BTR"* ]]; then ' >> "$f"
-echo '    rm /tmp/yuzurom 2>/dev/null; ln -sf "$rom" "/tmp/yuzurom"; ROM="/tmp/yuzurom"; ' >> "$f"
-echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
-echo '  else ' >> "$f"
-echo '    ROM="$rom" ' >> "$f"
-echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="/userdata/system/switch/extra/yuzuea:${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/extra/yuzuea/yuzu -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
-echo '  fi ' >> "$f"
-echo 'fi' >> "$f"
-
-dos2unix "$f" 2>/dev/null; chmod a+x "$f" 2>/dev/null
-chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu" 2>/dev/null
-chmod a+x "/userdata/system/switch/extra/yuzuea/yuzu-room" 2>/dev/null
-size_yuzuea=$(($(wc -c $temp/yuzuea/yuzuEA.AppImage | awk '{print $1}')/1048576)) 2>/dev/null
-#echo -e "${T}» ~/switch/yuzuEA.AppImage · ${T}$size_yuzuea( )MB   ${T}" | sed 's/( )//g'
-echo
-cd ~/
-# send version to cookie: 
-   ver=$(echo "$link_yuzuea" | sed 's,^.*/EA-,,g' | cut -d "/" -f1)
-      rm /userdata/system/switch/extra/yuzuea/version.txt 2>/dev/null
-      echo "$ver" >> /userdata/system/switch/extra/yuzuea/version.txt
-#
-###\# clone yuzuea to yuzu, if there's no yuzu
-   if [[ ! -d /userdata/system/switch/extra/yuzu ]]; then
-      mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
-      cp -r /userdata/system/switch/extra/yuzuea/* /userdata/system/switch/extra/yuzu/ 2>/dev/null
-         if [[ ! -e /userdata/system/switch/yuzu.AppImage ]]; then
-            cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
-         else 
-            if [[ "$(cat /userdata/system/switch/yuzu.AppImage | grep yuzuea)" != "" ]]; then
-               cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
-            fi
-         fi
-   else 
-      if [[ "$(ls /userdata/system/switch/extra/yuzu)" = "" ]] || [[ ! -e "/userdata/system/switch/extra/yuzu/yuzu" ]]; then
-         mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
-         cp -r /userdata/system/switch/extra/yuzuea/* /userdata/system/switch/extra/yuzu/ 2>/dev/null
-            if [[ ! -e /userdata/system/switch/yuzu.AppImage ]]; then
-               cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
-            else 
-               if [[ "$(cat /userdata/system/switch/yuzu.AppImage | grep yuzuea)" != "" ]]; then
-                  cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
-               fi
-            fi
-      fi
-      if [[ -e /userdata/system/switch/extra/yuzu/version.txt ]]; then
-         if [[ "$(cat /userdata/system/switch/extra/yuzu/version.txt)" -gt "4000" ]]; then
-            mkdir -p /userdata/system/switch/extra/yuzu 2>/dev/null
-            cp -r /userdata/system/switch/extra/yuzuea/* /userdata/system/switch/extra/yuzu/ 2>/dev/null
-               if [[ ! -e /userdata/system/switch/yuzu.AppImage ]]; then
-                  cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
-               else 
-                  if [[ "$(cat /userdata/system/switch/yuzu.AppImage | grep yuzuea)" != "" ]]; then
-                     cp /userdata/system/switch/yuzuEA.AppImage /userdata/system/switch/yuzu.AppImage 2>/dev/null
+   function generate_launcher() {
+         f=/userdata/system/switch/yuzu.AppImage
+         rm "$f" 2>/dev/null
+         echo '#!/bin/bash' >> "$f"
+         echo 'export XDG_DATA_DIRS=/userdata/saves/flatpak/data/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share/applications/:/userdata/system/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share:/usr/local/share:/usr/share' >> "$f"
+         echo 'export PATH=/userdata/system/.local/bin:/userdata/system/bin:/bin:/sbin:/usr/bin:/usr/sbin' >> "$f"
+         echo 'export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket' >> "$f"
+         echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
+         echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
+         echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
+         echo 'export DESKTOP_SESSION=XFCE' >> "$f"
+         echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
+         echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
+         echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
+         echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
+         echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> "$f"
+         echo 'mkdir -p /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null ' >> "$f"
+         echo 'mkdir -p /userdata/system/.local/share/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/.local/share/yuzu/keys/ 2>/dev/null ' >> "$f"
+         echo 'mkdir -p /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null ' >> "$f"
+         echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> "$f"
+         echo 'ln -sf /userdata/system/switch/yuzu.AppImage /usr/bin/yuzu 2>/dev/null' >> "$f"
+         echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
+         echo 'log1=/userdata/system/switch/logs/yuzu-out.txt 2>/dev/null ' >> "$f"
+         echo 'log2=/userdata/system/switch/logs/yuzu-err.txt 2>/dev/null ' >> "$f"
+         echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
+         echo 'ulimit -H -n 819200 && ulimit -S -n 819200 && sysctl -w fs.inotify.max_user_watches=8192000 vm.max_map_count=2147483642 fs.file-max=8192000 >/dev/null 2>&1' >> "$f"
+         echo 'rom="$(echo "$@" | sed '\''s,-f -g ,,g'\'')" ' >> "$f"
+         echo 'if [[ "$rom" = "" ]]; then ' >> "$f"
+         echo '  DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/_yuzu.AppImage -f -g > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f" 
+         echo 'else ' >> "$f"
+         echo '  rm /tmp/switchromname 2>/dev/null ' >> "$f" 
+         echo '    echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f" 
+         echo '      /userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> "$f" 
+         echo '    rom="$(cat /tmp/switchromname)" ' >> "$f"
+         echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
+         echo '  if [[ "$fs" == *"EXT"* ]] || [[ "$fs" == *"BTR"* ]]; then ' >> "$f"
+         echo '    rm /tmp/yuzurom 2>/dev/null; ln -sf "$rom" "/tmp/yuzurom"; ROM="/tmp/yuzurom"; ' >> "$f"
+         echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/_yuzu.AppImage -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+         echo '  else ' >> "$f"
+         echo '    ROM="$rom" ' >> "$f"
+         echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/_yuzu.AppImage -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+         echo '  fi ' >> "$f"
+         echo 'fi' >> "$f"
+         dos2unix "$f" 2>/dev/null && chmod 777 "$f" 2>/dev/null
+   }
+   f=/userdata/system/switch/extra/yuzu/yuzu
+   if [[ -e $f ]]; then
+      f=/userdata/system/switch/yuzu.AppImage
+      if [[ -e $f ]]; then
+         size=$(wc -c $f | awk '{print $1}')
+         if [[ "$size" -lt 1000000 ]]; then
+            if [[ "$(cat $f | grep '_yuzu.AppImage')" != "" ]]; then
+             f=/userdata/system/switch/_yuzu.AppImage 
+               if [[ -e $f ]]; then
+                  size=$(wc -c $f | awk '{print $1}')
+                  if [[ "$size" -gt 5000000 ]]; then
+                   sleep 0.4444
+                   echo -e "${T}██ $C   ${T}YUZU   [${W}OK${T}]   found yuzu.Appimage in /userdata/system/switch/"
+                   sleep 0.4444
+                   echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
+                   sleep 0.4444
+                   echo
+                     generate_launcher
+                  else 
+                     sleep 0.4444
+                     echo -e "${T}██ $C   ${T}YUZU   [${W}!!${T}]   place custom yuzu.Appimage in /userdata/system/switch/"
+                     sleep 0.4444
+                     echo
                   fi
+               else 
+                  sleep 0.4444
+                  echo -e "${T}██ $C   ${T}YUZU   [${W}!!${T}]   place custom yuzu.Appimage in /userdata/system/switch/"
+                  sleep 0.4444
+                  echo
                fi
+            else
+               if [[ "$(cat $f | grep '/extra/yuzu/yuzu')" != "" ]]; then
+                sleep 0.4444
+                echo -e "${T}██ $C   ${T}YUZU   [${W}OK${T}]   found previous yuzu, skipping update"
+                sleep 0.4444
+                echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
+                sleep 0.4444
+                echo -e "${T}■■       ${T}       ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzu.AppImage"
+                sleep 0.4444
+                echo
+                  generate_launcher
+                  sed -i 's,/userdata/system/switch/_yuzu.AppImage,/userdata/system/switch/extra/yuzu/yuzu,g' /userdata/system/switch/yuzu.AppImage 2>/dev/null
+               fi
+            fi
+         else 
+           if [[ "$size" -gt 50000000 ]]; then
+             sleep 0.4444
+             echo -e "${T}██ $C   ${T}YUZU   [${W}OK${T}]   found yuzu.Appimage in /userdata/system/switch/"
+             sleep 0.4444
+             echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
+             sleep 0.4444
+             echo
+               generate_launcher
+            fi
          fi
+      else 
+         sleep 0.4444
+         echo -e "${T}██ $C   ${T}YUZU   [${W}OK${T}]   found previous yuzu"
+         sleep 0.4444
+         echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
+         sleep 0.4444
+         echo -e "${T}■■       ${T}       ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzu.AppImage"
+         sleep 0.4444
+         echo
+            generate_launcher
+            sed -i 's,/userdata/system/switch/_yuzu.AppImage,/userdata/system/switch/extra/yuzu/yuzu,g' /userdata/system/switch/yuzu.AppImage 2>/dev/null
       fi
+   else
+         f=/userdata/system/switch/yuzu.AppImage
+         if [[ -e $f ]]; then
+         size=$(wc -c $f | awk '{print $1}')
+           if [[ "$size" -gt 50000000 ]]; then
+             sleep 0.4444
+             echo -e "${T}██ $C   ${T}YUZU   [${W}OK${T}]   found yuzu.Appimage in /userdata/system/switch/"
+             sleep 0.4444
+             echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
+             sleep 0.4444
+             echo
+               generate_launcher
+           else 
+             f=/userdata/system/switch/_yuzu.AppImage
+             if [[ -e $f ]]; then
+               size=$(wc -c $f | awk '{print $1}')
+                 if [[ "$size" -gt "50000000" ]]; then
+                   sleep 0.4444
+                   echo -e "${T}██ $C   ${T}YUZU   ${W}[OK]${T}   found yuzu.Appimage in /userdata/system/switch/"
+                   sleep 0.4444
+                   echo -e "${T}■■       ${T}       ${T}       ${W}❯${T} generating launcher"
+                   sleep 0.4444
+                   echo
+                     generate_launcher
+                 fi
+             else 
+               sleep 0.4444
+               echo -e "${T}██ $C   ${T}YUZU   [${W}!!${T}]   place custom yuzu.Appimage in /userdata/system/switch/"
+               sleep 0.4444
+               echo
+             fi
+           fi
+         fi
    fi
-###/#
-#
+##
 fi
+##
+#
+#
+# ---------------------------------------------------------------------------------- 
+# ---------------------------------------------------------------------------------- 
+#
+#
+##
+if [ "$3" = "YUZUEA" ]; then
+##
+T=$THEME_COLOR_YUZUEA
+killall -9 yuzu yuzuea yuzu-room yuzu.AppImage yuzuEA.AppImage 2>/dev/null
+if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
+   function generate_launcher() {
+         f=/userdata/system/switch/yuzuEA.AppImage
+         rm "$f" 2>/dev/null
+         echo '#!/bin/bash' >> "$f"
+         echo 'export XDG_DATA_DIRS=/userdata/saves/flatpak/data/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share/applications/:/userdata/system/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share:/usr/local/share:/usr/share' >> "$f"
+         echo 'export PATH=/userdata/system/.local/bin:/userdata/system/bin:/bin:/sbin:/usr/bin:/usr/sbin' >> "$f"
+         echo 'export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket' >> "$f"
+         echo 'export XDG_MENU_PREFIX=batocera-' >> "$f"
+         echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
+         echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
+         echo 'export DESKTOP_SESSION=XFCE' >> "$f"
+         echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
+         echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
+         echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
+         echo 'if [ ! -L /userdata/system/configs/Ryujinx/bis/user/save ]; then mkdir /userdata/system/configs/Ryujinx/bis/user/save 2>/dev/null; rsync -au /userdata/saves/Ryujinx/ /userdata/system/configs/Ryujinx/bis/user/save/ 2>/dev/null; fi' >> "$f"
+         echo 'if [ ! -L /userdata/system/configs/yuzu/nand/user/save ]; then mkdir /userdata/system/configs/yuzu/nand/user/save 2>/dev/null; rsync -au /userdata/saves/yuzu/ /userdata/system/configs/yuzu/nand/user/save/ 2>/dev/null; fi' >> "$f"
+         echo 'mkdir -p /userdata/system/configs/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/yuzu/keys/ 2>/dev/null ' >> "$f"
+         echo 'mkdir -p /userdata/system/.local/share/yuzu/keys 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/.local/share/yuzu/keys/ 2>/dev/null ' >> "$f"
+         echo 'mkdir -p /userdata/system/configs/Ryujinx/system 2>/dev/null; cp -rL /userdata/bios/switch/*.keys /userdata/system/configs/Ryujinx/system/ 2>/dev/null ' >> "$f"
+         echo 'rm /usr/bin/yuzu 2>/dev/null; rm /usr/bin/yuzu-room 2>/dev/null' >> "$f"
+         echo 'ln -sf /userdata/system/switch/yuzuEA.AppImage /usr/bin/yuzu 2>/dev/null' >> "$f"
+         echo 'mkdir -p /userdata/system/switch/logs 2>/dev/null ' >> "$f"
+         echo 'log1=/userdata/system/switch/logs/yuzuEA-out.txt 2>/dev/null ' >> "$f"
+         echo 'log2=/userdata/system/switch/logs/yuzuEA-err.txt 2>/dev/null ' >> "$f"
+         echo 'rm $log1 2>/dev/null && rm $log2 2>/dev/null ' >> "$f"
+         echo 'ulimit -H -n 819200 && ulimit -S -n 819200 && sysctl -w fs.inotify.max_user_watches=8192000 vm.max_map_count=2147483642 fs.file-max=8192000 >/dev/null 2>&1' >> "$f"
+         echo 'rom="$(echo "$@" | sed '\''s,-f -g ,,g'\'')" ' >> "$f"
+         echo 'if [[ "$rom" = "" ]]; then ' >> "$f"
+         echo '  DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 LC_ALL=C NO_AT_BRIDGE=1 QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/_yuzuEA.AppImage -f -g > >(tee "$log1") 2> >(tee "$log2" >&2) ' >> "$f" 
+         echo 'else ' >> "$f"
+         echo '  rm /tmp/switchromname 2>/dev/null ' >> "$f" 
+         echo '    echo "$rom" >> /tmp/switchromname 2>/dev/null ' >> "$f" 
+         echo '      /userdata/system/switch/extra/batocera-switch-nsz-converter.sh ' >> "$f" 
+         echo '    rom="$(cat /tmp/switchromname)" ' >> "$f"
+         echo '  fs=$(blkid | grep "$(df -h /userdata | awk '\''END {print $1}'\'')" | sed '\''s,^.*TYPE=,,g'\'' | sed '\''s,",,g'\'' | tr '\''a-z'\'' '\''A-Z'\'') ' >> "$f"
+         echo '  if [[ "$fs" == *"EXT"* ]] || [[ "$fs" == *"BTR"* ]]; then ' >> "$f"
+         echo '    rm /tmp/yuzurom 2>/dev/null; ln -sf "$rom" "/tmp/yuzurom"; ROM="/tmp/yuzurom"; ' >> "$f"
+         echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/_yuzuEA.AppImage -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+         echo '  else ' >> "$f"
+         echo '    ROM="$rom" ' >> "$f"
+         echo '    DRI_PRIME=1 AMD_VULKAN_ICD=RADV DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1=1 QT_XKB_CONFIG_ROOT=/usr/share/X11/xkb LC_ALL=C.utf8 NO_AT_BRIDGE=1 XDG_MENU_PREFIX=batocera- XDG_CONFIG_DIRS=/etc/xdg XDG_CURRENT_DESKTOP=XFCE DESKTOP_SESSION=XFCE QT_FONT_DPI=96 QT_SCALE_FACTOR=1 GDK_SCALE=1 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}" GDK_SCALE=1 QT_PLUGIN_PATH=/usr/lib/qt/plugins:/userdata/system/switch/extra/lib/qt5plugins:/usr/plugins:${QT_PLUGIN_PATH} QT_QPA_PLATFORM_PLUGIN_PATH=${QT_PLUGIN_PATH} XDG_CONFIG_HOME=/userdata/system/configs XDG_CACHE_HOME=/userdata/system/.cache QT_QPA_PLATFORM=xcb /userdata/system/switch/_yuzuEA.AppImage -f -g "$ROM" 1>"$log1" 2>"$log2" ' >> "$f"
+         echo '  fi ' >> "$f"
+         echo 'fi' >> "$f"
+         dos2unix "$f" 2>/dev/null && chmod 777 "$f" 2>/dev/null
+   }
+   f=/userdata/system/switch/extra/yuzuea/yuzu
+   if [[ -e $f ]]; then
+      f=/userdata/system/switch/yuzuEA.AppImage
+      if [[ -e $f ]]; then
+         size=$(wc -c $f | awk '{print $1}')
+         if [[ "$size" -lt 1000000 ]]; then
+            if [[ "$(cat $f | grep '_yuzuEA.AppImage')" != "" ]]; then
+             f=/userdata/system/switch/_yuzuEA.AppImage 
+               if [[ -e $f ]]; then
+                  size=$(wc -c $f | awk '{print $1}')
+                  if [[ "$size" -gt 5000000 ]]; then
+                   sleep 0.4444
+                   echo -e "${T}██ $C   ${T}YUZUEA   [${W}OK${T}]   found yuzuEA.Appimage in /userdata/system/switch/"
+                   sleep 0.4444
+                   echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
+                   sleep 0.4444
+                   echo
+                     generate_launcher
+                  else 
+                     sleep 0.4444
+                     echo -e "${T}██ $C   ${T}YUZUEA   [${W}!!${T}]   place custom yuzuEA.Appimage in /userdata/system/switch/"
+                     sleep 0.4444
+                     echo
+                  fi
+               else 
+                  sleep 0.4444
+                  echo -e "${T}██ $C   ${T}YUZUEA   [${W}!!${T}]   place custom yuzuEA.Appimage in /userdata/system/switch/"
+                  sleep 0.4444
+                  echo
+               fi
+            else
+               if [[ "$(cat $f | grep '/extra/yuzuea/yuzu')" != "" ]]; then
+                sleep 0.4444
+                echo -e "${T}██ $C   ${T}YUZUEA   [${W}OK${T}]   found previous yuzuEA, skipping update"
+                sleep 0.4444
+                echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
+                sleep 0.4444
+                echo -e "${T}■■       ${T}         ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzuEA.AppImage"
+                sleep 0.4444
+                echo
+                  generate_launcher
+                  sed -i 's,/userdata/system/switch/_yuzuEA.AppImage,/userdata/system/switch/extra/yuzuea/yuzu,g' /userdata/system/switch/yuzuEA.AppImage 2>/dev/null
+               fi
+            fi
+         else 
+           if [[ "$size" -gt 50000000 ]]; then
+             sleep 0.4444
+             echo -e "${T}██ $C   ${T}YUZUEA   [${W}OK${T}]   found yuzuEA.Appimage in /userdata/system/switch/"
+             sleep 0.4444
+             echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
+             sleep 0.4444
+             echo
+               generate_launcher
+            fi
+         fi
+      else 
+         sleep 0.4444
+         echo -e "${T}██ $C   ${T}YUZUEA   [${W}OK${T}]   found previous yuzuEA"
+         sleep 0.4444
+         echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
+         sleep 0.4444
+         echo -e "${T}■■       ${T}         ${T}       ${T}❯${T} or replace /userdata/system/switch/yuzuEA.AppImage"
+         sleep 0.4444
+         echo
+            generate_launcher
+            sed -i 's,/userdata/system/switch/_yuzuEA.AppImage,/userdata/system/switch/extra/yuzuea/yuzu,g' /userdata/system/switch/yuzuEA.AppImage 2>/dev/null
+      fi
+   else
+         f=/userdata/system/switch/yuzuEA.AppImage
+         if [[ -e $f ]]; then
+         size=$(wc -c $f | awk '{print $1}')
+           if [[ "$size" -gt 50000000 ]]; then
+             sleep 0.4444
+             echo -e "${T}██ $C   ${T}YUZUEA   [${W}OK${T}]   found yuzuEA.Appimage in /userdata/system/switch/"
+             sleep 0.4444
+             echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
+             sleep 0.4444
+             echo
+               generate_launcher
+           else 
+             f=/userdata/system/switch/_yuzuEA.AppImage
+             if [[ -e $f ]]; then
+               size=$(wc -c $f | awk '{print $1}')
+                 if [[ "$size" -gt "50000000" ]]; then
+                   sleep 0.4444
+                   echo -e "${T}██ $C   ${T}YUZUEA   ${W}[OK]${T}   found yuzuEA.Appimage in /userdata/system/switch/"
+                   sleep 0.4444
+                   echo -e "${T}■■       ${T}         ${T}       ${W}❯${T} generating launcher"
+                   sleep 0.4444
+                   echo
+                     generate_launcher
+                 fi
+             else 
+               sleep 0.4444
+               echo -e "${T}██ $C   ${T}YUZUEA   [${W}!!${T}]   place custom yuzuEA.Appimage in /userdata/system/switch/"
+               sleep 0.4444
+               echo
+             fi
+           fi
+         fi
+   fi
+##
+fi
+##
 #
 #
 # ---------------------------------------------------------------------------------- 
@@ -2224,6 +2299,7 @@ function post-install() {
          fi
 # ------------------------------------------------------------------- 
 # show info 
+chmod 777 /userdata/system/switch/*.AppImage 2>/dev/null
 sleep 1
 echo
 echo -e "${THEME_COLOR_YUZU}❯❯❯ ${F}UPDATING ADDITIONAL FILES ${T}...${T}"
