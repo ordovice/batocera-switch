@@ -1204,7 +1204,11 @@ T=$THEME_COLOR_RYUJINX
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
 if [[ "$(echo "$link_ryujinx" | grep "382")" != "" ]]; then version="382"; fi
 version=$(echo "$version" | sed 's,1\.1\.,,g')
-echo -e "${T}██ $C   ${F}RYUJINX   ${T}❯❯   ${T}$version"
+if [[ "$version" = "1215" ]]; then
+   echo -e "${T}██ $C   ${F}RYUJINX   ${T}❯❯   ${T}$version   /last vanilla version/"
+else 
+   echo -e "${T}██ $C   ${F}RYUJINX   ${T}❯❯   ${T}$version"
+fi
 # --------------------------------------------------------
 # \\ get dependencies for handling ryujinxavalonia
 link_tar=https://github.com/ordovice/batocera-switch/raw/main/system/switch/extra/batocera-switch-tar
