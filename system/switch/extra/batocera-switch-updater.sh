@@ -567,7 +567,9 @@ updates=$(cat /tmp/updater-settings | grep "updates=locked" | cut -d "=" -f2)
    if [[ "$(uname -a | awk '{print $3}')" > "6.2" ]]; then 
       locked=0
       release_ryujinx=$(curl -s --retry 5 --retry-delay 1 --retry-connrefused https://github.com/Ryujinx/release-channel-master | grep "/release-channel-master/releases/tag/" | sed 's,^.*/release-channel-master/releases/tag/,,g' | cut -d \" -f1)
-      link_ryujinx=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/ryujinx-$release_ryujinx-linux_x64.tar.gz
+      release_ryujinx_vanilla="$release_ryujinx"
+      if [[ "$release_ryujinx" > "1.1.1215" ]]; then release_ryujinx_vanilla="1.1.1215"; fi
+      link_ryujinx=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx_vanilla/ryujinx-$release_ryujinx_vanilla-linux_x64.tar.gz
       link_ryujinxavalonia=https://github.com/Ryujinx/release-channel-master/releases/download/$release_ryujinx/test-ava-ryujinx-$release_ryujinx-linux_x64.tar.gz
    fi
    # unlock for v<=36 // use settings from config file 
@@ -809,6 +811,7 @@ if [[ -e "$cfg" ]]; then
          if [[ "$(echo "$ryujinx_custom_version" | grep "1.1")" = "" ]]; then    
             ryujinx_custom_version=$(echo "1.1.$ryujinx_custom_version")
          fi
+         if [[ "$ryujinx_custom_version" > "1.1.1215" ]]; then ryujinx_custom_version="1.1.1215"; fi
               link_ryujinx=$(echo "https://github.com/Ryujinx/release-channel-master/releases/download/$ryujinx_custom_version/ryujinx-$ryujinx_custom_version-linux_x64.tar.gz")
                   if [[ "$(echo "$ryujinx_custom_version" | grep "382")" != "" ]]; then 
                      link_ryujinx=https://github.com/uureel/batocera.pro/raw/main/switch/extra/ryujinx-1.1.382-linux_x64.tar.gz
