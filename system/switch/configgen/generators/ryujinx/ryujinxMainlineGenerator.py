@@ -101,14 +101,6 @@ class RyujinxMainlineGenerator(Generator):
                 data = json.load(read_file)
         else:
                 data = {}
-
-        if system.config['emulator'] == 'ryujinx-avalonia':
-            data['version'] = 42  #Avalonia Version needs to see 38
-        else:
-            if(ryu_version == 382):
-                data['version'] = 40  #1.1.382 version
-            else:
-                data['version'] = 47 #1.1.924 version
         
         data['enable_file_log'] = bool('true')
         data['backend_threading'] = 'Auto'
