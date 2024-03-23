@@ -642,7 +642,9 @@ class RyujinxMainlineGenerator(Generator):
         else:
             data['graphics_backend'] = 'Vulkan'
 
-        data['preferred_gpu'] = ""
+        # this erases the user manual configuration.
+        # It's problematic in case of hybrid laptop as it may always default to the igpu instead of the dgpu
+        # data['preferred_gpu'] = ""
 
         with open(batoceraFiles.CONF + '/Ryujinx/BeforeRyu.json', "w") as outfile:
             outfile.write(json.dumps(data, indent=2))
