@@ -874,15 +874,23 @@ mkdir /userdata/system/switch/extra/downloads 2>/dev/null
 if [ "$3" = "YUZU" ]; then
 T=$THEME_COLOR_YUZU
 #version=$(echo "$link_yuzu" | sed 's,^.*/download/,,g' | cut -d "/" -f1 | cut -d "-" -f3)
-link_yuzu=https://archive.org/download/yuzu-windows-msvc-20240304-537296095_20240305_1340/Linux/yuzu-mainline-20240304-537296095.AppImage
-version="/1734/"
+link_yuzuarchive=https://archive.org/download/yuzu-windows-msvc-20240304-537296095_20240305_1340/Linux/yuzu-mainline-20240304-537296095.AppImage
+link_yuzu=https://github.com/yuzu-mirror/yuzu-downloads/raw/main/Mainline%20Build%20-%20537296095%20\(2024-03-04\)/yuzu-mainline-20240304-537296095.AppImage
+version="1734"
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
-echo -e "${T}██ $C   ${F}YUZU   ${T}❯❯   ${T}$version"
+echo -e "${T}██ $C   ${F}YUZU   ${T}❯❯   ${T}/$version/"
 rm -rf $temp/yuzu 2>/dev/null
-mkdir $temp/yuzu 2>/dev/null
+mkdir -p $temp/yuzu 2>/dev/null
 cd $temp/yuzu
 curl --progress-bar --remote-name --location $link_yuzu
 mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
+   md=$(md5sum $temp/yuzu/yuzu.AppImage | awk '{print $1}')
+   ok=fc405e5cdf0b506a3f3b28b87dacbcae
+   if [[ "$md" != "$ok" ]]; then 
+      cd ~/ && rm -rf $temp/yuzu && mkdir -p $temp/yuzu 2>/dev/null && cd $temp/yuzu
+      curl --progress-bar --remote-name --location $link_yuzuarchive
+      mv $temp/yuzu/* $temp/yuzu/yuzu.AppImage 2>/dev/null
+   fi
 chmod a+x "$temp/yuzu/yuzu.AppImage" 2>/dev/null
 $temp/yuzu/yuzu.AppImage --appimage-extract 1>/dev/null 2>/dev/null 
 mkdir /userdata/system/switch 2>/dev/null
@@ -980,7 +988,7 @@ if [ "$3" = "YUZUEA" ]; then
 T=$THEME_COLOR_YUZUEA
 version=$(echo "$link_yuzuea" | sed 's,^.*Linux-Yuzu-EA-,,g' | sed 's,.AppImage,,g')
 if [ "$N" = "1" ]; then C=""; else C="$E/$N"; fi
-echo -e "${T}██ $C   ${F}YUZU-EA   ${T}❯❯   ${T}$version"
+echo -e "${T}██ $C   ${F}YUZU-EA   ${T}❯❯   ${T}/$version/"
 rm -rf $temp/yuzuea 2>/dev/null
 mkdir $temp/yuzuea 2>/dev/null
 cd $temp/yuzuea
