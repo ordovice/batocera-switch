@@ -1163,9 +1163,6 @@ f=/userdata/system/switch/Ryujinx.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
 
-echo 'sed -i '\''s/"check_updates_on_start": true,/"check_updates_on_start": false,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
-echo 'sed -i '\''s/"start_fullscreen": false,/"start_fullscreen": true,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
-
 echo 'export XDG_DATA_DIRS=/userdata/saves/flatpak/data/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share/applications/:/userdata/system/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share:/usr/local/share:/usr/share' >> "$f"
 echo 'export PATH=/userdata/system/.local/bin:/userdata/system/bin:/bin:/sbin:/usr/bin:/usr/sbin' >> "$f"
 echo 'export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket' >> "$f"
@@ -1174,7 +1171,7 @@ echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
 echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
-echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
+echo '/userdata/system/switch/extra/batocera-switch-ryujinx-fixes.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
@@ -1317,9 +1314,6 @@ f=/userdata/system/switch/Ryujinx-LDN.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
 
-echo 'sed -i '\''s/"check_updates_on_start": true,/"check_updates_on_start": false,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
-echo 'sed -i '\''s/"start_fullscreen": false,/"start_fullscreen": true,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
-
 echo 'export XDG_DATA_DIRS=/userdata/saves/flatpak/data/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share/applications/:/userdata/system/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share:/usr/local/share:/usr/share' >> "$f"
 echo 'export PATH=/userdata/system/.local/bin:/userdata/system/bin:/bin:/sbin:/usr/bin:/usr/sbin' >> "$f"
 echo 'export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket' >> "$f"
@@ -1328,7 +1322,7 @@ echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
 echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
-echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
+echo '/userdata/system/switch/extra/batocera-switch-ryujinx-fixes.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
@@ -1470,9 +1464,6 @@ f=/userdata/system/switch/Ryujinx-Avalonia.AppImage
 rm "$f" 2>/dev/null
 echo '#!/bin/bash' >> "$f"
 
-echo 'sed -i '\''s/"check_updates_on_start": true,/"check_updates_on_start": false,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
-echo 'sed -i '\''s/"start_fullscreen": false,/"start_fullscreen": true,/g'\'' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null' >> "$f"
-
 echo 'export XDG_DATA_DIRS=/userdata/saves/flatpak/data/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share/applications/:/userdata/system/.local/share/flatpak/exports/share:/userdata/saves/flatpak/binaries/exports/share:/usr/local/share:/usr/share' >> "$f"
 echo 'export PATH=/userdata/system/.local/bin:/userdata/system/bin:/bin:/sbin:/usr/bin:/usr/sbin' >> "$f"
 echo 'export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket' >> "$f"
@@ -1481,7 +1472,7 @@ echo 'export XDG_CONFIG_DIRS=/etc/xdg' >> "$f"
 echo 'export XDG_CURRENT_DESKTOP=XFCE' >> "$f"
 echo 'export DESKTOP_SESSION=XFCE' >> "$f"
 
-echo "sed -i 's;  \"game_dirs\"\: \[]\,;  \"game_dirs\"\: \[\"/userdata/roms/switch\"]\,;g' /userdata/system/configs/Ryujinx/Config.json 2>/dev/null" >> "$f"
+echo '/userdata/system/switch/extra/batocera-switch-ryujinx-fixes.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-sync-firmware.sh' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-mousemove.sh &' >> "$f" 
 echo '/userdata/system/switch/extra/batocera-switch-translator.sh &' >> "$f"
@@ -2765,6 +2756,14 @@ path=/userdata/system/switch/extra/batocera-switch-translator.sh
 wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path" "$translator"
    dos2unix "$path" 2>/dev/null
    chmod 777 "$path" 2>/dev/null
+# GET RYUJINX-FIXES.SH
+file=https://raw.githubusercontent.com/ordovice/batocera-switch/main/system/switch/extra/batocera-switch-ryujinx-fixes.sh
+path=/userdata/system/switch/extra/batocera-switch-ryujinx-fixes.sh
+wget -q --tries=10 --no-check-certificate --no-cache --no-cookies -O "$path" "$file"
+   dos2unix "$path" 2>/dev/null
+   chmod 777 "$path" 2>/dev/null
+# --------------------------------------------------------------------
+chmod 777 /userdata/system/switch/extra/*.sh 2>/dev/null
 # --------------------------------------------------------------------
 # CLEAR TEMP & COOKIE:
 rm -rf /userdata/system/switch/extra/downloads 2>/dev/null
