@@ -651,6 +651,12 @@ class RyujinxMainlineGenerator(Generator):
         else:
             data['graphics_backend'] = 'Vulkan'
 
+        #Audio backend: SDL2 or OpenAL
+        if system.isOptSet('ryu_audio_backend'):
+            data['audio_backend'] = system.config["ryu_audio_backend"]
+        else:
+            data['audio_backend'] = 'SDL2'
+
         # this erases the user manual configuration.
         # It's problematic in case of hybrid laptop as it may always default to the igpu instead of the dgpu
         # data['preferred_gpu'] = ""
