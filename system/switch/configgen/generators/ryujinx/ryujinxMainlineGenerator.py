@@ -661,8 +661,8 @@ class RyujinxMainlineGenerator(Generator):
                 data['res_scale_custom'] = float(system.config["ryu_resolution_scale"])
                 data['res_scale'] = -1
         else:
-            data['res_scale_custom'] = 0.5
-            data['res_scale'] = -1
+            data['res_scale_custom'] = 1
+            data['res_scale'] = 1
 
         #Texture Recompression
         if system.isOptSet('ryu_texture_recompression'):
