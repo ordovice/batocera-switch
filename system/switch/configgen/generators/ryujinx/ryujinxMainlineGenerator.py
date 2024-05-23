@@ -189,7 +189,7 @@ class RyujinxMainlineGenerator(Generator):
         else:
             data['enable_shader_cache'] = bool('true')    
 
-        data['enable_texture_recompression'] = bool(0)
+        #data['enable_texture_recompression'] = bool(0)
 
         if system.isOptSet('enable_ptc'):
             data['enable_ptc'] = bool(int(system.config["enable_ptc"]))
@@ -644,6 +644,34 @@ class RyujinxMainlineGenerator(Generator):
                     input_config.append(cvalue)
             
             data['input_config'] = input_config
+
+        #Resolution Scale
+        if system.isOptSet('ryu_resolution_scale'):
+            if system.config["ryu_resolution_scale"] in {'1.0', '2.0', '3.0', '4.0', 1.0, 2.0, 3.0, 4.0}:
+                data['res_scale_custom'] = 1
+                if system.config["ryu_resolution_scale"] in {'1.0', 1.0}:
+                    data['res_scale'] = 1
+                if system.config["ryu_resolution_scale"] in {'2.0', 2.0}:
+                    data['res_scale'] = 2
+                if system.config["ryu_resolution_scale"] in {'3.0', 3.0}:
+                    data['res_scale'] = 3
+                if system.config["ryu_resolution_scale"] in {'4.0', 4.0}:
+                    data['res_scale'] = 4
+            else:
+                data['res_scale_custom'] = float(system.config["ryu_resolution_scale"])
+                data['res_scale'] = -1
+        else:
+            data['res_scale_custom'] = 0.5
+            data['res_scale'] = -1
+
+        #Texture Recompression
+        if system.isOptSet('ryu_texture_recompression'):
+            if system.config["ryu_texture_recompression"] in {"true", "1", 1}:
+                data['enable_texture_recompression'] = True
+            elif system.config["ryu_texture_recompression"] in {"false", "0", 0}:
+                data['enable_texture_recompression'] = False
+        else:
+            data['enable_texture_recompression'] = False
 
         #Vulkan or OpenGl
         if system.isOptSet('ryu_backend'):
