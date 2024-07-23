@@ -151,14 +151,18 @@ cd $xdg/usr/libexec
 	cp -r $xdg/config/filemanager.desktop /usr/share/applications/ 2>/dev/null
 
 	# mimeapps.list 
-	cp -r $xdg/config/mimeapps.list /userdata/system/.config/mimeapps.list 2>/dev/null
+	# cp -r $xdg/config/mimeapps.list /userdata/system/.config/mimeapps.list 2>/dev/null
+	[[ ! -e /userdata/system/.config/mimeapps.list ]] && cp $xdg/config/mimeapps.list /userdata/system/.config/mimeapps.list 2>/dev/null
+
 
 	# xfce4 helpers 
 	mkdir -p /userdata/system/.local/share/xfce4/helpers 2>/dev/null
-	cp -r $xdg/local/share/xfce4/helpers/* /userdata/system/.local/share/xfce4/helpers/ 2>/dev/null
+	# cp -r $xdg/local/share/xfce4/helpers/* /userdata/system/.local/share/xfce4/helpers/ 2>/dev/null
+	for file in $xdg/local/share/xfce4/helpers/*; do filename=$(basename "$file"); [ ! -e "/userdata/system/.local/share/xfce4/helpers/$filename" ] && cp "$file" "/userdata/system/.local/share/xfce4/helpers/"; done 2>/dev/null
 
 	mkdir -p /userdata/system/.config/xfce4 2>/dev/null
-	cp -r $xdg/config/helpers.rc /userdata/system/.config/xfce4/ 2>/dev/null
+	# cp -r $xdg/config/helpers.rc /userdata/system/.config/xfce4/ 2>/dev/null
+	[[ ! -e /userdata/system/.config/xfce4/helpers.rc ]] && cp $xdg/config/helpers.rc /userdata/system/.config/xfce4/ 2>/dev/null
 
 # --------------------------------------------------------------------------------------------------------------------
 # export flags
